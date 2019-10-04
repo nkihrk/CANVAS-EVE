@@ -1,0 +1,378 @@
+@charset "UTF-8";
+
+
+/*———————————————————————————————————————————————————————
+
+Common
+
+—————————————————————————————————————————————————————————*/
+
+:root {
+    --half-white: rgba(255, 255, 255, 0.5);
+    --transparent-white: rgba(255, 255, 255, 0.05);
+}
+
+
+/* .selected-dot {
+    border: dotted 1px var(--half-white);
+    background-color: var(--transparent-white);
+} */
+
+.selected-dot {
+    position: relative;
+    background-color: var(--transparent-white);
+}
+
+.selected-dot::before {
+    content: "";
+    background-image: linear-gradient(to right, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
+        linear-gradient(to right, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
+        linear-gradient(to bottom, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
+        linear-gradient(to bottom, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px);
+    background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
+    background-position: left top, left bottom, left top, right top;
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+
+.file-wrap.selected-dot {
+    width: 0;
+    transition: '';
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#board-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Color board */
+#board-oekaki {
+    /* Overwrite the HIGHEST_Z_INDEX */
+    z-index: 0 !important;
+    width: 330px;
+    top: 40px;
+    right: 50px;
+    border-radius: 6px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    /* padding-bottom: 25px; */
+
+    /* background-color: #2f2d3b; */
+    background-color: rgba(38, 37, 51, 0.5);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#tool-board-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Color board */
+#tool-board-oekaki {
+    /* Overwrite the HIGHEST_Z_INDEX */
+    z-index: 0 !important;
+    width: 330px;
+    top: 400px;
+    right: 50px;
+    border-radius: 6px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    /* background-color: #2f2d3b; */
+    background-color: rgba(38, 37, 51, 0.5);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#tool-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+#tool-oekaki {
+    display: flex;
+    /* justify-content: flex-end; */
+    justify-content: center;
+    /* margin: 10px 15px 25px 15px; */
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#newcanvas-oekaki/#tool-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Wrapper for a toggling button of oekaki */
+#newcanvas-oekaki {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border-radius: 6px 0 0 6px;
+    border: solid 1px #c1125b;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#newcanvas-oekaki::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url(/img/works/webservice/canvas-eve/red_newcanvas.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    transition: all .3s ease-in-out;
+}
+
+#newcanvas-oekaki.active {
+    background-color: #c1125b;
+    opacity: 1;
+}
+
+#newcanvas-oekaki.active::before {
+    background-image: url(/img/works/webservice/canvas-eve/dark_newcanvas.png);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#brush-oekaki/#tool-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Wrapper for a toggling button of oekaki */
+#brush-oekaki {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border: solid 1px #c1125b;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#brush-oekaki::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url(/img/works/webservice/canvas-eve/red_brush.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    transition: all .3s ease-in-out;
+}
+
+#brush-oekaki.active {
+    background-color: #c1125b;
+    opacity: 1;
+}
+
+#brush-oekaki.active::before {
+    background-image: url(/img/works/webservice/canvas-eve/dark_brush.png);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#eraser-oekaki/#tool-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Wrapper for a toggling button of oekaki */
+#eraser-oekaki {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border: solid 1px #c1125b;
+    border-right: none;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#eraser-oekaki::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 15px;
+    background-image: url(/img/works/webservice/canvas-eve/red_eraser.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    transition: all .3s ease-in-out;
+}
+
+#eraser-oekaki.active {
+    background-color: #c1125b;
+    opacity: 1;
+}
+
+#eraser-oekaki.active::before {
+    background-image: url(/img/works/webservice/canvas-eve/dark_eraser.png);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#spuit-oekaki/#tool-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Wrapper for a toggling button of oekaki */
+#spuit-oekaki {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border: solid 1px #c1125b;
+    border-right: none;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#spuit-oekaki::before {
+    content: '';
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url(/img/works/webservice/canvas-eve/red_spuit.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    transition: all .3s ease-in-out;
+}
+
+#spuit-oekaki.active {
+    background-color: #c1125b;
+    opacity: 1;
+}
+
+#spuit-oekaki.active::before {
+    background-image: url(/img/works/webservice/canvas-eve/dark_spuit.png);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#filldrip-oekaki/#tool-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Wrapper for a toggling button of oekaki */
+#filldrip-oekaki {
+    position: relative;
+    width: 60px;
+    height: 30px;
+    border-radius: 0 6px 6px 0;
+    border: solid 1px #c1125b;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+#filldrip-oekaki::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 15px;
+    background-image: url(/img/works/webservice/canvas-eve/red_filldrip.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    transition: all .3s ease-in-out;
+}
+
+#filldrip-oekaki.active {
+    background-color: #c1125b;
+    opacity: 1;
+}
+
+#filldrip-oekaki.active::before {
+    background-image: url(/img/works/webservice/canvas-eve/dark_filldrip.png);
+}
+
+
+/*———————————————————————————————————————————————————————
+
+#color-oekaki
+
+—————————————————————————————————————————————————————————*/
+
+/* Show color */
+#color-oekaki {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: 0 15px;
+}
+
+#color-wheel {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#color-triangle {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+#color-wheel-circle {
+    position: absolute;
+    z-index: 2;
+    transform: translateX(-50%) translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: solid 3px white;
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+
+#color-triangle-circle {
+    position: absolute;
+    z-index: 2;
+    transform: translateX(-50%) translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border: solid 2px white;
+    border-radius: 50%;
+
+    cursor: pointer;
+}
