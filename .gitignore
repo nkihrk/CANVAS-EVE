@@ -2,3 +2,4 @@ model
 
 config
 node_modules
+"build/" 
