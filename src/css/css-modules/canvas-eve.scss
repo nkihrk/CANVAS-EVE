@@ -1,6 +1,3 @@
-@charset "UTF-8";
-
-
 /*———————————————————————————————————————————————————————
 
 Common
@@ -31,17 +28,20 @@ GLSL
     height: 100%;
 }
 
-/* To make OrbirControls work */
-.glsl .selected {
-    z-index: -1;
-}
+.glsl {
 
-/* initialize the size */
-.glsl .eve-main {
-    display: block;
-    height: 0;
-    width: 100%;
-    padding-bottom: 100%;
+    /* To make OrbirControls work */
+    .selected {
+        z-index: -1;
+    }
+
+    /* initialize the size */
+    .eve-main {
+        display: block;
+        height: 0;
+        width: 100%;
+        padding-bottom: 100%;
+    }
 }
 
 .hide-scissor {
@@ -69,11 +69,11 @@ GLSL
     opacity: 0;
     transition: width .3s ease-in-out,
         opacity .1s ease-out;
-}
 
-/* When starting loading a file */
-#progress-bar.loading {
-    opacity: 1.0;
+    /* When starting loading a file */
+    .loading {
+        opacity: 1.0;
+    }
 }
 
 #canvas-eve,
@@ -141,21 +141,21 @@ GLSL
     /* min-width: 192px; */
     border: solid 1px rgba(255, 0, 0, 0);
     transform-origin: center;
-}
 
-/* Make it transparent at first when a drop event is called. dnd-eve.js  */
-.file-wrap.transparent {
-    opacity: 0;
-}
+    /* Make it transparent at first when a drop event is called. dnd-eve.js  */
+    .transparent {
+        opacity: 0;
+    }
 
-/* Prefix for canvas. colpick-eve.js */
-.file-wrap .canvas-colpick {
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    /* left: 700px; */
-    display: none;
+    /* Prefix for canvas. colpick-eve.js */
+    .canvas-colpick {
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        /* left: 700px; */
+        display: none;
+    }
 }
 
 /* Being selected */
@@ -185,12 +185,12 @@ GLSL
     cursor: -moz-grab;
     cursor: -webkit-grab;
     cursor: grab;
-}
 
-.grab-pointer:active {
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing;
-    cursor: grabbing;
+    &:active {
+        cursor: -moz-grabbing;
+        cursor: -webkit-grabbing;
+        cursor: grabbing;
+    }
 }
 
 
@@ -216,12 +216,12 @@ GLSL
     display: flex;
     flex-direction: column;
     justify-content: space-between; */
-}
 
-/* Prefix for the space of each child-element in the .function-wrapper */
-.function-wrapper>div:not(:last-of-type) {
-    margin-bottom: 15px;
-    transition: all .1s ease-in-out;
+    /* Prefix for the space of each child-element in the .function-wrapper */
+    &>div:not(:last-of-type) {
+        margin-bottom: 15px;
+        transition: all .1s ease-in-out;
+    }
 }
 
 
@@ -239,32 +239,31 @@ Thumbtack
     /* border-top: solid 3px rgba(255, 255, 255, 0.5);
     background: blue; */
     transition: all .1s ease-in-out;
-}
 
-.thumbtack-icon::after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    background-image: url(/img/works/webservice/canvas-eve/thumbtack.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-image: url(/img/works/webservice/canvas-eve/thumbtack.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        z-index: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
 
 
-    opacity: 0.5;
-    transition: opacity .1s ease-in-out;
+        opacity: 0.5;
+        transition: opacity .1s ease-in-out;
+    }
 }
 
 .thumbtack-wrapper.active .thumbtack-icon::after {
     opacity: 1;
 }
-
 
 
 /*———————————————————————————————————————————————————————
@@ -280,25 +279,25 @@ Resize
     height: 30px;
     /* background: red; */
     transition: all .1s ease-in-out;
-}
 
-.resize-icon::after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    background-image: url(/img/works/webservice/canvas-eve/resize.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-image: url(../../../assets/img/resize.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        z-index: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
 
-    opacity: 0.5;
-    transition: opacity .1s ease-in-out;
+        opacity: 0.5;
+        transition: opacity .1s ease-in-out;
+    }
 }
 
 .resize-wrapper.active .resize-icon::after {
@@ -349,41 +348,6 @@ Resize
 }
 
 
-/* Added resizing-box. Another version */
-/* .re-left-top,
-.re-right-top,
-.re-right-bottom,
-.re-left-bottom {
-    position: absolute;
-    z-index: 1;
-    background-color: rgba(255, 255, 255, 0.3);
-    width: 20px;
-    height: 20px;
-
-    cursor: pointer;
-}
-
-.re-left-top {
-    top: -30px;
-    left: -30px;
-}
-
-.re-right-top {
-    top: -30px;
-    right: -30px;
-}
-
-.re-right-bottom {
-    bottom: -30px;
-    right: -30px;
-}
-
-.re-left-bottom {
-    bottom: -30px;
-    left: -30px;
-} */
-
-
 /*———————————————————————————————————————————————————————
 
 Flip
@@ -397,25 +361,25 @@ Flip
     height: 26px;
     /* background: red; */
     transition: all .1s ease-in-out;
-}
 
-.flip-icon::after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    background-image: url(/img/works/webservice/canvas-eve/flip.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-image: url(../../../assets/img/flip.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        z-index: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
 
-    opacity: 0.5;
-    transition: opacity .1s ease-in-out;
+        opacity: 0.5;
+        transition: opacity .1s ease-in-out;
+    }
 }
 
 .flip-wrapper.active .flip-icon::after {
@@ -458,25 +422,25 @@ Rotate
     height: 30px;
     /* background: blue; */
     transition: all .1s ease-in-out;
-}
 
-.rotate-icon::after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    background-image: url(/img/works/webservice/canvas-eve/rotate.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-image: url(../../../assets/img/rotate.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        z-index: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
 
-    opacity: 0.5;
-    transition: opacity .1s ease-in-out;
+        opacity: 0.5;
+        transition: opacity .1s ease-in-out;
+    }
 }
 
 .rotate-wrapper.active .rotate-icon::after {
@@ -538,26 +502,26 @@ Trash
     /* border-top: solid 3px rgba(255, 255, 255, 0.5);
     background: blue; */
     transition: all .1s ease-in-out;
-}
 
-.trash-icon::after {
-    content: '';
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    background-image: url(/img/works/webservice/canvas-eve/trash.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        background-image: url(../../../assets/img/trash.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        z-index: 0;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
 
 
-    opacity: 0.5;
-    transition: opacity .1s ease-in-out;
+        opacity: 0.5;
+        transition: opacity .1s ease-in-out;
+    }
 }
 
 .trash-wrapper.active .trash-icon::after {
