@@ -29,13 +29,14 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader',
-                ],
+                test: /\.(png|svg|jpg|gif)$/i,
+                loader: 'file-loader',
+                options: {
+                    outputPath: 'img',
+                },
             },
             {
-                test: /\.(otf)(\?v=\d+\.\d+\.\d+)?$/,
+                test: /\.(otf)(\?v=\d+\.\d+\.\d+)?$/i,
                 use: [{
                     loader: 'file-loader',
                     options: {
