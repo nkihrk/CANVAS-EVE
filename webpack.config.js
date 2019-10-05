@@ -10,7 +10,12 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 module.exports = {
     module: {
         rules: [{
-                test: /\.html$/,
+                test: /\.(js)$/i,
+                exclude: /node_modules/,
+                use: ['babel-loader', 'eslint-loader']
+            },
+            {
+                test: /\.html$/i,
                 use: [
                     'html-loader',
                 ],

@@ -44,7 +44,7 @@ var CommonEve = (function (w, $) {
                 $('#loading').delay(600).fadeOut(300, function () {
                     $(this).remove();
                 });
-                console.log('load() is called.');
+                // console.log('load() is called.');
             }
 
             this._event('load', load);
@@ -57,7 +57,7 @@ var CommonEve = (function (w, $) {
                     'top': window.innerHeight - 60 + 'px',
                     'left': window.innerWidth / 2 + 'px'
                 });
-                console.log('loadResize() is called.');
+                // console.log('loadResize() is called.');
             }
 
             this._event('load resize', loadResize);

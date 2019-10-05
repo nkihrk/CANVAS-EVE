@@ -2,6 +2,9 @@
 import {
     CommonEve
 } from './common/common-eve';
+import {
+    OekakiEve
+} from './eve-modules/oekaki-eve';
 
 // Load SCSS modules
 import '../scss/common/Reboot.scss';
@@ -14,3 +17,7 @@ import '../scss/scss-modules/youtube-eve.scss';
 
 const common = new CommonEve();
 common.load();
+
+const oekakiContainer = document.getElementById('color-oekaki');
+const oekaki = new OekakiEve(oekakiContainer);
+oekaki.load();
