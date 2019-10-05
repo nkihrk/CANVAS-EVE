@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <meta charset="utf-8">
+    <meta name="robots" content="all">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <title>CANVAS EVE -β-</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="The CANVAS EVE will help you assist in your daily works, especially for those of you who are engaging in creating. Pasting any images, 3D models, text files, PDFs and many other stuffs to the canvas, and use it as references.">
+    <meta name="author" content="NkiHrk">
+    <meta name="copyright" content="&copy; NkiHrk">
+    <meta property="og:title" content="CANVAS EVE -β-">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="The CANVAS EVE will help you assist in your daily works, especially for those of you who are engaging in creating.">
+    <meta property="og:url" content="https://nkihrk.github.io">
+    <meta property="og:site_name" content="NkiHrk.github.io">
+    <meta property="og:image" content="https://nkihrk.github.io/img/common/canvas_eve_ogp.png">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@QU00h">
+
+    <!-- Facebook -->
+    <meta property="fb:app_id" content="480666636053173">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <link rel="icon" href="./img/common/favicon.ico">
+    <link rel="stylesheet" href="https://use.typekit.net/kqb4obi.css">
+<link href="/css/canvas-eve.css" rel="stylesheet"></head>
+
+<body>
+
+    <!-- <div id="loader-bg" style="position: fixed; z-index: 1;">
+        <div id="loading">
+            <div class="spin-wrapper">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- To prevent scrolling -->
+    <div id="canvas-eve-wrapper" style="position: fixed; z-index: 0;">
+
+        <!-- add-eve.js -->
+        <div id="progress-bar" style="position: absolute; z-index: 4;"></div>
+
+
+        <div id="footer" class="bold agency-fb" style="position: absolute; z-index: 3;">2019 © NkiHrk</div>
+
+
+        <!-- Compute its outputs of three.js -->
+        <canvas id="c" style="position: absolute; z-index: -1;"></canvas>
+
+
+        <!-- Color Picker. colpick-eve.js -->
+        <div id="colpick" style="position: relative; z-index: 2;">
+            <!-- Color board -->
+            <div id="board-colpick" class="grab-pointer file-wrap" style="position: absolute;">
+
+                <div class="only-draggable no-zooming">
+
+                    <div class="clearfix">
+                        <!-- Colpick button -->
+                        <div id="toggle-colpick"></div>
+
+                        <div id="code-colpick">
+                            <input id="input-colpick" class="ellipsis input-prefix bold agency-fb" placeholder="" type="text" spellcheck="false">
+                            <div id="copy-colpick"></div>
+                        </div><!-- #code-colpick -->
+                    </div>
+
+                    <div id="color-colpick"></div>
+
+                    <div id="rgb-colpick">
+                        <div id="r-colpick">
+                            <div class="bold agency-fb">R</div>
+                            <div class="bar-colpick">
+                                <div class="colbar-colpick"></div>
+                                <div id="red-cir-colpick" class="bartop-colpick"></div>
+                            </div>
+                            <!-- <div class="num-colpick bold agency-fb">50</div> -->
+                            <input class="num-colpick input-prefix bold agency-fb">
+                        </div>
+                        <div id="g-colpick">
+                            <div class="bold agency-fb">G</div>
+                            <div class="bar-colpick">
+                                <div class="colbar-colpick"></div>
+                                <div id="green-cir-colpick" class="bartop-colpick"></div>
+                            </div>
+                            <!-- <div class="num-colpick bold agency-fb">48</div> -->
+                            <input class="num-colpick input-prefix bold agency-fb">
+                        </div>
+                        <div id="b-colpick">
+                            <div class="bold agency-fb">B</div>
+                            <div class="bar-colpick">
+                                <div class="colbar-colpick"></div>
+                                <div id="blue-cir-colpick" class="bartop-colpick"></div>
+                            </div>
+                            <!-- <div class="num-colpick bold agency-fb">63</div> -->
+                            <input class="num-colpick input-prefix bold agency-fb">
+                        </div>
+                    </div><!-- #rgb-colpick -->
+
+                </div>
+
+            </div><!-- #board-colpick -->
+        </div><!-- #colpick -->
+
+
+        <!-- canvas-eve.js -->
+        <div id="canvas-eve" style="position: fixed; z-index: 0;">
+
+            <div id="plain" style="position: relative; z-index: 2;">
+                <div id="zoom">
+
+                    <!-- For inserting elements only -->
+                    <div id="add-files">
+
+                        <!-- youtube. youtube-eve.js -->
+                        <div id="add-youtube" class="grab-pointer file-wrap" style="z-index: 0;">
+                            <div class="only-draggable" style="width: 100%;">
+                                <div class="title-youtube" style="position: relative;">
+                                    <h1>
+                                        <span class="youtube-icon sep-right bold agency-fb" style="font-size: 4.5rem;">YouTube</span><span class="half-opacity" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.3);">Add
+                                            any videos on the
+                                            canvas</span>
+                                    </h1>
+                                </div>
+                                <div class="search-youtube" style="position: relative;">
+                                    <div class="search-box-wrapper" style="position: relative;">
+                                        <input class="ellipsis search-box-youtube" placeholder="Paste a URL of any YouTube videos here." type="text" spellcheck="false" style="position: relative;">
+                                        <div class="backspace-icon"></div>
+                                    </div>
+                                    <div class="hover-shadow-single search-button-youtube" style="position: relative;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- #add-youtube -->
+
+
+                    </div><!-- #add-files -->
+
+                </div><!-- #zoom -->
+            </div><!-- #plain -->
+
+
+            <!-- #reset-res will reset files-related functions when clicked -->
+            <div id="reset-res"></div>
+
+
+        </div><!-- #canvas-eve -->
+
+    </div><!-- #canvas-eve-wrapper -->
+
+
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101863956-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-101863956-2');
+    </script>
+
+<script type="text/javascript" src="/js/canvas-eve.min.js"></script></body>
+
+</html>
