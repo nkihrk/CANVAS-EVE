@@ -1,9 +1,16 @@
-import test from './test';
-import '../css/common/Reboot.scss';
-import '../css/common/styles.scss';
-import '../css/css-modules/canvas-eve.scss';
-import '../css/css-modules/colpick-eve.scss';
-import '../css/css-modules/oekaki-eve.scss';
-import '../css/css-modules/youtube-eve.scss';
+// Load JS modules
+import {
+    CommonEve
+} from './common/common-eve';
 
-test();
+// Load SCSS modules
+import '../scss/common/Reboot.scss';
+import '../scss/common/styles.scss';
+import '../scss/scss-modules/canvas-eve.scss';
+import '../scss/scss-modules/colpick-eve.scss';
+import '../scss/scss-modules/oekaki-eve.scss';
+import '../scss/scss-modules/youtube-eve.scss';
+
+
+const common = new CommonEve();
+common.load();

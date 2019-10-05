@@ -50,8 +50,15 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: './assets/index.html',
-            minify: true,
+            template: './assets/template.html',
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true
+            },
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].css',
