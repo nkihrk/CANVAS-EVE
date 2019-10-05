@@ -1,7 +1,6 @@
 /**
  *
- * Implemented loading animation.
- * 
+ * Loading animation for the first time
  * * Dependencies
  * - jQuery 3.4.1
  *
@@ -9,71 +8,78 @@
 
 import jQuery from 'jquery';
 
+const CommonEve = (function(w, $) {
+  function common() {}
 
-var CommonEve = (function (w, $) {
+  common.prototype = {
+    constructor: common,
 
-    function CommonEve() {}
+    options: {},
 
-    CommonEve.prototype = {
+    load() {
+      this.eventReady();
+      this.eventLoad();
+      this.eventLoadResize();
+    },
 
-        constructor: CommonEve,
+    eventReady() {
+      $(function() {
+        const h = $(w).height();
+        const loadTag =
+          '<div id="loader-bg" style="position: fixed; z-index: 1;">' +
+          '<div id="loading">' +
+          '<div class="spin-wrapper">' +
+          '<div class="spinner"></div>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
 
-        options: {},
+        $(this.body).prepend(loadTag);
+        $('#loader-bg, #loader')
+          .height(h)
+          .css('display', 'block');
+      });
+    },
 
-        load: function () {
-            this.eventReady();
-            this.eventLoad();
-            this.eventLoadResize();
-        },
+    eventLoad() {
+      function load() {
+        $('#loader-bg')
+          .delay(900)
+          .fadeOut(800, function() {
+            $(this).remove();
+          });
+        $('#loading')
+          .delay(600)
+          .fadeOut(300, function() {
+            $(this).remove();
+          });
+        // console.log('load() is called.');
+      }
 
+      this._event('load', load);
+    },
 
-        eventReady: function () {
-            $(function () {
-                const h = $(w).height();
+    eventLoadResize() {
+      function loadResize() {
+        const top = `${w.innerHeight - 60}px`;
+        const left = `${w.innerWidth / 2}px`;
 
-                $('#loader-bg, #loader').height(h).css('display', 'block');
-            });
-        },
+        $('#footer').css({
+          top,
+          left
+        });
+        // console.log('loadResize() is called.');
+      }
 
+      this._event('load resize', loadResize);
+    },
 
-        eventLoad: function () {
-            function load() {
-                $('#loader-bg').delay(900).fadeOut(800, function () {
-                    $(this).remove();
-                });
-                $('#loading').delay(600).fadeOut(300, function () {
-                    $(this).remove();
-                });
-                // console.log('load() is called.');
-            }
+    _event(event, func) {
+      $(w).on(event, func);
+    }
+  };
 
-            this._event('load', load);
-        },
-
-
-        eventLoadResize: function () {
-            function loadResize() {
-                $('#footer').css({
-                    'top': window.innerHeight - 60 + 'px',
-                    'left': window.innerWidth / 2 + 'px'
-                });
-                // console.log('loadResize() is called.');
-            }
-
-            this._event('load resize', loadResize);
-        },
-
-
-        _event: function (event, func) {
-            $(w).on(event, func);
-        },
-    };
-
-
-    return CommonEve;
-
+  return common;
 })(window, jQuery);
 
-export {
-    CommonEve
-};
+export default CommonEve;
