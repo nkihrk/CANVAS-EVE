@@ -6,15 +6,8 @@ const {
 const TerserJSPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
-    mode: 'production',
-    devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './build',
-        hot: true,
-    },
     module: {
         rules: [{
                 test: /\.html$/,
@@ -23,7 +16,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.css$/,
+                test: /\.s[ac]ss$/i,
                 use: [{
                         loader: MiniCssExtractPlugin.loader,
                         options: {
@@ -31,6 +24,8 @@ module.exports = {
                         },
                     },
                     'css-loader',
+                    'resolve-url-loader',
+                    'sass-loader',
                 ],
             },
             {
@@ -54,18 +49,12 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template: './assets/index.html'
+            template: './assets/index.html',
+            minify: true,
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].css',
             ignoreOrder: false,
-        }),
-        new FileManagerPlugin({
-            onEnd: {
-                delete: [
-                    './build/js/styles.min.js',
-                ],
-            },
         }),
     ],
     entry: {

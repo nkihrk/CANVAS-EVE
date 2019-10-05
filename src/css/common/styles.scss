@@ -30,11 +30,11 @@ body {
     -ms-overflow-style: none;
     /* For Firefox. Doesn`t seem to be working */
     /* overflow: -moz-scrollbars-none; */
-}
 
-/* For Chrome. */
-body::-webkit-scrollbar {
-    display: none;
+    /* For Chrome. */
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 #footer {
@@ -48,57 +48,53 @@ body::-webkit-scrollbar {
 /* made-bruno font */
 .made-bruno {
     font-family: made-bruno;
-}
 
-/* White - made-bruno */
-.white.made-bruno {
-    color: white;
-}
+    /* White - made-bruno */
+    .white {
+        color: white;
+    }
 
-/* half-opacity - made-bruno */
-.half-opacity.made-bruno {
-    color: white;
-    opacity: 0.5;
-}
+    /* half-opacity - made-bruno */
+    .half-opacity {
+        color: white;
+        opacity: 0.5;
+    }
 
-/* Gray - made-bruno */
-.gray.made-bruno {
-    color: #4d4b55;
+    /* Gray - made-bruno */
+    .gray {
+        color: #4d4b55;
+    }
 }
 
 /* agency-fb font */
 .agency-fb {
     font-family: agency-fb, sans-serif;
     font-style: normal;
-}
 
-/* Regular font - agency-fb */
-.regular.agency-fb {
-    font-weight: 200;
-}
+    /* Regular font - agency-fb */
+    .regular {
+        font-weight: 200;
+    }
 
-/* Bold - agency-fb */
-.bold.agency-fb {
-    font-weight: bold;
-}
+    /* Bold - agency-fb */
+    .bold {
+        font-weight: bold;
+    }
 
-/* White - agency-fb */
-.white.regular.agency-fb,
-.white.bold.agency-fb {
-    color: white;
-}
+    /* White - agency-fb */
+    .white {
+        color: white;
+    }
 
-/* half-opacity - agency-fb */
-.half-opacity.regular.agency-fb,
-.half-opacity.bold.agency-fb {
-    color: white;
-    opacity: 0.5;
-}
+    /* Gray - agency-fb */
+    .gray {
+        color: #4d4b55;
+    }
 
-/* Gray - agency-fb */
-.gray.regular.agency-fb,
-.gray.bold.agency-fb {
-    color: #4d4b55;
+    /* half-opacity - agency-fb */
+    .half-opacity {
+        opacity: 0.5;
+    }
 }
 
 /* Centering */
@@ -124,16 +120,16 @@ body::-webkit-scrollbar {
 }
 
 /* clearfix */
-.clearfix:after {
-    display: block;
-    clear: both;
-    height: 0px;
-    visibility: hidden;
-    content: ".";
-}
-
 .clearfix {
     min-height: 1px;
+
+    &::after {
+        display: block;
+        clear: both;
+        height: 0px;
+        visibility: hidden;
+        content: ".";
+    }
 }
 
 /* figure and figcaption configuring */
@@ -190,52 +186,54 @@ body::-webkit-scrollbar {
     text-justify: inter-ideograph;
 }
 
-.spin-wrapper .spinner {
-    position: absolute;
-    height: 60px;
-    width: 60px;
-    border: 3px solid transparent;
-    border-top-color: #A04668;
-    top: 50%;
-    left: 50%;
-    margin: -30px;
-    border-radius: 50%;
-    animation: spin 2s linear infinite;
-}
+.spin-wrapper {
+    .spinner {
+        position: absolute;
+        height: 60px;
+        width: 60px;
+        border: 3px solid transparent;
+        border-top-color: #A04668;
+        top: 50%;
+        left: 50%;
+        margin: -30px;
+        border-radius: 50%;
+        animation: spin 2s linear infinite;
 
-.spin-wrapper .spinner:before,
-.spin-wrapper .spinner:after {
-    content: '';
-    position: absolute;
-    border: 3px solid transparent;
-    border-radius: 50%;
-}
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            border: 3px solid transparent;
+            border-radius: 50%;
+        }
 
-.spin-wrapper .spinner:before {
-    border-top-color: #254E70;
-    top: -12px;
-    left: -12px;
-    right: -12px;
-    bottom: -12px;
-    animation: spin 3s linear infinite;
-}
+        &::before {
+            border-top-color: #254E70;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            animation: spin 3s linear infinite;
+        }
 
-.spin-wrapper .spinner:after {
-    border-top-color: #FFFBFE;
-    top: 6px;
-    left: 6px;
-    right: 6px;
-    bottom: 6px;
-    animation: spin 4s linear infinite;
-}
+        &::after {
+            border-top-color: #FFFBFE;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            animation: spin 4s linear infinite;
+        }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-    100% {
-        transform: rotate(360deg);
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     }
 }
 

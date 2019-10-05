@@ -9,11 +9,13 @@ Common
 
 /* Spuit cursor */
 .spuit-pointer {
-    cursor: url(/img/works/webservice/canvas-eve/spuit.png) 0 21, pointer;
+    cursor: url(../../../assets/img/spuit.png) 0 21,
+        pointer;
 }
 
 .spuit-pointer:active {
-    cursor: url(/img/works/webservice/canvas-eve/spuited.png) 0 21, pointer;
+    cursor: url(../../../assets/img/spuited.png) 0 21,
+        pointer;
 }
 
 /* Prefix for input */
@@ -83,7 +85,7 @@ Common
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-image: url(/img/works/webservice/canvas-eve/red_spuit.png);
+    background-image: url(../../../assets/img/red_spuit.png);
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -101,7 +103,7 @@ Common
 }
 
 #toggle-colpick.active::before {
-    background-image: url(/img/works/webservice/canvas-eve/dark_spuit.png);
+    background-image: url(../../../assets/img/dark_spuit.png);
 }
 
 
@@ -164,7 +166,7 @@ Common
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url(/img/works/webservice/canvas-eve/copy.png);
+    background-image: url(../../../assets/img/copy.png);
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
