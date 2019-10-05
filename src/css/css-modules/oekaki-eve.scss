@@ -1,6 +1,3 @@
-@charset "UTF-8";
-
-
 /*———————————————————————————————————————————————————————
 
 Common
@@ -21,28 +18,28 @@ Common
 .selected-dot {
     position: relative;
     background-color: var(--transparent-white);
-}
 
-.selected-dot::before {
-    content: "";
-    background-image: linear-gradient(to right, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
-        linear-gradient(to right, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
-        linear-gradient(to bottom, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
-        linear-gradient(to bottom, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px);
-    background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
-    background-position: left top, left bottom, left top, right top;
-    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    pointer-events: none;
-}
+    &::before {
+        content: "";
+        background-image: linear-gradient(to right, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
+            linear-gradient(to right, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
+            linear-gradient(to bottom, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px),
+            linear-gradient(to bottom, var(--half-white), var(--half-white) 3px, transparent 3px, transparent 8px);
+        background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
+        background-position: left top, left bottom, left top, right top;
+        background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        pointer-events: none;
+    }
 
-.file-wrap.selected-dot {
-    width: 0;
-    transition: '';
+    .file-wrap {
+        width: 0;
+        transition: '';
+    }
 }
 
 
@@ -120,32 +117,32 @@ Common
     border: solid 1px #c1125b;
     cursor: pointer;
     transition: all .2s ease-in-out;
-}
 
-#newcanvas-oekaki::before {
-    content: '';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-image: url(../../../assets/img/red_newcanvas.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-image: url(../../../assets/img/red_newcanvas.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
 
-    transition: all .3s ease-in-out;
-}
+        transition: all .3s ease-in-out;
+    }
 
-#newcanvas-oekaki.active {
-    background-color: #c1125b;
-    opacity: 1;
-}
+    .active {
+        background-color: #c1125b;
+        opacity: 1;
 
-#newcanvas-oekaki.active::before {
-    background-image: url(../../../assets/img/dark_newcanvas.png);
+        &::before {
+            background-image: url(../../../assets/img/dark_newcanvas.png);
+        }
+    }
 }
 
 
@@ -165,32 +162,32 @@ Common
     border-right: none;
     cursor: pointer;
     transition: all .2s ease-in-out;
-}
 
-#brush-oekaki::before {
-    content: '';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-image: url(../../../assets/img/red_brush.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-image: url(../../../assets/img/red_brush.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
 
-    transition: all .3s ease-in-out;
-}
+        transition: all .3s ease-in-out;
+    }
 
-#brush-oekaki.active {
-    background-color: #c1125b;
-    opacity: 1;
-}
+    .active {
+        background-color: #c1125b;
+        opacity: 1;
 
-#brush-oekaki.active::before {
-    background-image: url(../../../assets/img/dark_brush.png);
+        &::before {
+            background-image: url(../../../assets/img/dark_brush.png);
+        }
+    }
 }
 
 
@@ -209,32 +206,32 @@ Common
     border-right: none;
     cursor: pointer;
     transition: all .2s ease-in-out;
-}
 
-#eraser-oekaki::before {
-    content: '';
-    display: inline-block;
-    width: 18px;
-    height: 15px;
-    background-image: url(../../../assets/img/red_eraser.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 18px;
+        height: 15px;
+        background-image: url(../../../assets/img/red_eraser.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
 
-    transition: all .3s ease-in-out;
-}
+        transition: all .3s ease-in-out;
+    }
 
-#eraser-oekaki.active {
-    background-color: #c1125b;
-    opacity: 1;
-}
+    .active {
+        background-color: #c1125b;
+        opacity: 1;
 
-#eraser-oekaki.active::before {
-    background-image: url(../../../assets/img/dark_eraser.png);
+        &::before {
+            background-image: url(../../../assets/img/dark_eraser.png);
+        }
+    }
 }
 
 
@@ -253,32 +250,32 @@ Common
     border-right: none;
     cursor: pointer;
     transition: all .2s ease-in-out;
-}
 
-#spuit-oekaki::before {
-    content: '';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-image: url(../../../assets/img/red_spuit.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-image: url(../../../assets/img/red_spuit.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
 
-    transition: all .3s ease-in-out;
-}
+        transition: all .3s ease-in-out;
+    }
 
-#spuit-oekaki.active {
-    background-color: #c1125b;
-    opacity: 1;
-}
+    .active {
+        background-color: #c1125b;
+        opacity: 1;
 
-#spuit-oekaki.active::before {
-    background-image: url(../../../assets/img/dark_spuit.png);
+        &::before {
+            background-image: url(../../../assets/img/dark_spuit.png);
+        }
+    }
 }
 
 
@@ -297,32 +294,32 @@ Common
     border: solid 1px #c1125b;
     cursor: pointer;
     transition: all .2s ease-in-out;
-}
 
-#filldrip-oekaki::before {
-    content: '';
-    display: inline-block;
-    width: 18px;
-    height: 15px;
-    background-image: url(../../../assets/img/red_filldrip.png);
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 18px;
+        height: 15px;
+        background-image: url(../../../assets/img/red_filldrip.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
 
-    transition: all .3s ease-in-out;
-}
+        transition: all .3s ease-in-out;
+    }
 
-#filldrip-oekaki.active {
-    background-color: #c1125b;
-    opacity: 1;
-}
+    .active {
+        background-color: #c1125b;
+        opacity: 1;
 
-#filldrip-oekaki.active::before {
-    background-image: url(../../../assets/img/dark_filldrip.png);
+        &::before {
+            background-image: url(../../../assets/img/dark_filldrip.png);
+        }
+    }
 }
 
 
