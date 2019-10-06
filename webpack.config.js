@@ -41,7 +41,8 @@ module.exports = {
         test: /\.(png|svg|jpg|gif)$/i,
         loader: 'file-loader',
         options: {
-          outputPath: 'img'
+          outputPath: './img',
+          publicPath: '../img/'
         }
       },
       {
@@ -51,7 +52,7 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'fonts/'
+              outputPath: './fonts'
             }
           }
         ]
