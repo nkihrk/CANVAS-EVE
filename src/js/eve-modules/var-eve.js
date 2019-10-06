@@ -1,258 +1,246 @@
 /**
  *
- * Implemented loading animation.
- * 
+ * Global scopes.
+ *
  * * Dependencies
  * - jQuery 3.4.1
  *
  */
 
-const $ = require('jquery');
+import jQuery from 'jquery';
 
-// Variables
-// Update the newFile when adding a new file
-var newFile = {
-    'id': 0,
-};
-
-// A current selected .file-wrap
-var currentId = null;
-
-// Global flags
-const glFlgs = {
-    'config': {
-        'only_draggable_flg': false,
-        'no_zooming_flg': false,
-    },
-    'canvas': {
-        'drag_flg': false,
-        'rotate_flg': false,
-        'mousedown_flg': false,
-        'resize_flg': false,
-        'thumbtack_flg': false,
-        're': {
-            'left_top_flg': false,
-            'right_top_flg': false,
-            'right_bottom_flg': false,
-            'left_bottom_flg': false,
+const GlobalEve = (function(w, d, $) {
+  function global() {
+    // Update the newFile when adding a new file
+    this.newFile = {
+      id: 0
+    };
+    // A current selected .file-wrap
+    this.currentId = null; // lazy load
+    // Global flags
+    this.glFlgs = {
+      config: {
+        only_draggable_flg: false,
+        no_zooming_flg: false
+      },
+      canvas: {
+        drag_flg: false,
+        rotate_flg: false,
+        mousedown_flg: false,
+        resize_flg: false,
+        thumbtack_flg: false,
+        re: {
+          left_top_flg: false,
+          right_top_flg: false,
+          right_bottom_flg: false,
+          left_bottom_flg: false
         },
-        'ro': {
-            'left_top_flg': false,
-            'right_top_flg': false,
-            'right_bottom_flg': false,
-            'left_bottom_flg': false,
+        ro: {
+          left_top_flg: false,
+          right_top_flg: false,
+          right_bottom_flg: false,
+          left_bottom_flg: false
         }
-    },
-    'colpick': {
-        'active_spuit_flg': false,
-        'move_circle_flg': false,
-    },
-    'oekaki': {
-        'move_wheelcircle_flg': false,
-        'move_trianglecircle_flg': false,
-    },
-};
-
-// A max length of the HIGHEST_Z_INDEX is 2147483647
-var HIGHEST_Z_INDEX = 1;
-
-// API_KEY
-var config = {
-    'youtube': {
-        API_KEY: null,
-    },
-    'twitter': {
+      },
+      colpick: {
+        active_spuit_flg: false,
+        move_circle_flg: false
+      },
+      oekaki: {
+        move_wheelcircle_flg: false,
+        move_trianglecircle_flg: false
+      }
+    };
+    // A max length of the HIGHEST_Z_INDEX is 2147483647
+    this.HIGHEST_Z_INDEX = 1;
+    // API_KEY
+    this.config = {
+      youtube: {
+        API_KEY: null
+      },
+      twitter: {
         MY_KEY: null,
         SECRET_KEY: null,
         KEY_2: null
-    }
-};
-
-// The global variables of the real-time coordinates of a mouse pointer. It will change its value depending on the devices: Smartphone or PC
-var clientX, clientY;
-
-// The value of a current mouse wheel
-var mouseWheelVal = 1;
-var xNew = 0;
-var yNew = 0;
-var xNewMinus = -xNew;
-var yNewMinus = -yNew;
-
-// The scree-space mouse coordinates from a zoom coordinate
-var clientFromZoomX, clientFromZoomY;
-
-
-///
-
-
-// https: //stackoverflow.com/questions/3515446/jquery-mousewheel-detecting-when-the-wheel-stops
-// Detect if it`s wheeling or not
-const detectWheeling = () => {
-    var wheeldelta = {
-        x: 0,
-        y: 0
+      }
     };
-    var wheeling;
-    $(document).on('mousewheel', function (e) {
-        if (!wheeling) {
-            console.log('start wheeling!');
+    // The global variables of the real-time coordinates of a mouse pointer.
+    // It will change its value depending on the devices: Smartphone or PC.
+    this.clientX = null;
+    this.clientY = null;
+    // The value of a current mouse wheel
+    this.mouseWheelVal = 1;
+    this.xNew = 0;
+    this.yNew = 0;
+    this.xNewMinus = -this.xNew;
+    this.yNewMinus = -this.yNew;
+    // The scree-space mouse coordinates from a zoom coordinate
+    this.clientFromZoomX = null;
+    this.clientFromZoomY = null;
+    // Implement touch events for smart-phone
+    // To check whether we can use the touch event or not
+    this.supportTouch = 'ontouchend' in d;
+    this.supportPointer = 'onpointerup' in d;
+    this.EVENTNAME_TOUCHSTART = this.supportTouch ? 'touchstart' : 'mousedown';
+    this.EVENTNAME_TOUCHMOVE = this.supportTouch ? 'touchmove' : 'mousemove';
+    this.EVENTNAME_TOUCHEND = this.supportTouch ? 'touchend' : 'mouseup';
+    // Enabling transition or not
+    this.IS_TRANSITION = this.supportTouch ? '' : 'width .1s, height .1s, top .1s, left .1s';
+  }
+
+  global.prototype = {
+    constructor: global,
+
+    options: {},
+
+    load: function() {
+      this._isTransition();
+      this._addEventListener();
+      this._updateMousePos();
+    },
+
+    _isTransition: function() {
+      $('.file-wrap').css('transition', this.IS_TRANSITION);
+    },
+
+    _addEventListener: function() {
+      w.addEventListener('touchmove', preventDefault, {
+        passive: false
+      });
+      w.removeEventListener('touchmove', preventDefault, {
+        passive: false
+      });
+
+      // Prevent default right-click events for the time being
+      d.addEventListener(
+        'contextmenu',
+        function(e) {
+          e.preventDefault();
+        },
+        false
+      );
+
+      // d.addEventListener('touchstart', function (e) {
+      //     e.preventDefault();
+      // }, false);
+      // d.addEventListener('touchmove', function (e) {
+      //     e.preventDefault();
+      // }, false);
+    },
+
+    // Update the coordinates of a mouse pointer
+    _updateMousePos: function() {
+      function update(e) {
+        if (e.originalEvent.changedTouches) {
+          this.clientX = e.originalEvent.changedTouches[0].clientX;
+          this.clientY = e.originalEvent.changedTouches[0].clientY;
+        } else {
+          this.clientX = e.clientX;
+          this.clientY = e.clientY;
         }
 
-        if ($('#toggle-colpick').hasClass('active')) {
-            clearTimeout(wheeling);
-            wheeling = setTimeout(function () {
-                console.log('stop wheeling!');
-                wheeling = undefined;
+        this.clientFromZoomX = this.clientX - $('#zoom').offset().left;
+        this.clientFromZoomY = this.clientY - $('#zoom').offset().top;
+      }
 
-                // reset wheeldelta
-                wheeldelta.x = 0;
-                wheeldelta.y = 0;
-            }, 100);
-        }
+      this._event(this.EVENTNAME_TOUCHMOVE, update);
+    },
 
-        wheeldelta.x += e.deltaFactor * e.deltaX;
-        wheeldelta.y += e.deltaFactor * e.deltaY;
-        console.log(wheeldelta);
-    });
-};
+    _event(event, func) {
+      $(d).on(event, func);
+    },
 
-// Functions
-// Get transform values of a specific selector
-const transformValue = function (e) {
-    let values = e.split('(')[1];
-    values = values.split(')')[0];
-    values = values.split(', ');
-    const matrix = {
-        'scaleX': values[0],
-        'rotateP': values[1],
-        'rotateM': values[2],
-        'scaleY': values[3],
-        'transformX': values[4],
-        'transformY': values[5],
-    };
-    return matrix;
-};
+    // Get transform values of a specific selector
+    transformValue: function(e) {
+      const values = e
+        .split('(')[1]
+        .split(')')[0]
+        .split(', ');
+      const matrix = {
+        scaleX: values[0],
+        rotateP: values[1],
+        rotateM: values[2],
+        scaleY: values[3],
+        transformX: values[4],
+        transformY: values[5]
+      };
 
-// Get a target`s specific transform-rotate value, and return the value as radian. The value will be in between 0 and 2PI
-const getRotationRad = function (obj) {
-    var matrix = obj.css("-webkit-transform") ||
-        obj.css("-moz-transform") ||
-        obj.css("-ms-transform") ||
-        obj.css("-o-transform") ||
-        obj.css("transform");
-    if (matrix !== 'none') {
-        var values = matrix.split('(')[1].split(')')[0].split(',');
-        var a = values[0];
-        var b = values[1];
-        var angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-    } else {
-        var angle = 0;
-    }
-    return (angle < 0) ? (angle + 360) / 180 * Math.PI : angle / 180 * Math.PI;
-}
+      return matrix;
+    },
 
-// Calcurate radians. The value will be in between 0 and 2PI
-const calcRadians = function (x, y) {
-    var rad = Math.atan2(y, x) / Math.PI * 180 + (Math.atan2(y, x) > 0 ? 0 : 360);
-    // console.log('The radian value : ' + rad);
+    // Get a target`s specific transform-rotate value, and return the value as radian. The value will be in between 0 and 2PI
+    getRotationRad: function(obj) {
+      let angle;
+      const matrix =
+        obj.css('-webkit-transform') ||
+        obj.css('-moz-transform') ||
+        obj.css('-ms-transform') ||
+        obj.css('-o-transform') ||
+        obj.css('transform');
+      if (matrix !== 'none') {
+        const values = matrix
+          .split('(')[1]
+          .split(')')[0]
+          .split(',');
+        const a = values[0];
+        const b = values[1];
+        angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+      } else {
+        angle = 0;
+      }
 
-    return rad / 180 * Math.PI;
-};
+      return angle < 0 ? ((angle + 360) / 180) * Math.PI : (angle / 180) * Math.PI;
+    },
 
-const debugCircle = function (name, col, posX, posY, insertToWhichTag) {
-    if (insertToWhichTag) {
-        $('#' + insertToWhichTag).append('<div id="' + name + '"></div>')
-    } else {
-        $('#canvas-eve').append('<div id="' + name + '"></div>');
-    }
-    $('#' + name).css({
-        'top': posY + 'px',
-        'left': posX + 'px',
-        'width': 14 + 'px',
-        'height': 14 + 'px',
-        'background': col,
-        'border-radius': 50 + '%',
-        'position': 'absolute',
+    // Calcurate radians. The value will be in between 0 and 2PI
+    calcRadians: function(x, y) {
+      const rad = (Math.atan2(y, x) / Math.PI) * 180 + (Math.atan2(y, x) > 0 ? 0 : 360);
+
+      return (rad / 180) * Math.PI;
+    },
+
+    debugCircle: function(name, col, posX, posY, insertToWhichTag) {
+      if (insertToWhichTag) {
+        $(`#${insertToWhichTag}`).append(`<div id="${name}"></div>`);
+      } else {
+        $('#canvas-eve').append(`<div id="${name}"></div>`);
+      }
+      $(`#${name}`).css({
+        top: `${posY}px`,
+        left: `${posX}px`,
+        width: `${14}px`,
+        height: `${14}px`,
+        background: col,
+        'border-radius': `${50}%`,
+        position: 'absolute',
         'z-index': 999,
-        'transform': 'translateX(-50%) translateY(-50%)',
-        'opacity': 0.8,
-    });
-};
+        transform: 'translateX(-50%) translateY(-50%)',
+        opacity: 0.8
+      });
+    },
 
-// For the iframe pointer problem
-const iframePointerNone = function () {
-    $('iframe').css('pointer-events', 'none');
-};
-const iframePointerReset = function () {
-    $('iframe').css('pointer-events', '');
-};
+    // For the iframe pointer problem
+    iframePointerNone: function() {
+      $('iframe').css('pointer-events', 'none');
+    },
 
-// Just for separation
-const sep = () => console.log('-------------------------------------');
+    iframePointerReset: function() {
+      $('iframe').css('pointer-events', '');
+    },
 
-function namespace(ns) {
-    var names = ns.split('.');
-    var parent = window;
+    // Just for separation
+    sep: function() {
+      console.log('-------------------------------------');
+    },
 
-    for (var i = 0, len = names.length; i < len; i++) {
-        parent[names[i]] = parent[names[i]] || {};
-        parent = parent[names[i]];
+    preventDefault: function(e) {
+      e.preventDefault();
     }
-    return parent;
+  };
+
+  return global;
+})(window, document, jQuery);
+
+export default function globalScope() {
+  return new GlobalEve();
 }
-
-
-///
-
-
-// Implement touch events for smart-phone
-// To check whether we can use the touch event or not
-var supportTouch = 'ontouchend' in document;
-console.log('supportTouch', supportTouch);
-var supportPointer = 'onpointerup' in document;
-console.log('supportPointer', supportPointer);
-
-var EVENTNAME_TOUCHSTART = supportTouch ? 'touchstart' : 'mousedown';
-var EVENTNAME_TOUCHMOVE = supportTouch ? 'touchmove' : 'mousemove';
-var EVENTNAME_TOUCHEND = supportTouch ? 'touchend' : 'mouseup';
-
-var IS_TRANSITION = supportTouch ? '' : 'width .1s, height .1s, top .1s, left .1s';
-$('.file-wrap').css('transition', IS_TRANSITION);
-
-const preventDefault = (e) => {
-    e.preventDefault();
-};
-window.addEventListener('touchmove', preventDefault, {
-    passive: false
-});
-window.removeEventListener('touchmove', preventDefault, {
-    passive: false
-});
-
-
-// Update the coordinates of a mouse pointer
-$(document).on(EVENTNAME_TOUCHMOVE, function (e) {
-    if (e.originalEvent.changedTouches) {
-        clientX = e.originalEvent.changedTouches[0].clientX;
-        clientY = e.originalEvent.changedTouches[0].clientY;
-    } else {
-        clientX = e.clientX;
-        clientY = e.clientY;
-    }
-
-    clientFromZoomX = clientX - $('#zoom').offset().left;
-    clientFromZoomY = clientY - $('#zoom').offset().top;
-});
-
-
-// Prevent default right-click events for the time being
-document.addEventListener('contextmenu', function (e) {
-    e.preventDefault();
-}, false);
-
-// document.addEventListener('touchstart', function (e) {
-//     e.preventDefault();
-// }, false);
-// document.addEventListener('touchmove', function (e) {
-//     e.preventDefault();
-// }, false);

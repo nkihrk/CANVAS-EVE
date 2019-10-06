@@ -1,6 +1,7 @@
 /**
  *
- * Loading animation for the first time
+ * Loading animation.
+ *
  * * Dependencies
  * - jQuery 3.4.1
  *

@@ -5,8 +5,8 @@
   "rules": {
     "prettier/prettier": "error",
     "func-names": "off",
-    "no-underscore-dangle": "off",
     "wrap-iife": "off",
+    "no-underscore-dangle": "off",
     "no-undef": "off",
     "no-unused-vars": "warn",
     "no-process-exit": "off",
