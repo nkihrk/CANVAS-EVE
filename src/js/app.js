@@ -11,8 +11,8 @@ import '../scss/scss-modules/oekaki-eve.scss';
 import '../scss/scss-modules/youtube-eve.scss';
 
 const common = new CommonEve();
-common.load();
-
 const oekakiContainer = document.getElementById('color-oekaki');
 const oekaki = new OekakiEve(oekakiContainer);
+
+common.load();
 oekaki.load();

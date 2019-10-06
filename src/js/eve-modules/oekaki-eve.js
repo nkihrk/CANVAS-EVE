@@ -1,6 +1,6 @@
 /**
  *
- * Implemented drawing on the canvas.
+ * Drawing app for CANVAS EVE.
  *
  * * Dependencies
  * - jQuery 3.4.1
@@ -9,7 +9,7 @@
 
 import jQuery from 'jquery';
 
-const OekakiEve = (function($) {
+const OekakiEve = (function(d, $) {
   function oekaki(container) {
     const size = container.clientWidth;
     const wheelRadius = size / 2;
@@ -142,7 +142,7 @@ const OekakiEve = (function($) {
     setFlgs() {
       const self = this;
 
-      $(document).on(EVENTNAME_TOUCHSTART, '#color-oekaki', () => {
+      $(d).on(EVENTNAME_TOUCHSTART, '#color-oekaki', () => {
         const isWheelArea = self._isWheelArea();
         if (isWheelArea) {
           glFlgs.oekaki.move_wheelcircle_flg = true;
@@ -159,11 +159,11 @@ const OekakiEve = (function($) {
         }
       });
 
-      $(document).on(EVENTNAME_TOUCHSTART, '#color-wheel-circle', () => {
+      $(d).on(EVENTNAME_TOUCHSTART, '#color-wheel-circle', () => {
         glFlgs.oekaki.move_wheelcircle_flg = true;
         console.log('glFlgs.oekaki.move_wheelcircle_flg is ', glFlgs.oekaki.move_wheelcircle_flg);
       });
-      $(document).on(EVENTNAME_TOUCHSTART, '#color-triangle-circle', () => {
+      $(d).on(EVENTNAME_TOUCHSTART, '#color-triangle-circle', () => {
         glFlgs.oekaki.move_trianglecircle_flg = true;
         console.log(
           'glFlgs.oekaki.move_trianglecircle_flg is ',
@@ -171,7 +171,7 @@ const OekakiEve = (function($) {
         );
       });
 
-      $(document).on(EVENTNAME_TOUCHSTART, '#reset-res', () => {
+      $(d).on(EVENTNAME_TOUCHSTART, '#reset-res', () => {
         if (self.flgs.newcanvas.newcanvas_flg === true) {
           self.flgs.newcanvas.create_canvas_avail_flg = true;
           self.newCanvasX = clientFromZoomX;
@@ -185,7 +185,7 @@ const OekakiEve = (function($) {
         }
       });
 
-      $(document).on(EVENTNAME_TOUCHSTART, '.oekaki-canvas', () => {
+      $(d).on(EVENTNAME_TOUCHSTART, '.oekaki-canvas', () => {
         if (self.flgs.brush.brush_flg === true) {
           self.flgs.brush.draw_canvas_avail_flg = true;
           console.log(
@@ -201,7 +201,7 @@ const OekakiEve = (function($) {
     resetFlgs() {
       const self = this;
 
-      $(document).on(EVENTNAME_TOUCHEND, () => {
+      $(d).on(EVENTNAME_TOUCHEND, () => {
         if (glFlgs.oekaki.move_wheelcircle_flg === true) {
           glFlgs.oekaki.move_wheelcircle_flg = false;
           console.log('glFlgs.oekaki.move_wheelcircle_flg is ', glFlgs.oekaki.move_wheelcircle_flg);
@@ -230,12 +230,12 @@ const OekakiEve = (function($) {
     handleEvents() {
       const self = this;
 
-      $(document).on(EVENTNAME_TOUCHSTART, '#color-oekaki', () => {
+      $(d).on(EVENTNAME_TOUCHSTART, '#color-oekaki', () => {
         self._colorWheelArea();
         self._colorTriangleArea();
       });
 
-      $(document).on(
+      $(d).on(
         EVENTNAME_TOUCHSTART,
         '#newcanvas-oekaki, #brush-oekaki, #eraser-oekaki, #spuit-oekaki, #filldrip-oekaki',
         function(e) {
@@ -243,7 +243,7 @@ const OekakiEve = (function($) {
         }
       );
 
-      $(document).on(EVENTNAME_TOUCHMOVE, () => {
+      $(d).on(EVENTNAME_TOUCHMOVE, () => {
         const originX = $(self.container).offset().left;
         const originY = $(self.container).offset().top;
         const centerX = originX + self.size / 2;
@@ -265,7 +265,7 @@ const OekakiEve = (function($) {
 
       if (window.PointerEvent) {
         for (let i = 0; i < self.drawPointerEvents.length; i++) {
-          $(document).on(self.drawPointerEvents[i], '.oekaki-canvas', function(e) {
+          $(d).on(self.drawPointerEvents[i], '.oekaki-canvas', function(e) {
             if (self.flgs.brush.brush_flg === true) {
               const $canvas = $(this).find('canvas');
               self._drawCanvasPointer($canvas, e);
@@ -274,7 +274,7 @@ const OekakiEve = (function($) {
         }
       } else {
         for (let i = 0; i < self.drawEvents.length; i++) {
-          $(document).on(self.drawEvents[i], '.oekaki-canvas', function(e) {
+          $(d).on(self.drawEvents[i], '.oekaki-canvas', function(e) {
             if (self.flgs.brush.brush_flg === true) {
               const $canvas = $(this).find('canvas');
               self._drawCanvas($canvas, e);
@@ -293,13 +293,13 @@ const OekakiEve = (function($) {
       const outerRadius = 100;
       const innerRadius = outerRadius - (this.wheelThickness / this.wheelRadius) * 100;
 
-      const root = document.getElementById('color-wheel');
+      const root = d.getElementById('color-wheel');
 
       this._generateConicGradiant(outerRadius, resolution, root);
       this._generateOverlay(outerRadius, innerRadius, root);
     },
     _generateOverlay(outerRadius, innerRadius, target) {
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      const circle = d.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
       circle.setAttribute('cx', outerRadius);
       circle.setAttribute('cy', outerRadius);
@@ -310,7 +310,7 @@ const OekakiEve = (function($) {
     },
     _generateConicGradiant(radius, resolution, target) {
       for (let i = 0; i < 360 * resolution; i++) {
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const path = d.createElementNS('http://www.w3.org/2000/svg', 'path');
 
         path.setAttribute(
           'd',
@@ -327,7 +327,7 @@ const OekakiEve = (function($) {
 
       const arcSweep = endAngle - startAngle <= 180 ? '0' : '1';
 
-      const d = [
+      const setD = [
         'M',
         start.x,
         start.y,
@@ -347,7 +347,7 @@ const OekakiEve = (function($) {
         start.y
       ].join(' ');
 
-      return d;
+      return setD;
     },
     _polar2Cartesian(centerX, centerY, radius, angleInDegrees) {
       const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
@@ -361,7 +361,7 @@ const OekakiEve = (function($) {
     //
 
     _createWheelCircle() {
-      const wheelCircle = document.createElement('div');
+      const wheelCircle = d.createElement('div');
       const r = this.wheelInnerRadius + this.wheelThickness / 2;
       const { theta } = this.options;
       const left = r * Math.cos(theta + (3 / 2) * Math.PI) + this.size / 2;
@@ -495,7 +495,7 @@ const OekakiEve = (function($) {
     //
 
     _createTriangle() {
-      const c = document.createElement('canvas');
+      const c = d.createElement('canvas');
       c.id = 'color-triangle';
       c.width = this.size;
       c.height = this.size;
@@ -508,7 +508,7 @@ const OekakiEve = (function($) {
     //
 
     _createTriangleCircle() {
-      const triangleCircle = document.createElement('div');
+      const triangleCircle = d.createElement('div');
       triangleCircle.id = 'color-triangle-circle';
       triangleCircle.style.left = `${this.triangleCirclePosX}px`;
       triangleCircle.style.top = `${this.triangleCirclePosY}px`;
@@ -627,7 +627,7 @@ const OekakiEve = (function($) {
       const leftTopX = Math.cos((Math.PI * 2) / 3) * this.triangleRadius;
       const leftTopY = Math.sin((Math.PI * 2) / 3) * this.triangleRadius;
       const a = -Math.tan(Math.PI / 6) * x - y - leftTopY + Math.tan(Math.PI / 6) * leftTopX;
-      const d = Math.abs(a) * Math.sin(Math.PI / 3);
+      const k = Math.abs(a) * Math.sin(Math.PI / 3);
       const l = (this.triangleRadius * 3) / 2;
 
       const b = this.hsl2rgb(this.hue / 360, 1.0, 0.5);
@@ -636,7 +636,7 @@ const OekakiEve = (function($) {
       const co = [];
       let tmp;
       for (let i = 0; i < 3; i++) {
-        tmp = (s[i] * (l - d)) / l + (b[i] * (l - (this.triangleRadius - x))) / l;
+        tmp = (s[i] * (l - k)) / l + (b[i] * (l - (this.triangleRadius - x))) / l;
         tmp = Math.abs(Math.round(tmp));
         co.push(tmp);
       }
@@ -706,19 +706,19 @@ const OekakiEve = (function($) {
         h = 0;
         s = 0;
       } else {
-        const d = max - min;
-        s = l >= 0.5 ? d / (2 - (max + min)) : d / (max + min);
+        const k = max - min;
+        s = l >= 0.5 ? k / (2 - (max + min)) : k / (max + min);
         switch (max) {
           case r:
-            h = ((g - b) / d + 0) * 60;
+            h = ((g - b) / k + 0) * 60;
             break;
 
           case g:
-            h = ((b - r) / d + 2) * 60;
+            h = ((b - r) / k + 2) * 60;
             break;
 
           case b:
-            h = ((r - g) / d + 4) * 60;
+            h = ((r - g) / k + 4) * 60;
             break;
 
           default:
@@ -834,7 +834,7 @@ const OekakiEve = (function($) {
 
     _createCanvas() {
       const { $newCanvasId } = this;
-      const c = document.createElement('canvas');
+      const c = d.createElement('canvas');
       const width = $newCanvasId.width();
       const height = $newCanvasId.height();
 
@@ -954,11 +954,11 @@ const OekakiEve = (function($) {
             break;
 
           case 'pointerenter':
-            document.body.style.cursor = 'crosshair';
+            d.body.style.cursor = 'crosshair';
             break;
 
           case 'pointerleave':
-            document.body.style.cursor = 'default';
+            d.body.style.cursor = 'default';
             break;
 
           default:
@@ -1043,6 +1043,6 @@ const OekakiEve = (function($) {
   };
 
   return oekaki;
-})(jQuery);
+})(document, jQuery);
 
 export default OekakiEve;
