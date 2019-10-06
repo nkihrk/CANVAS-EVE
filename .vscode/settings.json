@@ -1,3 +1,37 @@
 {
-    "liveServer.settings.root": "/build/",
+  "git.ignoreMissingGitWarning": true,
+  "editor.formatOnType": true,
+  "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
+  "git.confirmSync": false,
+  "files.exclude": {
+    "*.gitignore": false
+  },
+  "files.eol": "\n",
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "glsllint.glslangValidatorPath": "C:\\\\WINDOWS\\\\glslang-master-windows-x64-Release\\\\bin\\\\glslangValidator.exe",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "emmet.triggerExpansionOnTab": true,
+  "liveServer.settings.root": "/build/",
+  "liveServer.settings.CustomBrowser": "chrome",
+  "liveServer.settings.NoBrowser": true,
+  "liveServer.settings.useLocalIp": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.formatOnSaveTimeout": 5000,
+  "workbench.colorTheme": "Dracula",
+  "eslint.alwaysShowStatus": true,
+  "scss.lint.compatibleVendorPrefixes": "warning",
+  "editor.tabSize": 2,
+  "prettier.singleQuote": true
 }
