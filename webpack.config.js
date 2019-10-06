@@ -72,7 +72,7 @@ module.exports = {
       }
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].css',
+      filename: './css/[name].css',
       ignoreOrder: false
     })
   ],
@@ -80,9 +80,9 @@ module.exports = {
     'canvas-eve': './src/js/app.js'
   },
   output: {
-    filename: 'js/[name].min.js',
-    path: path.resolve(__dirname, 'build'),
-    publicPath: '/'
+    filename: './js/[name].min.js',
+    path: path.resolve(__dirname, 'build')
+    // publicPath: '/'
   },
   optimization: {
     splitChunks: {
