@@ -547,10 +547,8 @@ const OekakiEve = (function(d, $) {
     //
 
     _updateTriangleCircle() {
-      const { centerX } = this;
-      const { centerY } = this;
-      const mouseX = clientX - centerX;
-      const mouseY = clientY - centerY;
+      const mouseX = clientX - this.centerX;
+      const mouseY = clientY - this.centerY;
 
       const minX = Math.cos((Math.PI * 2) / 3) * this.triangleRadius;
       const maxX = this.triangleRadius;
