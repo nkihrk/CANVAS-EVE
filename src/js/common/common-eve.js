@@ -8,11 +8,16 @@
  */
 
 import jQuery from 'jquery';
+import LibEve from './lib-eve';
 
 const CommonEve = (function(w, $) {
-  function common() {}
+  function common() {
+    LibEve.call(this);
+  }
 
-  common.prototype = {
+  const modules = { ...LibEve.prototype };
+
+  common.prototype = Object.assign(modules, {
     constructor: common,
 
     options: {},
@@ -57,7 +62,7 @@ const CommonEve = (function(w, $) {
         // console.log('load() is called.');
       }
 
-      this._event('load', load);
+      this.event(w, 'load', load);
     },
 
     eventLoadResize() {
@@ -72,13 +77,9 @@ const CommonEve = (function(w, $) {
         // console.log('loadResize() is called.');
       }
 
-      this._event('load resize', loadResize);
-    },
-
-    _event(event, func) {
-      $(w).on(event, func);
+      this.event(w, 'load resize', loadResize);
     }
-  };
+  });
 
   return common;
 })(window, jQuery);
