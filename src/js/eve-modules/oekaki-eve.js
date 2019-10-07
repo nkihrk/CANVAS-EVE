@@ -4,10 +4,12 @@
  *
  * * Dependencies
  * - jQuery 3.4.1
+ * - lib-eve
  *
  */
 
 import jQuery from 'jquery';
+import LibEve from '../common/lib-eve';
 
 const OekakiEve = (function(d, $) {
   function oekaki(container) {
@@ -21,6 +23,8 @@ const OekakiEve = (function(d, $) {
     // centerX and centerY are screen-space coordinates of the center position of its container
     const centerX = originX + size / 2;
     const centerY = originY + size / 2;
+
+    LibEve.call(this);
 
     this.param = {
       container: container,
@@ -130,7 +134,9 @@ const OekakiEve = (function(d, $) {
     ];
   }
 
-  oekaki.prototype = {
+  const modules = { ...LibEve.prototype };
+
+  oekaki.prototype = Object.assign(modules, {
     constructor: oekaki,
 
     options: {
@@ -1041,7 +1047,7 @@ const OekakiEve = (function(d, $) {
         y: p1.y + (p2.y - p1.y) / 2
       };
     }
-  };
+  });
 
   return oekaki;
 })(document, jQuery);

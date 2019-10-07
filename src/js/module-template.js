@@ -4,16 +4,25 @@
  *
  * * Dependencies // list up dependecies here
  * - jQuery 3.4.1
+ * - lib-eve
  *
  */
 
 import jQuery from 'jquery';
+import LibEve from './common/lib-eve'; // Just for example
 
 // The app`s capital letter must be uppercase. Add 'Eve' after the name
 const HogeEve = (function(w, d, $) {
-  function hoge() {}
+  function hoge() {
+    // To inherit external modules, code like down below
+    LibEve.call(this);
+  }
 
-  hoge.prototype = {
+  // 'modules' is for which we combine all external modules into one object
+  // i.e. { ...LibEve.prototype, ...HogeEve.prototype, ...HogeEve2.prototype, …… }
+  const modules = { ...LibEve.prototype };
+
+  hoge.prototype = Object.assign(modules, {
     constructor: hoge,
 
     options: {},
@@ -35,7 +44,7 @@ const HogeEve = (function(w, d, $) {
     _hogehoge() {
       console.log('hogehoge');
     }
-  };
+  });
 
   return hoge;
 })(window, document, jQuery); // Each item is for scope. w = window, d = document, and $ = jQuery

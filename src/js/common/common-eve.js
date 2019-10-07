@@ -4,6 +4,7 @@
  *
  * * Dependencies
  * - jQuery 3.4.1
+ * - lib-eve
  *
  */
 
