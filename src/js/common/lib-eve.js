@@ -15,12 +15,17 @@ Object.assign(lib.prototype, {
   /**
    * Handle a specific event.
    *
-   * @param {string} elem - The name of element
+   * @param {string} elem - A name of the element
    * @param {string} event - The name of event
+   * @param {string} elementTag - A name of the extra element. Set false to tell no extra element
    * @param {function} func - The name of function to handle
    */
-  event(elem, event, func) {
-    $(elem).on(event, func);
+  event(elem, event, elementTag, func) {
+    if (elementTag) {
+      $(elem).on(event, elementTag, func);
+    } else {
+      $(elem).on(event, func);
+    }
   },
 
   /**

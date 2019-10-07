@@ -63,7 +63,7 @@ const CommonEve = (function(w, $) {
         // console.log('load() is called.');
       }
 
-      this.event(w, 'load', load);
+      this.event(w, 'load', false, load);
     },
 
     eventLoadResize() {
@@ -78,7 +78,7 @@ const CommonEve = (function(w, $) {
         // console.log('loadResize() is called.');
       }
 
-      this.event(w, 'load resize', loadResize);
+      this.event(w, 'load resize', false, loadResize);
     }
   });
 
