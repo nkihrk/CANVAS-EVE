@@ -9,23 +9,34 @@
 
 import jQuery from 'jquery';
 
+// The app`s capital letter must be uppercase. Add 'Eve' after the name
 const HogeEve = (function(w, d, $) {
-  // The app`s capital letter must be uppercase, then add 'Eve' after the name
   function hoge() {}
 
   hoge.prototype = {
     constructor: hoge,
 
+    // The main functions must be executed through load()
     load() {
-      this._hoge();
+      this.hogehoge();
     },
 
-    _hoge() {
-      console.log('hoge');
+    hogehoge() {
+      // It is recommended to define 'self' first to ensure 'this' object to be HogeEve.
+      // Sometimes it will change its scope inside other objects like $(d).on('hoge', func);
+      const self = this;
+
+      self._hogehoge();
+    },
+
+    // Always put underscore before function`s name if it's a private method
+    _hogehoge() {
+      console.log('hogehoge');
     }
   };
 
-  return hoge; // return hoge() and insert into const HogeEve
+  return hoge;
 })(window, document, jQuery); // Each item is for scope. w = window, d = document, and $ = jQuery
 
-export default HogeEve; // export the above object to wherever it is imported. This will make the app a module
+// Export the above object to wherever it is imported. This will make the app a module
+export default HogeEve;
