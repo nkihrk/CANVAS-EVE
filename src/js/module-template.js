@@ -14,7 +14,15 @@ const HogeEve = (function(w, d, $) {
   function hoge() {}
 
   hoge.prototype = {
-    constructor: hoge
+    constructor: hoge,
+
+    load() {
+      this._hoge();
+    },
+
+    _hoge() {
+      console.log('hoge');
+    }
   };
 
   return hoge; // return hoge() and insert into const HogeEve
