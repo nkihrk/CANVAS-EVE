@@ -16,6 +16,8 @@ const HogeEve = (function(w, d, $) {
   hoge.prototype = {
     constructor: hoge,
 
+    options: {},
+
     // The main functions must be executed through load()
     load() {
       this.hogehoge();
