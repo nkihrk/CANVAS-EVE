@@ -2,7 +2,7 @@
  *
  * Global scopes for CANVAS EVE.
  *
- * * Dependencies
+ * Dependencies
  * - jQuery 3.4.1
  *
  */

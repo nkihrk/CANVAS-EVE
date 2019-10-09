@@ -2,7 +2,7 @@
  *
  * hogehoge // Intro for this app
  *
- * * Dependencies // list up dependecies here
+ * Dependencies // list up dependecies here
  * - jQuery 3.4.1
  * - lib-eve
  *
@@ -35,6 +35,7 @@ const HogeEve = (function(w, d, $) {
     hogehoge() {
       // It is recommended to define 'self' first to ensure 'this' object to be HogeEve.
       // Sometimes it will change its scope inside other objects like $(d).on('hoge', func);
+      // It's not MUST anyway
       const self = this;
 
       self._hogehoge();

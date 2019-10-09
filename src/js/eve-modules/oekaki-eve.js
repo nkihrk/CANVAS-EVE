@@ -2,13 +2,15 @@
  *
  * Drawing app for CANVAS EVE.
  *
- * * Dependencies
+ * Dependencies
  * - jQuery 3.4.1
+ * - global-eve
  * - lib-eve
  *
  */
 
 import jQuery from 'jquery';
+import glbEve from '../common/global-eve';
 import LibEve from '../common/lib-eve';
 
 const OekakiEve = (function(d, $) {
@@ -773,29 +775,30 @@ const OekakiEve = (function(d, $) {
       const startX = this.canvas.newCanvasPos.x;
       const startY = this.canvas.newCanvasPos.y;
 
-      newFile.id += 1;
-      HIGHEST_Z_INDEX += 1;
+      glbEve.newFileId += 1;
+      glbEve.HIGHEST_Z_INDEX += 1;
 
+      const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
       const funcTags =
         '<div class="thumbtack-wrapper"></div>' +
         '<div class="resize-wrapper"></div>' +
         '<div class="flip-wrapper"></div>' +
         '<div class="trash-wrapper"></div>';
       const assertFile =
-        `<div id ="${newFile.id}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
+        `<div id ="${glbEve.newFileId}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
         `<div class="function-wrapper">${funcTags}</div>` +
         '<div class="eve-main is-flipped"></div>' +
         '</div>';
       $('#add-files').append(assertFile);
 
-      const fileId = `#${newFile.id}`;
+      const fileId = `#${glbEve.newFileId}`;
       const $fileId = $(fileId);
 
       $fileId.css({
-        left: `${startX * mouseWheelVal}px`,
-        top: `${startY * mouseWheelVal}px`,
-        transform: `translate(${xNewMinus}px, ${yNewMinus}px)`,
-        'z-index': HIGHEST_Z_INDEX
+        left: `${startX * glbEve.mouseWheelVal}px`,
+        top: `${startY * glbEve.mouseWheelVal}px`,
+        transform: `translate(${glbEve.xNewMinus}px, ${glbEve.yNewMinus}px)`,
+        'z-index': glbEve.HIGHEST_Z_INDEX
       });
 
       // // For colpick-eve.js
@@ -823,18 +826,18 @@ const OekakiEve = (function(d, $) {
       const resultY = Math.abs(endY - startY);
 
       $canvas.css({
-        width: `${resultX * mouseWheelVal}px`,
-        height: `${resultY * mouseWheelVal}px`
+        width: `${resultX * glbEve.mouseWheelVal}px`,
+        height: `${resultY * glbEve.mouseWheelVal}px`
       });
     },
 
     //
 
     _createCanvas() {
-      const { $newCanvasId } = this.canvas.$newCanvasId;
+      const $newCanvas = this.canvas.$newCanvasId;
       const c = d.createElement('canvas');
-      const width = $newCanvasId.width();
-      const height = $newCanvasId.height();
+      const width = $newCanvas.width();
+      const height = $newCanvas.height();
 
       c.width = width;
       c.height = height;
@@ -844,8 +847,8 @@ const OekakiEve = (function(d, $) {
       ctx.fillStyle = this.options.canvas_color;
       ctx.fillRect(0, 0, width, height);
 
-      $newCanvasId.find('.eve-main').append(c);
-      $newCanvasId.removeClass('selected-dot');
+      $newCanvas.find('.eve-main').append(c);
+      $newCanvas.removeClass('selected-dot');
     },
 
     //
@@ -859,8 +862,8 @@ const OekakiEve = (function(d, $) {
         y: e.clientY
       };
       const pos = {
-        x: (screenPos.x - canvasRect.left) * mouseWheelVal,
-        y: (screenPos.y - canvasRect.top) * mouseWheelVal
+        x: (screenPos.x - canvasRect.left) * glbEve.mouseWheelVal,
+        y: (screenPos.y - canvasRect.top) * glbEve.mouseWheelVal
       };
 
       let pressure = this.options.brush_size;

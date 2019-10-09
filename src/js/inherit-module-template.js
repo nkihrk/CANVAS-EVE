@@ -2,7 +2,7 @@
  *
  * hogehoge
  *
- * * Dependencies
+ * Dependencies
  * - jQuery 3.4.1
  *
  */
