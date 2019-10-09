@@ -24,7 +24,7 @@ const CommonEve = (function(w, $) {
     options: {},
 
     load() {
-      this.eventReady();
+      // this.eventReady();
       this.eventLoad();
       this.eventLoadResize();
     },

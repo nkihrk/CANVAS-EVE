@@ -54,12 +54,40 @@ Common
 } */
 
 /* Overwrite the hover-shadow-single */
-.hover-shadow-single {
+@mixin hover-shadow-single {
+  position: relative;
+  display: inline-block;
+  padding: 10px 40px;
   border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.3s;
 
   &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 0;
+    content: '';
+    transform-origin: right top;
+    transform: scale(0, 1);
+    transition: transform 0.3s;
     background-color: #dd4a59;
+  }
+
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: white;
+  }
+
+  &:hover::before {
+    transform-origin: left top;
+    transform: scale(1, 1);
   }
 }
 
@@ -164,6 +192,8 @@ Parent
 
 /* Prefix for a search button */
 .search-button-youtube {
+  @include hover-shadow-single;
+
   width: 17%;
   background-color: #e56470;
   border-radius: 6px;

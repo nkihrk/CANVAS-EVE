@@ -85,6 +85,10 @@ const OekakiEve = (function(d, $) {
       brush: {
         brush_flg: false,
         draw_canvas_avail_flg: false
+      },
+      oekaki: {
+        move_wheelcircle_flg: false,
+        move_trianglecircle_flg: false
       }
     };
 
@@ -157,102 +161,104 @@ const OekakiEve = (function(d, $) {
     },
 
     setFlgs() {
-      const self = this;
+      document.addEventListener('mousedown', e => {
+        if (e.target) {
+          if (e.target.closest('#color-oekaki')) {
+            const isWheelArea = this._isWheelArea(e);
+            const isTriangleArea = this._isTriangleArea(e);
+            if (isWheelArea) this.flgs.oekaki.move_wheelcircle_flg = true;
+            if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
+          }
 
-      function colorOekaki() {
-        const isWheelArea = self._isWheelArea();
-        const isTriangleArea = self._isTriangleArea();
+          if (e.target.closest('#color-wheel-circle')) {
+            this.flgs.oekaki.move_wheelcircle_flg = true;
+          }
 
-        if (isWheelArea) glFlgs.oekaki.move_wheelcircle_flg = true;
-        if (isTriangleArea) glFlgs.oekaki.move_trianglecircle_flg = true;
-      }
+          if (e.target.closest('#color-triangle-circle')) {
+            this.flgs.oekaki.move_trianglecircle_flg = true;
+          }
 
-      function colorWheelCircle() {
-        glFlgs.oekaki.move_wheelcircle_flg = true;
-      }
+          if (e.target.closest('#reset-res')) {
+            if (this.flgs.newcanvas.newcanvas_flg === true) {
+              this.flgs.newcanvas.create_canvas_avail_flg = true;
+              this.canvas.newCanvasPos.x = e.clientX - $('#zoom').offset().left;
+              this.canvas.newCanvasPos.y = e.clientY - $('#zoom').offset().top;
+              this._createCanvasWrapper();
+            }
+          }
 
-      function colorTriangleCircle() {
-        glFlgs.oekaki.move_trianglecircle_flg = true;
-      }
-
-      function resetRes() {
-        if (self.flgs.newcanvas.newcanvas_flg === true) {
-          self.flgs.newcanvas.create_canvas_avail_flg = true;
-          self.newCanvasX = clientFromZoomX;
-          self.newCanvasY = clientFromZoomY;
-
-          self._createCanvasWrapper();
+          if (e.target.closest('.oekaki-canvas')) {
+            if (this.flgs.brush.brush_flg === true) this.flgs.brush.draw_canvas_avail_flg = true;
+          }
         }
-      }
-
-      function oekakiCanvas() {
-        if (self.flgs.brush.brush_flg === true) self.flgs.brush.draw_canvas_avail_flg = true;
-      }
-
-      this.event(d, 'mousedown', '#color-oekaki', colorOekaki);
-      this.event(d, 'mousedown', '#color-wheel-circle', colorWheelCircle);
-      this.event(d, 'mousedown', '#color-triangle-circle', colorTriangleCircle);
-      this.event(d, 'mousedown', '#reset-res', resetRes);
-      this.event(d, 'mousedown', '.oekaki-canvas', oekakiCanvas);
+      });
     },
 
     //
 
     resetFlgs() {
-      const self = this;
+      document.addEventListener('mouseup', () => {
+        if (this.flgs.oekaki.move_wheelcircle_flg === true)
+          this.flgs.oekaki.move_wheelcircle_flg = false;
+        if (this.flgs.oekaki.move_trianglecircle_flg === true)
+          this.flgs.oekaki.move_trianglecircle_flg = false;
 
-      function reset() {
-        if (glFlgs.oekaki.move_wheelcircle_flg === true) glFlgs.oekaki.move_wheelcircle_flg = false;
-        if (glFlgs.oekaki.move_trianglecircle_flg === true)
-          glFlgs.oekaki.move_trianglecircle_flg = false;
-
-        if (self.flgs.newcanvas.create_canvas_avail_flg === true) {
-          self.flgs.newcanvas.create_canvas_avail_flg = false;
-          self._createCanvas();
+        if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
+          this.flgs.newcanvas.create_canvas_avail_flg = false;
+          this._createCanvas();
         }
-      }
-
-      this.event(d, 'mouseup', false, reset);
+      });
     },
 
     //
 
     handleEvents() {
+      document.addEventListener('mousedown', e => {
+        if (e.target) {
+          if (e.target.closest('#color-oekaki')) {
+            this._colorWheelArea(e);
+            this._colorTriangleArea(e);
+          }
+
+          if (
+            [
+              '#newcanvas-oekaki',
+              '#brush-oekaki',
+              '#eraser-oekaki',
+              '#spuit-oekaki',
+              '#filldrip-oekaki'
+            ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
+          ) {
+            this._toggleTool($(`#${e.target.getAttribute('id')}`), e);
+          }
+        }
+      });
+
+      document.addEventListener('mousemove', e => {
+        if (e.target) {
+          const originX = $(this.param.container).offset().left;
+          const originY = $(this.param.container).offset().top;
+          const centerX = originX + this.param.size / 2;
+          const centerY = originY + this.param.size / 2;
+          this.param.centerPos.x = centerX;
+          this.param.centerPos.y = centerY;
+
+          if (this.flgs.oekaki.move_wheelcircle_flg === true) {
+            this._updateWheelCircle(e);
+          }
+          if (this.flgs.oekaki.move_trianglecircle_flg === true) {
+            this._updateTriangleCircle(e);
+          }
+
+          if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
+            this._updateCanvasVal(e);
+          }
+        }
+      });
+
       const self = this;
-      const oekakiTags =
-        '#newcanvas-oekaki, #brush-oekaki, #eraser-oekaki, #spuit-oekaki, #filldrip-oekaki';
-
-      this.event(d, 'mousedown', '#color-oekaki', () => {
-        self._colorWheelArea();
-        self._colorTriangleArea();
-      });
-
-      this.event(d, 'mousedown', oekakiTags, e => {
-        self._toggleTool($(this), e);
-      });
-
-      $(d).on(EVENTNAME_TOUCHMOVE, () => {
-        const originX = $(self.container).offset().left;
-        const originY = $(self.container).offset().top;
-        const centerX = originX + self.size / 2;
-        const centerY = originY + self.size / 2;
-        self.centerX = centerX;
-        self.centerY = centerY;
-
-        if (glFlgs.oekaki.move_wheelcircle_flg === true) {
-          self._updateWheelCircle();
-        }
-        if (glFlgs.oekaki.move_trianglecircle_flg === true) {
-          self._updateTriangleCircle();
-        }
-
-        if (self.flgs.newcanvas.create_canvas_avail_flg === true) {
-          self._updateCanvasVal();
-        }
-      });
-
       if (window.PointerEvent) {
-        for (let i = 0; i < self.drawPointerEvents.length; i++) {
+        for (let i = 0; i < this.drawPointerEvents.length; i++) {
           $(d).on(self.drawPointerEvents[i], '.oekaki-canvas', function(e) {
             if (self.flgs.brush.brush_flg === true) {
               const $canvas = $(this).find('canvas');
@@ -261,7 +267,7 @@ const OekakiEve = (function(d, $) {
           });
         }
       } else {
-        for (let i = 0; i < self.drawEvents.length; i++) {
+        for (let i = 0; i < this.drawEvents.length; i++) {
           $(d).on(self.drawEvents[i], '.oekaki-canvas', function(e) {
             if (self.flgs.brush.brush_flg === true) {
               const $canvas = $(this).find('canvas');
@@ -287,6 +293,9 @@ const OekakiEve = (function(d, $) {
       this._generateConicGradiant(outerRadius, resolution, root);
       this._generateOverlay(outerRadius, innerRadius, root);
     },
+
+    //
+
     _generateOverlay(outerRadius, innerRadius, target) {
       const circle = d.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
@@ -297,6 +306,9 @@ const OekakiEve = (function(d, $) {
 
       target.appendChild(circle);
     },
+
+    //
+
     _generateConicGradiant(radius, resolution, target) {
       for (let i = 0; i < 360 * resolution; i++) {
         const path = d.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -310,6 +322,9 @@ const OekakiEve = (function(d, $) {
         target.appendChild(path);
       }
     },
+
+    //
+
     _describeArc(x, y, radius, startAngle, endAngle) {
       const start = this._polar2Cartesian(x, y, radius, endAngle);
       const end = this._polar2Cartesian(x, y, radius, startAngle);
@@ -338,6 +353,9 @@ const OekakiEve = (function(d, $) {
 
       return setD;
     },
+
+    //
+
     _polar2Cartesian(centerX, centerY, radius, angleInDegrees) {
       const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
 
@@ -366,54 +384,58 @@ const OekakiEve = (function(d, $) {
 
     //
 
-    _colorWheelArea() {
-      const isWheelArea = this._isWheelArea();
+    _colorWheelArea(e) {
+      const isWheelArea = this._isWheelArea(e);
       if (isWheelArea) {
-        this._updateWheelCircle();
+        this._updateWheelCircle(e);
       }
     },
 
     //
 
-    _isWheelArea() {
+    _isWheelArea(e) {
       const minR = this.colorWheel.innerRadius;
       const maxR = this.colorWheel.radius;
       const mouseR = this.getDistance(
         this.param.centerPos.x,
         this.param.centerPos.y,
-        clientX,
-        clientY
+        e.clientX,
+        e.clientY
       );
 
       if (mouseR > minR && maxR > mouseR) {
+        console.log('true');
+
         return true;
       }
+      console.log('false');
       return false;
     },
 
     //
 
-    _updateWheelCircle() {
+    _updateWheelCircle(e) {
       const pointer = this.wheelCircle;
       const r = this.colorWheel.innerRadius + this.colorWheel.thickness / 2;
-      const theta = this._calculateTheta();
+      const theta = this._calculateTheta(e);
       const left = r * Math.cos(theta) + this.param.size / 2;
       const top = r * Math.sin(theta) + this.param.size / 2;
       pointer.style.left = `${left}px`;
       pointer.style.top = `${top}px`;
 
-      const hue = this._calculateHue();
+      const hue = this._calculateHue(e);
       this.param.color.hue = hue;
-      this._updateTriangle();
+      this._updateTriangle(e);
     },
 
     //
 
-    _calculateTheta() {
+    _calculateTheta(e) {
       const rad =
-        (Math.atan2(clientY - this.param.centerPos.y, clientX - this.param.centerPos.x) / Math.PI) *
+        (Math.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) /
+          Math.PI) *
           180 +
-        (Math.atan2(clientY - this.param.centerPos.y, clientX - this.param.centerPos.x) > 0
+        (Math.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) > 0
           ? 0
           : 360);
 
@@ -422,12 +444,13 @@ const OekakiEve = (function(d, $) {
 
     //
 
-    _calculateHue() {
+    _calculateHue(e) {
       const deg =
-        (Math.atan2(clientY - this.param.centerPos.y, clientX - this.param.centerPos.x) / Math.PI) *
+        (Math.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) /
+          Math.PI) *
           180 +
         90 +
-        ((Math.atan2(clientY - this.param.centerPos.y, clientX - this.param.centerPos.x) /
+        ((Math.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) /
           Math.PI) *
           180 +
           90 >
@@ -539,18 +562,18 @@ const OekakiEve = (function(d, $) {
 
     //
 
-    _colorTriangleArea() {
-      const isTriangleArea = this._isTriangleArea();
+    _colorTriangleArea(e) {
+      const isTriangleArea = this._isTriangleArea(e);
       if (isTriangleArea) {
-        this._updateTriangleCircle();
+        this._updateTriangleCircle(e);
       }
     },
 
     //
 
-    _isTriangleArea() {
-      const mouseX = clientX - this.param.centerPos.x;
-      const mouseY = clientY - this.param.centerPos.y;
+    _isTriangleArea(e) {
+      const mouseX = e.clientX - this.param.centerPos.x;
+      const mouseY = e.clientY - this.param.centerPos.y;
       const minX = Math.cos((Math.PI * 2) / 3) * this.colorTriangle.radius;
       const maxX = this.colorTriangle.radius;
       const maxY = (-mouseX + maxX) / Math.sqrt(3);
@@ -566,9 +589,9 @@ const OekakiEve = (function(d, $) {
 
     //
 
-    _updateTriangleCircle() {
-      const mouseX = clientX - this.param.centerPos.x;
-      const mouseY = clientY - this.param.centerPos.y;
+    _updateTriangleCircle(e) {
+      const mouseX = e.clientX - this.param.centerPos.x;
+      const mouseY = e.clientY - this.param.centerPos.y;
 
       const minX = Math.cos((Math.PI * 2) / 3) * this.colorTriangle.radius;
       const maxX = this.colorTriangle.radius;
@@ -581,8 +604,8 @@ const OekakiEve = (function(d, $) {
       const $container = $(this.param.container);
       const parentNodeX = $container.offset().left;
       const parentNodeY = $container.offset().top;
-      const left = clientX - parentNodeX;
-      const top = clientY - parentNodeY;
+      const left = e.clientX - parentNodeX;
+      const top = e.clientY - parentNodeY;
 
       if (minX < mouseX && mouseX < maxX) {
         pointer.style.left = `${left}px`;
@@ -718,7 +741,7 @@ const OekakiEve = (function(d, $) {
         $container.toggleClass('active');
 
         if (
-          this.__$toggleButton !== null &&
+          this.__$toggleButton !== undefined &&
           this.__$toggleButton[0] !== $container[0] &&
           this.__$toggleButton.hasClass('active')
         ) {
@@ -730,18 +753,14 @@ const OekakiEve = (function(d, $) {
 
         if ($container.hasClass('active') && $container.attr('id') === 'newcanvas-oekaki') {
           this.flgs.newcanvas.newcanvas_flg = true;
-          console.log('this.flgs.newcanvas.newcanvas_flg is ', this.flgs.newcanvas.newcanvas_flg);
         } else {
           this.flgs.newcanvas.newcanvas_flg = false;
-          console.log('this.flgs.newcanvas.newcanvas_flg is ', this.flgs.newcanvas.newcanvas_flg);
         }
 
         if ($container.hasClass('active') && $container.attr('id') === 'brush-oekaki') {
           this.flgs.brush.brush_flg = true;
-          console.log('this.flgs.brush.brush_flg is ', this.flgs.brush.brush_flg);
         } else {
           this.flgs.brush.brush_flg = false;
-          console.log('this.flgs.brush.brush_flg is ', this.flgs.brush.brush_flg);
         }
       }
     },
@@ -793,12 +812,12 @@ const OekakiEve = (function(d, $) {
 
     //
 
-    _updateCanvasVal() {
+    _updateCanvasVal(e) {
       const $canvas = this.canvas.$newCanvasId;
       const startX = this.canvas.newCanvasPos.x;
       const startY = this.canvas.newCanvasPos.y;
-      const endX = clientFromZoomX;
-      const endY = clientFromZoomY;
+      const endX = e.clientX - $('#zoom').offset().left;
+      const endY = e.clientY - $('#zoom').offset().top;
 
       const resultX = Math.abs(endX - startX);
       const resultY = Math.abs(endY - startY);
