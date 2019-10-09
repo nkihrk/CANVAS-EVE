@@ -9,9 +9,9 @@
 
 // import $ from 'jquery';
 
-function hoge() {}
+function Hoge() {}
 
-Object.assign(hoge.prototype, {
+Object.assign(Hoge.prototype, {
   /**
    * Do hogehoge
    *
@@ -23,4 +23,4 @@ Object.assign(hoge.prototype, {
   }
 });
 
-export default hoge;
+export default Hoge;

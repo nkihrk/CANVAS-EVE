@@ -1,6 +1,6 @@
 /**
  *
- * Global scopes for CANVAS EVE.
+ * Global flags for CANVAS EVE.
  *
  * Dependencies
  * - jQuery 3.4.1
@@ -9,14 +9,14 @@
 
 import jQuery from 'jquery';
 
-const GlobalEve = (function(w, d, $) {
-  function global() {}
+const FlgsEve = (function(w, d, $) {
+  function Flgs() {}
 
-  global.prototype = {
-    constructor: global
+  Flgs.prototype = {
+    constructor: Flgs
   };
 
-  return global;
+  return Flgs;
 })(window, document, jQuery);
 
-export default GlobalEve;
+export default FlgsEve;

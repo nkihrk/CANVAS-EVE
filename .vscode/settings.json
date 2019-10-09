@@ -32,6 +32,7 @@
   "editor.formatOnSaveTimeout": 5000,
   "workbench.colorTheme": "Dracula",
   "eslint.alwaysShowStatus": true,
+  "eslint.workingDirectories": ["./"],
   "scss.lint.compatibleVendorPrefixes": "warning",
   "editor.tabSize": 2,
   "prettier.singleQuote": true

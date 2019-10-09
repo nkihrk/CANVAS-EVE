@@ -13,7 +13,7 @@ import LibEve from './common/lib-eve'; // Just for example
 
 // The app`s capital letter must be uppercase. Add 'Eve' after the name
 const HogeEve = (function(w, d, $) {
-  function hoge() {
+  function Hoge() {
     // To inherit external modules, code like down below
     LibEve.call(this);
   }
@@ -22,8 +22,8 @@ const HogeEve = (function(w, d, $) {
   // i.e. { ...LibEve.prototype, ...HogeEve.prototype, ...HogeEve2.prototype, …… }
   const modules = { ...LibEve.prototype };
 
-  hoge.prototype = Object.assign(modules, {
-    constructor: hoge,
+  Hoge.prototype = Object.assign(modules, {
+    constructor: Hoge,
 
     options: {},
 
@@ -47,7 +47,7 @@ const HogeEve = (function(w, d, $) {
     }
   });
 
-  return hoge;
+  return Hoge;
 })(window, document, jQuery); // Each item is for scope. w = window, d = document, and $ = jQuery
 
 // Export the above object to wherever it is imported. This will make the app a module

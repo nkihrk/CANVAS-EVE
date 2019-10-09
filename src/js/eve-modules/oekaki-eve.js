@@ -10,11 +10,11 @@
  */
 
 import jQuery from 'jquery';
-import glbEve from '../common/global-eve';
+import GlbEve from '../common/global-eve';
 import LibEve from '../common/lib-eve';
 
 const OekakiEve = (function(d, $) {
-  function oekaki(container) {
+  function Oekaki(container) {
     const size = container.clientWidth;
     const wheelRadius = size / 2;
     const wheelThickness = (size / 2) * 0.15;
@@ -142,8 +142,8 @@ const OekakiEve = (function(d, $) {
 
   const modules = { ...LibEve.prototype };
 
-  oekaki.prototype = Object.assign(modules, {
-    constructor: oekaki,
+  Oekaki.prototype = Object.assign(modules, {
+    constructor: Oekaki,
 
     options: {
       hue: 0,
@@ -406,11 +406,8 @@ const OekakiEve = (function(d, $) {
       );
 
       if (mouseR > minR && maxR > mouseR) {
-        console.log('true');
-
         return true;
       }
-      console.log('false');
       return false;
     },
 
@@ -775,8 +772,8 @@ const OekakiEve = (function(d, $) {
       const startX = this.canvas.newCanvasPos.x;
       const startY = this.canvas.newCanvasPos.y;
 
-      glbEve.newFileId += 1;
-      glbEve.HIGHEST_Z_INDEX += 1;
+      GlbEve.newFileId += 1;
+      GlbEve.HIGHEST_Z_INDEX += 1;
 
       const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
       const funcTags =
@@ -785,20 +782,20 @@ const OekakiEve = (function(d, $) {
         '<div class="flip-wrapper"></div>' +
         '<div class="trash-wrapper"></div>';
       const assertFile =
-        `<div id ="${glbEve.newFileId}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
+        `<div id ="${GlbEve.newFileId}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
         `<div class="function-wrapper">${funcTags}</div>` +
         '<div class="eve-main is-flipped"></div>' +
         '</div>';
       $('#add-files').append(assertFile);
 
-      const fileId = `#${glbEve.newFileId}`;
+      const fileId = `#${GlbEve.newFileId}`;
       const $fileId = $(fileId);
 
       $fileId.css({
-        left: `${startX * glbEve.mouseWheelVal}px`,
-        top: `${startY * glbEve.mouseWheelVal}px`,
-        transform: `translate(${glbEve.xNewMinus}px, ${glbEve.yNewMinus}px)`,
-        'z-index': glbEve.HIGHEST_Z_INDEX
+        left: `${startX * GlbEve.mouseWheelVal}px`,
+        top: `${startY * GlbEve.mouseWheelVal}px`,
+        transform: `translate(${GlbEve.xNewMinus}px, ${GlbEve.yNewMinus}px)`,
+        'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
       // // For colpick-eve.js
@@ -826,8 +823,8 @@ const OekakiEve = (function(d, $) {
       const resultY = Math.abs(endY - startY);
 
       $canvas.css({
-        width: `${resultX * glbEve.mouseWheelVal}px`,
-        height: `${resultY * glbEve.mouseWheelVal}px`
+        width: `${resultX * GlbEve.mouseWheelVal}px`,
+        height: `${resultY * GlbEve.mouseWheelVal}px`
       });
     },
 
@@ -862,8 +859,8 @@ const OekakiEve = (function(d, $) {
         y: e.clientY
       };
       const pos = {
-        x: (screenPos.x - canvasRect.left) * glbEve.mouseWheelVal,
-        y: (screenPos.y - canvasRect.top) * glbEve.mouseWheelVal
+        x: (screenPos.x - canvasRect.left) * GlbEve.mouseWheelVal,
+        y: (screenPos.y - canvasRect.top) * GlbEve.mouseWheelVal
       };
 
       let pressure = this.options.brush_size;
@@ -1042,7 +1039,7 @@ const OekakiEve = (function(d, $) {
     }
   });
 
-  return oekaki;
+  return Oekaki;
 })(document, jQuery);
 
 export default OekakiEve;

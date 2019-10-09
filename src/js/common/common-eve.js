@@ -12,14 +12,14 @@ import jQuery from 'jquery';
 import LibEve from './lib-eve';
 
 const CommonEve = (function(w, $) {
-  function common() {
+  function Common() {
     LibEve.call(this);
   }
 
   const modules = { ...LibEve.prototype };
 
-  common.prototype = Object.assign(modules, {
-    constructor: common,
+  Common.prototype = Object.assign(modules, {
+    constructor: Common,
 
     options: {},
 
@@ -82,7 +82,7 @@ const CommonEve = (function(w, $) {
     }
   });
 
-  return common;
+  return Common;
 })(window, jQuery);
 
 export default CommonEve;

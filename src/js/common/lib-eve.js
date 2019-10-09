@@ -34,7 +34,7 @@ Object.assign(lib.prototype, {
    * @param {object} obj - The jQuery object of a specific css property of transform. i.e., $(elem).css('transform')
    * @returns {array} - The array of transform property
    */
-  transformValue: function(obj) {
+  transformValue(obj) {
     const values = obj
       .split('(')[1]
       .split(')')[0]
@@ -57,7 +57,7 @@ Object.assign(lib.prototype, {
    * @param {object} obj - The jQuery object. i.e., $(elem)
    * @returns {number} The angle of a given element. The value will be in between 0 and 2PI
    */
-  getRotationRad: function(obj) {
+  getRotationRad(obj) {
     let angle;
     const matrix =
       obj.css('-webkit-transform') ||
@@ -87,7 +87,7 @@ Object.assign(lib.prototype, {
    * @param {number} y - The y coordinate from specific origin
    * @returns {number} The angle between x-axis and a given coordinate. The value will be in between 0 and 2PI
    */
-  calcRadians: function(x, y) {
+  calcRadians(x, y) {
     const rad = (Math.atan2(y, x) / Math.PI) * 180 + (Math.atan2(y, x) > 0 ? 0 : 360);
 
     return (rad / 180) * Math.PI;
@@ -101,7 +101,7 @@ Object.assign(lib.prototype, {
    * @param {array} pos - The array of coordinates. i.e, [x, y]
    * @param {string} tagName - The name of element for where to insert. No need for '#'
    */
-  debugCircle: function(name, col, pos, tagName) {
+  debugCircle(name, col, pos, tagName) {
     if (tagName) {
       $(`#${tagName}`).append(`<div id="${name}"></div>`);
     } else {
@@ -125,7 +125,7 @@ Object.assign(lib.prototype, {
    * Set iframe's pointer-events to be none
    *
    */
-  iframePointerNone: function() {
+  iframePointerNone() {
     $('iframe').css('pointer-events', 'none');
   },
 
@@ -133,7 +133,7 @@ Object.assign(lib.prototype, {
    * Set iframe's pointer-events to be default
    *
    */
-  iframePointerReset: function() {
+  iframePointerReset() {
     $('iframe').css('pointer-events', '');
   }
 });

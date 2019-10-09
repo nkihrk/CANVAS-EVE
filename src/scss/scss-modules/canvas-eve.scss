@@ -67,7 +67,7 @@ GLSL
   transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
 
   /* When starting loading a file */
-  .loading {
+  &.loading {
     opacity: 1;
   }
 }
