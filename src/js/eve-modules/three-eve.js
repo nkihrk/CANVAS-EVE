@@ -26,10 +26,7 @@ import { MMDLoader } from '../three-modules/MMDLoader';
 
 const ThreeEve = (function(w, $) {
   /**
-   * Load Model files.
-   *
-   * Currently supported:
-   * pmx, pmd, fbx, obj, glTF, glTF(Draco), vrm
+   * Load model files.
    *
    * @param {object} manager - THREE.LoadingManager()
    * @param {object} scene - THREE.Scene()
@@ -116,7 +113,7 @@ const ThreeEve = (function(w, $) {
       const self = this;
       const loader = new GLTFLoader(manager);
       const dracoLoader = new DRACOLoader(manager);
-      dracoLoader.setDecoderPath('../three-modules/draco/');
+      dracoLoader.setDecoderPath('../three-modules/draco/'); // This path is incorrect when with a Node.js module. It won't refer correct path
       loader.setDRACOLoader(dracoLoader);
       loader.load(rootFilePath, gltf => {
         self._fit2Scene(scene, gltf.scene, false);
@@ -191,7 +188,7 @@ const ThreeEve = (function(w, $) {
     drop() {
       const self = this;
 
-      this.canvasEveWrap.addEventListener('dragover', this._handleDragEvent, false);
+      this.canvasEveWrap.addEventListener('dragover', self._handleDragEvent, false);
       this.canvasEveWrap.addEventListener(
         'drop',
         function(e) {
@@ -285,7 +282,7 @@ const ThreeEve = (function(w, $) {
           .split('.')
           .pop()
           .toLowerCase();
-        // console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
+        console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
       }
 
       function initMtl(file) {
@@ -293,7 +290,7 @@ const ThreeEve = (function(w, $) {
         baseURL = THREE.LoaderUtils.extractUrlBase(mtlFilePath);
         mtlFileName = mtlFilePath.replace(baseURL, '');
         blobs[mtlFileName] = file;
-        // console.log('blobs', blobs);
+        console.log('blobs', blobs);
       }
 
       Array.from(files).forEach(file => {
@@ -303,7 +300,7 @@ const ThreeEve = (function(w, $) {
           initMtl(file);
         } else {
           blobs[file.name] = file;
-          // console.log('blobs', blobs);
+          console.log('blobs', blobs);
         }
       });
 
@@ -311,24 +308,22 @@ const ThreeEve = (function(w, $) {
       const fbxFlg = modelFormat === 'fbx';
       const objFlg = modelFormat === 'obj';
       const gltfFlg = modelFormat === 'gltf';
-      const vrmFlg = modelFormat === 'vrm';
+      // const vrmFlg = modelFormat === 'vrm';
 
       const manager = new THREE.LoadingManager();
       manager.setURLModifier(url => {
         console.log('url', url);
 
         const isMMD = mmdFlg && !url.match(/base64/);
-        const isGLTF = gltfFlg && !url.match(/canvas-eve/);
-
-        console.log(!url.match(/canvas-eve/));
+        const isGLTF = gltfFlg && !url.match(/draco/);
 
         let n;
-        if (isMMD || isGLTF || fbxFlg || objFlg || vrmFlg) {
+        if (isMMD || isGLTF || fbxFlg || objFlg) {
           n = url.replace(baseURL, '');
           url = URL.createObjectURL(blobs[n]);
         }
 
-        // console.log('url', url, 'fileName', n, 'blobs[n]', blobs[n]);
+        console.log('url', url, 'fileName', n, 'blobs[n]', blobs[n]);
         return url;
       });
 
@@ -457,10 +452,12 @@ const ThreeEve = (function(w, $) {
    * - pmx, pmd
    * - fbx
    * - obj, mtl
-   * - glTF, glTF(Draco), vrm
+   * - glTF
+   * - vrm
    */
   function Three() {
     LibEve.call(this);
+
     this.scenes = [];
     this.renderer = null; // lazy load
     this.canvas = document.getElementById('c');
