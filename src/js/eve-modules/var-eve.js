@@ -54,8 +54,6 @@ const GlobalEve = (function(w, d, $) {
     this.EVENTNAME_TOUCHSTART = this.supportTouch ? 'touchstart' : 'mousedown';
     this.EVENTNAME_TOUCHMOVE = this.supportTouch ? 'touchmove' : 'mousemove';
     this.EVENTNAME_TOUCHEND = this.supportTouch ? 'touchend' : 'mouseup';
-    // Enabling transition or not
-    this.IS_TRANSITION = this.supportTouch ? '' : 'width .1s, height .1s, top .1s, left .1s';
   }
 
   global.prototype = {
@@ -67,10 +65,6 @@ const GlobalEve = (function(w, d, $) {
       this._isTransition();
       this._addEventListener();
       this._updateMousePos();
-    },
-
-    _isTransition: function() {
-      $('.file-wrap').css('transition', this.IS_TRANSITION);
     },
 
     _addEventListener: function() {

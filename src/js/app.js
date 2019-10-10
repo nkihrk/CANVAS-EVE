@@ -1,36 +1,39 @@
+/**
+ *
+ * Entry point for CANVAS EVE.
+ *
+ */
+
 // Load SCSS modules
+// - abstracts
 import '../scss/abstracts/_variables.scss';
 import '../scss/abstracts/_functions.scss';
 import '../scss/abstracts/_mixins.scss';
 import '../scss/abstracts/_placeholders.scss';
-
+// - vendors
 // import '../scss/vendors/_bootstrap.scss';
 // import '../scss/vendors/_jquery-ui.scss';
-
+// - base
 import '../scss/base/_reset.scss';
 import '../scss/base/_typography.scss';
 import '../scss/base/_styles.scss';
-
+// - layout
 import '../scss/layout/_navigation.scss';
 import '../scss/layout/_grid.scss';
 import '../scss/layout/_header.scss';
 import '../scss/layout/_footer.scss';
 import '../scss/layout/_sidebar.scss';
 import '../scss/layout/_forms.scss';
-
-import '../scss/components/_buttons.scss';
-import '../scss/components/_carousel.scss';
-import '../scss/components/_cover.scss';
-import '../scss/components/_dropdown.scss';
+// - components
 import '../scss/components/_canvas-eve.scss';
 import '../scss/components/_colpick-eve.scss';
 import '../scss/components/_oekaki-eve.scss';
 import '../scss/components/_youtube-eve.scss';
-
+// - pages
 import '../scss/pages/_home.scss';
-
+// - themes
 import '../scss/themes/_theme.scss';
-
+// a shame file
 import '../scss/_shame.scss';
 
 // Load JS modules

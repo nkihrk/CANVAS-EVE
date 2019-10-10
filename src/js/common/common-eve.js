@@ -32,15 +32,6 @@ const CommonEve = (function(d, w, $) {
     eventReady() {
       $(function() {
         const h = $(w).height();
-        const loadTag =
-          '<div id="loader-bg" style="position: fixed; z-index: 1;">' +
-          '<div id="loading">' +
-          '<div class="spin-wrapper">' +
-          '<div class="spinner"></div>' +
-          '</div>' +
-          '</div>' +
-          '</div>';
-        $(this.body).prepend(loadTag);
         $('#loader-bg, #loader')
           .height(h)
           .css('display', 'block');
