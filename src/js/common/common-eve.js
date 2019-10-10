@@ -30,16 +30,7 @@ const CommonEve = (function(d, w, $) {
     },
 
     eventReady() {
-      // Prevent default right-click events for the time being
-      d.addEventListener(
-        'contextmenu',
-        function(e) {
-          e.preventDefault();
-        },
-        false
-      );
-
-      d.addEventListener('DOMContentLoaded', function() {
+      $(function() {
         const h = $(w).height();
         const loadTag =
           '<div id="loader-bg" style="position: fixed; z-index: 1;">' +
@@ -53,6 +44,15 @@ const CommonEve = (function(d, w, $) {
         $('#loader-bg, #loader')
           .height(h)
           .css('display', 'block');
+
+        // Prevent default right-click events for the time being
+        d.addEventListener(
+          'contextmenu',
+          function(e) {
+            e.preventDefault();
+          },
+          false
+        );
       });
     },
 

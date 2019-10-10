@@ -1,269 +1,287 @@
-(function ($) {
-    // Add youtube videos to the canvas
-    const youtubeEve = () => {
-        // Get json data from youtube. video
-        const ajaxDataVideo = (id) => {
-            return $.ajax({
-                type: 'GET',
-                url: 'https://www.googleapis.com/youtube/v3/videos',
-                dataType: 'json',
-                data: {
-                    part: 'snippet',
-                    id: id,
-                    maxResults: 50,
-                    key: config.youtube.API_KEY
-                }
-            })
-        };
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-lonely-if */
+/**
+ *
+ * Youtube streaming app for CANVAS EVE.
+ *
+ * Dependencies
+ * - jQuery 3.4.1
+ *
+ */
 
-        // Get json data from youtube. playlist item
-        const ajaxDataPlaylistItem = (id) => {
-            return $.ajax({
-                type: 'GET',
-                url: 'https://www.googleapis.com/youtube/v3/playlistItems',
-                dataType: 'json',
-                data: {
-                    part: 'snippet',
-                    playlistId: id,
-                    maxResults: 50,
-                    key: config.youtube.API_KEY
-                }
-            })
-        };
+import jQuery from 'jquery';
 
+import GlbEve from '../common/glb-eve';
+import LibEve from '../common/lib-eve';
 
-        ///
+const YoutubeEve = (function(w, d, $) {
+  function Youtube() {
+    LibEve.call(this);
+  }
 
+  const modules = { ...LibEve.prototype };
 
-        // Execute if flags are true
-        const main = () => {
-            const searchBox = () => {
-                // Stop propagation
-                // $(document).on('mousedown', '.search-youtube', handlePropagation);
-                // $(document).on('mousedown', '.child-search-youtube', handlePropagation);
+  Youtube.prototype = Object.assign(modules, {
+    constructor: Youtube,
 
-                $(document).on('mousedown', '#add-youtube', iframePointerNone);
-                $(document).on('mousedown', '.tab-block-youtube', iframePointerNone);
-                $(document).on('mouseup', '.tab-block-youtube', iframePointerReset);
-                $(document).on('mousedown', '.child-search-youtube', iframePointerNone);
-                $(document).on('mouseup', '.child-search-youtube', iframePointerReset);
+    options: {},
 
+    load() {
+      this.handleEvents();
+    },
 
-                // Reset the value of the selected input
-                $(document).on('mousedown', '.backspace-icon', function (e) {
-                    // console.log('mousedown .backspace-icon is detected.');
-                    if (e.button != 1) {
-                        $(this).parent().children('input').val('');
-                    }
-                });
+    //
 
+    handleEvents() {
+      d.addEventListener('mousedown', e => {
+        if (e.target) {
+          if (
+            e.target.closest('#add-youtube') ||
+            e.target.closest('.tab-block-youtube') ||
+            e.target.closest('.child-search-youtube')
+          ) {
+            this.iframePointerNone();
+          }
 
-                $(document).on('mousedown', '.search-button-youtube', function (e) {
-                    if (e.button != 1) {
-                        var url, youtubeID, listID, videoID, jsonYt, tabName, iframeTag, assertFile, isVideo;
-                        var input = encodeURI($(this).parent().find('input').val());
-                        var isUrl = input.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/);
-                        var isYoutube = input.match(/youtube/);
-                        if (input && isUrl && isYoutube) {
-                            url = input;
+          if (e.button !== 1) {
+            if (e.target.closest('.backspace-icon')) {
+              $(e.target)
+                .parent()
+                .children('input')
+                .val('');
+            }
 
-                            if (url.match(/&/)) {
-                                // Should be a movie with options
-                                videoID = url.split('v=')[1];
-                                videoID = videoID.split('&')[0];
-                                youtubeID = videoID + '?rel=0&showinfo=0';
-                                jsonYt = config.youtube.API_KEY == null ? -1 : ajaxDataVideo(videoID);
-                                isVideo = true;
-                            } else {
-                                // Should be a movie or just a list without any options
-                                if (url.match(/list=/)) {
-                                    listID = url.split('list=')[1];
-                                    youtubeID = 'videoseries?list=' + listID;
-                                    jsonYt = config.youtube.API_KEY == null ? -1 : ajaxDataPlaylistItem(listID);
-                                    isVideo = false;
-                                } else if (url.match(/v=/)) {
-                                    videoID = url.split('v=')[1];
-                                    youtubeID = url.split('v=')[1] + '?rel=0&showinfo=0';
-                                    jsonYt = config.youtube.API_KEY == null ? -1 : ajaxDataVideo(videoID);
-                                    isVideo = true;
-                                }
-                            }
+            if (e.target.closest('.search-button-youtube')) {
+              this._parent(e);
+            }
 
-                            newFile.id += 1;
-                            HIGHEST_Z_INDEX += 1;
+            if (e.target.closest('.child-search-button-youtube')) {
+              this._child(e);
+            }
+          }
+        }
+      });
 
-                            // Get a specific json data from youtube via data api
-                            if (jsonYt == -1) {
-                                tabName = 'The API Key is missing; the key is needed to show a name of the now-playing video properly.';
-                                iframeTag = '<iframe src="https://www.youtube.com/embed/' + youtubeID + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-                                var childTop = ($('#add-youtube').offset().top - $('#zoom').offset().top) * mouseWheelVal + 300;
-                                var childLeft = ($('#add-youtube').offset().left - $('#zoom').offset().left) * mouseWheelVal + $('#add-youtube').outerWidth() / 2 - 350;
-                                var childTranslate = 'translate(' + xNewMinus + 'px, ' + yNewMinus + 'px' + ')';
-                                var childStyle = 'width: 700px;' +
-                                    ' top:' +
-                                    childTop +
-                                    'px; left:' +
-                                    childLeft +
-                                    'px; z-index:' +
-                                    HIGHEST_Z_INDEX +
-                                    '; transition:' +
-                                    IS_TRANSITION +
-                                    '; transform:' +
-                                    childTranslate +
-                                    ';';
-                                assertFile = '<div id="' + newFile.id + '" class="grab-pointer file-wrap limit-size" style="' + childStyle + '">' +
-                                    '<div class="function-wrapper">' +
-                                    '<div class="thumbtack-wrapper"></div>' +
-                                    '<div class="resize-wrapper"></div>' +
-                                    '<div class="rotate-wrapper"></div>' +
-                                    '<div class="flip-wrapper"></div>' +
-                                    '<div class="trash-wrapper"></div>' +
-                                    '</div>' +
-                                    '<div class="eve-main is-flipped" style="width: 100%;">' +
-                                    '<div class="tab-block-youtube" style="position: relative;">' +
-                                    '<div class="fix-top-border">' +
-                                    '<div class="ellipsis tab-youtube bold agency-fb">' +
-                                    tabName +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>' +
-                                    '<div class="child-search-youtube" style="position: relative;">' +
-                                    '<div class="child-search-box-wrapper" style="position: relative;">' +
-                                    '<input value="' + url + '" class="ellipsis child-search-box-youtube" placeholder="Paste a URL of any YouTube videos here." type="text" spellcheck="false" style="position: relative;">' +
-                                    '<div class="backspace-icon"></div>' +
-                                    '</div>' +
-                                    '<div class="hover-shadow-single child-search-button-youtube" style="position: relative;"></div>' +
-                                    '</div>' +
-                                    '<div class="content-youtube">' +
-                                    iframeTag +
-                                    '</div>' +
-                                    '</div>' +
-                                    '</div>';
-                                $('#add-files').append(assertFile);
-                            } else {
-                                jsonYt.done(function (jsonData) {
-                                    if (isVideo) {
-                                        tabName = jsonData.items[0].snippet.title;
-                                    } else {
-                                        tabName = 'Playlist : Enqueued ' + jsonData.pageInfo.totalResults + ' videos';
-                                    }
-                                    // console.log('tabName', tabName);
+      d.addEventListener('mouseup', e => {
+        if (e.target) {
+          if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube')) {
+            this.iframePointerReset();
+          }
+        }
+      });
+    },
 
-                                    iframeTag = '<iframe src="https://www.youtube.com/embed/' + youtubeID + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-                                    var childTop = ($('#add-youtube').offset().top - $('#zoom').offset().top) * mouseWheelVal + 300;
-                                    var childLeft = ($('#add-youtube').offset().left - $('#zoom').offset().left) * mouseWheelVal + $('#add-youtube').outerWidth() / 2 - 350;
-                                    var childTranslate = 'translate(' + xNewMinus + 'px, ' + yNewMinus + 'px' + ')';
-                                    var childStyle = 'width: 700px;' +
-                                        ' top:' +
-                                        childTop +
-                                        'px; left:' +
-                                        childLeft +
-                                        'px; z-index:' +
-                                        HIGHEST_Z_INDEX +
-                                        '; transition:' +
-                                        IS_TRANSITION +
-                                        '; transform:' +
-                                        childTranslate +
-                                        ';';
-                                    assertFile = '<div id="' + newFile.id + '" class="grab-pointer file-wrap limit-size" style="' + childStyle + '">' +
-                                        '<div class="function-wrapper">' +
-                                        '<div class="thumbtack-wrapper"></div>' +
-                                        '<div class="resize-wrapper"></div>' +
-                                        '<div class="rotate-wrapper"></div>' +
-                                        '<div class="flip-wrapper"></div>' +
-                                        '<div class="trash-wrapper"></div>' +
-                                        '</div>' +
-                                        '<div class="eve-main is-flipped" style="width: 100%;">' +
-                                        '<div class="tab-block-youtube" style="position: relative;">' +
-                                        '<div class="fix-top-border">' +
-                                        '<div class="ellipsis tab-youtube bold agency-fb">' +
-                                        tabName +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>' +
-                                        '<div class="child-search-youtube" style="position: relative;">' +
-                                        '<div class="child-search-box-wrapper" style="position: relative;">' +
-                                        '<input value="' + url + '" class="ellipsis child-search-box-youtube" placeholder="Paste a URL of any YouTube videos here." type="text" spellcheck="false" style="position: relative;">' +
-                                        '<div class="backspace-icon"></div>' +
-                                        '</div>' +
-                                        '<div class="hover-shadow-single child-search-button-youtube" style="position: relative;"></div>' +
-                                        '</div>' +
-                                        '<div class="content-youtube">' +
-                                        iframeTag +
-                                        '</div>' +
-                                        '</div>' +
-                                        '</div>';
-                                    $('#add-files').append(assertFile);
-                                });
-                            }
+    //
 
+    _parent(e) {
+      let url;
+      let youtubeID;
+      let listID;
+      let videoID;
+      let jsonYt;
+      let tabName;
+      let isVideo;
+      const input = encodeURI(
+        $(e.target)
+          .parent()
+          .find('input')
+          .val()
+      );
+      // eslint-disable-next-line no-useless-escape
+      const isUrl = input.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/);
+      const isYoutube = input.match(/youtube/);
+      if (input && isUrl && isYoutube) {
+        url = input;
 
-                        } else {}
-                        // console.log('URL', url);
-                    }
-                });
+        if (url.match(/&/)) {
+          // Should be a movie with options
+          videoID = url.split('v=')[1];
+          videoID = videoID.split('&')[0];
+          youtubeID = `${videoID}?rel=0&showinfo=0`;
+          jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+          isVideo = true;
+        } else {
+          // Should be a movie or just a list without any options
+          if (url.match(/list=/)) {
+            listID = url.split('list=')[1];
+            youtubeID = `videoseries?list=${listID}`;
+            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataPlaylistItem(listID);
+            isVideo = false;
+          } else if (url.match(/v=/)) {
+            videoID = url.split('v=')[1];
+            youtubeID = `${url.split('v=')[1]}?rel=0&showinfo=0`;
+            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+            isVideo = true;
+          }
+        }
 
+        GlbEve.NEWFILE_ID += 1;
+        GlbEve.HIGHEST_Z_INDEX += 1;
 
-                $(document).on('mousedown', '.child-search-button-youtube', function (e) {
-                    if (e.button != 1) {
-                        var $selected = $(this);
-                        var url, youtubeID, listID, videoID, jsonYt, tabName, isVideo;
-                        var input = encodeURI($(this).parent().find('input').val());
-                        var isUrl = input.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/);
-                        var isYoutube = input.match(/youtube/);
-                        if (input && isUrl && isYoutube) {
-                            url = input;
+        const self = this;
+        if (jsonYt === -1) {
+          tabName =
+            'The API Key is missing; the key is needed to show up a name of the now-playing video properly.';
+          self._assertFile(youtubeID, tabName, url);
+        } else {
+          jsonYt.done(function(jsonData) {
+            if (isVideo) {
+              tabName = jsonData.items[0].snippet.title;
+            } else {
+              tabName = `Playlist : Enqueued ${jsonData.pageInfo.totalResults} videos`;
+            }
+            self._assertFile(youtubeID, tabName, url);
+          });
+        }
+      }
+    },
 
-                            if (url.match(/&/)) {
-                                // Should be a movie with options
-                                videoID = url.split('v=')[1];
-                                videoID = videoID.split('&')[0];
-                                youtubeID = videoID + '?rel=0&showinfo=0';
-                                jsonYt = config.youtube.API_KEY == null ? -1 : ajaxDataVideo(videoID);
-                                isVideo = true;
-                            } else {
-                                // Should be a movie or just a list without any options
-                                if (url.match(/list=/)) {
-                                    listID = url.split('list=')[1];
-                                    youtubeID = 'videoseries?list=' + listID;
-                                    jsonYt = config.youtube.API_KEY == null ? -1 : ajaxDataPlaylistItem(listID);
-                                    isVideo = false;
-                                } else if (url.match(/v=/)) {
-                                    videoID = url.split('v=')[1];
-                                    youtubeID = url.split('v=')[1] + '?rel=0&showinfo=0';
-                                    jsonYt = config.youtube.API_KEY == null ? -1 : ajaxDataVideo(videoID);
-                                    isVideo = true;
-                                }
-                            }
+    //
 
-                            // Get a specific json data from youtube via data api
-                            if (jsonYt == -1) {
-                                tabName = 'The API Key is missing; the key is needed to show a name of the now-playing video properly.';
-                            } else {
-                                jsonYt.done(function (jsonData) {
-                                    if (isVideo) {
-                                        tabName = jsonData.items[0].snippet.title;
-                                        // console.log('tabName(isVideo=true)', tabName);
-                                    } else {
-                                        tabName = 'Playlist : Enqueued ' + jsonData.pageInfo.totalResults + ' videos';
-                                        // console.log('tabName(isVideo=false)', tabName);
-                                    }
-                                    $selected.parents('.file-wrap').find('.tab-youtube')[0].innerText = tabName;
-                                });
-                            }
+    _assertFile(youtubeID, tabName, url) {
+      const iframeTag = `<iframe src="https://www.youtube.com/embed/${youtubeID}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      const childTop =
+        ($('#add-youtube').offset().top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL + 300;
+      const childLeft =
+        ($('#add-youtube').offset().left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL +
+        $('#add-youtube').outerWidth() / 2 -
+        350;
+      const childTranslate = `translate(${-GlbEve.xNew}px, ${-GlbEve.yNew}px)`;
+      const childStyle = `${'width: 700px; top:'}${childTop}px; left:${childLeft}px; z-index:${
+        GlbEve.HIGHEST_Z_INDEX
+      }; transition:${GlbEve.IS_TRANSITION}; transform:${childTranslate};`;
+      const assertFile =
+        `<div id="${GlbEve.NEWFILE_ID}" class="grab-pointer file-wrap limit-size" style="${childStyle}">` +
+        `<div class="function-wrapper">` +
+        `<div class="thumbtack-wrapper"></div>` +
+        `<div class="resize-wrapper"></div>` +
+        `<div class="rotate-wrapper"></div>` +
+        `<div class="flip-wrapper"></div>` +
+        `<div class="trash-wrapper"></div>` +
+        `</div>` +
+        `<div class="eve-main is-flipped" style="width: 100%;">` +
+        `<div class="tab-block-youtube" style="position: relative;">` +
+        `<div class="fix-top-border">` +
+        `<div class="ellipsis tab-youtube bold agency-fb">${tabName}</div>` +
+        `</div>` +
+        `</div>` +
+        `<div class="child-search-youtube" style="position: relative;">` +
+        `<div class="child-search-box-wrapper" style="position: relative;">` +
+        `<input value="${url}" class="ellipsis child-search-box-youtube" placeholder="Paste a URL of any YouTube videos here." type="text" spellcheck="false" style="position: relative;">` +
+        `<div class="backspace-icon"></div>` +
+        `</div>` +
+        `<div class="hover-shadow-single child-search-button-youtube" style="position: relative;"></div>` +
+        `</div>` +
+        `<div class="content-youtube">${iframeTag}</div>` +
+        `</div>` +
+        `</div>`;
 
-                            $selected.parents('.file-wrap').find('iframe').attr('src', 'https://www.youtube.com/embed/' + youtubeID);
-                        } else {}
-                    }
-                });
-            };
-            searchBox();
+      $('#add-files').append(assertFile);
+    },
 
+    //
 
-        };
-        main();
+    _child(e) {
+      const $selected = $(e.target);
+      let url;
+      let youtubeID;
+      let listID;
+      let videoID;
+      let jsonYt;
+      let tabName;
+      let isVideo;
+      const input = encodeURI(
+        $(e.target)
+          .parent()
+          .find('input')
+          .val()
+      );
+      // eslint-disable-next-line no-useless-escape
+      const isUrl = input.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/);
+      const isYoutube = input.match(/youtube/);
+      if (input && isUrl && isYoutube) {
+        url = input;
 
+        if (url.match(/&/)) {
+          // Should be a movie with options
+          videoID = url.split('v=')[1];
+          videoID = videoID.split('&')[0];
+          youtubeID = `${videoID}?rel=0&showinfo=0`;
+          jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+          isVideo = true;
+        } else {
+          // Should be a movie or just a list without any options
+          if (url.match(/list=/)) {
+            listID = url.split('list=')[1];
+            youtubeID = `videoseries?list=${listID}`;
+            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataPlaylistItem(listID);
+            isVideo = false;
+          } else if (url.match(/v=/)) {
+            videoID = url.split('v=')[1];
+            youtubeID = `${url.split('v=')[1]}?rel=0&showinfo=0`;
+            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+            isVideo = true;
+          }
+        }
 
-    };
-    youtubeEve();
-})(jQuery);
+        // Get a specific json data from youtube via data api
+        if (jsonYt === -1) {
+          tabName =
+            'The API Key is missing; the key is needed to show a name of the now-playing video properly.';
+        } else {
+          jsonYt.done(function(jsonData) {
+            if (isVideo) {
+              tabName = jsonData.items[0].snippet.title;
+            } else {
+              tabName = `Playlist : Enqueued ${jsonData.pageInfo.totalResults} videos`;
+            }
+            $selected.parents('.file-wrap').find('.tab-youtube')[0].innerText = tabName;
+          });
+        }
+
+        $selected
+          .parents('.file-wrap')
+          .find('iframe')
+          .attr('src', `https://www.youtube.com/embed/${youtubeID}`);
+      }
+    },
+
+    //
+
+    // Get json data from youtube. video
+    _ajaxDataVideo() {
+      return $.ajax({
+        type: 'GET',
+        url: 'https://www.googleapis.com/youtube/v3/videos',
+        dataType: 'json',
+        data: {
+          part: 'snippet',
+          id: id,
+          maxResults: 50,
+          key: GlbEve.YOUTUBE_API_KEY
+        }
+      });
+    },
+
+    //
+
+    // Get json data from youtube. playlist item
+    _ajaxDataPlaylistItem() {
+      return $.ajax({
+        type: 'GET',
+        url: 'https://www.googleapis.com/youtube/v3/playlistItems',
+        dataType: 'json',
+        data: {
+          part: 'snippet',
+          playlistId: id,
+          maxResults: 50,
+          key: GlbEve.YOUTUBE_API_KEY
+        }
+      });
+    }
+  });
+
+  return Youtube;
+})(window, document, jQuery);
+
+export default YoutubeEve;

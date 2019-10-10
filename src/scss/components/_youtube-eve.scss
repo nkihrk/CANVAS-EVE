@@ -24,12 +24,11 @@ Common
     display: inline-block;
     width: 24px;
     height: 15px;
-    background-image: url(../../../assets/img/backspace.png);
+    background-image: url('../../../assets/img/backspace.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
     position: absolute;
-
     opacity: 0.5;
   }
 }
@@ -118,13 +117,13 @@ Parent
     display: inline-block;
     width: 90px;
     height: 60px;
-    background-image: url(../../../assets/img/youtube.png);
+    background-image: url('../../../assets/img/youtube.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
     position: absolute;
     z-index: 0;
-    left: 0px;
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -150,7 +149,6 @@ Parent
     font-family: agency-fb;
     font-weight: bold;
     font-size: 1.2rem;
-
     position: absolute;
     z-index: 1;
     content: '>';
@@ -170,7 +168,6 @@ Parent
   font-family: agency-fb;
   font-weight: bold;
   font-size: 1.2rem;
-
   display: block;
   width: 100%;
   line-height: 50px;
@@ -178,8 +175,7 @@ Parent
   border: solid 2px rgba(229, 100, 112, 0.5);
   border-radius: 6px;
   color: rgba(255, 255, 255, 0.5);
-
-  padding: 0px 45px 0px 30px;
+  padding: 0 45px 0 30px;
 
   /* Prefix for the placeholder */
   &::placeholder {
@@ -207,7 +203,7 @@ Parent
     display: inline-block;
     width: 20px;
     height: 20px;
-    background-image: url(../../../assets/img/add.png);
+    background-image: url('../../../assets/img/add.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -230,14 +226,14 @@ Children
 .tab-block-youtube {
   width: 100%;
   background-color: #302d3b;
-  border-radius: 6px 6px 0px 0px;
+  border-radius: 6px 6px 0 0;
 }
 
 /* Just for optical adjustment */
 .fix-top-border {
   width: 30%;
   max-width: 500px;
-  border-radius: 6px 6px 0px 0px;
+  border-radius: 6px 6px 0 0;
   overflow: hidden;
 }
 
@@ -248,9 +244,8 @@ Children
   background-color: #2c2a38;
   border-top: solid 3px #57afb6;
   color: rgba(255, 255, 255, 0.5);
-
   font-size: 1rem;
-  padding: 0px 15px;
+  padding: 0 15px;
   line-height: 40px;
 }
 
@@ -266,7 +261,6 @@ Children
     font-family: agency-fb;
     font-weight: bold;
     font-size: 1.2rem;
-
     position: absolute;
     z-index: 1;
     content: '>';
@@ -286,7 +280,6 @@ Children
   font-family: agency-fb;
   font-weight: bold;
   font-size: 1.2rem;
-
   display: block;
   width: 100%;
   line-height: 40px;
@@ -294,7 +287,6 @@ Children
   border: solid 2px rgba(229, 100, 112, 0.5);
   border-radius: 6px;
   color: rgba(255, 255, 255, 0.5);
-
   padding: 0px 45px 0px 30px;
 
   /* Prefix for the placeholder */
@@ -322,7 +314,7 @@ Children
     display: inline-block;
     width: 20px;
     height: 20px;
-    background-image: url(../../../assets/img/search.png);
+    background-image: url('../../../assets/img/search.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;

@@ -10,6 +10,7 @@
  */
 
 import jQuery from 'jquery';
+
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -164,9 +165,6 @@ const OekakiEve = (function(d, $) {
 
     setFlgs() {
       document.addEventListener('mousedown', e => {
-        e.stopPropagation();
-        e.preventDefault();
-
         if (e.target) {
           if (e.target.closest('#color-oekaki')) {
             const isWheelArea = this._isWheelArea(e);
@@ -219,9 +217,6 @@ const OekakiEve = (function(d, $) {
 
     handleEvents() {
       document.addEventListener('mousedown', e => {
-        e.stopPropagation();
-        e.preventDefault();
-
         if (e.target) {
           if (e.target.closest('#color-oekaki')) {
             this._colorWheelArea(e);
@@ -784,14 +779,13 @@ const OekakiEve = (function(d, $) {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
-      const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
       const funcTags =
         '<div class="thumbtack-wrapper"></div>' +
         '<div class="resize-wrapper"></div>' +
         '<div class="flip-wrapper"></div>' +
         '<div class="trash-wrapper"></div>';
       const assertFile =
-        `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
+        `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${GlbEve.IS_TRANSITION};">` +
         `<div class="function-wrapper">${funcTags}</div>` +
         '<div class="eve-main is-flipped"></div>' +
         '</div>';

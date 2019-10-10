@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unsupported-features/node-builtins */
 /**
  *
- * 3D Model loader for CANVAS EVE.
+ * Model loader for CANVAS EVE.
  *
  * Dependencies
  * - jQuery 3.4.1
@@ -11,7 +11,17 @@
  */
 
 import jQuery from 'jquery';
-import * as THREE from 'three';
+import {
+  // BoxHelper,
+  Box3,
+  PerspectiveCamera,
+  LoaderUtils,
+  LoadingManager,
+  Scene,
+  HemisphereLight,
+  DirectionalLight,
+  WebGLRenderer
+} from 'three';
 import { VRM } from '@pixiv/three-vrm';
 
 import LibEve from '../common/lib-eve';
@@ -28,8 +38,8 @@ const ThreeEve = (function(w, $) {
   /**
    * Load model files.
    *
-   * @param {object} manager - THREE.LoadingManager()
-   * @param {object} scene - THREE.Scene()
+   * @param {object} manager - LoadingManager()
+   * @param {object} scene - Scene()
    * @param {object} materials - Get materials from MTLLoader(), and set it to OBJLoader()
    * @param {string} rootFilePath - In-memory blob url to Model file
    * @param {string} modelFormat - Get Model format for MMDLoader()
@@ -48,7 +58,7 @@ const ThreeEve = (function(w, $) {
       loader.modelFormat = modelFormat;
       loader.load(rootFilePath, mmd => {
         self._fit2Scene(scene, mmd, false);
-        // var box = new THREE.BoxHelper(mmd, 0xffff00);
+        // var box = new BoxHelper(mmd, 0xffff00);
         // scene.add(box);
         scene.add(mmd);
       });
@@ -138,9 +148,9 @@ const ThreeEve = (function(w, $) {
 
     _fit2Scene(scene, object, bool) {
       const fovy = 40;
-      const camera = new THREE.PerspectiveCamera(fovy, 1, 0.1, 20000);
+      const camera = new PerspectiveCamera(fovy, 1, 0.1, 20000);
 
-      const BB = new THREE.Box3().setFromObject(object);
+      const BB = new Box3().setFromObject(object);
       const centerpoint = BB.getCenter();
       const size = BB.getSize();
       let backup = size.y / 2 / Math.sin((camera.fov / 2) * (Math.PI / 180));
@@ -275,7 +285,7 @@ const ThreeEve = (function(w, $) {
 
       function initTarget(file) {
         rootFilePath = URL.createObjectURL(file);
-        baseURL = THREE.LoaderUtils.extractUrlBase(rootFilePath);
+        baseURL = LoaderUtils.extractUrlBase(rootFilePath);
         rootFileName = rootFilePath.replace(baseURL, '');
         blobs[rootFileName] = file;
         modelFormat = file.name
@@ -287,7 +297,7 @@ const ThreeEve = (function(w, $) {
 
       function initMtl(file) {
         mtlFilePath = URL.createObjectURL(file);
-        baseURL = THREE.LoaderUtils.extractUrlBase(mtlFilePath);
+        baseURL = LoaderUtils.extractUrlBase(mtlFilePath);
         mtlFileName = mtlFilePath.replace(baseURL, '');
         blobs[mtlFileName] = file;
         console.log('blobs', blobs);
@@ -310,7 +320,7 @@ const ThreeEve = (function(w, $) {
       const gltfFlg = modelFormat === 'gltf';
       // const vrmFlg = modelFormat === 'vrm';
 
-      const manager = new THREE.LoadingManager();
+      const manager = new LoadingManager();
       manager.setURLModifier(url => {
         console.log('url', url);
 
@@ -388,13 +398,13 @@ const ThreeEve = (function(w, $) {
     //
 
     _setScene(id, scenes) {
-      const scene = new THREE.Scene();
+      const scene = new Scene();
 
       // eslint-disable-next-line prefer-destructuring
       scene.userData.element = document.getElementById(id).getElementsByClassName('eve-main')[0];
-      scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+      scene.add(new HemisphereLight(0xaaaaaa, 0x444444));
 
-      const light = new THREE.DirectionalLight(0xffffff, 0.5);
+      const light = new DirectionalLight(0xffffff, 0.5);
       light.position.set(1, 1, 1);
       scene.add(light);
 
@@ -481,7 +491,7 @@ const ThreeEve = (function(w, $) {
     init() {
       this.Reader.drop();
 
-      this.renderer = new THREE.WebGLRenderer({
+      this.renderer = new WebGLRenderer({
         canvas: this.canvas,
         antialias: true,
         alpha: true

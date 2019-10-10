@@ -107,7 +107,6 @@ GLSL
   height: 0 !important;
   position: relative;
   transform: scale(1);
-
   /* background: rgba(255, 0, 0, 0.2);
     width: 600px;
     height: 600px; */
@@ -238,7 +237,7 @@ Thumbtack
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-image: url(../../../assets/img/thumbtack.png);
+    background-image: url('../../../assets/img/thumbtack.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -247,7 +246,6 @@ Thumbtack
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-
     opacity: 0.5;
     transition: opacity 0.1s ease-in-out;
   }
@@ -276,7 +274,7 @@ Resize
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-image: url(../../../assets/img/resize.png);
+    background-image: url('../../../assets/img/resize.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -285,7 +283,6 @@ Resize
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-
     opacity: 0.5;
     transition: opacity 0.1s ease-in-out;
   }
@@ -357,7 +354,7 @@ Flip
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-image: url(../../../assets/img/flip.png);
+    background-image: url('../../../assets/img/flip.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -366,7 +363,6 @@ Flip
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-
     opacity: 0.5;
     transition: opacity 0.1s ease-in-out;
   }
@@ -417,7 +413,7 @@ Rotate
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-image: url(../../../assets/img/rotate.png);
+    background-image: url('../../../assets/img/rotate.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -426,7 +422,6 @@ Rotate
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-
     opacity: 0.5;
     transition: opacity 0.1s ease-in-out;
   }
@@ -450,7 +445,6 @@ Rotate
     height: 8px; */
   width: 20px;
   height: 20px;
-
   cursor: pointer;
   transition: all 0.1s ease-in-out;
 }
@@ -495,7 +489,7 @@ Trash
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-image: url(../../../assets/img/trash.png);
+    background-image: url('../../../assets/img/trash.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
