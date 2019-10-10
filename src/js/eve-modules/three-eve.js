@@ -15,7 +15,7 @@ import * as THREE from 'three';
 import { VRM } from '@pixiv/three-vrm';
 
 import LibEve from '../common/lib-eve';
-import GlbEve from '../common/global-eve';
+import GlbEve from '../common/glb-eve';
 import { OrbitControls } from '../three-modules/OrbitControls';
 import { FBXLoader } from '../three-modules/FBXLoader';
 import { DRACOLoader } from '../three-modules/DRACOLoader';
@@ -406,29 +406,29 @@ const ThreeEve = (function(w, $) {
     //
 
     _addFileWrap(mousePos) {
-      GlbEve.newFileId += 1;
+      GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
       const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="trash-wrapper"></div>';
-      const assertFile = `<div id ="${GlbEve.newFileId}" class="glsl file-wrap" style="transition: ${IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
+      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="glsl file-wrap" style="transition: ${IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
       $('#add-files').append(assertFile);
 
       const hide = $('<div class="hide-scissor"></div>').css({
-        left: `${mousePos.left * GlbEve.mouseWheelVal - 600 / 2}px`,
-        top: `${mousePos.top * GlbEve.mouseWheelVal - 600 / 2}px`,
-        transform: `translate(${GlbEve.xNewMinus}px, ${GlbEve.yNewMinus}px)`
+        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
+        transform: `translate(${-GlbEve.X_NEW}px, ${-GlbEve.Y_NEW}px)`
       });
       $('#add-files').append(hide);
 
-      const fileId = `#${GlbEve.newFileId}`;
+      const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);
 
       $fileId.css({
-        left: `${mousePos.left * GlbEve.mouseWheelVal - 600 / 2}px`,
-        top: `${mousePos.top * GlbEve.mouseWheelVal - 600 / 2}px`,
-        transform: `translate(${GlbEve.xNewMinus}px, ${GlbEve.yNewMinus}px)`,
+        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
+        transform: `translate(${-GlbEve.X_NEW}px, ${-GlbEve.Y_NEW}px)`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
@@ -441,7 +441,7 @@ const ThreeEve = (function(w, $) {
         $fileId.addClass('grab-pointer');
       }
 
-      return GlbEve.newFileId;
+      return GlbEve.NEWFILE_ID;
     }
   };
 
@@ -496,12 +496,14 @@ const ThreeEve = (function(w, $) {
     animate() {
       const self = this;
       self._render();
-      requestAnimationFrame(() => {
-        self.animate();
-      });
-      // setTimeout(function() {
-      //   requestAnimationFrame(this.animate());
-      // }, 1000 / 120);
+      // requestAnimationFrame(() => {
+      //   self.animate();
+      // });
+      setTimeout(function() {
+        requestAnimationFrame(() => {
+          self.animate();
+        });
+      }, 1000 / 120);
     },
 
     //
@@ -520,10 +522,10 @@ const ThreeEve = (function(w, $) {
 
           const { controls } = scene.userData;
           if (controls) {
-            controls.rotateSpeed = 1 * GlbEve.mouseWheelVal;
-            controls.panSpeed = 1 * GlbEve.mouseWheelVal;
+            controls.rotateSpeed = 1 * GlbEve.MOUSE_WHEEL_VAL;
+            controls.panSpeed = 1 * GlbEve.MOUSE_WHEEL_VAL;
             if (
-              $(`#${GlbEve.currentId}`)
+              $(`#${GlbEve.CURRENT_ID}`)
                 .find('.thumbtack-wrapper')
                 .hasClass('active')
             ) {

@@ -50,5 +50,5 @@ const HogeEve = (function(w, d, $) {
   return Hoge;
 })(window, document, jQuery); // Each item is for scope. w = window, d = document, and $ = jQuery
 
-// Export the above object to wherever it is imported. This will make the app a module
+// Export the above object to wherever it is called. This will make the app a module
 export default HogeEve;

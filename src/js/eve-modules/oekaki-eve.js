@@ -10,7 +10,7 @@
  */
 
 import jQuery from 'jquery';
-import GlbEve from '../common/global-eve';
+import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
 const OekakiEve = (function(d, $) {
@@ -164,6 +164,9 @@ const OekakiEve = (function(d, $) {
 
     setFlgs() {
       document.addEventListener('mousedown', e => {
+        e.stopPropagation();
+        e.preventDefault();
+
         if (e.target) {
           if (e.target.closest('#color-oekaki')) {
             const isWheelArea = this._isWheelArea(e);
@@ -216,6 +219,9 @@ const OekakiEve = (function(d, $) {
 
     handleEvents() {
       document.addEventListener('mousedown', e => {
+        e.stopPropagation();
+        e.preventDefault();
+
         if (e.target) {
           if (e.target.closest('#color-oekaki')) {
             this._colorWheelArea(e);
@@ -237,6 +243,9 @@ const OekakiEve = (function(d, $) {
       });
 
       document.addEventListener('mousemove', e => {
+        e.stopPropagation();
+        e.preventDefault();
+
         if (e.target) {
           const originX = $(this.param.container).offset().left;
           const originY = $(this.param.container).offset().top;
@@ -280,10 +289,10 @@ const OekakiEve = (function(d, $) {
       }
     },
 
-    //
-    // Color Wheel
-    //
-
+    /**
+     * Color wheel
+     *
+     */
     drawWheel() {
       const resolution = 1;
       const outerRadius = 100;
@@ -460,10 +469,10 @@ const OekakiEve = (function(d, $) {
       return deg;
     },
 
-    //
-    // Color Triangle
-    //
-
+    /**
+     * Color triangle
+     *
+     */
     drawTriangle() {
       this._createTriangle();
       this._createTriangleCircle();
@@ -730,10 +739,10 @@ const OekakiEve = (function(d, $) {
       ];
     },
 
-    //
-    // Toggle Buttons
-    //
-
+    /**
+     * Toggling tools
+     *
+     */
     _toggleTool($container, e) {
       if (e.button !== 1) {
         e.stopPropagation();
@@ -764,15 +773,15 @@ const OekakiEve = (function(d, $) {
       }
     },
 
-    //
-    // Canvas
-    //
-
+    /**
+     * Canvas
+     *
+     */
     _createCanvasWrapper() {
       const startX = this.canvas.newCanvasPos.x;
       const startY = this.canvas.newCanvasPos.y;
 
-      GlbEve.newFileId += 1;
+      GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
       const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
@@ -782,19 +791,19 @@ const OekakiEve = (function(d, $) {
         '<div class="flip-wrapper"></div>' +
         '<div class="trash-wrapper"></div>';
       const assertFile =
-        `<div id ="${GlbEve.newFileId}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
+        `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${IS_TRANSITION};">` +
         `<div class="function-wrapper">${funcTags}</div>` +
         '<div class="eve-main is-flipped"></div>' +
         '</div>';
       $('#add-files').append(assertFile);
 
-      const fileId = `#${GlbEve.newFileId}`;
+      const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);
 
       $fileId.css({
-        left: `${startX * GlbEve.mouseWheelVal}px`,
-        top: `${startY * GlbEve.mouseWheelVal}px`,
-        transform: `translate(${GlbEve.xNewMinus}px, ${GlbEve.yNewMinus}px)`,
+        left: `${startX * GlbEve.MOUSE_WHEEL_VAL}px`,
+        top: `${startY * GlbEve.MOUSE_WHEEL_VAL}px`,
+        transform: `translate(${-GlbEve.X_NEW}px, ${-GlbEve.Y_NEW}px)`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
@@ -823,8 +832,8 @@ const OekakiEve = (function(d, $) {
       const resultY = Math.abs(endY - startY);
 
       $canvas.css({
-        width: `${resultX * GlbEve.mouseWheelVal}px`,
-        height: `${resultY * GlbEve.mouseWheelVal}px`
+        width: `${resultX * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${resultY * GlbEve.MOUSE_WHEEL_VAL}px`
       });
     },
 
@@ -859,8 +868,8 @@ const OekakiEve = (function(d, $) {
         y: e.clientY
       };
       const pos = {
-        x: (screenPos.x - canvasRect.left) * GlbEve.mouseWheelVal,
-        y: (screenPos.y - canvasRect.top) * GlbEve.mouseWheelVal
+        x: (screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL,
+        y: (screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL
       };
 
       let pressure = this.options.brush_size;

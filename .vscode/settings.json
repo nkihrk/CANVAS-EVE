@@ -35,5 +35,6 @@
   "eslint.workingDirectories": ["./"],
   "scss.lint.compatibleVendorPrefixes": "warning",
   "editor.tabSize": 2,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "eslint.autoFixOnSave": true
 }

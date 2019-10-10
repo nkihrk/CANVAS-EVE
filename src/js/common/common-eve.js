@@ -11,7 +11,7 @@
 import jQuery from 'jquery';
 import LibEve from './lib-eve';
 
-const CommonEve = (function(w, $) {
+const CommonEve = (function(d, w, $) {
   function Common() {
     LibEve.call(this);
   }
@@ -24,13 +24,22 @@ const CommonEve = (function(w, $) {
     options: {},
 
     load() {
-      // this.eventReady();
+      this.eventReady();
       this.eventLoad();
       this.eventLoadResize();
     },
 
     eventReady() {
-      $(function() {
+      // Prevent default right-click events for the time being
+      d.addEventListener(
+        'contextmenu',
+        function(e) {
+          e.preventDefault();
+        },
+        false
+      );
+
+      d.addEventListener('DOMContentLoaded', function() {
         const h = $(w).height();
         const loadTag =
           '<div id="loader-bg" style="position: fixed; z-index: 1;">' +
@@ -40,7 +49,6 @@ const CommonEve = (function(w, $) {
           '</div>' +
           '</div>' +
           '</div>';
-
         $(this.body).prepend(loadTag);
         $('#loader-bg, #loader')
           .height(h)
@@ -60,7 +68,6 @@ const CommonEve = (function(w, $) {
           .fadeOut(300, function() {
             $(this).remove();
           });
-        // console.log('load() is called.');
       }
 
       this.event(w, 'load', false, load);
@@ -75,7 +82,6 @@ const CommonEve = (function(w, $) {
           top,
           left
         });
-        // console.log('loadResize() is called.');
       }
 
       this.event(w, 'load resize', false, loadResize);
@@ -83,6 +89,6 @@ const CommonEve = (function(w, $) {
   });
 
   return Common;
-})(window, jQuery);
+})(document, window, jQuery);
 
 export default CommonEve;

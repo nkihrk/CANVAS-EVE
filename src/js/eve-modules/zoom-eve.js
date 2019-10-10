@@ -1,116 +1,134 @@
-(function ($) {
-    const zoomEve = () => {
-        // Execute if flags are true
-        const main = () => {
-            $(document).mousemove(function (e) {
-                // Prevent from the default drag events
-                e.preventDefault();
+/**
+ *
+ * Zooming functionality for CANVAS EVE
+ *
+ * Dependencies // list up dependecies here
+ * - jQuery 3.4.1
+ * - glb-eve
+ *
+ */
 
-                var zoomOrigin = $('#zoom').css('transform-origin');
-                var zoomScaleX = transformValue($('#zoom').css('transform')).scaleX;
-                var zoomScaleY = transformValue($('#zoom').css('transform')).scaleY;
-                var zoomOffset = $('#zoom').offset();
-                // console.log('zoomOrigin', zoomOrigin, 'zoomScaleX', zoomScaleX, 'zoomScaleY', zoomScaleY, 'zoomOffset', zoomOffset);
+import jQuery from 'jquery';
 
-            });
+import GlbEve from '../common/glb-eve';
 
+const ZoomEve = (function(d, $) {
+  function Zoom() {
+    this.i = 1;
+    this.xLast = 0;
+    this.yLast = 0;
+    this.xScreen = 0;
+    this.yScreen = 0;
+    this.xImage = 0;
+    this.yImage = 0;
+  }
 
-            // Implement zoom-in and zoom-out
-            const setZoom = () => {
-                // var i = parseInt(transformValue($('#zoom').css('transform')).scaleX);
-                var i = 1;
-                var xLast = 0; // last x location on the screen
-                var yLast = 0; // last y location on the screen
-                var xImage = 0; // last x location on the image
-                var yImage = 0; // last y location on the image
-                $(document).on('mousewheel', function (e) {
-                    // find current location on screen 
-                    xScreen = clientX - $('#plain').offset().left;
-                    yScreen = clientY - $('#plain').offset().top;
+  const modules = {};
 
-                    // find current location on the image at the current scale
-                    xImage = xImage + ((xScreen - xLast) / i);
-                    yImage = yImage + ((yScreen - yLast) / i);
-                    // console.log('xImage', xImage, 'yImage', yImage);
+  Zoom.prototype = Object.assign(modules, {
+    constructor: Zoom,
 
+    options: {},
 
-                    var delta = e.deltaY;
-                    if (delta < 0) {
-                        if (i > 2) {
-                            i = 2;
-                            i -= 0.09;
-                        } else if (i > 0.9) {
-                            i -= 0.09;
-                        } else if (i > 0.8) {
-                            i -= 0.08;
-                        } else if (i > 0.7) {
-                            i -= 0.07;
-                        } else if (i > 0.6) {
-                            i -= 0.06;
-                        } else if (i > 0.5) {
-                            i -= 0.05;
-                        } else if (i > 0.4) {
-                            i -= 0.04;
-                        } else if (i > 0.3) {
-                            i -= 0.03;
-                        } else if (i > 0.2) {
-                            i -= 0.02;
-                        } else if (i >= 0.1) {
-                            i -= 0.01;
-                        } else {
-                            i = 0.09;
-                        }
-                    } else {
-                        if (i > 2) {
-                            i = 2.09;
-                        } else if (i > 0.9) {
-                            i += 0.09;
-                        } else if (i > 0.8) {
-                            i += 0.08;
-                        } else if (i > 0.7) {
-                            i += 0.07;
-                        } else if (i > 0.6) {
-                            i += 0.06;
-                        } else if (i > 0.5) {
-                            i += 0.05;
-                        } else if (i > 0.4) {
-                            i += 0.04;
-                        } else if (i > 0.3) {
-                            i += 0.03;
-                        } else if (i > 0.2) {
-                            i += 0.02;
-                        } else if (i > 0.1) {
-                            i += 0.01;
-                        } else {
-                            i = 0.1;
-                            i += 0.01;
-                        }
-                    }
+    load() {
+      this.setZoom();
+    },
 
-                    // determine the location on the screen at the new scale
-                    xNew = (xScreen - xImage) / i;
-                    yNew = (yScreen - yImage) / i;
-                    // console.log('xNew', xNew, 'yNew', yNew);
+    setZoom() {
+      const self = this;
+      // IE9+, Chrome, Safari, Opera
+      d.addEventListener(
+        'mousewheel',
+        e => {
+          self._zoom(e);
+        },
+        false
+      );
+      // Firefox
+      d.addEventListener(
+        'DOMMouseScroll',
+        () => {
+          self._zoom(e);
+        },
+        false
+      );
+    },
 
+    //
 
-                    // save the current screen location
-                    xLast = xScreen;
-                    yLast = yScreen;
+    _zoom(e) {
+      this.xScreen = e.clientX - $('#plain').offset().left;
+      this.yScreen = e.clientY - $('#plain').offset().top;
+      this.xImage += (this.xScreen - this.xLast) / this.i;
+      this.yImage += (this.yScreen - this.yLast) / this.i;
 
-                    // console.log('i', i);
-                    mouseWheelVal = 1 / i;
-                    $('#zoom').css({
-                        'transform': 'scale(' + i + ')' + 'translate(' + xNew + 'px, ' + yNew + 'px' + ')',
-                        'transform-origin': xImage + 'px ' + yImage + 'px',
-                    });
-                    // debugCircle('zoom-origin', 'orange', $('#zoom').offset().left, $('#zoom').offset().top);
-                });
-            };
-            setZoom();
-        };
-        main();
+      const delta = e.deltaY;
 
+      if (delta > 0) {
+        if (this.i > 2) {
+          this.i = 2;
+          this.i -= 0.09;
+        } else if (this.i > 0.9) {
+          this.i -= 0.09;
+        } else if (this.i > 0.8) {
+          this.i -= 0.08;
+        } else if (this.i > 0.7) {
+          this.i -= 0.07;
+        } else if (this.i > 0.6) {
+          this.i -= 0.06;
+        } else if (this.i > 0.5) {
+          this.i -= 0.05;
+        } else if (this.i > 0.4) {
+          this.i -= 0.04;
+        } else if (this.i > 0.3) {
+          this.i -= 0.03;
+        } else if (this.i > 0.2) {
+          this.i -= 0.02;
+        } else if (this.i >= 0.1) {
+          this.i -= 0.01;
+        } else {
+          this.i = 0.09;
+        }
+      } else if (this.i > 2) {
+        this.i = 2.09;
+      } else if (this.i > 0.9) {
+        this.i += 0.09;
+      } else if (this.i > 0.8) {
+        this.i += 0.08;
+      } else if (this.i > 0.7) {
+        this.i += 0.07;
+      } else if (this.i > 0.6) {
+        this.i += 0.06;
+      } else if (this.i > 0.5) {
+        this.i += 0.05;
+      } else if (this.i > 0.4) {
+        this.i += 0.04;
+      } else if (this.i > 0.3) {
+        this.i += 0.03;
+      } else if (this.i > 0.2) {
+        this.i += 0.02;
+      } else if (this.i > 0.1) {
+        this.i += 0.01;
+      } else {
+        this.i = 0.1;
+        this.i += 0.01;
+      }
 
-    };
-    zoomEve();
-})(jQuery);
+      GlbEve.X_NEW = (this.xScreen - this.xImage) / this.i;
+      GlbEve.Y_NEW = (this.yScreen - this.yImage) / this.i;
+
+      this.xLast = this.xScreen;
+      this.yLast = this.yScreen;
+
+      GlbEve.MOUSE_WHEEL_VAL = 1 / this.i;
+      $('#zoom').css({
+        transform: `scale(${this.i}) translate(${GlbEve.X_NEW}px, ${GlbEve.Y_NEW}px)`,
+        'transform-origin': `${this.xImage}px ${this.yImage}px`
+      });
+    }
+  });
+
+  return Zoom;
+})(document, jQuery);
+
+export default ZoomEve;

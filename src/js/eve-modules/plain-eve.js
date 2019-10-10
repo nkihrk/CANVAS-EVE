@@ -1,102 +1,88 @@
-(function ($) {
-    const plainEve = () => {
+/**
+ *
+ * Screen-space coordinate for CANVAS EVE
+ *
+ * Dependencies
+ * - jQuery 3.4.1
+ * - lib-eve
+ *
+ */
 
-        const plain = {
-            'size': {
-                'width': 0,
-                'height': 0
-            },
-            'pos': {
-                'left': 0,
-                'top': 0
-            },
-            'relPos': {
-                'left': 0,
-                'top': 0
-            }
-        }
+import jQuery from 'jquery';
 
-        var mousewheel_avail_flg = false;
+import LibEve from '../common/lib-eve';
 
+const PlainEve = (function(d, $) {
+  function Plain() {
+    LibEve.call(this);
 
-        ///
-
-
-        // Initialize values
-        const init = () => {
-            $(document).on(EVENTNAME_TOUCHSTART, function (e) {
-                var $plain = $('#plain');
-
-                plain.size.width = $plain.outerWidth();
-                plain.size.height = $plain.outerHeight();
-
-                plain.pos.left = $plain.offset().left;
-                plain.pos.top = $plain.offset().top;
-
-                plain.relPos.left = clientX - plain.pos.left;
-                plain.relPos.top = clientY - plain.pos.top;
-                // Image-space mouse coordinates
-                if (e.button == 1) {
-                    mousewheel_avail_flg = true;
-                    // console.log('mousewheel_avail_flg', mousewheel_avail_flg);
-                }
-            });
-        };
-        init();
-
-
-        // Update variables everytime a mousemove event is called on wherever
-        const Update = function () {
-            $(document).on(EVENTNAME_TOUCHMOVE, function (e) {
-                // debugCircle('plainPos', 'orange', $('#plain').offset().left, $('#plain').offset().top);
-                // debugCircle('zoomPos', 'white', $('#zoom').offset().left, $('#zoom').offset().top);
-                // debugCircle('filePos', 'red', $('.file-wrap').offset().left, $('.file-wrap').offset().top);
-            });
-        };
-        Update();
-
-
-        // Configuring flags
-        const configFlgs = () => {
-            // Reset flags
-            $(document).on('mouseup', function (e) {
-                if (mousewheel_avail_flg == true) {
-                    iframePointerReset();
-
-                    $('#canvas-eve').removeClass('active-mousewheel');
-
-                    mousewheel_avail_flg = false;
-                    // console.log('mousewheel_avail_flg', mousewheel_avail_flg);
-                }
-            });
-        };
-        configFlgs();
-
-
-        // Execute if flags are true
-        const main = () => {
-            // Move the canvas
-            $(document).on(EVENTNAME_TOUCHMOVE, function (e) {
-                // Prevent from the default drag events
-                e.preventDefault();
-
-                if (mousewheel_avail_flg == true) {
-                    iframePointerNone();
-
-                    $('#plain').css({
-                        'left': clientX - plain.relPos.left + 'px',
-                        'top': clientY - plain.relPos.top + 'px'
-                    });
-
-                    // Change a mouse pointer to a grabbing
-                    $('#canvas-eve').addClass('active-mousewheel');
-                    // debugCircle('plain-origin', 'red', $('#plain').offset().left, $('#plain').offset().top);
-                }
-            });
-        };
-        main();
-
-
+    this.param = {
+      pos: {
+        left: 0,
+        top: 0
+      },
+      relPos: {
+        left: 0,
+        top: 0
+      }
     };
-    plainEve();
-})(jQuery);
+
+    this.flgs = {
+      mousewheel_avail_flg: false
+    };
+  }
+
+  const modules = { ...LibEve.prototype };
+
+  Plain.prototype = Object.assign(modules, {
+    constructor: Plain,
+
+    options: {},
+
+    load() {
+      this.setFlgs();
+      this.resetFlgs();
+      this.handleEvents();
+    },
+
+    setFlgs() {
+      d.addEventListener('mousedown', e => {
+        const $plain = $('#plain');
+        this.param.relPos.left = e.clientX - $plain.offset().left;
+        this.param.relPos.top = e.clientY - $plain.offset().top;
+        if (e.button === 1) {
+          this.flgs.mousewheel_avail_flg = true;
+        }
+      });
+    },
+
+    resetFlgs() {
+      d.addEventListener('mouseup', () => {
+        if (this.flgs.mousewheel_avail_flg === true) {
+          this.iframePointerReset();
+          this.flgs.mousewheel_avail_flg = false;
+          $('#canvas-eve').removeClass('active-mousewheel');
+        }
+      });
+    },
+
+    handleEvents() {
+      d.addEventListener('mousemove', e => {
+        e.preventDefault();
+
+        if (this.flgs.mousewheel_avail_flg === true) {
+          this.iframePointerNone();
+          $('#plain').css({
+            left: `${e.clientX - this.param.relPos.left}px`,
+            top: `${e.clientY - this.param.relPos.top}px`
+          });
+          $('#canvas-eve').addClass('active-mousewheel');
+        }
+      });
+    }
+  });
+
+  return Plain;
+})(document, jQuery);
+
+export default PlainEve;
