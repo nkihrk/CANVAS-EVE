@@ -90,22 +90,22 @@ const ColpickEve = ((W, D) => {
         if (e.target) {
           if (e.target.closest('#copy-colpick')) this._copyHex();
           if (e.target.closest('#toggle-colpick')) this._toggleColpick();
-          if (e.target.closest('.file-wrap')) {
-            if (
-              $('#toggle-colpick').hasClass('active') &&
-              $(e.target).find('canvas').length > 0 &&
-              e.button !== 1
-            ) {
-              const col = this._getColor(e);
-              const hex = this.rgb2hex([col[0], col[1], col[2]]);
+          if (
+            $('#toggle-colpick').hasClass('active') &&
+            $(e.target)
+              .parents('.file-wrap')
+              .find('canvas').length > 0 &&
+            e.button !== 1
+          ) {
+            const col = this._getColor(e);
+            const hex = this.rgb2hex([col[0], col[1], col[2]]);
 
-              if (col.a > 0) {
-                this._updatePalette(hex);
-                this._updateRgbBar(col);
-                this._updateRgbInput(col);
-              } else {
-                this._initColpick();
-              }
+            if (col[3] > 0) {
+              this._updatePalette(hex);
+              this._updateRgbBar(col);
+              this._updateRgbInput(col);
+            } else {
+              this._initColpick();
             }
           }
 
@@ -189,23 +189,19 @@ const ColpickEve = ((W, D) => {
     //
 
     _getColor(e) {
-      const context = $(e.target)
-        .find('canvas')[0]
-        .getContext('2d');
-      const relPosX = e.clientX - $(e.target).offset().left;
-      const relPosY = e.clientY - $(e.target).offset().top;
+      const $fileWrap = $(e.target).parents('.file-wrap');
+      const context = $fileWrap.find('canvas')[0].getContext('2d');
+      const relPosX = e.clientX - $fileWrap.offset().left;
+      const relPosY = e.clientY - $fileWrap.offset().top;
       let imagedata = context.getImageData(
         relPosX * GlbEve.MOUSE_WHEEL_VAL,
         relPosY * GlbEve.MOUSE_WHEEL_VAL,
         1,
         1
       );
-      if ($(e.target).has('.flipped').length > 0) {
+      if ($fileWrap.has('.flipped').length > 0) {
         imagedata = context.getImageData(
-          $(e.target)
-            .find('img')
-            .width() -
-            relPosX * GlbEve.MOUSE_WHEEL_VAL,
+          $fileWrap.find('img').width() - relPosX * GlbEve.MOUSE_WHEEL_VAL,
           relPosY * GlbEve.MOUSE_WHEEL_VAL,
           1,
           1

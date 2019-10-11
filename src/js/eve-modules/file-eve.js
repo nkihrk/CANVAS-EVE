@@ -11,7 +11,7 @@
  */
 
 import $ from 'jquery';
-// import { PSD } from 'psd';
+import PSD from 'psd.js/dist/psd.min';
 
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
@@ -173,6 +173,15 @@ const FileEve = ((W, D, M) => {
       checkAll(fileName) {
         return /\.(jpe?g|png|gif|svg|bmp|psd)$/i.test(fileName);
       }
+    },
+
+    //
+
+    _fileReader(file, mousePos, progSet) {
+      const self = this;
+      this._readFile(file, progSet).then(function(img) {
+        self._readerPromise(img, mousePos, progSet);
+      });
     },
 
     //
