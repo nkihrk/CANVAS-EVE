@@ -12,7 +12,7 @@ import $ from 'jquery';
 import LibEve from './common/lib-eve'; // Just for example
 
 // The app`s capital letter must be uppercase. Add 'Eve' after the name
-const HogeEve = ((w, d) => {
+const HogeEve = ((W, D) => {
   function Hoge() {
     // To inherit external modules, code like down below
     LibEve.call(this);
@@ -48,7 +48,9 @@ const HogeEve = ((w, d) => {
   });
 
   return Hoge;
-})(window, document); // Each item is for scope. w = window, and d = document
+  // Each item is for scope. W = window, and D = document.
+  // Add objects in left-to-right order. All the represented characters, which is W and D, must be uppercase.
+})(window, document);
 
 // Export the above object to wherever it is called. This will make the app a module
 export default HogeEve;

@@ -33,7 +33,7 @@ import { OBJLoader } from '../three-modules/OBJLoader';
 import { MTLLoader } from '../three-modules/MTLLoader';
 import { MMDLoader } from '../three-modules/MMDLoader';
 
-const ThreeEve = ((w, d, m) => {
+const ThreeEve = ((W, D, M) => {
   /**
    * Load model files.
    *
@@ -149,14 +149,10 @@ const ThreeEve = ((w, d, m) => {
       const BB = new Box3().setFromObject(object);
       const centerpoint = BB.getCenter();
       const size = BB.getSize();
-      let backup = size.y / 2 / m.sin((camera.fov / 2) * (m.PI / 180));
-      if (size.x > size.y) {
-        backup = size.x / 2 / m.sin((camera.fov / 2) * (m.PI / 180));
-      }
+      let backup = size.y / 2 / M.sin((camera.fov / 2) * (M.PI / 180));
+      if (size.x > size.y) backup = size.x / 2 / M.sin((camera.fov / 2) * (M.PI / 180));
       let camZpos = BB.max.z + backup + camera.near;
-      if (bool) {
-        camZpos = -camZpos;
-      }
+      if (bool) camZpos = -camZpos;
 
       camera.position.set(centerpoint.x, centerpoint.y, camZpos);
       camera.far = camera.near + 300 * size.z;
@@ -181,7 +177,7 @@ const ThreeEve = ((w, d, m) => {
    * @param {object} progSet - The set of states for a progress bar
    */
   function Reader(scenes) {
-    this.canvasEveWrap = d.getElementById('canvas-eve-wrapper');
+    this.canvasEveWrap = D.getElementById('canvas-eve-wrapper');
     this.Loader = new Loader();
     this.scenes = scenes;
   }
@@ -239,7 +235,7 @@ const ThreeEve = ((w, d, m) => {
       // console.log('files', files);
 
       const progSet = {
-        progress: d.getElementById('progress-bar'),
+        progress: D.getElementById('progress-bar'),
         fileCount: files.length,
         eachProg: parseFloat(100 / files.length),
         totalProg: 0,
@@ -249,13 +245,9 @@ const ThreeEve = ((w, d, m) => {
       if (progSet.fileCount > 0) {
         let supportedModelFlg = false;
         Array.from(files).forEach(file => {
-          if (this._isSupported(file.name)) {
-            supportedModelFlg = true;
-          }
+          if (this._isSupported(file.name)) supportedModelFlg = true;
         });
-        if (supportedModelFlg === true) {
-          this.read(files, this.scenes, mousePos, progSet);
-        }
+        if (supportedModelFlg === true) this.read(files, this.scenes, mousePos, progSet);
       }
     },
 
@@ -328,9 +320,7 @@ const ThreeEve = ((w, d, m) => {
       });
 
       manager.onStart = () => {
-        if (progSet.iterate === 0) {
-          progSet.progress.classList.add('loading');
-        }
+        if (progSet.iterate === 0) progSet.progress.classList.add('loading');
       };
 
       manager.onProgress = () => {
@@ -397,7 +387,7 @@ const ThreeEve = ((w, d, m) => {
       const scene = new Scene();
 
       // eslint-disable-next-line prefer-destructuring
-      scene.userData.element = d.getElementById(id).getElementsByClassName('eve-main')[0];
+      scene.userData.element = D.getElementById(id).getElementsByClassName('eve-main')[0];
       scene.add(new HemisphereLight(0xaaaaaa, 0x444444));
 
       const light = new DirectionalLight(0xffffff, 0.5);
@@ -440,9 +430,7 @@ const ThreeEve = ((w, d, m) => {
 
       // For colpick-eve.js
       if ($('#toggle-colpick').length > 0) {
-        if (!$('#toggle-colpick').hasClass('active')) {
-          $fileId.addClass('grab-pointer');
-        }
+        if (!$('#toggle-colpick').hasClass('active')) $fileId.addClass('grab-pointer');
       } else {
         $fileId.addClass('grab-pointer');
       }
@@ -466,7 +454,7 @@ const ThreeEve = ((w, d, m) => {
 
     this.scenes = [];
     this.renderer = null; // lazy load
-    this.canvas = d.getElementById('c');
+    this.canvas = D.getElementById('c');
     this.Reader = new Reader(this.scenes);
   }
 
@@ -493,7 +481,7 @@ const ThreeEve = ((w, d, m) => {
         alpha: true
       });
       this.renderer.setClearColor(0x000000, 0);
-      this.renderer.setPixelRatio(w.devicePixelRatio);
+      this.renderer.setPixelRatio(W.devicePixelRatio);
       this.renderer.shadowMap.enabled = true;
     },
 
@@ -575,9 +563,8 @@ const ThreeEve = ((w, d, m) => {
       const cWidth = this.canvas.clientWidth;
       const cHeight = this.canvas.clientHeight;
 
-      if (this.canvas.width !== cWidth || this.canvas.height !== cHeight) {
+      if (this.canvas.width !== cWidth || this.canvas.height !== cHeight)
         this.renderer.setSize(cWidth, cHeight, false);
-      }
     }
   });
 

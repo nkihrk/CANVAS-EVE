@@ -12,7 +12,7 @@ import $ from 'jquery';
 
 import LibEve from '../common/lib-eve';
 
-const PlainEve = (d => {
+const PlainEve = (D => {
   function Plain() {
     LibEve.call(this);
 
@@ -46,18 +46,16 @@ const PlainEve = (d => {
     },
 
     setFlgs() {
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         const $plain = $('#plain');
         this.param.relPos.left = e.clientX - $plain.offset().left;
         this.param.relPos.top = e.clientY - $plain.offset().top;
-        if (e.button === 1) {
-          this.flgs.mousewheel_avail_flg = true;
-        }
+        if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
       });
     },
 
     resetFlgs() {
-      d.addEventListener('mouseup', () => {
+      D.addEventListener('mouseup', () => {
         if (this.flgs.mousewheel_avail_flg === true) {
           this.iframePointerReset();
           this.flgs.mousewheel_avail_flg = false;
@@ -67,7 +65,7 @@ const PlainEve = (d => {
     },
 
     handleEvents() {
-      d.addEventListener('mousemove', e => {
+      D.addEventListener('mousemove', e => {
         e.preventDefault();
 
         if (this.flgs.mousewheel_avail_flg === true) {

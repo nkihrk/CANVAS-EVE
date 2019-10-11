@@ -11,7 +11,7 @@
 import $ from 'jquery';
 import LibEve from './lib-eve';
 
-const CommonEve = ((w, d) => {
+const CommonEve = ((W, D) => {
   function Common() {
     LibEve.call(this);
   }
@@ -31,13 +31,13 @@ const CommonEve = ((w, d) => {
 
     eventReady() {
       $(() => {
-        const h = $(w).height();
+        const h = $(W).height();
         $('#loader-bg, #loader')
           .height(h)
           .css('display', 'block');
 
         // Prevent default right-click events for the time being
-        d.addEventListener(
+        D.addEventListener(
           'contextmenu',
           e => {
             e.preventDefault();
@@ -61,13 +61,13 @@ const CommonEve = ((w, d) => {
           });
       }
 
-      this.event(w, 'load', false, load);
+      this.event(W, 'load', false, load);
     },
 
     eventLoadResize() {
       function loadResize() {
-        const top = `${w.innerHeight - 60}px`;
-        const left = `${w.innerWidth / 2}px`;
+        const top = `${W.innerHeight - 60}px`;
+        const left = `${W.innerWidth / 2}px`;
 
         $('#footer').css({
           top,
@@ -75,7 +75,7 @@ const CommonEve = ((w, d) => {
         });
       }
 
-      this.event(w, 'load resize', false, loadResize);
+      this.event(W, 'load resize', false, loadResize);
     }
   });
 

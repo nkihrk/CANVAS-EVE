@@ -137,7 +137,7 @@ GLSL
   transform-origin: center;
 
   /* Make it transparent at first when a drop event is called. dnd-eve.js  */
-  .transparent {
+  &.transparent {
     opacity: 0;
   }
 

@@ -14,7 +14,7 @@ import $ from 'jquery';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const OekakiEve = ((w, d, m) => {
+const OekakiEve = ((w, D, M) => {
   function Oekaki(container) {
     const size = container.clientWidth;
     const wheelRadius = size / 2;
@@ -51,8 +51,8 @@ const OekakiEve = ((w, d, m) => {
     this.colorTriangle = {
       radius: triangleRadius,
       circlePos: {
-        x: m.cos((m.PI * 2) / 3) * triangleRadius + size / 2,
-        y: m.sin((m.PI * 2) / 3) * triangleRadius + size / 2
+        x: M.cos((M.PI * 2) / 3) * triangleRadius + size / 2,
+        y: M.sin((M.PI * 2) / 3) * triangleRadius + size / 2
       }
     };
 
@@ -164,7 +164,7 @@ const OekakiEve = ((w, d, m) => {
     },
 
     setFlgs() {
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         if (e.target) {
           if (e.target.closest('#color-oekaki')) {
             const isWheelArea = this._isWheelArea(e);
@@ -197,7 +197,7 @@ const OekakiEve = ((w, d, m) => {
     //
 
     resetFlgs() {
-      d.addEventListener('mouseup', () => {
+      D.addEventListener('mouseup', () => {
         if (this.flgs.oekaki.move_wheelcircle_flg === true)
           this.flgs.oekaki.move_wheelcircle_flg = false;
         if (this.flgs.oekaki.move_trianglecircle_flg === true)
@@ -213,7 +213,7 @@ const OekakiEve = ((w, d, m) => {
     //
 
     handleEvents() {
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         if (e.target) {
           if (e.target.closest('#color-oekaki')) {
             this._colorWheelArea(e);
@@ -229,12 +229,12 @@ const OekakiEve = ((w, d, m) => {
               '#filldrip-oekaki'
             ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
           ) {
-            this._toggleTool($(`#${e.target.getAttribute('id')}`), e);
+            this._toggleTool($(e.target), e);
           }
         }
       });
 
-      d.addEventListener('mousemove', e => {
+      D.addEventListener('mousemove', e => {
         e.stopPropagation();
         e.preventDefault();
 
@@ -255,7 +255,7 @@ const OekakiEve = ((w, d, m) => {
 
       if (w.PointerEvent) {
         for (let i = 0; i < this.drawPointerEvents.length; i++) {
-          d.addEventListener(this.drawPointerEvents[i], e => {
+          D.addEventListener(this.drawPointerEvents[i], e => {
             if (this.flgs.brush.brush_flg === true) {
               if (e.target.closest('.oekaki-canvas')) {
                 const $canvas = $(e.target);
@@ -266,7 +266,7 @@ const OekakiEve = ((w, d, m) => {
         }
       } else {
         for (let i = 0; i < this.drawEvents.length; i++) {
-          d.addEventListener(this.drawEvents[i], e => {
+          D.addEventListener(this.drawEvents[i], e => {
             if (e.target && this.flgs.brush.brush_flg === true) {
               if (e.target.closest('.oekaki-canvas')) {
                 const $canvas = $(e.target);
@@ -286,7 +286,7 @@ const OekakiEve = ((w, d, m) => {
       const resolution = 1;
       const outerRadius = 100;
       const innerRadius = outerRadius - (this.colorWheel.thickness / this.colorWheel.radius) * 100;
-      const root = d.getElementById('color-wheel');
+      const root = D.getElementById('color-wheel');
 
       this._createWheelCircle();
       this._generateConicGradiant(outerRadius, resolution, root);
@@ -296,7 +296,7 @@ const OekakiEve = ((w, d, m) => {
     //
 
     _generateOverlay(outerRadius, innerRadius, target) {
-      const circle = d.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      const circle = D.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
       circle.setAttribute('cx', outerRadius);
       circle.setAttribute('cy', outerRadius);
@@ -310,7 +310,7 @@ const OekakiEve = ((w, d, m) => {
 
     _generateConicGradiant(radius, resolution, target) {
       for (let i = 0; i < 360 * resolution; i++) {
-        const path = d.createElementNS('http://www.w3.org/2000/svg', 'path');
+        const path = D.createElementNS('http://www.w3.org/2000/svg', 'path');
 
         path.setAttribute(
           'd',
@@ -356,21 +356,21 @@ const OekakiEve = ((w, d, m) => {
     //
 
     _polar2Cartesian(centerX, centerY, radius, angleInDegrees) {
-      const angleInRadians = ((angleInDegrees - 90) * m.PI) / 180.0;
+      const angleInRadians = ((angleInDegrees - 90) * M.PI) / 180.0;
 
       return {
-        x: centerX + radius * m.cos(angleInRadians),
-        y: centerY + radius * m.sin(angleInRadians)
+        x: centerX + radius * M.cos(angleInRadians),
+        y: centerY + radius * M.sin(angleInRadians)
       };
     },
 
     //
 
     _createWheelCircle() {
-      const wheelCircle = d.createElement('div');
+      const wheelCircle = D.createElement('div');
       const r = this.colorWheel.innerRadius + this.colorWheel.thickness / 2;
-      const left = r * m.cos(this.options.THETA + (3 / 2) * m.PI) + this.param.size / 2;
-      const top = r * m.sin(this.options.THETA + (3 / 2) * m.PI) + this.param.size / 2;
+      const left = r * M.cos(this.options.THETA + (3 / 2) * M.PI) + this.param.size / 2;
+      const top = r * M.sin(this.options.THETA + (3 / 2) * M.PI) + this.param.size / 2;
 
       wheelCircle.id = 'color-wheel-circle';
       wheelCircle.style.left = `${left}px`;
@@ -409,8 +409,8 @@ const OekakiEve = ((w, d, m) => {
       const pointer = this.wheelCircle;
       const r = this.colorWheel.innerRadius + this.colorWheel.thickness / 2;
       const theta = this._calculateTheta(e);
-      const left = r * m.cos(theta) + this.param.size / 2;
-      const top = r * m.sin(theta) + this.param.size / 2;
+      const left = r * M.cos(theta) + this.param.size / 2;
+      const top = r * M.sin(theta) + this.param.size / 2;
       pointer.style.left = `${left}px`;
       pointer.style.top = `${top}px`;
 
@@ -423,23 +423,23 @@ const OekakiEve = ((w, d, m) => {
 
     _calculateTheta(e) {
       const rad =
-        (m.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / m.PI) *
+        (M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / M.PI) *
           180 +
-        (m.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) > 0
+        (M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) > 0
           ? 0
           : 360);
 
-      return (rad / 180) * m.PI;
+      return (rad / 180) * M.PI;
     },
 
     //
 
     _calculateHue(e) {
       const deg =
-        (m.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / m.PI) *
+        (M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / M.PI) *
           180 +
         90 +
-        ((m.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / m.PI) *
+        ((M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / M.PI) *
           180 +
           90 >
         0
@@ -463,8 +463,8 @@ const OekakiEve = ((w, d, m) => {
     _initTriangle() {
       const ctx = this.triangleCtx;
 
-      const leftTopX = m.cos((m.PI * 2) / 3) * this.colorTriangle.radius;
-      const leftTopY = m.sin((m.PI * 2) / 3) * this.colorTriangle.radius;
+      const leftTopX = M.cos((M.PI * 2) / 3) * this.colorTriangle.radius;
+      const leftTopY = M.sin((M.PI * 2) / 3) * this.colorTriangle.radius;
 
       ctx.clearRect(0, 0, this.param.size, this.param.size);
       ctx.save();
@@ -485,7 +485,7 @@ const OekakiEve = ((w, d, m) => {
       );
 
       const grad0 = ctx.createLinearGradient(this.colorTriangle.radius, 0, leftTopX, 0);
-      const hsla = `hsla(${m.round(this.param.color.hue)}, 100%, 50%, `;
+      const hsla = `hsla(${M.round(this.param.color.hue)}, 100%, 50%, `;
       grad0.addColorStop(0, `${hsla}1)`);
       grad0.addColorStop(1, `${hsla}0)`);
       ctx.fillStyle = grad0;
@@ -526,7 +526,7 @@ const OekakiEve = ((w, d, m) => {
     //
 
     _createTriangle() {
-      const c = d.createElement('canvas');
+      const c = D.createElement('canvas');
       c.id = 'color-triangle';
       c.width = this.param.size;
       c.height = this.param.size;
@@ -539,7 +539,7 @@ const OekakiEve = ((w, d, m) => {
     //
 
     _createTriangleCircle() {
-      const triangleCircle = d.createElement('div');
+      const triangleCircle = D.createElement('div');
       triangleCircle.id = 'color-triangle-circle';
       triangleCircle.style.left = `${this.colorTriangle.circlePos.x}px`;
       triangleCircle.style.top = `${this.colorTriangle.circlePos.y}px`;
@@ -562,12 +562,12 @@ const OekakiEve = ((w, d, m) => {
     _isTriangleArea(e) {
       const mouseX = e.clientX - this.param.centerPos.x;
       const mouseY = e.clientY - this.param.centerPos.y;
-      const minX = m.cos((m.PI * 2) / 3) * this.colorTriangle.radius;
+      const minX = M.cos((M.PI * 2) / 3) * this.colorTriangle.radius;
       const maxX = this.colorTriangle.radius;
-      const maxY = (-mouseX + maxX) / m.sqrt(3);
+      const maxY = (-mouseX + maxX) / M.sqrt(3);
 
       if (mouseX > minX && maxX > mouseX) {
-        if (m.abs(mouseY) >= 0 && maxY >= m.abs(mouseY)) {
+        if (M.abs(mouseY) >= 0 && maxY >= M.abs(mouseY)) {
           return true;
         }
         return false;
@@ -581,12 +581,12 @@ const OekakiEve = ((w, d, m) => {
       const mouseX = e.clientX - this.param.centerPos.x;
       const mouseY = e.clientY - this.param.centerPos.y;
 
-      const minX = m.cos((m.PI * 2) / 3) * this.colorTriangle.radius;
+      const minX = M.cos((M.PI * 2) / 3) * this.colorTriangle.radius;
       const maxX = this.colorTriangle.radius;
-      let minY = (mouseX - maxX) / m.sqrt(3);
-      let maxY = (-mouseX + maxX) / m.sqrt(3);
-      minY = mouseX <= minX ? -m.sin((m.PI * 2) / 3) * this.colorTriangle.radius : minY;
-      maxY = mouseX <= minX ? m.sin((m.PI * 2) / 3) * this.colorTriangle.radius : maxY;
+      let minY = (mouseX - maxX) / M.sqrt(3);
+      let maxY = (-mouseX + maxX) / M.sqrt(3);
+      minY = mouseX <= minX ? -M.sin((M.PI * 2) / 3) * this.colorTriangle.radius : minY;
+      maxY = mouseX <= minX ? M.sin((M.PI * 2) / 3) * this.colorTriangle.radius : maxY;
 
       const pointer = this.triangleCircle;
       const $container = $(this.param.container);
@@ -653,10 +653,10 @@ const OekakiEve = ((w, d, m) => {
     _getTriangleColor() {
       const x = this.colorTriangle.circlePos.x - this.param.size / 2;
       const y = this.colorTriangle.circlePos.y - this.param.size / 2;
-      const leftTopX = m.cos((m.PI * 2) / 3) * this.colorTriangle.radius;
-      const leftTopY = m.sin((m.PI * 2) / 3) * this.colorTriangle.radius;
-      const a = -m.tan(m.PI / 6) * x - y - leftTopY + m.tan(m.PI / 6) * leftTopX;
-      const k = m.abs(a) * m.sin(m.PI / 3);
+      const leftTopX = M.cos((M.PI * 2) / 3) * this.colorTriangle.radius;
+      const leftTopY = M.sin((M.PI * 2) / 3) * this.colorTriangle.radius;
+      const a = -M.tan(M.PI / 6) * x - y - leftTopY + M.tan(M.PI / 6) * leftTopX;
+      const k = M.abs(a) * M.sin(M.PI / 3);
       const l = (this.colorTriangle.radius * 3) / 2;
 
       const b = this.hsl2rgb(this.param.color.hue / 360, 1.0, 0.5);
@@ -666,7 +666,7 @@ const OekakiEve = ((w, d, m) => {
       let tmp;
       for (let i = 0; i < 3; i++) {
         tmp = (s[i] * (l - k)) / l + (b[i] * (l - (this.colorTriangle.radius - x))) / l;
-        tmp = m.abs(m.round(tmp));
+        tmp = M.abs(M.round(tmp));
         co.push(tmp);
       }
 
@@ -681,7 +681,7 @@ const OekakiEve = ((w, d, m) => {
       xs *= xs;
       ys *= ys;
 
-      return m.sqrt(xs + ys);
+      return M.sqrt(xs + ys);
     },
 
     //
@@ -714,9 +714,9 @@ const OekakiEve = ((w, d, m) => {
       }
 
       return [
-        m.min(m.floor(r * 256), 255),
-        m.min(m.floor(g * 256), 255),
-        m.min(m.floor(b * 256), 255)
+        M.min(M.floor(r * 256), 255),
+        M.min(M.floor(g * 256), 255),
+        M.min(M.floor(b * 256), 255)
       ];
     },
 
@@ -806,8 +806,8 @@ const OekakiEve = ((w, d, m) => {
       const endX = e.clientX - $('#zoom').offset().left;
       const endY = e.clientY - $('#zoom').offset().top;
 
-      const resultX = m.abs(endX - startX);
-      const resultY = m.abs(endY - startY);
+      const resultX = M.abs(endX - startX);
+      const resultY = M.abs(endY - startY);
 
       $canvas.css({
         width: `${resultX * GlbEve.MOUSE_WHEEL_VAL}px`,
@@ -819,7 +819,7 @@ const OekakiEve = ((w, d, m) => {
 
     _createCanvas() {
       const $newCanvas = this.canvas.$newCanvasId;
-      const c = d.createElement('canvas');
+      const c = D.createElement('canvas');
       const width = $newCanvas.width();
       const height = $newCanvas.height();
 
@@ -870,7 +870,7 @@ const OekakiEve = ((w, d, m) => {
             ctx.strokeStyle = brushColor;
             ctx.lineWidth = pressure;
             // if (this.oekakiParam.useTilt) {
-            //     ctx.lineWidth = pressure * 3 * m.abs(this.tilt.x);
+            //     ctx.lineWidth = pressure * 3 * M.abs(this.tilt.x);
             // } else {
             //     ctx.lineWidth = pressure * 10;
             // }
@@ -935,11 +935,11 @@ const OekakiEve = ((w, d, m) => {
             break;
 
           case 'pointerenter':
-            d.body.style.cursor = 'crosshair';
+            D.body.style.cursor = 'crosshair';
             break;
 
           case 'pointerleave':
-            d.body.style.cursor = 'default';
+            D.body.style.cursor = 'default';
             break;
 
           default:

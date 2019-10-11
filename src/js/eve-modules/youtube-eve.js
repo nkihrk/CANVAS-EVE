@@ -14,7 +14,7 @@ import $ from 'jquery';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const YoutubeEve = ((w, d) => {
+const YoutubeEve = ((W, D) => {
   function Youtube() {
     LibEve.call(this);
   }
@@ -33,7 +33,7 @@ const YoutubeEve = ((w, d) => {
     //
 
     handleEvents() {
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         if (e.target) {
           if (
             e.target.closest('#add-youtube') ||
@@ -55,18 +55,15 @@ const YoutubeEve = ((w, d) => {
               this._parent(e);
             }
 
-            if (e.target.closest('.child-search-button-youtube')) {
-              this._child(e);
-            }
+            if (e.target.closest('.child-search-button-youtube')) this._child(e);
           }
         }
       });
 
-      d.addEventListener('mouseup', e => {
+      D.addEventListener('mouseup', e => {
         if (e.target) {
-          if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube')) {
+          if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
             this.iframePointerReset();
-          }
         }
       });
     },

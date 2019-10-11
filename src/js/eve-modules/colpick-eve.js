@@ -13,7 +13,7 @@ import $ from 'jquery';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const ColpickEve = ((w, d) => {
+const ColpickEve = ((W, D) => {
   function Colpick() {
     LibEve.call(this);
 
@@ -45,7 +45,7 @@ const ColpickEve = ((w, d) => {
     init() {
       this._initColpick();
 
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         if (e.target) {
           if (
             e.target.closest('#red-cir-colpick') ||
@@ -62,7 +62,7 @@ const ColpickEve = ((w, d) => {
     //
 
     setFlgs() {
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         if (e.target) {
           if (
             e.target.closest('#red-cir-colpick') ||
@@ -78,7 +78,7 @@ const ColpickEve = ((w, d) => {
     //
 
     resetFlgs() {
-      d.addEventListener('mouseup', () => {
+      D.addEventListener('mouseup', () => {
         if (this.flgs.move_circle_flg === true) this.flgs.move_circle_flg = false;
       });
     },
@@ -86,12 +86,10 @@ const ColpickEve = ((w, d) => {
     //
 
     handleEvents() {
-      d.addEventListener('mousedown', e => {
+      D.addEventListener('mousedown', e => {
         if (e.target) {
           if (e.target.closest('#copy-colpick')) this._copyHex();
-
           if (e.target.closest('#toggle-colpick')) this._toggleColpick();
-
           if (e.target.closest('.file-wrap')) {
             if (
               $('#toggle-colpick').hasClass('active') &&
@@ -117,7 +115,7 @@ const ColpickEve = ((w, d) => {
         }
       });
 
-      d.addEventListener('change', e => {
+      D.addEventListener('change', e => {
         if (e.target) {
           if (e.target.closest('#input-colpick')) {
             const hex = this._getHex(e);
@@ -144,7 +142,7 @@ const ColpickEve = ((w, d) => {
         }
       });
 
-      d.addEventListener('mousemove', e => {
+      D.addEventListener('mousemove', e => {
         if (this.flgs.move_circle_flg === true) this._syncWithBar(e);
       });
     },

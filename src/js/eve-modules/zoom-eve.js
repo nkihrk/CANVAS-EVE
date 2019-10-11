@@ -14,7 +14,7 @@ import LibEve from '../common/lib-eve';
 
 import GlbEve from '../common/glb-eve';
 
-const ZoomEve = (d => {
+const ZoomEve = (D => {
   function Zoom() {
     LibEve.call(this);
 
@@ -43,7 +43,7 @@ const ZoomEve = (d => {
     setZoom() {
       const self = this;
       // IE9+, Chrome, Safari, Opera
-      d.addEventListener(
+      D.addEventListener(
         'mousewheel',
         e => {
           self._zoom(e);
@@ -51,7 +51,7 @@ const ZoomEve = (d => {
         false
       );
       // Firefox
-      d.addEventListener(
+      D.addEventListener(
         'DOMMouseScroll',
         () => {
           self._zoom(e);
