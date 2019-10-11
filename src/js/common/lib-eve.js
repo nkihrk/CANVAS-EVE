@@ -36,8 +36,8 @@ Object.assign(lib.prototype, {
    */
   rgb2hex(rgb) {
     return `#${rgb
-      .map(value => {
-        return `0${value.toString(16)}`.slice(-2);
+      .map(val => {
+        return `0${val.toString(16)}`.slice(-2);
       })
       .join('')}`;
   },
@@ -65,10 +65,10 @@ Object.assign(lib.prototype, {
   },
 
   /**
-   * Copy text into clipboard.
+   * Copy text to clipboard.
    * https://webllica.com/copy-text-to-clipboard/
    *
-   * @param {string} textVal - The text to be copied into clipboard
+   * @param {string} textVal - The text to be copied to clipboard
    */
   copyTextToClipboard(textVal) {
     const copyFrom = document.createElement('textarea');

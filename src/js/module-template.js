@@ -19,7 +19,7 @@ const HogeEve = ((w, d) => {
   }
 
   // 'modules' is for us combining all external modules into one object.
-  // i.e. { ...LibEve.prototype, ...HogeEve.prototype, ...HogeEve2.prototype, …… }
+  // i.e., { ...LibEve.prototype, ...HogeEve.prototype, ...HogeEve2.prototype, …… }
   const modules = { ...LibEve.prototype };
 
   Hoge.prototype = Object.assign(modules, {
