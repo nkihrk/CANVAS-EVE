@@ -86,8 +86,7 @@ const file = new FileEve();
 const youtube = new YoutubeEve();
 const colpick = new ColpickEve();
 const three = new ThreeEve();
-const oekakiContainer = document.getElementById('color-oekaki');
-const oekaki = new OekakiEve(oekakiContainer);
+const oekaki = new OekakiEve(document.getElementById('color-oekaki'));
 
 // Execute modules
 common.load();

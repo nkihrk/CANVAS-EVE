@@ -4,7 +4,7 @@
  *
  * Dependencies
  * - jQuery 3.4.1
- * - psd
+ * - psd.js
  * - glb-eve
  * - lib-eve
  *
@@ -67,7 +67,7 @@ const FileEve = ((W, D, M) => {
       e.preventDefault();
       e.stopPropagation();
       e.dataTransfer.dropEffect = 'copy';
-      // Not clear why this will help. Should have to reset pointer-events, but still works fine
+      // Not clear why this will help. I should have to reset pointer-events, but still works fine
       $('iframe').css('pointer-events', 'none');
     },
 
@@ -77,7 +77,6 @@ const FileEve = ((W, D, M) => {
       e.stopPropagation();
       e.preventDefault();
 
-      // Init the values before executing the readAndPreview()
       let x;
       let y;
       if (e.changedTouches) {
@@ -88,7 +87,6 @@ const FileEve = ((W, D, M) => {
         y = e.clientY;
       }
 
-      // Init the values before executing the readAndPreview()
       const mousePos = {
         left: x - $('#zoom').offset().left,
         top: y - $('#zoom').offset().top
@@ -140,7 +138,6 @@ const FileEve = ((W, D, M) => {
       }
       if (file == null) return;
 
-      // Init the values before executing the readAndPreview()
       const mousePos = {
         left: clientFromZoomX,
         top: clientFromZoomY
@@ -190,9 +187,7 @@ const FileEve = ((W, D, M) => {
       return new Promise(function(resolve, reject) {
         const reader = new FileReader();
         reader.onloadstart = () => {
-          if (progSet.iterate === 0) {
-            progSet.progress.classList.add('loading');
-          }
+          if (progSet.iterate === 0) progSet.progress.classList.add('loading');
         };
         reader.onprogress = e => {
           if (e.lengthComputable) {
@@ -281,7 +276,7 @@ const FileEve = ((W, D, M) => {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
-      // Currently not supporting video
+      // Currently not being supported video
       // const videoTag = '<video controls playsinline preload="metadata" style="width: 100%;">' +
       //     '<source src="' + dataUrl + '" type="video/webm">' +
       //     '<source src="' + dataUrl + '" type="video/mp4">' +

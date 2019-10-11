@@ -57,90 +57,90 @@
       // Update values according to a mouseWheelVal
       // A selected area
       $('#canvas-eve .selected').css({
-        top: -1 * mouseWheelVal + 'px',
-        left: -1 * mouseWheelVal + 'px',
+        top: `${-1 * mouseWheelVal}px`,
+        left: `${-1 * mouseWheelVal}px`,
         // 'width': 'calc(100% + ' + 2 * mouseWheelVal + 'px)',
         // 'height': 'calc(100% + ' + 2 * mouseWheelVal + 'px)',
-        'border-width': mouseWheelVal + 'px'
+        'border-width': `${mouseWheelVal}px`
       });
 
       // Icons
       $('.thumbtack-icon').css({
-        width: 30 * mouseWheelVal + 'px',
-        height: 40 * mouseWheelVal + 'px'
+        width: `${30 * mouseWheelVal}px`,
+        height: `${40 * mouseWheelVal}px`
       });
       $('.resize-icon').css({
-        width: 30 * mouseWheelVal + 'px',
-        height: 30 * mouseWheelVal + 'px'
+        width: `${30 * mouseWheelVal}px`,
+        height: `${30 * mouseWheelVal}px`
       });
       $('.rotate-icon').css({
-        width: 30 * mouseWheelVal + 'px',
-        height: 30 * mouseWheelVal + 'px'
+        width: `${30 * mouseWheelVal}px`,
+        height: `${30 * mouseWheelVal}px`
       });
       $('.flip-icon').css({
-        width: 30 * mouseWheelVal + 'px',
-        height: 26 * mouseWheelVal + 'px'
+        width: `${30 * mouseWheelVal}px`,
+        height: `${26 * mouseWheelVal}px`
       });
       $('.trash-icon').css({
-        width: 30 * mouseWheelVal + 'px',
-        height: 35 * mouseWheelVal + 'px'
+        width: `${30 * mouseWheelVal}px`,
+        height: `${35 * mouseWheelVal}px`
       });
 
       // Function wrapper
       $('.function-wrapper').css({
-        right: -70 * mouseWheelVal + 'px'
+        right: `${-70 * mouseWheelVal}px`
       });
       $('.function-wrapper>div:not(:last-of-type)').css({
-        'margin-bottom': 15 * mouseWheelVal + 'px'
+        'margin-bottom': `${15 * mouseWheelVal}px`
       });
 
       // Resize
       $('.re-left-top, .re-right-top, .re-right-bottom, .re-left-bottom').css({
-        width: 10 * mouseWheelVal + 'px',
-        height: 10 * mouseWheelVal + 'px',
-        'border-width': 1 * mouseWheelVal + 'px'
+        width: `${10 * mouseWheelVal}px`,
+        height: `${10 * mouseWheelVal}px`,
+        'border-width': `${1 * mouseWheelVal}px`
       });
       $('.re-left-top').css({
-        top: -6 * mouseWheelVal + 'px',
-        left: -6 * mouseWheelVal + 'px'
+        top: `${-6 * mouseWheelVal}px`,
+        left: `${-6 * mouseWheelVal}px`
       });
       $('.re-right-top').css({
-        top: -6 * mouseWheelVal + 'px',
-        right: -6 * mouseWheelVal + 'px'
+        top: `${-6 * mouseWheelVal}px`,
+        right: `${-6 * mouseWheelVal}px`
       });
       $('.re-right-bottom').css({
-        bottom: -6 * mouseWheelVal + 'px',
-        right: -6 * mouseWheelVal + 'px'
+        bottom: `${-6 * mouseWheelVal}px`,
+        right: `${-6 * mouseWheelVal}px`
       });
       $('.re-left-bottom').css({
-        bottom: -6 * mouseWheelVal + 'px',
-        left: -6 * mouseWheelVal + 'px'
+        bottom: `${-6 * mouseWheelVal}px`,
+        left: `${-6 * mouseWheelVal}px`
       });
 
       // Rotate
       $('.ro-left-top, .ro-right-top, .ro-right-bottom, .ro-left-bottom').css({
-        width: 20 * mouseWheelVal + 'px',
-        height: 20 * mouseWheelVal + 'px'
+        width: `${20 * mouseWheelVal}px`,
+        height: `${20 * mouseWheelVal}px`
       });
       $('.ro-left-top').css({
-        top: -30 * mouseWheelVal + 'px',
-        left: -30 * mouseWheelVal + 'px'
+        top: `${-30 * mouseWheelVal}px`,
+        left: `${-30 * mouseWheelVal}px`
       });
       $('.ro-right-top').css({
-        top: -30 * mouseWheelVal + 'px',
-        right: -30 * mouseWheelVal + 'px'
+        top: `${-30 * mouseWheelVal}px`,
+        right: `${-30 * mouseWheelVal}px`
       });
       $('.ro-right-bottom').css({
-        bottom: -30 * mouseWheelVal + 'px',
-        right: -30 * mouseWheelVal + 'px'
+        bottom: `${-30 * mouseWheelVal}px`,
+        right: `${-30 * mouseWheelVal}px`
       });
       $('.ro-left-bottom').css({
-        bottom: -30 * mouseWheelVal + 'px',
-        left: -30 * mouseWheelVal + 'px'
+        bottom: `${-30 * mouseWheelVal}px`,
+        left: `${-30 * mouseWheelVal}px`
       });
     };
 
-    //////
+    // ////
 
     // Prefix for pasted-images. Initialize the values
     const init = function() {
@@ -250,7 +250,7 @@
 
             // Add #id to #image, and initialize its values
             if (glFlgs.canvas.drag_flg == false) {
-              file.fileId = '#' + $(this).attr('id');
+              file.fileId = `#${$(this).attr('id')}`;
               file.$fileId = $(file.fileId);
               // Global value for the selected ID
               currentId = $(this).attr('id');
@@ -358,7 +358,7 @@
         // Refrash the rendering result of each canvas when changing its size. This canvas is for color picking. colpick-eve.js
         if (file.$fileId != null && file.$fileId.find('.canvas-colpick').length > 0) {
           setTimeout(function() {
-            var img = new Image();
+            const img = new Image();
             img.src = file.$fileId.find('img').attr('src');
             img.onload = () => {
               file.$fileId
@@ -630,12 +630,12 @@
                 .parents('.flip-wrapper')
                 .hasClass('active')
             ) {
-              $(file.fileId + ' .is-flipped').addClass('flipped');
+              $(`${file.fileId} .is-flipped`).addClass('flipped');
 
               // Update values according to a mouseWheelVal
               updateUiVal();
             } else {
-              $(file.fileId + ' .is-flipped').removeClass('flipped');
+              $(`${file.fileId} .is-flipped`).removeClass('flipped');
             }
           }
         });
@@ -673,17 +673,19 @@
         // Prevent from the default drag events
         e.preventDefault();
 
-        var pClientX = clientFromZoomX;
-        var pClientY = clientFromZoomY;
-        var mousewheel_avail_flg = false;
+        const pClientX = clientFromZoomX;
+        const pClientY = clientFromZoomY;
+        let mousewheel_avail_flg = false;
         if (e.button == 1) {
           mousewheel_avail_flg = true;
         }
 
         // When an image is dragged
         const dragged = function() {
-          let targetPosLeft, targetPosTop;
-          let resLeft, resTop;
+          let targetPosLeft;
+          let targetPosTop;
+          let resLeft;
+          let resTop;
 
           // The element has a class .no_zooming
           if (glFlgs.config.no_zooming_flg == true) {
@@ -716,8 +718,8 @@
                 glFlgs.colpick.move_circle_flg == false
               ) {
                 file.$fileId.css({
-                  left: resLeft + 'px',
-                  top: resTop + 'px'
+                  left: `${resLeft}px`,
+                  top: `${resTop}px`
                 });
               }
 
@@ -734,11 +736,11 @@
 
         // When an image is rotated
         const rotated = function() {
-          let fileCenterPosX = file.rotatedCenterPos.left;
-          let fileCenterPosY = file.rotatedCenterPos.top;
+          const fileCenterPosX = file.rotatedCenterPos.left;
+          const fileCenterPosY = file.rotatedCenterPos.top;
           // debugCircle('test-pos_5', 'purple', fileCenterPosX, fileCenterPosY);
           // A current radian value of the mouse
-          let rad = calcRadians(clientX - fileCenterPosX, clientY - fileCenterPosY);
+          const rad = calcRadians(clientX - fileCenterPosX, clientY - fileCenterPosY);
           // debugCircle('test-pos_6', 'black', 50 * Math.cos(rad) + fileCenterPosX, 50 * Math.sin(rad) + fileCenterPosY);
 
           if (
@@ -748,34 +750,34 @@
             glFlgs.canvas.rotate_flg == true
           ) {
             if (glFlgs.canvas.ro.left_top_flg == true) {
-              let resRad = rad - tmp.ro.left_top_initRad;
+              const resRad = rad - tmp.ro.left_top_initRad;
               // console.log('tmp.ro.left_top_initRad : ' + tmp.ro.left_top_initRad);
 
-              file.$fileId.css('transform', 'rotate(' + resRad + 'rad)');
+              file.$fileId.css('transform', `rotate(${resRad}rad)`);
               // console.log('rotate function is called');
             }
 
             if (glFlgs.canvas.ro.right_top_flg == true) {
-              let resRad = rad - tmp.ro.right_top_initRad;
+              const resRad = rad - tmp.ro.right_top_initRad;
               // console.log('tmp.ro.right_top_initRad : ' + tmp.ro.right_top_initRad);
 
-              file.$fileId.css('transform', 'rotate(' + resRad + 'rad)');
+              file.$fileId.css('transform', `rotate(${resRad}rad)`);
               // console.log('rotate function is called');
             }
 
             if (glFlgs.canvas.ro.right_bottom_flg == true) {
-              let resRad = rad - tmp.ro.right_bottom_initRad;
+              const resRad = rad - tmp.ro.right_bottom_initRad;
               // console.log('tmp.ro.right_bottom_initRad : ' + tmp.ro.right_bottom_initRad);
 
-              file.$fileId.css('transform', 'rotate(' + resRad + 'rad)');
+              file.$fileId.css('transform', `rotate(${resRad}rad)`);
               // console.log('rotate function is called');
             }
 
             if (glFlgs.canvas.ro.left_bottom_flg == true) {
-              let resRad = rad - tmp.ro.left_bottom_initRad;
+              const resRad = rad - tmp.ro.left_bottom_initRad;
               // console.log('tmp.ro.left_bottom_initRad : ' + tmp.ro.left_bottom_initRad);
 
-              file.$fileId.css('transform', 'rotate(' + resRad + 'rad)');
+              file.$fileId.css('transform', `rotate(${resRad}rad)`);
               // console.log('rotate function is called');
             }
           }
@@ -790,53 +792,45 @@
           ) {
             if (glFlgs.canvas.re.left_top_flg == true) {
               file.$fileId.css({
-                top:
-                  (file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal +
+                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal +
                   (file.fileIdHeight -
                     (file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal) *
-                      file.fileIdRatio) +
-                  'px',
-                left:
-                  (file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal +
-                  (clientX - file.fileIdPos.left) * mouseWheelVal +
-                  'px',
-                width: file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal + 'px'
+                      file.fileIdRatio)}px`,
+                left: `${(file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal +
+                  (clientX - file.fileIdPos.left) * mouseWheelVal}px`,
+                width: `${file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal}px`
               });
               // console.log('mousedown is called');
             }
 
             if (glFlgs.canvas.re.right_top_flg == true) {
               file.$fileId.css({
-                top:
-                  (file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal +
+                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal +
                   (file.fileIdHeight -
-                    (clientX - file.fileIdPos.left) * mouseWheelVal * file.fileIdRatio) +
-                  'px',
-                left: (file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal + 'px',
-                width: (clientX - file.fileIdPos.left) * mouseWheelVal + 'px'
+                    (clientX - file.fileIdPos.left) * mouseWheelVal * file.fileIdRatio)}px`,
+                left: `${(file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal}px`,
+                width: `${(clientX - file.fileIdPos.left) * mouseWheelVal}px`
               });
               // console.log('down one is called');
             }
 
             if (glFlgs.canvas.re.right_bottom_flg == true) {
               file.$fileId.css({
-                top: (file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal + 'px',
-                left: (file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal + 'px',
-                width: (clientX - file.fileIdPos.left) * mouseWheelVal + 'px'
+                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal}px`,
+                left: `${(file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal}px`,
+                width: `${(clientX - file.fileIdPos.left) * mouseWheelVal}px`
               });
               // console.log('down one is called');
             }
 
             if (glFlgs.canvas.re.left_bottom_flg == true) {
               file.$fileId.css({
-                top: (file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal + 'px',
-                left:
-                  (file.fileIdPos.left -
-                    $('#zoom').offset().left +
-                    (clientX - file.fileIdPos.left)) *
-                    mouseWheelVal +
-                  'px',
-                width: file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal + 'px'
+                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal}px`,
+                left: `${(file.fileIdPos.left -
+                  $('#zoom').offset().left +
+                  (clientX - file.fileIdPos.left)) *
+                  mouseWheelVal}px`,
+                width: `${file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal}px`
               });
               // console.log('down one is called');
             }
