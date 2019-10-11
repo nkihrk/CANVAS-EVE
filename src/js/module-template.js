@@ -1,6 +1,6 @@
 /**
  *
- * hogehoge // Intro for this app
+ * hogehoge for CANVAS EVE.
  *
  * Dependencies // list up dependecies here
  * - jQuery 3.4.1
@@ -8,17 +8,17 @@
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 import LibEve from './common/lib-eve'; // Just for example
 
 // The app`s capital letter must be uppercase. Add 'Eve' after the name
-const HogeEve = (function(w, d, $) {
+const HogeEve = ((w, d) => {
   function Hoge() {
     // To inherit external modules, code like down below
     LibEve.call(this);
   }
 
-  // 'modules' is for which we combine all external modules into one object
+  // 'modules' is for us combining all external modules into one object.
   // i.e. { ...LibEve.prototype, ...HogeEve.prototype, ...HogeEve2.prototype, …… }
   const modules = { ...LibEve.prototype };
 
@@ -35,7 +35,7 @@ const HogeEve = (function(w, d, $) {
     hogehoge() {
       // It is recommended to define 'self' first to ensure 'this' object to be HogeEve.
       // Sometimes it will change its scope inside other objects like $(d).on('hoge', func);
-      // It's not MUST anyway
+      // It's not MUST anyway. I don't use normally, just a technique.
       const self = this;
 
       self._hogehoge();
@@ -48,7 +48,7 @@ const HogeEve = (function(w, d, $) {
   });
 
   return Hoge;
-})(window, document, jQuery); // Each item is for scope. w = window, d = document, and $ = jQuery
+})(window, document); // Each item is for scope. w = window, and d = document
 
 // Export the above object to wherever it is called. This will make the app a module
 export default HogeEve;

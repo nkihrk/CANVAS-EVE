@@ -9,12 +9,12 @@
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const YoutubeEve = (function(w, d, $) {
+const YoutubeEve = ((w, d) => {
   function Youtube() {
     LibEve.call(this);
   }
@@ -124,7 +124,7 @@ const YoutubeEve = (function(w, d, $) {
             'The API Key is missing; the key is needed to show up a name of the now-playing video properly.';
           self._assertFile(youtubeID, tabName, url);
         } else {
-          jsonYt.done(function(jsonData) {
+          jsonYt.done(jsonData => {
             if (isVideo) {
               tabName = jsonData.items[0].snippet.title;
             } else {
@@ -229,7 +229,7 @@ const YoutubeEve = (function(w, d, $) {
           tabName =
             'The API Key is missing; the key is needed to show a name of the now-playing video properly.';
         } else {
-          jsonYt.done(function(jsonData) {
+          jsonYt.done(jsonData => {
             if (isVideo) {
               tabName = jsonData.items[0].snippet.title;
             } else {
@@ -282,6 +282,6 @@ const YoutubeEve = (function(w, d, $) {
   });
 
   return Youtube;
-})(window, document, jQuery);
+})(window, document);
 
 export default YoutubeEve;

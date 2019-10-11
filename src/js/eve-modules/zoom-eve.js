@@ -2,17 +2,17 @@
  *
  * Zooming functionality for CANVAS EVE
  *
- * Dependencies // list up dependecies here
+ * Dependencies
  * - jQuery 3.4.1
  * - glb-eve
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 
 import GlbEve from '../common/glb-eve';
 
-const ZoomEve = (function(d, $) {
+const ZoomEve = (d => {
   function Zoom() {
     this.i = 1;
     this.xLast = 0;
@@ -129,6 +129,6 @@ const ZoomEve = (function(d, $) {
   });
 
   return Zoom;
-})(document, jQuery);
+})(document);
 
 export default ZoomEve;

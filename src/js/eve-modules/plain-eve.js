@@ -8,11 +8,11 @@
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 
 import LibEve from '../common/lib-eve';
 
-const PlainEve = (function(d, $) {
+const PlainEve = (d => {
   function Plain() {
     LibEve.call(this);
 
@@ -83,6 +83,6 @@ const PlainEve = (function(d, $) {
   });
 
   return Plain;
-})(document, jQuery);
+})(document);
 
 export default PlainEve;

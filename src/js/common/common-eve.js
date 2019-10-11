@@ -8,10 +8,10 @@
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 import LibEve from './lib-eve';
 
-const CommonEve = (function(d, w, $) {
+const CommonEve = ((w, d) => {
   function Common() {
     LibEve.call(this);
   }
@@ -30,7 +30,7 @@ const CommonEve = (function(d, w, $) {
     },
 
     eventReady() {
-      $(function() {
+      $(() => {
         const h = $(w).height();
         $('#loader-bg, #loader')
           .height(h)
@@ -39,7 +39,7 @@ const CommonEve = (function(d, w, $) {
         // Prevent default right-click events for the time being
         d.addEventListener(
           'contextmenu',
-          function(e) {
+          e => {
             e.preventDefault();
           },
           false
@@ -51,12 +51,12 @@ const CommonEve = (function(d, w, $) {
       function load() {
         $('#loader-bg')
           .delay(900)
-          .fadeOut(800, function() {
+          .fadeOut(800, () => {
             $(this).remove();
           });
         $('#loading')
           .delay(600)
-          .fadeOut(300, function() {
+          .fadeOut(300, () => {
             $(this).remove();
           });
       }
@@ -80,6 +80,6 @@ const CommonEve = (function(d, w, $) {
   });
 
   return Common;
-})(document, window, jQuery);
+})(window, document);
 
 export default CommonEve;

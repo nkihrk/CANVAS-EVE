@@ -7,9 +7,9 @@
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 
-const FlgsEve = (function(w, d, $) {
+const FlgsEve = (function(w, d) {
   function Flgs() {}
 
   Flgs.prototype = {
@@ -17,6 +17,6 @@ const FlgsEve = (function(w, d, $) {
   };
 
   return Flgs;
-})(window, document, jQuery);
+})(window, document);
 
 export default FlgsEve;

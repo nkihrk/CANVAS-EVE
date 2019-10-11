@@ -5,14 +5,13 @@
  *
  * Dependencies
  * - jQuery 3.4.1
- * - global-eve
+ * - glb-eve
  * - lib-eve
  *
  */
 
-import jQuery from 'jquery';
+import $ from 'jquery';
 import {
-  // BoxHelper,
   Box3,
   PerspectiveCamera,
   LoaderUtils,
@@ -34,16 +33,16 @@ import { OBJLoader } from '../three-modules/OBJLoader';
 import { MTLLoader } from '../three-modules/MTLLoader';
 import { MMDLoader } from '../three-modules/MMDLoader';
 
-const ThreeEve = (function(w, $) {
+const ThreeEve = ((w, d, m) => {
   /**
    * Load model files.
    *
    * @param {object} manager - LoadingManager()
    * @param {object} scene - Scene()
    * @param {object} materials - Get materials from MTLLoader(), and set it to OBJLoader()
-   * @param {string} rootFilePath - In-memory blob url to Model file
+   * @param {string} rootFilePath - In-memory blob url to a model file
    * @param {string} modelFormat - Get Model format for MMDLoader()
-   * @param {string} mtlFilePath - In-memory blob url to MTL file
+   * @param {string} mtlFilePath - In-memory blob url to a MTL file
    */
   function Loader() {}
 
@@ -58,8 +57,6 @@ const ThreeEve = (function(w, $) {
       loader.modelFormat = modelFormat;
       loader.load(rootFilePath, mmd => {
         self._fit2Scene(scene, mmd, false);
-        // var box = new BoxHelper(mmd, 0xffff00);
-        // scene.add(box);
         scene.add(mmd);
       });
     },
@@ -106,7 +103,6 @@ const ThreeEve = (function(w, $) {
       loader.load(rootFilePath, obj => {
         obj.traverse(child => {
           if (child.isMesh) {
-            // child.material.map = texture;
             child.castShadow = true;
             child.receiveShadow = true;
           }
@@ -153,9 +149,9 @@ const ThreeEve = (function(w, $) {
       const BB = new Box3().setFromObject(object);
       const centerpoint = BB.getCenter();
       const size = BB.getSize();
-      let backup = size.y / 2 / Math.sin((camera.fov / 2) * (Math.PI / 180));
+      let backup = size.y / 2 / m.sin((camera.fov / 2) * (m.PI / 180));
       if (size.x > size.y) {
-        backup = size.x / 2 / Math.sin((camera.fov / 2) * (Math.PI / 180));
+        backup = size.x / 2 / m.sin((camera.fov / 2) * (m.PI / 180));
       }
       let camZpos = BB.max.z + backup + camera.near;
       if (bool) {
@@ -185,7 +181,7 @@ const ThreeEve = (function(w, $) {
    * @param {object} progSet - The set of states for a progress bar
    */
   function Reader(scenes) {
-    this.canvasEveWrap = document.getElementById('canvas-eve-wrapper');
+    this.canvasEveWrap = d.getElementById('canvas-eve-wrapper');
     this.Loader = new Loader();
     this.scenes = scenes;
   }
@@ -201,7 +197,7 @@ const ThreeEve = (function(w, $) {
       this.canvasEveWrap.addEventListener('dragover', self._handleDragEvent, false);
       this.canvasEveWrap.addEventListener(
         'drop',
-        function(e) {
+        e => {
           self._handleDropEvent(e);
         },
         false
@@ -243,7 +239,7 @@ const ThreeEve = (function(w, $) {
       // console.log('files', files);
 
       const progSet = {
-        progress: document.getElementById('progress-bar'),
+        progress: d.getElementById('progress-bar'),
         fileCount: files.length,
         eachProg: parseFloat(100 / files.length),
         totalProg: 0,
@@ -261,12 +257,6 @@ const ThreeEve = (function(w, $) {
           this.read(files, this.scenes, mousePos, progSet);
         }
       }
-    },
-
-    //
-
-    _isSupported(fileName) {
-      return /\.(obj|fbx|pmx|pmd|gltf|vrm)$/i.test(fileName);
     },
 
     //
@@ -292,7 +282,7 @@ const ThreeEve = (function(w, $) {
           .split('.')
           .pop()
           .toLowerCase();
-        console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
+        // console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
       }
 
       function initMtl(file) {
@@ -300,7 +290,7 @@ const ThreeEve = (function(w, $) {
         baseURL = LoaderUtils.extractUrlBase(mtlFilePath);
         mtlFileName = mtlFilePath.replace(baseURL, '');
         blobs[mtlFileName] = file;
-        console.log('blobs', blobs);
+        // console.log('blobs', blobs);
       }
 
       Array.from(files).forEach(file => {
@@ -310,7 +300,7 @@ const ThreeEve = (function(w, $) {
           initMtl(file);
         } else {
           blobs[file.name] = file;
-          console.log('blobs', blobs);
+          // console.log('blobs', blobs);
         }
       });
 
@@ -322,7 +312,7 @@ const ThreeEve = (function(w, $) {
 
       const manager = new LoadingManager();
       manager.setURLModifier(url => {
-        console.log('url', url);
+        // console.log('url', url);
 
         const isMMD = mmdFlg && !url.match(/base64/);
         const isGLTF = gltfFlg && !url.match(/draco/);
@@ -333,17 +323,17 @@ const ThreeEve = (function(w, $) {
           url = URL.createObjectURL(blobs[n]);
         }
 
-        console.log('url', url, 'fileName', n, 'blobs[n]', blobs[n]);
+        // console.log('url', url, 'fileName', n, 'blobs[n]', blobs[n]);
         return url;
       });
 
-      manager.onStart = function() {
+      manager.onStart = () => {
         if (progSet.iterate === 0) {
           progSet.progress.classList.add('loading');
         }
       };
 
-      manager.onProgress = function() {
+      manager.onProgress = () => {
         progSet.iterate++;
 
         if (progSet.iterate < progSet.fileCount) {
@@ -352,15 +342,15 @@ const ThreeEve = (function(w, $) {
         }
       };
 
-      manager.onLoad = function() {
+      manager.onLoad = () => {
         progSet.progress.style.width = '100%';
-        setTimeout(function() {
+        setTimeout(() => {
           progSet.progress.classList.remove('loading');
           $('div').remove('.hide-scissor');
         }, 1000);
       };
 
-      manager.onError = function(url) {
+      manager.onError = url => {
         console.log(`There was an error loading ${url}`);
       };
 
@@ -397,11 +387,17 @@ const ThreeEve = (function(w, $) {
 
     //
 
+    _isSupported(fileName) {
+      return /\.(obj|fbx|pmx|pmd|gltf|vrm)$/i.test(fileName);
+    },
+
+    //
+
     _setScene(id, scenes) {
       const scene = new Scene();
 
       // eslint-disable-next-line prefer-destructuring
-      scene.userData.element = document.getElementById(id).getElementsByClassName('eve-main')[0];
+      scene.userData.element = d.getElementById(id).getElementsByClassName('eve-main')[0];
       scene.add(new HemisphereLight(0xaaaaaa, 0x444444));
 
       const light = new DirectionalLight(0xffffff, 0.5);
@@ -470,7 +466,7 @@ const ThreeEve = (function(w, $) {
 
     this.scenes = [];
     this.renderer = null; // lazy load
-    this.canvas = document.getElementById('c');
+    this.canvas = d.getElementById('c');
     this.Reader = new Reader(this.scenes);
   }
 
@@ -509,7 +505,7 @@ const ThreeEve = (function(w, $) {
       // requestAnimationFrame(() => {
       //   self.animate();
       // });
-      setTimeout(function() {
+      setTimeout(() => {
         requestAnimationFrame(() => {
           self.animate();
         });
@@ -586,6 +582,6 @@ const ThreeEve = (function(w, $) {
   });
 
   return Three;
-})(window, jQuery);
+})(window, document, Math);
 
 export default ThreeEve;

@@ -1,6 +1,6 @@
 /**
  *
- * Library for this app. The set of frequent-used functions.
+ * Library for CANVAS EVE.
  *
  * * Dependencies
  * - jQuery 3.4.1
@@ -26,6 +26,62 @@ Object.assign(lib.prototype, {
     } else {
       $(elem).on(event, func);
     }
+  },
+
+  /**
+   * Convert RGB into HEX.
+   *
+   * @param {array} rgb - The array of rgb. i.e. [r, g, b]
+   * @returns {string} - The hex code
+   */
+  rgb2hex(rgb) {
+    return `#${rgb
+      .map(value => {
+        return `0${value.toString(16)}`.slice(-2);
+      })
+      .join('')}`;
+  },
+
+  /**
+   * Convert HEX into RGB.
+   *
+   * @param {string} hex - The hex code
+   * @returns {array} - The RGB. i.e. [r, g, b]
+   */
+  hex2rgb(hex) {
+    if (hex.slice(0, 1) === '#') hex = hex.slice(1);
+    if (hex.length === 3)
+      hex =
+        hex.slice(0, 1) +
+        hex.slice(0, 1) +
+        hex.slice(1, 2) +
+        hex.slice(1, 2) +
+        hex.slice(2, 3) +
+        hex.slice(2, 3);
+
+    return [hex.slice(0, 2), hex.slice(2, 4), hex.slice(4, 6)].map(str => {
+      return parseInt(str, 16);
+    });
+  },
+
+  /**
+   * Copy text into clipboard.
+   * https://webllica.com/copy-text-to-clipboard/
+   *
+   * @param {string} textVal - The text to be copied into clipboard
+   */
+  copyTextToClipboard(textVal) {
+    const copyFrom = document.createElement('textarea');
+
+    copyFrom.textContent = textVal;
+
+    const bodyElm = document.getElementsByTagName('body')[0];
+    bodyElm.appendChild(copyFrom);
+
+    copyFrom.select();
+    const retVal = document.execCommand('copy');
+    bodyElm.removeChild(copyFrom);
+    return retVal;
   },
 
   /**
