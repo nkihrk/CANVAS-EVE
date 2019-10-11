@@ -158,10 +158,12 @@ Object.assign(lib.prototype, {
    * @param {string} tagName - The name of element for where to insert. No need for '#'
    */
   debugCircle(name, col, pos, tagName) {
-    if (tagName) {
-      $(`#${tagName}`).append(`<div id="${name}"></div>`);
-    } else {
-      $('#canvas-eve').append(`<div id="${name}"></div>`);
+    if ($(`#${name}`).length === 0) {
+      if (tagName) {
+        $(`#${tagName}`).append(`<div id="${name}"></div>`);
+      } else {
+        $('#canvas-eve-wrapper').append(`<div id="${name}"></div>`);
+      }
     }
     $(`#${name}`).css({
       left: `${pos[0]}px`,

@@ -10,10 +10,14 @@
 
 import $ from 'jquery';
 
+import LibEve from '../common/lib-eve';
+
 import GlbEve from '../common/glb-eve';
 
 const ZoomEve = (d => {
   function Zoom() {
+    LibEve.call(this);
+
     this.i = 1;
     this.xLast = 0;
     this.yLast = 0;
@@ -23,7 +27,7 @@ const ZoomEve = (d => {
     this.yImage = 0;
   }
 
-  const modules = {};
+  const modules = { ...LibEve.prototype };
 
   Zoom.prototype = Object.assign(modules, {
     constructor: Zoom,
@@ -33,6 +37,8 @@ const ZoomEve = (d => {
     load() {
       this.setZoom();
     },
+
+    //
 
     setZoom() {
       const self = this;

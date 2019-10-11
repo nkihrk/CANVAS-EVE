@@ -9,10 +9,15 @@ Common
   --transparent-white: rgba(255, 255, 255, 0.05);
 }
 
-/* .selected-dot {
-    border: dotted 1px var(--half-white);
-    background-color: var(--transparent-white);
-} */
+// .selected-dot {
+//   border: dotted 1px var(--half-white);
+//   background-color: var(--transparent-white);
+
+//   &.file-wrap {
+//     width: 0;
+//     transition: '';
+//   }
+// }
 
 .selected-dot {
   position: relative;

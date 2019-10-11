@@ -87,7 +87,7 @@ Common
     transition: all 0.3s ease-in-out;
   }
 
-  .active {
+  &.active {
     background-color: #c1125b;
     opacity: 1;
 

@@ -88,25 +88,9 @@ const ColpickEve = ((w, d) => {
     handleEvents() {
       d.addEventListener('mousedown', e => {
         if (e.target) {
-          if (e.target.closest('#copy-colpick')) {
-            let hex = $('#input-colpick').val();
-            if (hex.match(/#/)) {
-              hex = hex.split('#').join('');
-            }
-            this.copyTextToClipboard(hex);
-          }
+          if (e.target.closest('#copy-colpick')) this._copyHex();
 
-          if (e.target.closest('#toggle-colpick')) {
-            $('#toggle-colpick').toggleClass('active');
-
-            if ($('#toggle-colpick').hasClass('active')) {
-              $('#canvas-eve .file-wrap').removeClass('grab-pointer');
-              $('#canvas-eve').addClass('spuit-pointer');
-            } else {
-              $('#canvas-eve').removeClass('spuit-pointer');
-              $('#canvas-eve .file-wrap').addClass('grab-pointer');
-            }
-          }
+          if (e.target.closest('#toggle-colpick')) this._toggleColpick();
 
           if (e.target.closest('.file-wrap')) {
             if (
@@ -114,57 +98,13 @@ const ColpickEve = ((w, d) => {
               $(e.target).find('canvas').length > 0 &&
               e.button !== 1
             ) {
-              const context = $(e.target)
-                .find('canvas')[0]
-                .getContext('2d');
-              const relPosX = e.clientX - $(e.target).offset().left;
-              const relPosY = e.clientY - $(e.target).offset().top;
-              let imagedata = context.getImageData(
-                relPosX * GlbEve.MOUSE_WHEEL_VAL,
-                relPosY * GlbEve.MOUSE_WHEEL_VAL,
-                1,
-                1
-              );
-              if ($(e.target).has('.flipped').length > 0) {
-                imagedata = context.getImageData(
-                  $(e.target)
-                    .find('img')
-                    .width() -
-                    relPosX * GlbEve.MOUSE_WHEEL_VAL,
-                  relPosY * GlbEve.MOUSE_WHEEL_VAL,
-                  1,
-                  1
-                );
-              }
-              const r = imagedata.data[0];
-              const g = imagedata.data[1];
-              const b = imagedata.data[2];
-              const a = imagedata.data[3];
+              const col = this._getColor(e);
+              const hex = this.rgb2hex([col[0], col[1], col[2]]);
 
-              const rBar = (r / 255) * 100;
-              const gBar = (g / 255) * 100;
-              const bBar = (b / 255) * 100;
-
-              const hex = this.rgb2hex([r, g, b]);
-
-              if (a > 0) {
-                $('#input-colpick').val(hex);
-
-                // Update a color palette
-                $('#color-colpick').css('background-color', hex);
-
-                $('#r-colpick .colbar-colpick').css('width', `${rBar}%`);
-                $('#g-colpick .colbar-colpick').css('width', `${gBar}%`);
-                $('#b-colpick .colbar-colpick').css('width', `${bBar}%`);
-
-                $('#red-cir-colpick').css('left', `${rBar}%`);
-                $('#green-cir-colpick').css('left', `${gBar}%`);
-                $('#blue-cir-colpick').css('left', `${bBar}%`);
-
-                // Update rgb values
-                $('#r-colpick input').val(r);
-                $('#g-colpick input').val(g);
-                $('#b-colpick input').val(b);
+              if (col.a > 0) {
+                this._updatePalette(hex);
+                this._updateRgbBar(col);
+                this._updateRgbInput(col);
               } else {
                 this._initColpick();
               }
@@ -172,9 +112,7 @@ const ColpickEve = ((w, d) => {
           }
 
           if (e.target.closest('#reset-res')) {
-            if ($('#toggle-colpick').hasClass('active') && e.button !== 1) {
-              this._initColpick();
-            }
+            if ($('#toggle-colpick').hasClass('active') && e.button !== 1) this._initColpick();
           }
         }
       });
@@ -182,42 +120,12 @@ const ColpickEve = ((w, d) => {
       d.addEventListener('change', e => {
         if (e.target) {
           if (e.target.closest('#input-colpick')) {
-            let hex = $(e.target).val();
-            if (
-              !$(e.target)
-                .val()
-                .match(/#/)
-            ) {
-              hex = `#${$(e.target).val()}`;
-              $('#input-colpick').val(hex);
-            } else {
-              hex = `#${hex.split('#').join('')}`;
-              $('#input-colpick').val(hex);
-            }
-            const r = this.hex2rgb(hex)[0];
-            const g = this.hex2rgb(hex)[1];
-            const b = this.hex2rgb(hex)[2];
+            const hex = this._getHex(e);
+            this._updatePalette(hex);
 
-            // Update rgb values
-            $('#r-colpick input').val(r);
-            $('#g-colpick input').val(g);
-            $('#b-colpick input').val(b);
-
-            // Update a color palette
-            $('#color-colpick').css('background-color', hex);
-
-            // Update bar-related values
-            const rBar = (r / 255) * 100;
-            const gBar = (g / 255) * 100;
-            const bBar = (b / 255) * 100;
-
-            $('#r-colpick .colbar-colpick').css('width', `${rBar}%`);
-            $('#g-colpick .colbar-colpick').css('width', `${gBar}%`);
-            $('#b-colpick .colbar-colpick').css('width', `${bBar}%`);
-
-            $('#red-cir-colpick').css('left', `${rBar}%`);
-            $('#green-cir-colpick').css('left', `${gBar}%`);
-            $('#blue-cir-colpick').css('left', `${bBar}%`);
+            const col = this.hex2rgb(hex);
+            this._updateRgbInput(col);
+            this._updateRgbBar(col);
           }
 
           if (
@@ -230,58 +138,118 @@ const ColpickEve = ((w, d) => {
             const g = parseInt($('#g-colpick input').val(), 10);
             const b = parseInt($('#b-colpick input').val(), 10);
             const hex = this.rgb2hex([r, g, b]);
-            $('#input-colpick').val(hex);
-            $('#color-colpick').css('background-color', hex);
-
-            // Update bar-related values
-            const rBar = (r / 255) * 100;
-            const gBar = (g / 255) * 100;
-            const bBar = (b / 255) * 100;
-
-            $('#r-colpick .colbar-colpick').css('width', `${rBar}%`);
-            $('#g-colpick .colbar-colpick').css('width', `${gBar}%`);
-            $('#b-colpick .colbar-colpick').css('width', `${bBar}%`);
-
-            $('#red-cir-colpick').css('left', `${rBar}%`);
-            $('#green-cir-colpick').css('left', `${gBar}%`);
-            $('#blue-cir-colpick').css('left', `${bBar}%`);
+            this._updatePalette(hex);
+            this._updateRgbBar(col);
           }
         }
       });
 
       d.addEventListener('mousemove', e => {
-        if (this.flgs.move_circle_flg === true) {
-          // Syncing rgb values with sliders
-          let x = e.clientX - this.circleRelPosX - $('.bar-colpick').offset().left;
-          x =
-            // eslint-disable-next-line no-nested-ternary
-            x >= -this.$barTop.width() / 2
-              ? x >= $('.bar-colpick').width() - this.$barTop.width() / 2
-                ? $('.bar-colpick').width() - this.$barTop.width() / 2
-                : x
-              : -this.$barTop.width() / 2;
-          const posLeft = x + this.$barTop.width() / 2;
-          const colorCode = parseInt((posLeft / $('.bar-colpick').width()) * 255, 10);
-          this.$barTop.css('left', `${(posLeft / $('.bar-colpick').width()) * 100}%`);
-          this.$barTop
-            .parents('.bar-colpick')
-            .find('.colbar-colpick')
-            .css('width', `${(posLeft / $('.bar-colpick').width()) * 100}%`);
-          this.$barTop
-            .parent()
-            .parent()
-            .find('input')
-            .val(colorCode);
-
-          // Update rgb values, convert it to hex and apply to a color code input
-          const r = parseInt($('#r-colpick input').val(), 10);
-          const g = parseInt($('#g-colpick input').val(), 10);
-          const b = parseInt($('#b-colpick input').val(), 10);
-          const hex = this.rgb2hex([r, g, b]);
-          $('#input-colpick').val(hex);
-          $('#color-colpick').css('background-color', hex);
-        }
+        if (this.flgs.move_circle_flg === true) this._syncWithBar(e);
       });
+    },
+
+    //
+
+    _toggleColpick() {
+      $('#toggle-colpick').toggleClass('active');
+
+      if ($('#toggle-colpick').hasClass('active')) {
+        $('#canvas-eve .file-wrap').removeClass('grab-pointer');
+        $('#canvas-eve').addClass('spuit-pointer');
+      } else {
+        $('#canvas-eve').removeClass('spuit-pointer');
+        $('#canvas-eve .file-wrap').addClass('grab-pointer');
+      }
+    },
+
+    //
+
+    _copyHex() {
+      let hex = $('#input-colpick').val();
+      if (hex.match(/#/)) hex = hex.split('#').join('');
+      this.copyTextToClipboard(hex);
+    },
+
+    //
+
+    _getHex(e) {
+      let hex = $(e.target).val();
+      if (
+        !$(e.target)
+          .val()
+          .match(/#/)
+      ) {
+        hex = `#${$(e.target).val()}`;
+      } else {
+        hex = `#${hex.split('#').join('')}`;
+      }
+
+      return hex;
+    },
+
+    //
+
+    _getColor(e) {
+      const context = $(e.target)
+        .find('canvas')[0]
+        .getContext('2d');
+      const relPosX = e.clientX - $(e.target).offset().left;
+      const relPosY = e.clientY - $(e.target).offset().top;
+      let imagedata = context.getImageData(
+        relPosX * GlbEve.MOUSE_WHEEL_VAL,
+        relPosY * GlbEve.MOUSE_WHEEL_VAL,
+        1,
+        1
+      );
+      if ($(e.target).has('.flipped').length > 0) {
+        imagedata = context.getImageData(
+          $(e.target)
+            .find('img')
+            .width() -
+            relPosX * GlbEve.MOUSE_WHEEL_VAL,
+          relPosY * GlbEve.MOUSE_WHEEL_VAL,
+          1,
+          1
+        );
+      }
+      const r = imagedata.data[0];
+      const g = imagedata.data[1];
+      const b = imagedata.data[2];
+      const a = imagedata.data[3];
+
+      return [r, g, b, a];
+    },
+
+    //
+
+    _updatePalette(hex) {
+      $('#input-colpick').val(hex);
+      $('#color-colpick').css('background-color', hex);
+    },
+
+    //
+
+    _updateRgbBar(col) {
+      const rBar = (col[0] / 255) * 100;
+      const gBar = (col[1] / 255) * 100;
+      const bBar = (col[2] / 255) * 100;
+
+      $('#r-colpick .colbar-colpick').css('width', `${rBar}%`);
+      $('#g-colpick .colbar-colpick').css('width', `${gBar}%`);
+      $('#b-colpick .colbar-colpick').css('width', `${bBar}%`);
+
+      $('#red-cir-colpick').css('left', `${rBar}%`);
+      $('#green-cir-colpick').css('left', `${gBar}%`);
+      $('#blue-cir-colpick').css('left', `${bBar}%`);
+    },
+
+    //
+
+    _updateRgbInput(col) {
+      $('#r-colpick input').val(col[0]);
+      $('#g-colpick input').val(col[1]);
+      $('#b-colpick input').val(col[2]);
     },
 
     //
@@ -315,6 +283,39 @@ const ColpickEve = ((w, d) => {
       $('#r-colpick input').val(r);
       $('#g-colpick input').val(g);
       $('#b-colpick input').val(b);
+    },
+
+    //
+
+    _syncWithBar(e) {
+      // Syncing rgb values with sliders
+      let x = e.clientX - this.circleRelPosX - $('.bar-colpick').offset().left;
+      x =
+        // eslint-disable-next-line no-nested-ternary
+        x >= -this.$barTop.width() / 2
+          ? x >= $('.bar-colpick').width() - this.$barTop.width() / 2
+            ? $('.bar-colpick').width() - this.$barTop.width() / 2
+            : x
+          : -this.$barTop.width() / 2;
+      const posLeft = x + this.$barTop.width() / 2;
+      const colorCode = parseInt((posLeft / $('.bar-colpick').width()) * 255, 10);
+      this.$barTop.css('left', `${(posLeft / $('.bar-colpick').width()) * 100}%`);
+      this.$barTop
+        .parents('.bar-colpick')
+        .find('.colbar-colpick')
+        .css('width', `${(posLeft / $('.bar-colpick').width()) * 100}%`);
+      this.$barTop
+        .parent()
+        .parent()
+        .find('input')
+        .val(colorCode);
+
+      // Update rgb values, and convert it to hex, and apply to a color code input
+      const r = parseInt($('#r-colpick input').val(), 10);
+      const g = parseInt($('#g-colpick input').val(), 10);
+      const b = parseInt($('#b-colpick input').val(), 10);
+      const hex = this.rgb2hex([r, g, b]);
+      this._updatePalette(hex);
     }
   });
 

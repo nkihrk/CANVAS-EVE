@@ -173,13 +173,10 @@ const OekakiEve = ((w, d, m) => {
             if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
           }
 
-          if (e.target.closest('#color-wheel-circle')) {
-            this.flgs.oekaki.move_wheelcircle_flg = true;
-          }
+          if (e.target.closest('#color-wheel-circle')) this.flgs.oekaki.move_wheelcircle_flg = true;
 
-          if (e.target.closest('#color-triangle-circle')) {
+          if (e.target.closest('#color-triangle-circle'))
             this.flgs.oekaki.move_trianglecircle_flg = true;
-          }
 
           if (e.target.closest('#reset-res')) {
             if (this.flgs.newcanvas.newcanvas_flg === true) {
@@ -249,16 +246,10 @@ const OekakiEve = ((w, d, m) => {
           this.param.centerPos.x = centerX;
           this.param.centerPos.y = centerY;
 
-          if (this.flgs.oekaki.move_wheelcircle_flg === true) {
-            this._updateWheelCircle(e);
-          }
-          if (this.flgs.oekaki.move_trianglecircle_flg === true) {
-            this._updateTriangleCircle(e);
-          }
+          if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
+          if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
 
-          if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
-            this._updateCanvasVal(e);
-          }
+          if (this.flgs.newcanvas.create_canvas_avail_flg === true) this._updateCanvasVal(e);
         }
       });
 
@@ -393,9 +384,7 @@ const OekakiEve = ((w, d, m) => {
 
     _colorWheelArea(e) {
       const isWheelArea = this._isWheelArea(e);
-      if (isWheelArea) {
-        this._updateWheelCircle(e);
-      }
+      if (isWheelArea) this._updateWheelCircle(e);
     },
 
     //
@@ -410,9 +399,7 @@ const OekakiEve = ((w, d, m) => {
         e.clientY
       );
 
-      if (mouseR > minR && maxR > mouseR) {
-        return true;
-      }
+      if (mouseR > minR && maxR > mouseR) return true;
       return false;
     },
 
@@ -749,9 +736,7 @@ const OekakiEve = ((w, d, m) => {
         ) {
           this.__$toggleButton.removeClass('active');
         }
-        if ($container.hasClass('active')) {
-          this.__$toggleButton = $container;
-        }
+        if ($container.hasClass('active')) this.__$toggleButton = $container;
 
         if ($container.hasClass('active') && $container.attr('id') === 'newcanvas-oekaki') {
           this.flgs.newcanvas.newcanvas_flg = true;
@@ -796,7 +781,7 @@ const OekakiEve = ((w, d, m) => {
       $fileId.css({
         left: `${startX * GlbEve.MOUSE_WHEEL_VAL}px`,
         top: `${startY * GlbEve.MOUSE_WHEEL_VAL}px`,
-        transform: `translate(${-GlbEve.X_NEW}px, ${-GlbEve.Y_NEW}px)`,
+        transform: 'translate(0, 0)',
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
@@ -907,9 +892,7 @@ const OekakiEve = ((w, d, m) => {
             break;
         }
 
-        if (e.buttons === this.oekakiParam.EPenButton.eraser) {
-          ctx.strokeStyle = colorBackground;
-        }
+        if (e.buttons === this.oekakiParam.EPenButton.eraser) ctx.strokeStyle = colorBackground;
 
         switch (e.type) {
           case 'pointerdown':
