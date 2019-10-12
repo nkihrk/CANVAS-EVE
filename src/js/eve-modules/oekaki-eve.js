@@ -659,7 +659,8 @@ const OekakiEve = ((w, D, M) => {
       const k = M.abs(a) * M.sin(M.PI / 3);
       const l = (this.colorTriangle.radius * 3) / 2;
 
-      const b = this.hsl2rgb(this.param.color.hue / 360, 1.0, 0.5);
+      const hsl = [this.param.color.hue / 360, 1.0, 0.5];
+      const b = this.hsl2rgb(hsl);
       const s = [255, 255, 255];
 
       const co = [];
@@ -671,53 +672,6 @@ const OekakiEve = ((w, D, M) => {
       }
 
       return co;
-    },
-
-    // //
-
-    getDistance(x1, y1, x2, y2) {
-      let xs = x2 - x1;
-      let ys = y2 - y1;
-      xs *= xs;
-      ys *= ys;
-
-      return M.sqrt(xs + ys);
-    },
-
-    //
-
-    hsl2rgb(h, s, l) {
-      let r;
-      let g;
-      let b;
-
-      function hue2rgb(p, q, t) {
-        if (t < 0) t += 1;
-        if (t > 1) t -= 1;
-        if (t < 1 / 6) return p + (q - p) * 6 * t;
-        if (t < 1 / 2) return q;
-        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-
-        return p;
-      }
-
-      if (s === 0) {
-        r = 1;
-        g = 1;
-        b = l;
-      } else {
-        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-        const p = 2 * l - q;
-        r = hue2rgb(p, q, h + 1 / 3);
-        g = hue2rgb(p, q, h);
-        b = hue2rgb(p, q, h - 1 / 3);
-      }
-
-      return [
-        M.min(M.floor(r * 256), 255),
-        M.min(M.floor(g * 256), 255),
-        M.min(M.floor(b * 256), 255)
-      ];
     },
 
     /**

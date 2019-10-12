@@ -65,6 +65,47 @@ Object.assign(lib.prototype, {
   },
 
   /**
+   * Convert HSL into RGB.
+   *
+   * @param {array} hsl - The HSL. i.e., [h, s, l]
+   * @returns {array} - The RGB. i.e. [r, g, b]
+   */
+  hsl2rgb(hsl) {
+    let r;
+    let g;
+    let b;
+
+    function hue2rgb(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+
+      return p;
+    }
+
+    if (hsl[1] === 0) {
+      r = 1;
+      g = 1;
+      // eslint-disable-next-line prefer-destructuring
+      b = hsl[2];
+    } else {
+      const q = hsl[2] < 0.5 ? hsl[2] * (1 + hsl[1]) : hsl[2] + hsl[1] - hsl[2] * hsl[1];
+      const p = 2 * hsl[2] - q;
+      r = hue2rgb(p, q, hsl[0] + 1 / 3);
+      g = hue2rgb(p, q, hsl[0]);
+      b = hue2rgb(p, q, hsl[0] - 1 / 3);
+    }
+
+    return [
+      Math.min(Math.floor(r * 256), 255),
+      Math.min(Math.floor(g * 256), 255),
+      Math.min(Math.floor(b * 256), 255)
+    ];
+  },
+
+  /**
    * Copy text to clipboard.
    * https://webllica.com/copy-text-to-clipboard/
    *
@@ -105,6 +146,24 @@ Object.assign(lib.prototype, {
     };
 
     return matrix;
+  },
+
+  /**
+   * Get transform values of a specific selector.
+   *
+   * @param {number} x1 - The x coorcinate of a start point
+   * @param {number} y1 - The y coorcinate of a start point
+   * @param {number} x2 - The x coorcinate of a last point
+   * @param {number} y2 - The y coorcinate of a last point
+   * @returns {number} - The length between two coordinates
+   */
+  getDistance(x1, y1, x2, y2) {
+    let xs = x2 - x1;
+    let ys = y2 - y1;
+    xs *= xs;
+    ys *= ys;
+
+    return Math.sqrt(xs + ys);
   },
 
   /**
