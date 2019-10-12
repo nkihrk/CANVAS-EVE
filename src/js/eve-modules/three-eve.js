@@ -271,7 +271,7 @@ const ThreeEve = ((W, D, M) => {
       const id = this._addFileWrap(mousePos);
       const scene = this._setScene(id, scenes);
 
-      function initTarget(file) {
+      function __initTarget(file) {
         rootFilePath = URL.createObjectURL(file);
         baseURL = LoaderUtils.extractUrlBase(rootFilePath);
         rootFileName = rootFilePath.replace(baseURL, '');
@@ -283,7 +283,7 @@ const ThreeEve = ((W, D, M) => {
         console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
       }
 
-      function initMtl(file) {
+      function __initMtl(file) {
         mtlFilePath = URL.createObjectURL(file);
         baseURL = LoaderUtils.extractUrlBase(mtlFilePath);
         mtlFileName = mtlFilePath.replace(baseURL, '');
@@ -293,9 +293,9 @@ const ThreeEve = ((W, D, M) => {
 
       Array.from(files).forEach(file => {
         if (this._isSupported(file.name)) {
-          initTarget(file);
+          __initTarget(file);
         } else if (/\.(mtl)$/i.test(file.name)) {
-          initMtl(file);
+          __initMtl(file);
         } else {
           blobs[file.name] = file;
           console.log('blobs', blobs);
@@ -411,10 +411,9 @@ const ThreeEve = ((W, D, M) => {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
-      const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="trash-wrapper"></div>';
-      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="glsl file-wrap" style="transition: ${IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
+      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="glsl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
       $('#add-files').append(assertFile);
 
       const hide = $('<div class="hide-scissor"></div>').css({

@@ -75,7 +75,7 @@ Object.assign(lib.prototype, {
     let g;
     let b;
 
-    function hue2rgb(p, q, t) {
+    function __hue2rgb(p, q, t) {
       if (t < 0) t += 1;
       if (t > 1) t -= 1;
       if (t < 1 / 6) return p + (q - p) * 6 * t;
@@ -93,9 +93,9 @@ Object.assign(lib.prototype, {
     } else {
       const q = hsl[2] < 0.5 ? hsl[2] * (1 + hsl[1]) : hsl[2] + hsl[1] - hsl[2] * hsl[1];
       const p = 2 * hsl[2] - q;
-      r = hue2rgb(p, q, hsl[0] + 1 / 3);
-      g = hue2rgb(p, q, hsl[0]);
-      b = hue2rgb(p, q, hsl[0] - 1 / 3);
+      r = __hue2rgb(p, q, hsl[0] + 1 / 3);
+      g = __hue2rgb(p, q, hsl[0]);
+      b = __hue2rgb(p, q, hsl[0] - 1 / 3);
     }
 
     return [

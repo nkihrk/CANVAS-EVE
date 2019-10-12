@@ -70,6 +70,7 @@ import CommonEve from './common/common-eve';
  * Eve modules
  *
  */
+import CanvasEve from './eve-modules/canvas-eve';
 import PlainEve from './eve-modules/plain-eve';
 import ZoomEve from './eve-modules/zoom-eve';
 import FileEve from './eve-modules/file-eve';
@@ -79,6 +80,7 @@ import ThreeEve from './eve-modules/three-eve';
 import OekakiEve from './eve-modules/oekaki-eve';
 
 // New instances for modules
+const canvas = new CanvasEve();
 const common = new CommonEve();
 const plain = new PlainEve();
 const zoom = new ZoomEve();
@@ -89,6 +91,7 @@ const three = new ThreeEve();
 const oekaki = new OekakiEve(document.getElementById('color-oekaki'));
 
 // Execute modules
+canvas.load();
 common.load();
 plain.load();
 zoom.load();

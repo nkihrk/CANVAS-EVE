@@ -5,74 +5,187 @@
  * Dependencies
  * - jQuery 3.4.1
  * - lib-eve
+ * - glb-eve
  *
  */
 
 import $ from 'jquery';
-import LibEve from './common/lib-eve';
+import LibEve from '../common/lib-eve';
+import GlbEve from '../common/glb-eve';
 
-// The app`s capital letter must be uppercase. Add 'Eve' after the name
-const HogeEve = ((W, D) => {
-  function Hoge() {
-    // To inherit external modules, code like down below
-    LibEve.call(this);
+const CanvasEve = ((W, D, M) => {
+  /**
+   * Flags for CanvasEve.
+   *
+   */
+  function Flgs() {
+    this.flgs = {
+      config: {
+        only_draggable_flg: false,
+        no_zooming_flg: false
+      },
+      canvas: {
+        drag_flg: false,
+        rotate_flg: false,
+        mousedown_flg: false,
+        resize_flg: false,
+        thumbtack_flg: false,
+        re: {
+          left_top_flg: false,
+          right_top_flg: false,
+          right_bottom_flg: false,
+          left_bottom_flg: false
+        },
+        ro: {
+          left_top_flg: false,
+          right_top_flg: false,
+          right_bottom_flg: false,
+          left_bottom_flg: false
+        }
+      },
+      colpick: {
+        active_spuit_flg: false,
+        move_circle_flg: false
+      },
+      oekaki: {
+        move_wheelcircle_flg: false,
+        move_trianglecircle_flg: false
+      }
+    };
   }
 
-  // 'modules' is for us combining all external modules into one object.
-  // i.e., { ...LibEve.prototype, ...HogeEve.prototype, ...HogeEve2.prototype, …… }
-  const modules = { ...LibEve.prototype };
+  Flgs.prototype = {
+    constructor: Flgs,
 
-  Hoge.prototype = Object.assign(modules, {
-    constructor: Hoge,
+    //
 
-    options: {},
+    setFlgs() {
+      D.addEventListener('mousedown', e => {
+        const $fileWrap = $(e.target).parents('.file-wrap');
 
-    // The main functions must be executed through load()
-    load() {
-      this.hogehoge();
+        if ($fileWrap.length > 0) {
+          if ($fileWrap.find('only-draggable').length > 0) {
+            this.flgs.config.only_draggable_flg = true;
+          } else {
+            this.flgs.config.only_draggable_flg = false;
+          }
+          if ($fileWrap.children().hasClass('no-zooming')) {
+            this.flgs.config.no_zooming_flg = true;
+          } else {
+            this.flgs.config.no_zooming_flg = false;
+          }
+
+          this.flgs.colpick.active_spuit_flg = false;
+          if (
+            $fileWrap.find('#toggle-colpick').length === 0 &&
+            $('#toggle-colpick').hasClass('active')
+          ) {
+            this.flgs.colpick.active_spuit_flg = true;
+          }
+
+          this.flgs.canvas.thumbtack_flg = false;
+          if ($fileWrap.find('.thumbtack-wrapper').hasClass('active')) {
+            this.flgs.canvas.thumbtack_flg = true;
+          }
+        }
+
+        if (
+          e.target.closest('.re-left-top') ||
+          e.target.closest('.re-left-top') ||
+          e.target.closest('.re-left-top') ||
+          e.target.closest('.re-left-top')
+        ) {
+          if (this.flgs.canvas.mousedown_flg === false) {
+            this.flgs.canvas.mousedown_flg = true;
+            this.flgs.canvas.resize_flg = true;
+
+            if (e.target.closest('.re-left-top')) this.flgs.canvas.re.left_top_flg = true;
+            if (e.target.closest('.re-left-top')) this.flgs.canvas.re.right_top_flg = true;
+            if (e.target.closest('.re-left-top')) this.flgs.canvas.re.right_bottom_flg = true;
+            if (e.target.closest('.re-left-top')) this.flgs.canvas.re.left_bottom_flg = true;
+          }
+        }
+
+        if (
+          e.target.closest('.ro-left-top') ||
+          e.target.closest('.ro-left-top') ||
+          e.target.closest('.ro-left-top') ||
+          e.target.closest('.ro-left-top')
+        ) {
+          if (this.flgs.canvas.rotate_flg === false) {
+            this.flgs.canvas.mousedown_flg = true;
+            this.flgs.canvas.drag_flg = false;
+            this.flgs.canvas.rotate_flg = true;
+
+            if (e.target.closest('.ro-left-top')) this.flgs.canvas.re.left_top_flg = true;
+            if (e.target.closest('.ro-left-top')) this.flgs.canvas.re.right_top_flg = true;
+            if (e.target.closest('.ro-left-top')) this.flgs.canvas.re.right_bottom_flg = true;
+            if (e.target.closest('.ro-left-top')) this.flgs.canvas.re.left_bottom_flg = true;
+          }
+        }
+
+        if (
+          e.target.closest('#red-cir-colpick') ||
+          e.target.closest('#green-cir-colpick') ||
+          e.target.closest('#blue-cir-colpick')
+        ) {
+          this.flgs.colpick.move_circle_flg = true;
+        }
+      });
     },
 
-    hogehoge() {
-      // It is recommended to define 'self' first to ensure 'this' object to be HogeEve.
-      // Sometimes it will change its scope inside other objects like $(d).on('hoge', func);
-      // It's not MUST anyway. I don't use normally, just a technique.
-      const self = this;
+    //
 
-      self._hogehoge();
-    },
+    resetFlgs() {
+      D.addEventListener('mouseup', () => {
+        // A flag for colpick`s bar circle. colpick-eve.js
+        if (this.flgs.colpick.move_circle_flg === true) this.flgs.colpick.move_circle_flg = false;
 
-    // Always put underscore before function`s name if it's a private method
-    _hogehoge() {
-      console.log('hogehoge');
+        // A flag for drag event
+        if (this.flgs.canvas.drag_flg === true) this.flgs.canvas.drag_flg = false;
+
+        // A flag for mousedown event
+        if (this.flgs.canvas.mousedown_flg === true) this.flgs.canvas.mousedown_flg = false;
+
+        // Flags for resizing
+        if (this.flgs.canvas.resize_flg === true) this.flgs.canvas.resize_flg = false;
+        if (this.flgs.canvas.re.left_top_flg === true) this.flgs.canvas.re.left_top_flg = false;
+        if (this.flgs.canvas.re.right_top_flg === true) this.flgs.canvas.re.right_top_flg = false;
+        if (this.flgs.canvas.re.right_bottom_flg === true)
+          this.flgs.canvas.re.right_bottom_flg = false;
+        if (this.flgs.canvas.re.left_bottom_flg === true)
+          this.flgs.canvas.re.left_bottom_flg = false;
+
+        // A flag for rotating
+        if (this.flgs.canvas.rotate_flg === true) this.flgs.canvas.rotate_flg = false;
+        if (this.flgs.canvas.ro.left_top_flg === true) this.flgs.canvas.ro.left_top_flg = false;
+        if (this.flgs.canvas.ro.right_top_flg === true) this.flgs.canvas.ro.right_top_flg = false;
+        if (this.flgs.canvas.ro.right_bottom_flg === true)
+          this.flgs.canvas.ro.right_bottom_flg = false;
+        if (this.flgs.canvas.ro.left_bottom_flg === true)
+          this.flgs.canvas.ro.left_bottom_flg = false;
+      });
     }
-  });
+  };
 
-  return Hoge;
-  // Each item is for scope. W = window, and D = document.
-  // Add objects in left-to-right order. All the represented characters, which is W and D, must be uppercase.
-})(window, document);
+  /**
+   * Entry point for CanvasEve.
+   *
+   */
+  function Canvas() {
+    LibEve.call(this);
+    Flgs.call(this);
 
-// Export the above object to wherever it is called. This will make the app a module
-export default HogeEve;
-
-(function($) {
-  // Drag-and-Paste event
-  const canvasEve = function() {
-    const file = {
+    this.file = {
       $fileId: null,
       fileId: 0,
-      //
       fileIdPos: 0,
-      //
       fileIdRelPosX: 0,
       fileIdRelPosY: 0,
-      //
       fileIdWidth: 0,
       fileIdHeight: 0,
-      //
       fileIdRatio: 0,
       fileIdTheta: 0,
-      //
       rotatedSize: {
         width: 0,
         height: 0
@@ -83,8 +196,7 @@ export default HogeEve;
       }
     };
 
-    // Stored datas temporarily
-    const tmp = {
+    this.tmp = {
       ro: {
         left_top_initRad: null,
         right_top_initRad: null,
@@ -98,811 +210,576 @@ export default HogeEve;
       }
     };
 
-    const resizeBox =
+    this.resizeBox =
       '<div class="re-left-top"></div>' +
       '<div class="re-right-top"></div>' +
       '<div class="re-right-bottom"></div>' +
       '<div class="re-left-bottom"></div>';
 
-    const rotateBox =
+    this.rotateBox =
       '<div class="ro-left-top"></div>' +
       '<div class="ro-right-top"></div>' +
       '<div class="ro-right-bottom"></div>' +
       '<div class="ro-left-bottom"></div>';
+  }
 
-    const updateUiVal = function() {
-      // Update values according to a mouseWheelVal
-      // A selected area
-      $('#canvas-eve .selected').css({
-        top: `${-1 * mouseWheelVal}px`,
-        left: `${-1 * mouseWheelVal}px`,
-        // 'width': 'calc(100% + ' + 2 * mouseWheelVal + 'px)',
-        // 'height': 'calc(100% + ' + 2 * mouseWheelVal + 'px)',
-        'border-width': `${mouseWheelVal}px`
-      });
+  const modules = { ...LibEve.prototype, ...Flgs.prototype };
 
-      // Icons
-      $('.thumbtack-icon').css({
-        width: `${30 * mouseWheelVal}px`,
-        height: `${40 * mouseWheelVal}px`
-      });
-      $('.resize-icon').css({
-        width: `${30 * mouseWheelVal}px`,
-        height: `${30 * mouseWheelVal}px`
-      });
-      $('.rotate-icon').css({
-        width: `${30 * mouseWheelVal}px`,
-        height: `${30 * mouseWheelVal}px`
-      });
-      $('.flip-icon').css({
-        width: `${30 * mouseWheelVal}px`,
-        height: `${26 * mouseWheelVal}px`
-      });
-      $('.trash-icon').css({
-        width: `${30 * mouseWheelVal}px`,
-        height: `${35 * mouseWheelVal}px`
-      });
+  Canvas.prototype = Object.assign(modules, {
+    constructor: Canvas,
 
-      // Function wrapper
-      $('.function-wrapper').css({
-        right: `${-70 * mouseWheelVal}px`
-      });
-      $('.function-wrapper>div:not(:last-of-type)').css({
-        'margin-bottom': `${15 * mouseWheelVal}px`
-      });
+    options: {},
 
-      // Resize
-      $('.re-left-top, .re-right-top, .re-right-bottom, .re-left-bottom').css({
-        width: `${10 * mouseWheelVal}px`,
-        height: `${10 * mouseWheelVal}px`,
-        'border-width': `${1 * mouseWheelVal}px`
-      });
-      $('.re-left-top').css({
-        top: `${-6 * mouseWheelVal}px`,
-        left: `${-6 * mouseWheelVal}px`
-      });
-      $('.re-right-top').css({
-        top: `${-6 * mouseWheelVal}px`,
-        right: `${-6 * mouseWheelVal}px`
-      });
-      $('.re-right-bottom').css({
-        bottom: `${-6 * mouseWheelVal}px`,
-        right: `${-6 * mouseWheelVal}px`
-      });
-      $('.re-left-bottom').css({
-        bottom: `${-6 * mouseWheelVal}px`,
-        left: `${-6 * mouseWheelVal}px`
-      });
+    load() {
+      this.setFlgs();
+      this.resetFlgs();
+      this.init();
+      this.reset();
+      this.update();
+      this.handleEvents();
+    },
 
-      // Rotate
-      $('.ro-left-top, .ro-right-top, .ro-right-bottom, .ro-left-bottom').css({
-        width: `${20 * mouseWheelVal}px`,
-        height: `${20 * mouseWheelVal}px`
-      });
-      $('.ro-left-top').css({
-        top: `${-30 * mouseWheelVal}px`,
-        left: `${-30 * mouseWheelVal}px`
-      });
-      $('.ro-right-top').css({
-        top: `${-30 * mouseWheelVal}px`,
-        right: `${-30 * mouseWheelVal}px`
-      });
-      $('.ro-right-bottom').css({
-        bottom: `${-30 * mouseWheelVal}px`,
-        right: `${-30 * mouseWheelVal}px`
-      });
-      $('.ro-left-bottom').css({
-        bottom: `${-30 * mouseWheelVal}px`,
-        left: `${-30 * mouseWheelVal}px`
-      });
-    };
+    //
 
-    // ////
+    init() {
+      D.addEventListener('mousedown', e => {
+        const $fileWrap = $(e.target).parents('.file-wrap');
 
-    // Prefix for pasted-images. Initialize the values
-    const init = function() {
-      $(document).on(EVENTNAME_TOUCHSTART, '.file-wrap', function(e) {
-        // console.log('mousedown .file-wrap is detected.');
+        if ($fileWrap.length > 0) {
+          if (e.button === 0) {
+            $('div').removeClass('selected');
+            $('div').remove('.selected');
+            $('div').remove('.thumbtack-icon');
+            $('div').remove('.resize-icon');
+            $('div').remove('.rotate-icon');
+            $('div').remove('.flip-icon');
+            $('div').remove('.trash-icon');
 
-        // To restrict preferred functions
-        if ($(this).find('only-draggable').length > 0) {
-          glFlgs.config.only_draggable_flg = true;
-        } else {
-          glFlgs.config.only_draggable_flg = false;
-        }
-        // To restrict zooming
-        if (
-          $(this)
-            .children()
-            .hasClass('no-zooming')
-        ) {
-          glFlgs.config.no_zooming_flg = true;
-        } else {
-          glFlgs.config.no_zooming_flg = false;
-        }
+            $('div').remove('.re-left-top');
+            $('div').remove('.re-right-top');
+            $('div').remove('.re-right-bottom');
+            $('div').remove('.re-left-bottom');
 
-        // Update the flag if spuit is active. colpick-eve.js
-        // Initialize the flag first
-        glFlgs.colpick.active_spuit_flg = false;
-        // Check whether there exists #toggle-colpick or not at first, and check whether spuit is active or not next.
-        // "$(this).find('#toggle-colpick').length == 0" means that this .file-wrap is not a colpick board
-        if (
-          $(this).find('#toggle-colpick').length == 0 &&
-          $('#toggle-colpick').hasClass('active')
-        ) {
-          glFlgs.colpick.active_spuit_flg = true;
-        }
-        // console.log('glFlgs.colpick.active_spuit_flg is', glFlgs.colpick.active_spuit_flg);
+            $('div').remove('.ro-left-top');
+            $('div').remove('.ro-right-top');
+            $('div').remove('.ro-right-bottom');
+            $('div').remove('.ro-left-bottom');
 
-        // Initialize a thumbtack flag, and insert a boolean value if pinning is active
-        glFlgs.canvas.thumbtack_flg = false;
-        if (
-          $(this)
-            .find('.thumbtack-wrapper')
-            .hasClass('active')
-        ) {
-          glFlgs.canvas.thumbtack_flg = true;
-        }
-        // console.log('glFlgs.canvas.thumbtack_flg is', glFlgs.canvas.thumbtack_flg);
+            // This if argument is the prefix for colpick-eve.js
+            if (this.flgs.colpick.active_spuit_flg === false) {
+              $fileWrap.prepend('<div class="selected"></div>');
+              // Added selected symbols and other functions
+              if (this.flgs.config.only_draggable_flg === false) {
+                // Resizing boxes
+                if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
+                  $fileWrap.prepend(this.resizeBox);
+                }
 
-        // This if argument is the prefix for plain-eve.js
-        if (e.button != 1) {
-          // $('div').removeClass('selected');
-          $('div').remove('.selected');
-          $('div').remove('.thumbtack-icon');
-          $('div').remove('.resize-icon');
-          $('div').remove('.rotate-icon');
-          $('div').remove('.flip-icon');
-          $('div').remove('.trash-icon');
+                if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
+                  $fileWrap.prepend(this.rotateBox); // Rotating circles
+                }
 
-          $('div').remove('.re-left-top');
-          $('div').remove('.re-right-top');
-          $('div').remove('.re-right-bottom');
-          $('div').remove('.re-left-bottom');
+                $fileWrap.find('.thumbtack-wrapper').prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
+                $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon"></div>'); // Add a resizing icon
+                $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
+                $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon"></div>'); // Add a flipping icon
+                $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon"></div>'); // Add a trash icon
 
-          $('div').remove('.ro-left-top');
-          $('div').remove('.ro-right-top');
-          $('div').remove('.ro-right-bottom');
-          $('div').remove('.ro-left-bottom');
-
-          // This if argument is the prefix for colpick-eve.js
-          if (glFlgs.colpick.active_spuit_flg == false) {
-            $(this).prepend('<div class="selected"></div>');
-            // Added selected symbols and other functions
-            if (glFlgs.config.only_draggable_flg == false) {
-              // Resizing boxes
-              if (
-                $(this)
-                  .find('.resize-wrapper')
-                  .hasClass('active')
-              ) {
-                $(this).prepend(resizeBox);
+                this._updateUiVal();
               }
-              if (
-                $(this)
-                  .find('.rotate-wrapper')
-                  .hasClass('active')
-              )
-                $(this).prepend(rotateBox); // Rotating circles
 
-              $(this)
-                .find('.thumbtack-wrapper')
-                .prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
-              $(this)
-                .find('.resize-wrapper')
-                .prepend('<div class="resize-icon"></div>'); // Add a resizing icon
-              $(this)
-                .find('.rotate-wrapper')
-                .prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
-              $(this)
-                .find('.flip-wrapper')
-                .prepend('<div class="flip-icon"></div>'); // Add a flipping icon
-              $(this)
-                .find('.trash-wrapper')
-                .prepend('<div class="trash-icon"></div>'); // Add a trash icon
+              // Add #id to #image, and initialize its values
+              if (this.flgs.canvas.drag_flg === false) {
+                this.file.fileId = `#${$fileWrap.attr('id')}`;
+                this.file.$fileId = $(this.file.fileId);
+                // Global value for the selected ID
+                GlbEve.CURRENT_ID = $fileWrap.attr('id');
 
-              // Update values according to a mouseWheelVal
-              updateUiVal();
-            }
+                this.file.fileIdWidth = this.file.$fileId.outerWidth();
+                this.file.fileIdHeight = this.file.$fileId.outerHeight();
+                this.file.fileIdRatio = this.file.fileIdHeight / this.file.fileIdWidth;
 
-            // Add #id to #image, and initialize its values
-            if (glFlgs.canvas.drag_flg == false) {
-              file.fileId = `#${$(this).attr('id')}`;
-              file.$fileId = $(file.fileId);
-              // Global value for the selected ID
-              currentId = $(this).attr('id');
-              // console.log('id : ' + $(this).attr('id'));
+                this.file.fileIdTheta = this.getRotationRad(this.file.$fileId);
+                this.file.rotatedSize.width =
+                  this.file.fileIdWidth * M.abs(M.cos(this.file.fileIdTheta)) +
+                  this.file.fileIdHeight * M.abs(M.sin(this.file.fileIdTheta));
+                this.file.rotatedSize.height =
+                  this.file.fileIdHeight * M.abs(M.cos(this.file.fileIdTheta)) +
+                  this.file.fileIdWidth * M.abs(M.sin(this.file.fileIdTheta));
 
-              file.fileIdWidth = file.$fileId.outerWidth();
-              file.fileIdHeight = file.$fileId.outerHeight();
-              file.fileIdRatio = file.fileIdHeight / file.fileIdWidth;
+                this.file.fileIdPos = this.file.$fileId.offset();
 
-              file.fileIdTheta = getRotationRad(file.$fileId);
-              // console.log('file.fileIdTheta : ' + file.fileIdTheta);
-              file.rotatedSize.width =
-                file.fileIdWidth * Math.abs(Math.cos(file.fileIdTheta)) +
-                file.fileIdHeight * Math.abs(Math.sin(file.fileIdTheta));
-              file.rotatedSize.height =
-                file.fileIdHeight * Math.abs(Math.cos(file.fileIdTheta)) +
-                file.fileIdWidth * Math.abs(Math.sin(file.fileIdTheta));
+                this.file.fileIdRelPosX = e.clientX - this.file.fileIdPos.left;
+                this.file.fileIdRelPosY = e.clientY - this.file.fileIdPos.top;
 
-              file.fileIdPos = file.$fileId.offset();
-              // console.log('file.fileIdPos', file.fileIdPos);
+                // Initialize this.file.rotatedCenterPos. These are screen-space coordinates
+                this.file.rotatedCenterPos.left =
+                  this.file.$fileId.offset().left +
+                  this.file.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+                this.file.rotatedCenterPos.top =
+                  this.file.$fileId.offset().top +
+                  this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
-              file.fileIdRelPosX = clientX - file.fileIdPos.left;
-              file.fileIdRelPosY = clientY - file.fileIdPos.top;
-              // debugCircle('test-pos_1', 'blue', file.fileIdPos.left, file.fileIdPos.top);
-              // debugCircle('test-pos_4', 'white', file.fileIdRelPosX, file.fileIdRelPosY);
+                // Initialize the initRads for a rotating function
+                this.tmp.ro.left_top_initRad = this.calcRadians(
+                  -this.file.fileIdWidth / 2,
+                  -this.file.fileIdHeight / 2
+                );
+                this.tmp.ro.right_top_initRad = this.calcRadians(
+                  this.file.fileIdWidth / 2,
+                  -this.file.fileIdHeight / 2
+                );
+                this.tmp.ro.right_bottom_initRad = this.calcRadians(
+                  this.file.fileIdWidth / 2,
+                  this.file.fileIdHeight / 2
+                );
+                this.tmp.ro.left_bottom_initRad = this.calcRadians(
+                  -this.file.fileIdWidth / 2,
+                  this.file.fileIdHeight / 2
+                );
 
-              // Initialize file.rotatedCenterPos. These are screen-space coordinates
-              file.rotatedCenterPos.left =
-                file.$fileId.offset().left + file.rotatedSize.width / 2 / mouseWheelVal;
-              file.rotatedCenterPos.top =
-                file.$fileId.offset().top + file.rotatedSize.height / 2 / mouseWheelVal;
-
-              // Initialize the initRads for a rotating function
-              tmp.ro.left_top_initRad = calcRadians(-file.fileIdWidth / 2, -file.fileIdHeight / 2);
-              tmp.ro.right_top_initRad = calcRadians(file.fileIdWidth / 2, -file.fileIdHeight / 2);
-              tmp.ro.right_bottom_initRad = calcRadians(
-                file.fileIdWidth / 2,
-                file.fileIdHeight / 2
-              );
-              tmp.ro.left_bottom_initRad = calcRadians(
-                -file.fileIdWidth / 2,
-                file.fileIdHeight / 2
-              );
-
-              // Set the $fileId to be the highest of all the other unselected elements
-              HIGHEST_Z_INDEX += 1;
-              file.$fileId.css('z-index', HIGHEST_Z_INDEX);
-              glFlgs.canvas.drag_flg = true;
-              // console.log('glFlgs.canvas.drag_flg is ' + glFlgs.canvas.drag_flg);
+                // Set the $fileId to be the highest of all the other unselected elements
+                GlbEve.HIGHEST_Z_INDEX += 1;
+                this.file.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
+                this.flgs.canvas.drag_flg = true;
+              }
             }
           }
         }
       });
-    };
-    init();
+    },
 
-    // Reset a selected area
-    const reset = function() {
-      $(document).on(EVENTNAME_TOUCHSTART, '#reset-res', function(e) {
-        // console.log('mousedown #reset-res is detected.');
-        // For #reset-res to be excluded if e.button == 1. Go check the plain-eve.js
-        if (e.button != 1) {
-          e.stopPropagation();
+    //
 
-          $('div').remove('.selected');
+    reset() {
+      D.addEventListener('mousedown', e => {
+        const $fileWrap = $(e.target).parents('.file-wrap');
 
-          $('div').remove('.thumbtack-icon');
-          $('div').remove('.resize-icon');
-          $('div').remove('.rotate-icon');
-          $('div').remove('.flip-icon');
-          $('div').remove('.trash-icon');
+        if ($fileWrap.length > 0) {
+          if (e.button === 0) {
+            $('div').remove('.selected');
 
-          $('div').remove('.re-left-top');
-          $('div').remove('.re-right-top');
-          $('div').remove('.re-right-bottom');
-          $('div').remove('.re-left-bottom');
+            $('div').remove('.thumbtack-icon');
+            $('div').remove('.resize-icon');
+            $('div').remove('.rotate-icon');
+            $('div').remove('.flip-icon');
+            $('div').remove('.trash-icon');
 
-          $('div').remove('.ro-left-top');
-          $('div').remove('.ro-right-top');
-          $('div').remove('.ro-right-bottom');
-          $('div').remove('.ro-left-bottom');
+            $('div').remove('.re-left-top');
+            $('div').remove('.re-right-top');
+            $('div').remove('.re-right-bottom');
+            $('div').remove('.re-left-bottom');
+
+            $('div').remove('.ro-left-top');
+            $('div').remove('.ro-right-top');
+            $('div').remove('.ro-right-bottom');
+            $('div').remove('.ro-left-bottom');
+          }
         }
       });
-    };
-    reset();
+    },
 
-    // Update variables everytime a mousemove event is called on wherever
-    const Update = function() {
-      $(document).on(EVENTNAME_TOUCHMOVE, function() {
-        // Set the #reset-res at a mouse pos
-        // $('#reset-res').css({
-        //     'left': clientX - 50 + 'px',
-        //     'top': clientY - 50 + 'px',
-        //     // 'left': clientFromZoomX * mouseWheelVal - 50 + 'px',
-        //     // 'top': clientFromZoomY * mouseWheelVal - 50 + 'px',
-        //     // 'transform': 'translate(' + xNewMinus + 'px, ' + yNewMinus + 'px' + ')',
-        // });
-        // if (file.$fileId.find('.canvas-colpick')) {
-        //     file.$fileId.find('.canvas-colpick').attr('width', file.$fileId.width());
-        //     file.$fileId.find('.canvas-colpick').attr('height', file.$fileId.height());
-        // }
-      });
+    //
 
-      $(document).on(EVENTNAME_TOUCHEND, function() {
-        // Refrash the rendering result of each canvas when changing its size. This canvas is for color picking. colpick-eve.js
-        if (file.$fileId != null && file.$fileId.find('.canvas-colpick').length > 0) {
-          setTimeout(function() {
+    update() {
+      D.addEventListener('mouseup', () => {
+        // Refrash the rendering result of each canvas when changing its size.
+        // This canvas is for color picking.colpick - eve.js
+        if (this.file.$fileId !== null && this.file.$fileId.find('.canvas-colpick').length > 0) {
+          setTimeout(() => {
             const img = new Image();
-            img.src = file.$fileId.find('img').attr('src');
+            img.src = this.file.$fileId.find('img').attr('src');
             img.onload = () => {
-              file.$fileId
+              this.file.$fileId
                 .find('.canvas-colpick')[0]
                 .getContext('2d')
-                .drawImage(img, 0, 0, file.$fileId.width(), file.$fileId.height());
+                .drawImage(img, 0, 0, this.file.$fileId.width(), this.file.$fileId.height());
             };
-            file.$fileId.find('.canvas-colpick').attr('width', file.$fileId.width());
-            file.$fileId.find('.canvas-colpick').attr('height', file.$fileId.height());
+            this.file.$fileId.find('.canvas-colpick').attr('width', this.file.$fileId.width());
+            this.file.$fileId.find('.canvas-colpick').attr('height', this.file.$fileId.height());
           }, 100);
         }
       });
 
-      $(document).on('mousewheel', function() {
-        // Update values according to a mouseWheelVal
-        setTimeout(function() {
-          updateUiVal();
-        }, 1);
-      });
-    };
-    Update();
+      // IE9+, Chrome, Safari, Opera
+      D.addEventListener(
+        'mousewheel',
+        () => {
+          setTimeout(() => {
+            this._updateUiVal();
+          }, 1);
+        },
+        false
+      );
+      // Firefox
+      D.addEventListener(
+        'DOMMouseScroll',
+        () => {
+          setTimeout(() => {
+            this._updateUiVal();
+          }, 1);
+        },
+        false
+      );
+    },
 
-    // Configuring flags and icons
-    const configFlgs = function() {
-      const activateFlgs = function() {
-        // Configuring flags for resizing function
-        const resize = function() {
-          const whichResizeBox = function(b, n) {
-            $(document).on(EVENTNAME_TOUCHSTART, b, function(e) {
-              // console.log('mousedown ' + b + ' is detected');
-              iframePointerNone();
+    //
 
-              if (glFlgs.canvas.mousedown_flg == false) {
-                glFlgs.canvas.mousedown_flg = true;
-                glFlgs.canvas.resize_flg = true;
-                // console.log('glFlgs.canvas.mousedown_flg is ' + glFlgs.canvas.mousedown_flg);
-                // console.log('glFlgs.canvas.resize_flg is ' + glFlgs.canvas.resize_flg);
+    handleEvents() {
+      D.addEventListener('mousedown', e => {
+        if (e.button === 0) {
+          e.stopPropagation();
 
-                if (n == 0) {
-                  glFlgs.canvas.re.left_top_flg = true;
-                  // console.log('glFlgs.canvas.re.left_top_flg is ' + glFlgs.canvas.re.left_top_flg);
-                }
-                if (n == 1) {
-                  glFlgs.canvas.re.right_top_flg = true;
-                  // console.log('glFlgs.canvas.re.right_top_flg is ' + glFlgs.canvas.re.right_top_flg);
-                }
-                if (n == 2) {
-                  glFlgs.canvas.re.right_bottom_flg = true;
-                  // console.log('glFlgs.canvas.re.right_bottom_flg is ' + glFlgs.canvas.re.right_bottom_flg);
-                }
-                if (n == 3) {
-                  glFlgs.canvas.re.left_bottom_flg = true;
-                  // console.log('glFlgs.canvas.re.left_bottom_flg is ' + glFlgs.canvas.re.left_bottom_flg);
-                }
-              }
-            });
-          };
-          whichResizeBox('.re-left-top', 0);
-          whichResizeBox('.re-right-top', 1);
-          whichResizeBox('.re-right-bottom', 2);
-          whichResizeBox('.re-left-bottom', 3);
-          sep();
-        };
-        resize();
-
-        // Configuring flags for a rotating function and a reset function
-        const rotate = function() {
-          const whichRotateBox = function(b, n) {
-            $(document).on(EVENTNAME_TOUCHSTART, b, function(e) {
-              // console.log('mousedown ' + b + ' is detected');
-              e.stopPropagation();
-              iframePointerNone();
-
-              if (glFlgs.canvas.rotate_flg == false) {
-                glFlgs.canvas.mousedown_flg = true;
-                glFlgs.canvas.drag_flg = false;
-                glFlgs.canvas.rotate_flg = true;
-                // console.log('glFlgs.canvas.mousedown_flg is ' + glFlgs.canvas.mousedown_flg);
-                // console.log('glFlgs.canvas.drag_flg is ' + glFlgs.canvas.drag_flg);
-                // console.log('glFlgs.canvas.rotate_flg is ' + glFlgs.canvas.rotate_flg);
-
-                if (n == 0) {
-                  glFlgs.canvas.ro.left_top_flg = true;
-                  // console.log('glFlgs.canvas.ro.left_top_flg is ' + glFlgs.canvas.ro.left_top_flg);
-                }
-                if (n == 1) {
-                  glFlgs.canvas.ro.right_top_flg = true;
-                  // console.log('glFlgs.canvas.ro.right_top_flg is ' + glFlgs.canvas.ro.right_top_flg);
-                }
-                if (n == 2) {
-                  glFlgs.canvas.ro.right_bottom_flg = true;
-                  // console.log('glFlgs.canvas.ro.right_bottom_flg is ' + glFlgs.canvas.ro.right_bottom_flg);
-                }
-                if (n == 3) {
-                  glFlgs.canvas.ro.left_bottom_flg = true;
-                  // console.log('glFlgs.canvas.ro.left_bottom_flg is ' + glFlgs.canvas.ro.left_bottom_flg);
-                }
-              }
-            });
-          };
-          whichRotateBox('.ro-left-top', 0);
-          whichRotateBox('.ro-right-top', 1);
-          whichRotateBox('.ro-right-bottom', 2);
-          whichRotateBox('.ro-left-bottom', 3);
-          sep();
-        };
-        rotate();
-
-        // A flag for colpick`s bar circle. colpick-eve.js
-        $(document).on(
-          EVENTNAME_TOUCHSTART,
-          '#red-cir-colpick, #green-cir-colpick, #blue-cir-colpick',
-          function() {
-            glFlgs.colpick.move_circle_flg = true;
-          }
-        );
-      };
-      activateFlgs();
-
-      const resetFlgs = function() {
-        $(document).on(EVENTNAME_TOUCHEND, function() {
-          iframePointerReset();
-
-          // A flag for colpick`s bar circle. colpick-eve.js
-          if (glFlgs.colpick.move_circle_flg == true) {
-            glFlgs.colpick.move_circle_flg = false;
-            // console.log('glFlgs.colpick.move_circle_flg is ' + glFlgs.colpick.move_circle_flg);
-          }
-
-          // A flag for drag event
-          if (glFlgs.canvas.drag_flg == true) {
-            glFlgs.canvas.drag_flg = false;
-            // console.log('glFlgs.canvas.drag_flg is ' + glFlgs.canvas.drag_flg);
-          }
-
-          // A flag for mousedown event
-          if (glFlgs.canvas.mousedown_flg == true) {
-            glFlgs.canvas.mousedown_flg = false;
-            // console.log('glFlgs.canvas.mousedown_flg is ' + glFlgs.canvas.mousedown_flg);
-          }
-
-          // Flags for resizing
-          if (glFlgs.canvas.resize_flg == true) {
-            glFlgs.canvas.resize_flg = false;
-            // console.log('glFlgs.canvas.resize_flg is ' + glFlgs.canvas.resize_flg);
-          }
-          if (glFlgs.canvas.re.left_top_flg == true) glFlgs.canvas.re.left_top_flg = false;
-          if (glFlgs.canvas.re.right_top_flg == true) glFlgs.canvas.re.right_top_flg = false;
-          if (glFlgs.canvas.re.right_bottom_flg == true) glFlgs.canvas.re.right_bottom_flg = false;
-          if (glFlgs.canvas.re.left_bottom_flg == true) glFlgs.canvas.re.left_bottom_flg = false;
-
-          // A flag for rotating
-          if (glFlgs.canvas.rotate_flg == true) {
-            glFlgs.canvas.rotate_flg = false;
-            // console.log('glFlgs.canvas.rotate_flg is ' + glFlgs.canvas.rotate_flg);
-          }
-          if (glFlgs.canvas.ro.left_top_flg == true) glFlgs.canvas.ro.left_top_flg = false;
-          if (glFlgs.canvas.ro.right_top_flg == true) glFlgs.canvas.ro.right_top_flg = false;
-          if (glFlgs.canvas.ro.right_bottom_flg == true) glFlgs.canvas.ro.right_bottom_flg = false;
-          if (glFlgs.canvas.ro.left_bottom_flg == true) glFlgs.canvas.ro.left_bottom_flg = false;
-
-          sep();
-        });
-      };
-      resetFlgs();
-
-      // Show icons to be active, and do something if needed
-      const clickedIcon = function() {
-        // Activate pinning
-        $(document).on(EVENTNAME_TOUCHSTART, '.thumbtack-icon', function(e) {
-          // console.log('mousedown .thumbtack-icon is detected.');
-
-          if (e.button != 1) {
-            e.stopPropagation();
-            $(this)
+          if (e.target.closest('.thumbtack-icon')) {
+            $(e.target)
               .parents('.thumbtack-wrapper')
               .toggleClass('active');
 
             if (
-              $(this)
+              $(e.target)
                 .parents('.thumbtack-wrapper')
                 .hasClass('active')
             ) {
-              glFlgs.canvas.thumbtack_flg = true;
-
-              // Update values according to a mouseWheelVal
-              updateUiVal();
+              this.flgs.canvas.thumbtack_flg = true;
+              this._updateUiVal();
             } else {
-              glFlgs.canvas.thumbtack_flg = false;
+              this.flgs.canvas.thumbtack_flg = false;
             }
           }
-        });
 
-        // Activate resizing
-        $(document).on(EVENTNAME_TOUCHSTART, '.resize-icon', function(e) {
-          // console.log('mousedown .resize-icon is detected.');
-          e.stopPropagation();
-
-          if (e.button != 1) {
-            e.stopPropagation();
-            $(this)
+          if (e.target.closest('.resize-icon')) {
+            $(e.target)
               .parents('.resize-wrapper')
               .toggleClass('active');
 
             if (
-              $(this)
+              $(e.target)
                 .parents('.resize-wrapper')
                 .hasClass('active')
             ) {
-              if (!file.$fileId.hasClass('ro-left-top')) {
-                file.$fileId.prepend(resizeBox);
-
-                // Update values according to a mouseWheelVal
-                updateUiVal();
+              if (!this.file.$fileId.hasClass('ro-left-top')) {
+                this.file.$fileId.prepend(resizeBox);
+                this._updateUiVal();
               }
             } else {
-              file.$fileId.children('.re-left-top').remove();
-              file.$fileId.children('.re-right-top').remove();
-              file.$fileId.children('.re-right-bottom').remove();
-              file.$fileId.children('.re-left-bottom').remove();
+              this.file.$fileId.children('.re-left-top').remove();
+              this.file.$fileId.children('.re-right-top').remove();
+              this.file.$fileId.children('.re-right-bottom').remove();
+              this.file.$fileId.children('.re-left-bottom').remove();
             }
           }
-        });
 
-        // Activate rotating
-        $(document).on(EVENTNAME_TOUCHSTART, '.rotate-icon', function(e) {
-          // console.log('mousedown .rotate-icon is detected.');
-
-          if (e.button != 1) {
-            e.stopPropagation();
-            $(this)
+          if (e.target.closest('.rotate-icon')) {
+            $(e.target)
               .parents('.rotate-wrapper')
               .toggleClass('active');
 
             if (
-              $(this)
+              $(e.target)
                 .parents('.rotate-wrapper')
                 .hasClass('active')
             ) {
-              if (!file.$fileId.hasClass('ro-left-top')) {
-                file.$fileId.removeClass('not-rotated');
-                file.$fileId.prepend(rotateBox);
-
-                // Update values according to a mouseWheelVal
-                updateUiVal();
+              if (!this.file.$fileId.hasClass('ro-left-top')) {
+                this.file.$fileId.removeClass('not-rotated');
+                this.file.$fileId.prepend(rotateBox);
+                this._updateUiVal();
               }
             } else {
-              file.$fileId.addClass('not-rotated');
-              file.$fileId.children('.ro-left-top').remove();
-              file.$fileId.children('.ro-right-top').remove();
-              file.$fileId.children('.ro-right-bottom').remove();
-              file.$fileId.children('.ro-left-bottom').remove();
+              this.file.$fileId.addClass('not-rotated');
+              this.file.$fileId.children('.ro-left-top').remove();
+              this.file.$fileId.children('.ro-right-top').remove();
+              this.file.$fileId.children('.ro-right-bottom').remove();
+              this.file.$fileId.children('.ro-left-bottom').remove();
             }
           }
-        });
 
-        // Activate flipping
-        $(document).on(EVENTNAME_TOUCHSTART, '.flip-icon', function(e) {
-          // console.log('mousedown .flip-icon is detected.');
-
-          if (e.button != 1) {
-            e.stopPropagation();
-            $(this)
+          if (e.target.closest('.flip-icon')) {
+            $(e.target)
               .parents('.flip-wrapper')
               .toggleClass('active');
 
             if (
-              $(this)
+              $(e.target)
                 .parents('.flip-wrapper')
                 .hasClass('active')
             ) {
-              $(`${file.fileId} .is-flipped`).addClass('flipped');
-
-              // Update values according to a mouseWheelVal
-              updateUiVal();
+              $(`${this.file.fileId} .is-flipped`).addClass('flipped');
+              this._updateUiVal();
             } else {
-              $(`${file.fileId} .is-flipped`).removeClass('flipped');
+              $(`${this.file.fileId} .is-flipped`).removeClass('flipped');
             }
           }
-        });
 
-        // Trash the selected element
-        $(document).on(EVENTNAME_TOUCHSTART, '.trash-icon', function(e) {
-          // console.log('mousedown .trash-icon is detected.');
-
-          if (e.button != 1) {
-            e.stopPropagation();
-            $(this)
+          if (e.target.closest('.trash-icon')) {
+            $(e.target)
               .parents('.trash-wrapper')
               .toggleClass('active');
 
             if (
-              $(this)
+              $(e.target)
                 .parents('.trash-wrapper')
                 .hasClass('active')
             ) {
-              $(file.fileId).remove();
+              $(this.file.fileId).remove();
             }
           }
-        });
+        }
+      });
 
-        sep();
-      };
-      clickedIcon();
-    };
-    configFlgs();
-
-    // Execute if flags are true
-    const main = function() {
-      // Allow events when flags are in specific values
-      $(document).on(EVENTNAME_TOUCHMOVE, function(e) {
-        // Prevent from the default drag events
+      D.addEventListener('mousemove', e => {
         e.preventDefault();
-
-        const pClientX = clientFromZoomX;
-        const pClientY = clientFromZoomY;
-        let mousewheel_avail_flg = false;
-        if (e.button == 1) {
-          mousewheel_avail_flg = true;
+        const pClientX = e.clientX - $('#zoom').offset().left;
+        const pClientY = e.clientY - $('#zoom').offset().top;
+        let mouseWheelAvailFlg = false;
+        if (e.button === 1) {
+          mouseWheelAvailFlg = true;
         }
 
-        // When an image is dragged
-        const dragged = function() {
-          let targetPosLeft;
-          let targetPosTop;
-          let resLeft;
-          let resTop;
-
-          // The element has a class .no_zooming
-          if (glFlgs.config.no_zooming_flg == true) {
-            targetPosLeft = clientX - file.fileIdRelPosX;
-            targetPosTop = clientY - file.fileIdRelPosY;
-
-            resLeft = (file.rotatedSize.width - file.fileIdWidth) / 2 + targetPosLeft;
-            resTop = (file.rotatedSize.height - file.fileIdHeight) / 2 + targetPosTop;
-          } else {
-            targetPosLeft = pClientX - file.fileIdRelPosX;
-            targetPosTop = pClientY - file.fileIdRelPosY;
-
-            resLeft =
-              (file.rotatedSize.width - file.fileIdWidth) / 2 + targetPosLeft * mouseWheelVal;
-            resTop =
-              (file.rotatedSize.height - file.fileIdHeight) / 2 + targetPosTop * mouseWheelVal;
-          }
-
-          if (
-            mousewheel_avail_flg == false &&
-            glFlgs.canvas.thumbtack_flg == false &&
-            glFlgs.canvas.resize_flg == false &&
-            glFlgs.canvas.rotate_flg == false
-          ) {
-            if (glFlgs.canvas.drag_flg == true) {
-              if (
-                glFlgs.oekaki.move_wheelcircle_flg == false &&
-                glFlgs.oekaki.move_trianglecircle_flg == false &&
-                glFlgs.colpick.active_spuit_flg == false &&
-                glFlgs.colpick.move_circle_flg == false
-              ) {
-                file.$fileId.css({
-                  left: `${resLeft}px`,
-                  top: `${resTop}px`
-                });
-              }
-
-              // Update file.rotatedCenterPos for the later-use in rotating function
-              file.rotatedCenterPos.left =
-                file.$fileId.offset().left + file.rotatedSize.width / 2 / mouseWheelVal;
-              file.rotatedCenterPos.top =
-                file.$fileId.offset().top + file.rotatedSize.height / 2 / mouseWheelVal;
-              // debugCircle('test-pos_3', 'orange', file.rotatedCenterPos.left, file.rotatedCenterPos.top);
-              // console.log('drag function is called');
-            }
-          }
-        };
-
-        // When an image is rotated
-        const rotated = function() {
-          const fileCenterPosX = file.rotatedCenterPos.left;
-          const fileCenterPosY = file.rotatedCenterPos.top;
-          // debugCircle('test-pos_5', 'purple', fileCenterPosX, fileCenterPosY);
-          // A current radian value of the mouse
-          const rad = calcRadians(clientX - fileCenterPosX, clientY - fileCenterPosY);
-          // debugCircle('test-pos_6', 'black', 50 * Math.cos(rad) + fileCenterPosX, 50 * Math.sin(rad) + fileCenterPosY);
-
-          if (
-            mousewheel_avail_flg == false &&
-            glFlgs.canvas.drag_flg == false &&
-            glFlgs.canvas.resize_flg == false &&
-            glFlgs.canvas.rotate_flg == true
-          ) {
-            if (glFlgs.canvas.ro.left_top_flg == true) {
-              const resRad = rad - tmp.ro.left_top_initRad;
-              // console.log('tmp.ro.left_top_initRad : ' + tmp.ro.left_top_initRad);
-
-              file.$fileId.css('transform', `rotate(${resRad}rad)`);
-              // console.log('rotate function is called');
-            }
-
-            if (glFlgs.canvas.ro.right_top_flg == true) {
-              const resRad = rad - tmp.ro.right_top_initRad;
-              // console.log('tmp.ro.right_top_initRad : ' + tmp.ro.right_top_initRad);
-
-              file.$fileId.css('transform', `rotate(${resRad}rad)`);
-              // console.log('rotate function is called');
-            }
-
-            if (glFlgs.canvas.ro.right_bottom_flg == true) {
-              const resRad = rad - tmp.ro.right_bottom_initRad;
-              // console.log('tmp.ro.right_bottom_initRad : ' + tmp.ro.right_bottom_initRad);
-
-              file.$fileId.css('transform', `rotate(${resRad}rad)`);
-              // console.log('rotate function is called');
-            }
-
-            if (glFlgs.canvas.ro.left_bottom_flg == true) {
-              const resRad = rad - tmp.ro.left_bottom_initRad;
-              // console.log('tmp.ro.left_bottom_initRad : ' + tmp.ro.left_bottom_initRad);
-
-              file.$fileId.css('transform', `rotate(${resRad}rad)`);
-              // console.log('rotate function is called');
-            }
-          }
-        };
-
-        // When resizing-boxes are clicked
-        const resized = function() {
-          if (
-            mousewheel_avail_flg == false &&
-            glFlgs.canvas.mousedown_flg == true &&
-            glFlgs.canvas.resize_flg == true
-          ) {
-            if (glFlgs.canvas.re.left_top_flg == true) {
-              file.$fileId.css({
-                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal +
-                  (file.fileIdHeight -
-                    (file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal) *
-                      file.fileIdRatio)}px`,
-                left: `${(file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal +
-                  (clientX - file.fileIdPos.left) * mouseWheelVal}px`,
-                width: `${file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal}px`
-              });
-              // console.log('mousedown is called');
-            }
-
-            if (glFlgs.canvas.re.right_top_flg == true) {
-              file.$fileId.css({
-                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal +
-                  (file.fileIdHeight -
-                    (clientX - file.fileIdPos.left) * mouseWheelVal * file.fileIdRatio)}px`,
-                left: `${(file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal}px`,
-                width: `${(clientX - file.fileIdPos.left) * mouseWheelVal}px`
-              });
-              // console.log('down one is called');
-            }
-
-            if (glFlgs.canvas.re.right_bottom_flg == true) {
-              file.$fileId.css({
-                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal}px`,
-                left: `${(file.fileIdPos.left - $('#zoom').offset().left) * mouseWheelVal}px`,
-                width: `${(clientX - file.fileIdPos.left) * mouseWheelVal}px`
-              });
-              // console.log('down one is called');
-            }
-
-            if (glFlgs.canvas.re.left_bottom_flg == true) {
-              file.$fileId.css({
-                top: `${(file.fileIdPos.top - $('#zoom').offset().top) * mouseWheelVal}px`,
-                left: `${(file.fileIdPos.left -
-                  $('#zoom').offset().left +
-                  (clientX - file.fileIdPos.left)) *
-                  mouseWheelVal}px`,
-                width: `${file.fileIdWidth - (clientX - file.fileIdPos.left) * mouseWheelVal}px`
-              });
-              // console.log('down one is called');
-            }
-          }
-        };
-
-        const executed = function() {
-          dragged();
-          rotated();
-          resized();
-        };
-        executed();
+        this._dragged(e, pClientX, pClientY, mouseWheelAvailFlg);
+        this._rotate(e, mouseWheelAvailFlg);
+        this._resize(e, mouseWheelAvailFlg);
       });
-    };
-    main();
-  };
-  canvasEve();
-})(jQuery);
+    },
+
+    //
+
+    _dragged(e, pClientX, pClientY, mouseWheelAvailFlg) {
+      let targetPosLeft;
+      let targetPosTop;
+      let resLeft;
+      let resTop;
+
+      if (this.flgs.config.no_zooming_flg === true) {
+        targetPosLeft = e.clientX - this.file.fileIdRelPosX;
+        targetPosTop = e.clientY - this.file.fileIdRelPosY;
+
+        resLeft = (this.file.rotatedSize.width - this.file.fileIdWidth) / 2 + targetPosLeft;
+        resTop = (this.file.rotatedSize.height - this.file.fileIdHeight) / 2 + targetPosTop;
+      } else {
+        targetPosLeft = pClientX - this.file.fileIdRelPosX;
+        targetPosTop = pClientY - this.file.fileIdRelPosY;
+
+        resLeft =
+          (this.file.rotatedSize.width - this.file.fileIdWidth) / 2 +
+          targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
+        resTop =
+          (this.file.rotatedSize.height - this.file.fileIdHeight) / 2 +
+          targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
+      }
+
+      if (
+        mouseWheelAvailFlg === false &&
+        this.flgs.canvas.thumbtack_flg === false &&
+        this.flgs.canvas.resize_flg === false &&
+        this.flgs.canvas.rotate_flg === false
+      ) {
+        if (this.flgs.canvas.drag_flg === true) {
+          if (
+            this.flgs.oekaki.move_wheelcircle_flg === false &&
+            this.flgs.oekaki.move_trianglecircle_flg === false &&
+            this.flgs.colpick.active_spuit_flg === false &&
+            this.flgs.colpick.move_circle_flg === false
+          ) {
+            this.file.$fileId.css({
+              left: `${resLeft}px`,
+              top: `${resTop}px`
+            });
+          }
+
+          this.file.rotatedCenterPos.left =
+            this.file.$fileId.offset().left +
+            this.file.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+          this.file.rotatedCenterPos.top =
+            this.file.$fileId.offset().top +
+            this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+        }
+      }
+    },
+
+    //
+
+    _rotate(e, mouseWheelAvailFlg) {
+      const fileCenterPosX = this.file.rotatedCenterPos.left;
+      const fileCenterPosY = this.file.rotatedCenterPos.top;
+      const rad = this.calcRadians(e.clientX - fileCenterPosX, e.clientY - fileCenterPosY);
+
+      if (
+        mouseWheelAvailFlg === false &&
+        this.flgs.canvas.drag_flg === false &&
+        this.flgs.canvas.resize_flg === false &&
+        this.flgs.canvas.rotate_flg === true
+      ) {
+        if (this.flgs.canvas.ro.left_top_flg === true) {
+          const resRad = rad - this.tmp.ro.left_top_initRad;
+          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+        }
+
+        if (this.flgs.canvas.ro.right_top_flg === true) {
+          const resRad = rad - this.tmp.ro.right_top_initRad;
+          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+        }
+
+        if (this.flgs.canvas.ro.right_bottom_flg === true) {
+          const resRad = rad - this.tmp.ro.right_bottom_initRad;
+          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+        }
+
+        if (this.flgs.canvas.ro.left_bottom_flg === true) {
+          const resRad = rad - this.tmp.ro.left_bottom_initRad;
+          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+        }
+      }
+    },
+
+    //
+
+    _resize(e, mouseWheelAvailFlg) {
+      if (
+        mouseWheelAvailFlg === false &&
+        this.flgs.canvas.mousedown_flg === true &&
+        this.flgs.canvas.resize_flg === true
+      ) {
+        if (this.flgs.canvas.re.left_top_flg === true) {
+          this.file.$fileId.css({
+            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
+              (this.file.fileIdHeight -
+                (this.file.fileIdWidth -
+                  (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL) *
+                  this.file.fileIdRatio)}px`,
+            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
+              GlbEve.MOUSE_WHEEL_VAL +
+              (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${this.file.fileIdWidth -
+              (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          });
+        }
+
+        if (this.flgs.canvas.re.right_top_flg === true) {
+          this.file.$fileId.css({
+            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
+              (this.file.fileIdHeight -
+                (e.clientX - this.file.fileIdPos.left) *
+                  GlbEve.MOUSE_WHEEL_VAL *
+                  this.file.fileIdRatio)}px`,
+            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${(e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          });
+        }
+
+        if (this.flgs.canvas.re.right_bottom_flg === true) {
+          this.file.$fileId.css({
+            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${(e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          });
+        }
+
+        if (this.flgs.canvas.re.left_bottom_flg === true) {
+          this.file.$fileId.css({
+            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            left: `${(this.file.fileIdPos.left -
+              $('#zoom').offset().left +
+              (e.clientX - this.file.fileIdPos.left)) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${this.file.fileIdWidth -
+              (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          });
+        }
+      }
+    },
+
+    //
+
+    _updateUiVal() {
+      // A selected area
+      $('#canvas-eve .selected').css({
+        top: `${-1 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        left: `${-1 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        'border-width': `${GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+
+      // Icons
+      $('.thumbtack-icon').css({
+        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${40 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.resize-icon').css({
+        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.rotate-icon').css({
+        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.flip-icon').css({
+        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${26 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.trash-icon').css({
+        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${35 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+
+      // Function wrapper
+      $('.function-wrapper').css({
+        right: `${-70 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.function-wrapper>div:not(:last-of-type)').css({
+        'margin-bottom': `${15 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+
+      // Resize
+      $('.re-left-top, .re-right-top, .re-right-bottom, .re-left-bottom').css({
+        width: `${10 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${10 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        'border-width': `${1 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.re-left-top').css({
+        top: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        left: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.re-right-top').css({
+        top: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        right: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.re-right-bottom').css({
+        bottom: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        right: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.re-left-bottom').css({
+        bottom: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        left: `${-6 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+
+      // Rotate
+      $('.ro-left-top, .ro-right-top, .ro-right-bottom, .ro-left-bottom').css({
+        width: `${20 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        height: `${20 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.ro-left-top').css({
+        top: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        left: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.ro-right-top').css({
+        top: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        right: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.ro-right-bottom').css({
+        bottom: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        right: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+      $('.ro-left-bottom').css({
+        bottom: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`,
+        left: `${-30 * GlbEve.MOUSE_WHEEL_VAL}px`
+      });
+    }
+  });
+
+  return Canvas;
+})(window, document, Math);
+
+export default CanvasEve;
