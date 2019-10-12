@@ -119,7 +119,7 @@ const ThreeEve = ((W, D, M) => {
       const self = this;
       const loader = new GLTFLoader(manager);
       const dracoLoader = new DRACOLoader(manager);
-      dracoLoader.setDecoderPath('../../three-modules/draco/'); // This path is incorrect when with a Node.js module. It won't refer correct path
+      dracoLoader.setDecoderPath('../three-modules/draco/'); // This path is incorrect when with a Node.js module. It won't refer correct path
       loader.setDRACOLoader(dracoLoader);
       loader.load(rootFilePath, gltf => {
         self._fit2Scene(scene, gltf.scene, false);
