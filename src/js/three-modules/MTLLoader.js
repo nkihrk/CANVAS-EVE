@@ -17,6 +17,7 @@ import {
   TextureLoader,
   Vector2
 } from 'three';
+import { TGALoader } from './TGALoader';
 
 var MTLLoader = function(manager) {
   Loader.call(this, manager);
@@ -430,16 +431,26 @@ MTLLoader.MaterialCreator.prototype = {
   },
 
   loadTexture: function(url, mapping, onLoad, onProgress, onError) {
+    var fixedUrl = url.split('\\').pop();
+    console.log('fixedUrl', fixedUrl);
+
     var texture;
     var manager = this.manager !== undefined ? this.manager : DefaultLoadingManager;
-    var loader = manager.getHandler(url);
+    // var loader = manager.getHandler(url);
+    var loader = manager.getHandler(fixedUrl);
+
+    console.log('MTLLoader: url?', url);
 
     if (loader === null) {
-      loader = new TextureLoader(manager);
+      // loader = new TextureLoader(manager);
+      var nLoader = new TextureLoader(manager);
+      var tgaLoader = new TGALoader(manager);
+      loader = url.slice(-4).toLowerCase() === '.tga' ? tgaLoader : nLoader;
     }
 
     if (loader.setCrossOrigin) loader.setCrossOrigin(this.crossOrigin);
-    texture = loader.load(url, onLoad, onProgress, onError);
+    // texture = loader.load(url, onLoad, onProgress, onError);
+    texture = loader.load(fixedUrl, onLoad, onProgress, onError);
 
     if (mapping !== undefined) texture.mapping = mapping;
 

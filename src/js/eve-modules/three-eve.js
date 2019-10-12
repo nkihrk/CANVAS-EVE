@@ -119,7 +119,7 @@ const ThreeEve = ((W, D, M) => {
       const self = this;
       const loader = new GLTFLoader(manager);
       const dracoLoader = new DRACOLoader(manager);
-      dracoLoader.setDecoderPath('../three-modules/draco/'); // This path is incorrect when with a Node.js module. It won't refer correct path
+      dracoLoader.setDecoderPath('../../three-modules/draco/'); // This path is incorrect when with a Node.js module. It won't refer correct path
       loader.setDRACOLoader(dracoLoader);
       loader.load(rootFilePath, gltf => {
         self._fit2Scene(scene, gltf.scene, false);
@@ -190,7 +190,13 @@ const ThreeEve = ((W, D, M) => {
     drop() {
       const self = this;
 
-      this.canvasEveWrap.addEventListener('dragover', self._handleDragEvent, false);
+      this.canvasEveWrap.addEventListener(
+        'dragover',
+        e => {
+          self._handleDragEvent(e);
+        },
+        false
+      );
       this.canvasEveWrap.addEventListener(
         'drop',
         e => {
@@ -274,7 +280,7 @@ const ThreeEve = ((W, D, M) => {
           .split('.')
           .pop()
           .toLowerCase();
-        // console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
+        console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
       }
 
       function initMtl(file) {
@@ -282,7 +288,7 @@ const ThreeEve = ((W, D, M) => {
         baseURL = LoaderUtils.extractUrlBase(mtlFilePath);
         mtlFileName = mtlFilePath.replace(baseURL, '');
         blobs[mtlFileName] = file;
-        // console.log('blobs', blobs);
+        console.log('blobs', blobs);
       }
 
       Array.from(files).forEach(file => {
@@ -292,7 +298,7 @@ const ThreeEve = ((W, D, M) => {
           initMtl(file);
         } else {
           blobs[file.name] = file;
-          // console.log('blobs', blobs);
+          console.log('blobs', blobs);
         }
       });
 
@@ -304,7 +310,7 @@ const ThreeEve = ((W, D, M) => {
 
       const manager = new LoadingManager();
       manager.setURLModifier(url => {
-        // console.log('url', url);
+        console.log('url', url);
 
         const isMMD = mmdFlg && !url.match(/base64/);
         const isGLTF = gltfFlg && !url.match(/draco/);
@@ -315,7 +321,7 @@ const ThreeEve = ((W, D, M) => {
           url = URL.createObjectURL(blobs[n]);
         }
 
-        // console.log('url', url, 'fileName', n, 'blobs[n]', blobs[n]);
+        console.log('url', url, 'fileName', n, 'blobs[n]', blobs[n]);
         return url;
       });
 

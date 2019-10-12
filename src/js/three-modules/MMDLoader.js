@@ -1144,8 +1144,8 @@ var MMDLoader = (function() {
 
         fullPath = DEFAULT_TOON_TEXTURES[index];
       } else {
-				// fullPath = this.resourcePath + filePath;
-				fullPath = this.resourcePath + filePath.split('\\').pop();
+        // fullPath = this.resourcePath + filePath;
+        fullPath = this.resourcePath + filePath.split('\\').pop();
         console.log(
           'this.resourcePath',
           this.resourcePath,
@@ -1154,10 +1154,9 @@ var MMDLoader = (function() {
           'fullPath',
           fullPath
         );
-			}
-			
-			console.log('textures[fullPath]', textures[fullPath]);
-			
+      }
+
+      console.log('textures[fullPath]', textures[fullPath]);
 
       if (textures[fullPath] !== undefined) return textures[fullPath];
 
