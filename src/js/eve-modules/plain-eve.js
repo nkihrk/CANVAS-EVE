@@ -46,37 +46,49 @@ const PlainEve = (D => {
     },
 
     setFlgs() {
-      D.addEventListener('mousedown', e => {
-        const $plain = $('#plain');
-        this.param.relPos.left = e.clientX - $plain.offset().left;
-        this.param.relPos.top = e.clientY - $plain.offset().top;
-        if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
-      });
+      D.addEventListener(
+        'mousedown',
+        e => {
+          const $plain = $('#plain');
+          this.param.relPos.left = e.clientX - $plain.offset().left;
+          this.param.relPos.top = e.clientY - $plain.offset().top;
+          if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
+        },
+        false
+      );
     },
 
     resetFlgs() {
-      D.addEventListener('mouseup', () => {
-        if (this.flgs.mousewheel_avail_flg === true) {
-          this.iframePointerReset();
-          this.flgs.mousewheel_avail_flg = false;
-          $('#canvas-eve').removeClass('active-mousewheel');
-        }
-      });
+      D.addEventListener(
+        'mouseup',
+        () => {
+          if (this.flgs.mousewheel_avail_flg === true) {
+            this.iframePointerReset();
+            this.flgs.mousewheel_avail_flg = false;
+            $('#canvas-eve').removeClass('active-mousewheel');
+          }
+        },
+        false
+      );
     },
 
     handleEvents() {
-      D.addEventListener('mousemove', e => {
-        e.preventDefault();
+      D.addEventListener(
+        'mousemove',
+        e => {
+          e.preventDefault();
 
-        if (this.flgs.mousewheel_avail_flg === true) {
-          this.iframePointerNone();
-          $('#plain').css({
-            left: `${e.clientX - this.param.relPos.left}px`,
-            top: `${e.clientY - this.param.relPos.top}px`
-          });
-          $('#canvas-eve').addClass('active-mousewheel');
-        }
-      });
+          if (this.flgs.mousewheel_avail_flg === true) {
+            this.iframePointerNone();
+            $('#plain').css({
+              left: `${e.clientX - this.param.relPos.left}px`,
+              top: `${e.clientY - this.param.relPos.top}px`
+            });
+            $('#canvas-eve').addClass('active-mousewheel');
+          }
+        },
+        false
+      );
     }
   });
 

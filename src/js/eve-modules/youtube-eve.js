@@ -33,39 +33,47 @@ const YoutubeEve = ((W, D) => {
     //
 
     handleEvents() {
-      D.addEventListener('mousedown', e => {
-        if (e.target) {
-          if (
-            e.target.closest('#add-youtube') ||
-            e.target.closest('.tab-block-youtube') ||
-            e.target.closest('.child-search-youtube')
-          ) {
-            this.iframePointerNone();
-          }
-
-          if (e.button !== 1) {
-            if (e.target.closest('.backspace-icon')) {
-              $(e.target)
-                .parent()
-                .children('input')
-                .val('');
+      D.addEventListener(
+        'mousedown',
+        e => {
+          if (e.target) {
+            if (
+              e.target.closest('#add-youtube') ||
+              e.target.closest('.tab-block-youtube') ||
+              e.target.closest('.child-search-youtube')
+            ) {
+              this.iframePointerNone();
             }
 
-            if (e.target.closest('.search-button-youtube')) {
-              this._parent(e);
+            if (e.button !== 1) {
+              if (e.target.closest('.backspace-icon')) {
+                $(e.target)
+                  .parent()
+                  .children('input')
+                  .val('');
+              }
+
+              if (e.target.closest('.search-button-youtube')) {
+                this._parent(e);
+              }
+
+              if (e.target.closest('.child-search-button-youtube')) this._child(e);
             }
-
-            if (e.target.closest('.child-search-button-youtube')) this._child(e);
           }
-        }
-      });
+        },
+        false
+      );
 
-      D.addEventListener('mouseup', e => {
-        if (e.target) {
-          if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
-            this.iframePointerReset();
-        }
-      });
+      D.addEventListener(
+        'mouseup',
+        e => {
+          if (e.target) {
+            if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
+              this.iframePointerReset();
+          }
+        },
+        false
+      );
     },
 
     //
@@ -143,10 +151,9 @@ const YoutubeEve = ((W, D) => {
         ($('#add-youtube').offset().left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL +
         $('#add-youtube').outerWidth() / 2 -
         350;
-      const childTranslate = `translate(${-GlbEve.xNew}px, ${-GlbEve.yNew}px)`;
       const childStyle = `${'width: 700px; top:'}${childTop}px; left:${childLeft}px; z-index:${
         GlbEve.HIGHEST_Z_INDEX
-      }; transition:${GlbEve.IS_TRANSITION}; transform:${childTranslate};`;
+      }; transition:${GlbEve.IS_TRANSITION};`;
       const assertFile =
         `<div id="${GlbEve.NEWFILE_ID}" class="grab-pointer file-wrap limit-size" style="${childStyle}">` +
         `<div class="function-wrapper">` +

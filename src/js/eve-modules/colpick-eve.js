@@ -45,106 +45,130 @@ const ColpickEve = ((W, D) => {
     init() {
       this._initColpick();
 
-      D.addEventListener('mousedown', e => {
-        if (e.target) {
-          if (
-            e.target.closest('#red-cir-colpick') ||
-            e.target.closest('#green-cir-colpick') ||
-            e.target.closest('#blue-cir-colpick')
-          ) {
-            this.circleRelPosX = e.clientX - $(e.target).offset().left;
-            this.$barTop = $(e.target);
+      D.addEventListener(
+        'mousedown',
+        e => {
+          if (e.target) {
+            if (
+              e.target.closest('#red-cir-colpick') ||
+              e.target.closest('#green-cir-colpick') ||
+              e.target.closest('#blue-cir-colpick')
+            ) {
+              this.circleRelPosX = e.clientX - $(e.target).offset().left;
+              this.$barTop = $(e.target);
+            }
           }
-        }
-      });
+        },
+        false
+      );
     },
 
     //
 
     setFlgs() {
-      D.addEventListener('mousedown', e => {
-        if (e.target) {
-          if (
-            e.target.closest('#red-cir-colpick') ||
-            e.target.closest('#green-cir-colpick') ||
-            e.target.closest('#blue-cir-colpick')
-          ) {
-            this.flgs.move_circle_flg = true;
+      D.addEventListener(
+        'mousedown',
+        e => {
+          if (e.target) {
+            if (
+              e.target.closest('#red-cir-colpick') ||
+              e.target.closest('#green-cir-colpick') ||
+              e.target.closest('#blue-cir-colpick')
+            ) {
+              this.flgs.move_circle_flg = true;
+            }
           }
-        }
-      });
+        },
+        false
+      );
     },
 
     //
 
     resetFlgs() {
-      D.addEventListener('mouseup', () => {
-        if (this.flgs.move_circle_flg === true) this.flgs.move_circle_flg = false;
-      });
+      D.addEventListener(
+        'mouseup',
+        () => {
+          if (this.flgs.move_circle_flg === true) this.flgs.move_circle_flg = false;
+        },
+        false
+      );
     },
 
     //
 
     handleEvents() {
-      D.addEventListener('mousedown', e => {
-        if (e.target) {
-          if (e.target.closest('#copy-colpick')) this._copyHex();
-          if (e.target.closest('#toggle-colpick')) this._toggleColpick();
-          if (
-            $('#toggle-colpick').hasClass('active') &&
-            $(e.target)
-              .parents('.file-wrap')
-              .find('canvas').length > 0 &&
-            e.button !== 1
-          ) {
-            const col = this._getColor(e);
-            const hex = this.rgb2hex([col[0], col[1], col[2]]);
+      D.addEventListener(
+        'mousedown',
+        e => {
+          if (e.target) {
+            if (e.target.closest('#copy-colpick')) this._copyHex();
+            if (e.target.closest('#toggle-colpick')) this._toggleColpick();
+            if (
+              $('#toggle-colpick').hasClass('active') &&
+              $(e.target)
+                .parents('.file-wrap')
+                .find('canvas').length > 0 &&
+              e.button !== 1
+            ) {
+              const col = this._getColor(e);
+              const hex = this.rgb2hex([col[0], col[1], col[2]]);
 
-            if (col[3] > 0) {
-              this._updatePalette(hex);
-              this._updateRgbBar(col);
-              this._updateRgbInput(col);
-            } else {
-              this._initColpick();
+              if (col[3] > 0) {
+                this._updatePalette(hex);
+                this._updateRgbBar(col);
+                this._updateRgbInput(col);
+              } else {
+                this._initColpick();
+              }
+            }
+
+            if (e.target.closest('#reset-res')) {
+              if ($('#toggle-colpick').hasClass('active') && e.button !== 1) this._initColpick();
             }
           }
+        },
+        false
+      );
 
-          if (e.target.closest('#reset-res')) {
-            if ($('#toggle-colpick').hasClass('active') && e.button !== 1) this._initColpick();
+      D.addEventListener(
+        'change',
+        e => {
+          if (e.target) {
+            if (e.target.closest('#input-colpick')) {
+              const hex = this._getHex(e);
+              this._updatePalette(hex);
+
+              const col = this.hex2rgb(hex);
+              this._updateRgbInput(col);
+              this._updateRgbBar(col);
+            }
+
+            if (
+              e.target.closest('#input-r-colpick') ||
+              e.target.closest('#input-g-colpick') ||
+              e.target.closest('#input-b-colpick')
+            ) {
+              // Update rgb values, convert it to hex and apply to a color code input
+              const r = parseInt($('#r-colpick input').val(), 10);
+              const g = parseInt($('#g-colpick input').val(), 10);
+              const b = parseInt($('#b-colpick input').val(), 10);
+              const hex = this.rgb2hex([r, g, b]);
+              this._updatePalette(hex);
+              this._updateRgbBar(col);
+            }
           }
-        }
-      });
+        },
+        false
+      );
 
-      D.addEventListener('change', e => {
-        if (e.target) {
-          if (e.target.closest('#input-colpick')) {
-            const hex = this._getHex(e);
-            this._updatePalette(hex);
-
-            const col = this.hex2rgb(hex);
-            this._updateRgbInput(col);
-            this._updateRgbBar(col);
-          }
-
-          if (
-            e.target.closest('#input-r-colpick') ||
-            e.target.closest('#input-g-colpick') ||
-            e.target.closest('#input-b-colpick')
-          ) {
-            // Update rgb values, convert it to hex and apply to a color code input
-            const r = parseInt($('#r-colpick input').val(), 10);
-            const g = parseInt($('#g-colpick input').val(), 10);
-            const b = parseInt($('#b-colpick input').val(), 10);
-            const hex = this.rgb2hex([r, g, b]);
-            this._updatePalette(hex);
-            this._updateRgbBar(col);
-          }
-        }
-      });
-
-      D.addEventListener('mousemove', e => {
-        if (this.flgs.move_circle_flg === true) this._syncWithBar(e);
-      });
+      D.addEventListener(
+        'mousemove',
+        e => {
+          if (this.flgs.move_circle_flg === true) this._syncWithBar(e);
+        },
+        false
+      );
     },
 
     //

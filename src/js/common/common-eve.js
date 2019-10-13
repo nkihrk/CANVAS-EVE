@@ -50,7 +50,8 @@ const CommonEve = ((W, D) => {
         },
         {
           passive: false
-        }
+        },
+        false
       );
       W.removeEventListener(
         'touchmove',
@@ -59,7 +60,8 @@ const CommonEve = ((W, D) => {
         },
         {
           passive: false
-        }
+        },
+        false
       );
     },
 

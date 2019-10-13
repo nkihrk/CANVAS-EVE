@@ -21,6 +21,10 @@ const FileEve = ((W, D, M) => {
     LibEve.call(this);
 
     this.canvasEveWrap = D.getElementById('canvas-eve-wrapper');
+    this.currentMousePos = {
+      x: 0,
+      y: 0
+    };
   }
 
   const modules = { ...LibEve.prototype };
@@ -31,7 +35,32 @@ const FileEve = ((W, D, M) => {
     options: {},
 
     load() {
+      this.update();
       this.handleEvents();
+    },
+
+    //
+
+    update() {
+      const self = this;
+      this.canvasEveWrap.addEventListener(
+        'mousemove',
+        e => {
+          let x;
+          let y;
+          if (e.changedTouches) {
+            x = e.changedTouches[0].clientX;
+            y = e.changedTouches[0].clientY;
+          } else {
+            x = e.clientX;
+            y = e.clientY;
+          }
+
+          self.currentMousePos.x = x;
+          self.currentMousePos.y = y;
+        },
+        false
+      );
     },
 
     //
@@ -92,6 +121,8 @@ const FileEve = ((W, D, M) => {
         top: y - $('#zoom').offset().top
       };
 
+      console.log(mousePos);
+
       const { files } = e.dataTransfer;
       // console.log('files', files);
 
@@ -138,9 +169,12 @@ const FileEve = ((W, D, M) => {
       }
       if (file == null) return;
 
+      const { x } = this.currentMousePos;
+      const { y } = this.currentMousePos;
+
       const mousePos = {
-        left: clientFromZoomX,
-        top: clientFromZoomY
+        left: x - $('#zoom').offset().left,
+        top: y - $('#zoom').offset().top
       };
 
       const progSet = {
@@ -304,7 +338,6 @@ const FileEve = ((W, D, M) => {
       $fileId.css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
         top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - (600 * imgRatio) / 2}px`,
-        transform: `translate(0, 0)`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 

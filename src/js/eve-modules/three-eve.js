@@ -418,8 +418,7 @@ const ThreeEve = ((W, D, M) => {
 
       const hide = $('<div class="hide-scissor"></div>').css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
-        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
-        transform: `translate(${-GlbEve.X_NEW}px, ${-GlbEve.Y_NEW}px)`
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`
       });
       $('#add-files').append(hide);
 
@@ -429,7 +428,6 @@ const ThreeEve = ((W, D, M) => {
       $fileId.css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
         top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
-        transform: `translate(${-GlbEve.X_NEW}px, ${-GlbEve.Y_NEW}px)`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
