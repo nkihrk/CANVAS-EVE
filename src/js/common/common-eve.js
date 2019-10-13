@@ -9,6 +9,7 @@
  */
 
 import $ from 'jquery';
+import GlbEve from './glb-eve';
 import LibEve from './lib-eve';
 
 const CommonEve = ((W, D) => {
@@ -24,10 +25,45 @@ const CommonEve = ((W, D) => {
     options: {},
 
     load() {
+      this.eventInstant();
       this.eventReady();
       this.eventLoad();
       this.eventLoadResize();
     },
+
+    //
+
+    eventInstant() {
+      // Prevent default right-click events for the time being
+      D.addEventListener(
+        'contextmenu',
+        e => {
+          e.preventDefault();
+        },
+        false
+      );
+
+      W.addEventListener(
+        'touchmove',
+        e => {
+          e.preventDefault();
+        },
+        {
+          passive: false
+        }
+      );
+      W.removeEventListener(
+        'touchmove',
+        e => {
+          e.preventDefault();
+        },
+        {
+          passive: false
+        }
+      );
+    },
+
+    //
 
     eventReady() {
       $(() => {
@@ -35,20 +71,13 @@ const CommonEve = ((W, D) => {
         $('#loader-bg, #loader')
           .height(h)
           .css('display', 'block');
-
-        // Prevent default right-click events for the time being
-        D.addEventListener(
-          'contextmenu',
-          e => {
-            e.preventDefault();
-          },
-          false
-        );
       });
     },
 
+    //
+
     eventLoad() {
-      function load() {
+      $(W).on('load', () => {
         $('#loader-bg')
           .delay(900)
           .fadeOut(800, () => {
@@ -59,13 +88,15 @@ const CommonEve = ((W, D) => {
           .fadeOut(300, () => {
             $(this).remove();
           });
-      }
 
-      this.event(W, 'load', false, load);
+        $('.file-wrap').css('transition', GlbEve.IS_TRANSITION);
+      });
     },
 
+    //
+
     eventLoadResize() {
-      function loadResize() {
+      $(W).on('load resize', () => {
         const top = `${W.innerHeight - 60}px`;
         const left = `${W.innerWidth / 2}px`;
 
@@ -73,9 +104,7 @@ const CommonEve = ((W, D) => {
           top,
           left
         });
-      }
-
-      this.event(W, 'load resize', false, loadResize);
+      });
     }
   });
 

@@ -247,7 +247,6 @@ const CanvasEve = ((W, D, M) => {
 
         if ($fileWrap.length > 0) {
           if (e.button === 0) {
-            $('div').removeClass('selected');
             $('div').remove('.selected');
             $('div').remove('.thumbtack-icon');
             $('div').remove('.resize-icon');
@@ -268,6 +267,7 @@ const CanvasEve = ((W, D, M) => {
             // This if argument is the prefix for colpick-eve.js
             if (this.flgs.colpick.active_spuit_flg === false) {
               $fileWrap.prepend('<div class="selected"></div>');
+
               // Added selected symbols and other functions
               if (this.flgs.config.only_draggable_flg === false) {
                 // Resizing boxes

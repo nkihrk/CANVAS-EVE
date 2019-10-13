@@ -176,7 +176,7 @@ const FileEve = ((W, D, M) => {
 
     _fileReader(file, mousePos, progSet) {
       const self = this;
-      this._readFile(file, progSet).then(function(img) {
+      this._readFile(file, progSet).then(img => {
         self._readerPromise(img, mousePos, progSet);
       });
     },
@@ -184,7 +184,7 @@ const FileEve = ((W, D, M) => {
     //
 
     _readFile(file, progSet) {
-      return new Promise(function(resolve, reject) {
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadstart = () => {
           if (progSet.iterate === 0) progSet.progress.classList.add('loading');
@@ -206,7 +206,7 @@ const FileEve = ((W, D, M) => {
             progSet.progress.style.width = `${progSet.totalProg}%`;
           } else {
             progSet.progress.style.width = '100%';
-            setTimeout(function() {
+            setTimeout(() => {
               progSet.progress.classList.remove('loading');
             }, 1000);
           }
@@ -236,7 +236,7 @@ const FileEve = ((W, D, M) => {
 
     _blobReader(file, mousePos, progSet) {
       const self = this;
-      this._readBlob(file, progSet).then(function(img) {
+      this._readBlob(file, progSet).then(img => {
         self._readerPromise(img, mousePos, progSet);
       });
     },
@@ -245,14 +245,14 @@ const FileEve = ((W, D, M) => {
 
     _readBlob(file, progSet) {
       // eslint-disable-next-line no-unused-vars
-      return new Promise(function(resolve, reject) {
+      return new Promise((resolve, reject) => {
         if (progSet.iterate === 0) progSet.progress.classList.add('loading');
 
         const img = new Image();
         img.style.cssText = 'width: 100%;';
         // eslint-disable-next-line node/no-unsupported-features/node-builtins
         img.src = URL.createObjectURL(file);
-        img.onload = function() {
+        img.onload = () => {
           progSet.iterate++;
 
           if (progSet.iterate < progSet.fileCount) {
@@ -318,7 +318,7 @@ const FileEve = ((W, D, M) => {
       $(`#${GlbEve.NEWFILE_ID} .eve-main`).prepend(img);
 
       if (progSet.iterate === progSet.fileCount) {
-        setTimeout(function() {
+        setTimeout(() => {
           $('div').removeClass('transparent');
         }, 0);
       }

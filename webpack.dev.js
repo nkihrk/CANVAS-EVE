@@ -6,6 +6,7 @@ module.exports = merge(config, {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './build',
+    index: 'index.html',
     hot: true
   }
 });

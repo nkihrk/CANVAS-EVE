@@ -13,22 +13,6 @@ function lib() {}
 
 Object.assign(lib.prototype, {
   /**
-   * Handle a specific event.
-   *
-   * @param {string} elem - A name of the element
-   * @param {string} event - The name of event
-   * @param {string} elementTag - A name of the extra element. Set false to tell no extra element
-   * @param {function} func - The name of function to handle
-   */
-  event(elem, event, elementTag, func) {
-    if (elementTag) {
-      $(elem).on(event, elementTag, func);
-    } else {
-      $(elem).on(event, func);
-    }
-  },
-
-  /**
    * Convert RGB into HEX.
    *
    * @param {array} rgb - The array of rgb. i.e. [r, g, b]
