@@ -61,7 +61,10 @@ const CanvasEve = ((W, D, M) => {
 
     setFlgs() {
       D.addEventListener('mousedown', e => {
-        const $fileWrap = $(e.target).parents('.file-wrap');
+        let $fileWrap = $(e.target).parents('.file-wrap');
+        if ($fileWrap.length === 0) {
+          $fileWrap = $(e.target);
+        }
 
         if ($fileWrap.length > 0) {
           if ($fileWrap.find('only-draggable').length > 0) {
@@ -243,7 +246,10 @@ const CanvasEve = ((W, D, M) => {
 
     init() {
       D.addEventListener('mousedown', e => {
-        const $fileWrap = $(e.target).parents('.file-wrap');
+        let $fileWrap = $(e.target).parents('.file-wrap');
+        if ($fileWrap.length === 0) {
+          $fileWrap = $(e.target);
+        }
 
         if ($fileWrap.length > 0) {
           if (e.button === 0) {
@@ -267,6 +273,7 @@ const CanvasEve = ((W, D, M) => {
             // This if argument is the prefix for colpick-eve.js
             if (this.flgs.colpick.active_spuit_flg === false) {
               $fileWrap.prepend('<div class="selected"></div>');
+              console.log($fileWrap);
 
               // Added selected symbols and other functions
               if (this.flgs.config.only_draggable_flg === false) {
@@ -290,10 +297,10 @@ const CanvasEve = ((W, D, M) => {
 
               // Add #id to #image, and initialize its values
               if (this.flgs.canvas.drag_flg === false) {
-                this.file.fileId = `#${$fileWrap.attr('id')}`;
-                this.file.$fileId = $(this.file.fileId);
                 // Global value for the selected ID
                 GlbEve.CURRENT_ID = $fileWrap.attr('id');
+                this.file.fileId = `#${GlbEve.CURRENT_ID}`;
+                this.file.$fileId = $(this.file.fileId);
 
                 this.file.fileIdWidth = this.file.$fileId.outerWidth();
                 this.file.fileIdHeight = this.file.$fileId.outerHeight();
@@ -353,7 +360,10 @@ const CanvasEve = ((W, D, M) => {
 
     reset() {
       D.addEventListener('mousedown', e => {
-        const $fileWrap = $(e.target).parents('.file-wrap');
+        let $fileWrap = $(e.target).parents('.file-wrap');
+        if ($fileWrap.length === 0) {
+          $fileWrap = $(e.target);
+        }
 
         if ($fileWrap.length > 0) {
           if (e.button === 0) {
