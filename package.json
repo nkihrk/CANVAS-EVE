@@ -8,7 +8,8 @@
     "build": "webpack --config webpack.prod.js",
     "deploy": "node gh-pages.js",
     "clean": "rm -rf node_modules",
-    "reinstall": "npm run clean && npm install"
+    "reinstall": "npm run clean && npm install",
+    "kill": "taskkill /f /im node.exe"
   },
   "keywords": [],
   "author": "",

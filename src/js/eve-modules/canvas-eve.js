@@ -10,6 +10,8 @@
  */
 
 import $ from 'jquery';
+
+import '../common/extend-eve';
 import LibEve from '../common/lib-eve';
 import GlbEve from '../common/glb-eve';
 
