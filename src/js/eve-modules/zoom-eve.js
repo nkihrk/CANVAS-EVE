@@ -19,6 +19,8 @@ const ZoomEve = (D => {
     this.yLast = 0;
     this.xScreen = 0;
     this.yScreen = 0;
+    this.xNew = 0;
+    this.yNew = 0;
     this.xImage = 0;
     this.yImage = 0;
   }
@@ -116,15 +118,15 @@ const ZoomEve = (D => {
         this.i += 0.01;
       }
 
-      GlbEve.X_NEW = (this.xScreen - this.xImage) / this.i;
-      GlbEve.Y_NEW = (this.yScreen - this.yImage) / this.i;
+      this.xNew = (this.xScreen - this.xImage) / this.i;
+      this.yNew = (this.yScreen - this.yImage) / this.i;
 
       this.xLast = this.xScreen;
       this.yLast = this.yScreen;
 
       GlbEve.MOUSE_WHEEL_VAL = 1 / this.i;
       $('#zoom').css({
-        transform: `scale(${this.i}) translate(${GlbEve.X_NEW}px, ${GlbEve.Y_NEW}px)`,
+        transform: `scale(${this.i}) translate(${this.xNew}px, ${this.yNew}px)`,
         'transform-origin': `${this.xImage}px ${this.yImage}px`
       });
     }

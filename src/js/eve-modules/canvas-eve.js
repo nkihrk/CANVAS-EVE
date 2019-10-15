@@ -70,11 +70,11 @@ const CanvasEve = ((W, D, M) => {
             $fileWrap = $(e.target);
           }
 
-          let $fileWrapTest = Extend(e.target).parents('.file-wrap');
-          if ($fileWrapTest.length === 0) {
-            $fileWrapTest = Extend(e.target);
-          }
-          console.log($fileWrapTest, $fileWrapTest.find('.is-flipped'));
+          // let $fileWrapTest = Extend(e.target).parents('.file-wrap');
+          // if ($fileWrapTest.length === 0) {
+          //   $fileWrapTest = Extend(e.target);
+          // }
+          // console.log($fileWrapTest, $fileWrapTest.find('.is-flipped'));
 
           if ($fileWrap.hasClass('file-wrap')) {
             if ($fileWrap.find('only-draggable').length > 0) {
@@ -423,18 +423,27 @@ const CanvasEve = ((W, D, M) => {
           // Refrash the rendering result of each canvas when changing its size.
           // This canvas is for color picking.colpick - eve.js
           if (this.file.$fileId !== null && this.file.$fileId.find('.canvas-colpick').length > 0) {
-            setTimeout(() => {
-              const img = new Image();
-              img.src = this.file.$fileId.find('img').attr('src');
-              img.onload = () => {
+            if (
+              this.flgs.canvas.re.left_top_flg === true ||
+              this.flgs.canvas.re.right_top_flg === true ||
+              this.flgs.canvas.re.right_bottom_flg === true ||
+              this.flgs.canvas.re.left_bottom_flg === true
+            ) {
+              setTimeout(() => {
+                const img = new Image();
+                img.src = this.file.$fileId.find('img').attr('src');
+                img.onload = () => {
+                  this.file.$fileId
+                    .find('.canvas-colpick')[0]
+                    .getContext('2d')
+                    .drawImage(img, 0, 0, this.file.$fileId.width(), this.file.$fileId.height());
+                };
+                this.file.$fileId.find('.canvas-colpick').attr('width', this.file.$fileId.width());
                 this.file.$fileId
-                  .find('.canvas-colpick')[0]
-                  .getContext('2d')
-                  .drawImage(img, 0, 0, this.file.$fileId.width(), this.file.$fileId.height());
-              };
-              this.file.$fileId.find('.canvas-colpick').attr('width', this.file.$fileId.width());
-              this.file.$fileId.find('.canvas-colpick').attr('height', this.file.$fileId.height());
-            }, 100);
+                  .find('.canvas-colpick')
+                  .attr('height', this.file.$fileId.height());
+              }, 1);
+            }
           }
         },
         false

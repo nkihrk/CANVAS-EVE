@@ -116,7 +116,7 @@ const $ = (() => {
      *
      */
     remove() {
-      this.e.classList.remove(selector);
+      this.e.classList.remove();
     }
   });
 

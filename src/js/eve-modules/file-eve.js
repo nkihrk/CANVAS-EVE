@@ -43,21 +43,34 @@ const FileEve = ((W, D, M) => {
 
     update() {
       const self = this;
+
+      function __mousePos(e) {
+        let x;
+        let y;
+        if (e.changedTouches) {
+          x = e.changedTouches[0].clientX;
+          y = e.changedTouches[0].clientY;
+        } else {
+          x = e.clientX;
+          y = e.clientY;
+        }
+
+        self.currentMousePos.x = x;
+        self.currentMousePos.y = y;
+      }
+
+      this.canvasEveWrap.addEventListener(
+        'mousedown',
+        e => {
+          __mousePos(e);
+        },
+        false
+      );
+
       this.canvasEveWrap.addEventListener(
         'mousemove',
         e => {
-          let x;
-          let y;
-          if (e.changedTouches) {
-            x = e.changedTouches[0].clientX;
-            y = e.changedTouches[0].clientY;
-          } else {
-            x = e.clientX;
-            y = e.clientY;
-          }
-
-          self.currentMousePos.x = x;
-          self.currentMousePos.y = y;
+          __mousePos(e);
         },
         false
       );
