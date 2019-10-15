@@ -11,7 +11,7 @@
 
 import $ from 'jquery';
 
-import '../common/extend-eve';
+import Extend from '../common/extend-eve';
 import LibEve from '../common/lib-eve';
 import GlbEve from '../common/glb-eve';
 
@@ -69,6 +69,9 @@ const CanvasEve = ((W, D, M) => {
           if ($fileWrap.length === 0) {
             $fileWrap = $(e.target);
           }
+
+          const $fileWrapTest = Extend(e.target).parents('.file-wrap');
+          console.log($fileWrapTest);
 
           if ($fileWrap.hasClass('file-wrap')) {
             if ($fileWrap.find('only-draggable').length > 0) {
