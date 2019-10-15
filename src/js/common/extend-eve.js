@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  *
  * jQuery methods realization for CANVAS EVE.
@@ -9,8 +8,8 @@
  */
 
 const $ = (() => {
-  function j(elem) {
-    this.elem = elem;
+  function j(e) {
+    this.e = e;
   }
 
   const modules = {};
@@ -20,30 +19,112 @@ const $ = (() => {
 
     //
 
-    parents(selector) {
-      var elements = [];
-      var elem = this.elem;
-      var ishaveselector = selector !== undefined;
+    _ext(e) {
+      return new $(e);
+    },
 
-      while ((elem = elem.parentElement) !== null) {
-        if (elem.nodeType !== Node.ELEMENT_NODE) {
+    //
+
+    /**
+     * Vanilla JS jQuery.parents() realisation.
+     *
+     * @param {string} - The selector to match
+     * @returns {element} - Return an element that matches the given selector
+     */
+    parents(selector) {
+      const elements = [];
+      let { e } = this;
+      const ishaveselector = selector !== undefined;
+
+      // eslint-disable-next-line no-cond-assign
+      while ((e = e.parentElement) !== null) {
+        if (e.nodeType !== Node.ELEMENT_NODE) {
+          // eslint-disable-next-line no-continue
           continue;
         }
 
-        if (!ishaveselector || elem.matches(selector)) {
-          elements.push(elem);
+        if (!ishaveselector || e.matches(selector)) {
+          elements.push(e);
         }
       }
 
-      return elements;
+      return this._ext(elements[0]);
+    },
+
+    //
+
+    /**
+     * Vanilla JS jQuery.find() realisation.
+     *
+     * @param {string} - The selector to find
+     * @returns {element} - Return a specific selector
+     */
+    find(selector) {
+      const e = this.e.querySelector(selector);
+      return this._ext(e);
+    },
+
+    //
+
+    /**
+     * Vanilla JS jQuery.addClass() realisation.
+     *
+     * @param {string} - The selector to add
+     */
+    addClass(selector) {
+      this.e.classList.add(selector);
+    },
+
+    //
+
+    /**
+     * Vanilla JS jQuery.removeClass() realisation.
+     *
+     * @param {string} - The class to remove
+     */
+    removeClass(selector) {
+      this.e.classList.remove(selector);
+    },
+
+    //
+
+    /**
+     * Vanilla JS jQuery.toggleClass() realisation.
+     *
+     * @param {string} - The class to toggle
+     */
+    toggleClass(selector) {
+      this.e.classList.toggle(selector);
+    },
+
+    //
+
+    /**
+     * Vanilla JS jQuery.hasClass() realisation.
+     *
+     * @param {string} - The selector to match
+     * @returns {boolean} - Return bool
+     */
+    hasClass(selector) {
+      this.e.classList.contains(selector);
+    },
+
+    //
+
+    /**
+     * Vanilla JS jQuery.remove() realisation.
+     *
+     */
+    remove() {
+      this.e.classList.remove(selector);
     }
   });
 
   return j;
 })();
 
-const ext = elem => {
-  return new $(elem);
+const ext = e => {
+  return new $(e);
 };
 
 export default ext;

@@ -70,8 +70,11 @@ const CanvasEve = ((W, D, M) => {
             $fileWrap = $(e.target);
           }
 
-          const $fileWrapTest = Extend(e.target).parents('.file-wrap');
-          console.log($fileWrapTest);
+          let $fileWrapTest = Extend(e.target).parents('.file-wrap');
+          if ($fileWrapTest.length === 0) {
+            $fileWrapTest = Extend(e.target);
+          }
+          console.log($fileWrapTest, $fileWrapTest.find('.is-flipped'));
 
           if ($fileWrap.hasClass('file-wrap')) {
             if ($fileWrap.find('only-draggable').length > 0) {
