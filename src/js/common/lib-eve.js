@@ -110,6 +110,15 @@ Object.assign(lib.prototype, {
   },
 
   /**
+   * Convert string to node
+   *
+   * @param {string} str - The string of which you want to convert into node. i.e., '<div>hoge</div>'
+   */
+  str2node(str) {
+    return new DOMParser().parseFromString(str, 'text/html').body.firstChild;
+  },
+
+  /**
    * Get transform values of a specific selector.
    *
    * @param {object} obj - The jQuery object of a specific css property of transform. i.e., $(elem).css('transform')
@@ -228,7 +237,7 @@ Object.assign(lib.prototype, {
    */
   iframePointerNone() {
     const array = document.querySelectorAll('iframe');
-    for (let i; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
       array[i].style.pointerEvents = 'none';
       console.log(array[i].style.pointerEvents);
     }
@@ -241,7 +250,7 @@ Object.assign(lib.prototype, {
    */
   iframePointerReset() {
     const array = document.querySelectorAll('iframe');
-    for (let i; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
       array[i].style.pointerEvents = '';
       console.log(array[i].style.pointerEvents);
     }

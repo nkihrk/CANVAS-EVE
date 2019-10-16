@@ -27,10 +27,12 @@ const $ = (D => {
     LibEve.call(this);
 
     this.e = e || null;
+    this.length = this.e ? 1 : 0;
     if (this.isString(e)) {
-      this.e = D.querySelectorAll(e);
+      this.e =
+        D.querySelectorAll(e).length === 1 ? D.querySelectorAll(e)[0] : D.querySelectorAll(e);
+      this.length = D.querySelectorAll(e).length;
     }
-    this.length = this.e ? this.e.childElementCount : 0;
   }
 
   const modules = { ...L.prototype, ...LibEve.prototype };
@@ -67,49 +69,89 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.find() realisation.
      *
-     * @param {string} - The selector to find
+     * @param {string} className - The selector to find
      * @returns {element} - Return a specific selector
      */
-    find(selector) {
-      const e = this.e ? this.e.querySelector(selector) : null;
-      return this._ext(e);
+    find(className) {
+      const { e } = this;
+      const n = this.length;
+      let elem;
+
+      if (n === 1) {
+        elem = e ? e.querySelector(className) : null;
+      }
+
+      return this._ext(elem);
     },
 
     /**
      * Vanilla JS jQuery.addClass() realisation.
      *
-     * @param {string} - The selector to add
+     * @param {string} className - The selector to add
      */
-    addClass(selector) {
-      this.e.classList.add(selector);
+    addClass(className) {
+      const { e } = this;
+
+      const n = this.length;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          e[i].classList.add(className);
+        }
+      } else if (n === 1) {
+        e.classList.add(className);
+      }
     },
 
     /**
      * Vanilla JS jQuery.removeClass() realisation.
      *
-     * @param {string} - The name of a class name
+     * @param {string} className - The name of a class name
      */
     removeClass(className) {
-      this.e.classList.remove(className);
+      const { e } = this;
+
+      const n = this.length;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          e[i].classList.remove(className);
+        }
+      } else if (n === 1) {
+        e.classList.remove(className);
+      }
     },
 
     /**
      * Vanilla JS jQuery.toggleClass() realisation.
      *
-     * @param {string} - The class to toggle
+     * @param {string} className - The class to toggle
      */
-    toggleClass(selector) {
-      this.e.classList.toggle(selector);
+    toggleClass(className) {
+      const { e } = this;
+      const n = this.length;
+
+      if (n === 1) {
+        e.classList.toggle(className);
+      }
     },
 
     /**
      * Vanilla JS jQuery.hasClass() realisation.
      *
-     * @param {string} - The selector to match
+     * @param {string} className - The selector to match
      * @returns {boolean} - Return true/false
      */
-    hasClass(selector) {
-      return this.e.classList.contains(selector);
+    hasClass(className) {
+      const { e } = this;
+      const n = this.length;
+      let b;
+
+      if (n === 1) {
+        b = e.classList.contains(className);
+      } else {
+        return false;
+      }
+
+      return b;
     },
 
     /**
@@ -118,7 +160,15 @@ const $ = (D => {
      */
     remove() {
       const { e } = this;
-      e.parentNode.removeChild(e);
+
+      const n = this.length;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          e[i].parentNode.removeChild(e[i]);
+        }
+      } else if (n === 1) {
+        e.parentNode.removeChild(e);
+      }
     },
 
     /**
@@ -127,29 +177,59 @@ const $ = (D => {
      */
     empty() {
       const { e } = this;
-      while (e.firstChild) {
-        e.removeChild(e.firstChild);
+
+      const n = this.length;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          while (e[i].firstChild) {
+            e[i].removeChild(e[i].firstChild);
+          }
+        }
+      } else if (n === 1) {
+        while (e.firstChild) {
+          e.removeChild(e.firstChild);
+        }
       }
     },
 
     /**
      * Vanilla JS jQuery.prepend() realisation.
      *
-     * @param {string} elem - The HTML tags. i.e., '<div>Hoge</div>'
+     * @param {string} str - The HTML tags. i.e., '<div>hoge</div>'
      */
-    prepend(elem) {
+    prepend(str) {
       const { e } = this;
-      e.innerHTML = elem + e.innerHTML;
+      const n = this.length;
+      let elem;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          elem = this.str2node(str);
+          e[i].insertBefore(elem, e[i].firstChild);
+        }
+      } else if (n === 1) {
+        elem = this.str2node(str);
+        e.insertBefore(elem, e.firstChild);
+      }
     },
 
     /**
      * Vanilla JS jQuery.append() realisation.
      *
-     * @param {string} elem - The HTML tags. i.e., '<div>Hoge</div>'
+     * @param {string} str - The HTML tags. i.e., '<div>Hoge</div>'
      */
-    append(elem) {
+    append(str) {
       const { e } = this;
-      e.innerHTML += elem;
+      const n = this.length;
+      let elem;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          elem = this.str2node(str);
+          e[i].appendChild(elem);
+        }
+      } else if (n === 1) {
+        elem = this.str2node(str);
+        e.appendChild(elem);
+      }
     },
 
     /**
@@ -162,15 +242,30 @@ const $ = (D => {
     css(prop, val) {
       let propName;
       let parts;
+
       if (prop.match(/-/)) {
         parts = prop.split('-');
         propName = parts[0] + parts[1][0].toUpperCase() + parts[1].slice(1);
       } else {
         propName = prop;
       }
-      this.e.style[propName] = val;
-      const style = getComputedStyle(this.e);
-      return style[propName];
+
+      const n = this.length;
+      const elements = [];
+      let style;
+      if (n > 1) {
+        for (let i = 0; i < n; i++) {
+          this.e[i].style[propName] = val;
+          style = getComputedStyle(this.e[i]);
+          elements.push(style[propName]);
+        }
+      } else if (n === 1) {
+        this.e.style[propName] = val;
+        style = getComputedStyle(this.e);
+        return style[propName];
+      }
+
+      return elements;
     },
 
     /**
@@ -180,7 +275,16 @@ const $ = (D => {
      * @returns {string} - The value of an given attribute
      */
     attr(prop) {
-      return this.e ? this.e.getAttribute(prop) : null;
+      const { e } = this;
+      const n = this.length;
+      let elem;
+
+      if (n === 1) {
+        elem = e ? e.getAttribute(prop) : null;
+      } else {
+        return null;
+      }
+      return elem;
     }
   });
 

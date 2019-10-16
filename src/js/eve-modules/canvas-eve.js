@@ -78,8 +78,8 @@ const CanvasEve = ((W, D, M) => {
           }
           console.log(
             $fileWrapTestParents,
-            $fileWrapTestParents.find('.eve-main'),
-            Extend('.file-wrap')
+            Extend('div'),
+            $fileWrapTestParents.hasClass('file-wrap')
           );
 
           if ($fileWrap.hasClass('file-wrap')) {
