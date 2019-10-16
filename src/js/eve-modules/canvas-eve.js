@@ -70,11 +70,17 @@ const CanvasEve = ((W, D, M) => {
             $fileWrap = $(e.target);
           }
 
-          // let $fileWrapTest = Extend(e.target).parents('.file-wrap');
-          // if ($fileWrapTest.length === 0) {
-          //   $fileWrapTest = Extend(e.target);
-          // }
-          // console.log($fileWrapTest, $fileWrapTest.find('.is-flipped'));
+          const $fileWrapTest = Extend(e.target);
+          let $fileWrapTestParents = $fileWrapTest.parents('.file-wrap');
+          // console.log($fileWrapTestParents);
+          if ($fileWrapTest.hasClass('file-wrap')) {
+            $fileWrapTestParents = Extend(e.target);
+          }
+          console.log(
+            $fileWrapTestParents,
+            $fileWrapTestParents.find('.eve-main'),
+            Extend('.file-wrap')
+          );
 
           if ($fileWrap.hasClass('file-wrap')) {
             if ($fileWrap.find('only-draggable').length > 0) {

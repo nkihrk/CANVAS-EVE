@@ -227,7 +227,12 @@ Object.assign(lib.prototype, {
    *
    */
   iframePointerNone() {
-    $('iframe').css('pointer-events', 'none');
+    const array = document.querySelectorAll('iframe');
+    for (let i; i < array.length; i++) {
+      array[i].style.pointerEvents = 'none';
+      console.log(array[i].style.pointerEvents);
+    }
+    // $('iframe').css('pointer-events', 'none');
   },
 
   /**
@@ -235,7 +240,93 @@ Object.assign(lib.prototype, {
    *
    */
   iframePointerReset() {
-    $('iframe').css('pointer-events', '');
+    const array = document.querySelectorAll('iframe');
+    for (let i; i < array.length; i++) {
+      array[i].style.pointerEvents = '';
+      console.log(array[i].style.pointerEvents);
+    }
+    // $('iframe').css('pointer-events', '');
+  },
+
+  /**
+   * Check if it is string or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isString(val) {
+    return typeof val === 'string' || val instanceof String;
+  },
+
+  /**
+   * Check if it is number or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isNumber(val) {
+    // eslint-disable-next-line no-restricted-globals
+    return typeof val === 'number' && isFinite(val);
+  },
+
+  /**
+   * Check if it is array or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isArray(val) {
+    return val && typeof val === 'object' && val.constructor === Array;
+  },
+
+  /**
+   * Check if it is function or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isFunction(val) {
+    return typeof val === 'function';
+  },
+
+  /**
+   * Check if it is object or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isObject(val) {
+    return val && typeof val === 'object' && val.constructor === Object;
+  },
+
+  /**
+   * Check if it is null or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isNull(val) {
+    return val === null;
+  },
+
+  /**
+   * Check if it is undefined or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isUndefined(val) {
+    return typeof val === 'undefined';
+  },
+
+  /**
+   * Check if it is boolean or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isBoolean(val) {
+    return typeof val === 'boolean';
   }
 });
 
