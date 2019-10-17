@@ -8,8 +8,9 @@
  *
  */
 
-import $ from 'jquery';
+// import $ from 'jquery';
 
+import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -196,6 +197,8 @@ const ColpickEve = ((W, D) => {
     //
 
     _getHex(e) {
+      console.log(e.target);
+
       let hex = $(e.target).val();
       if (
         !$(e.target)

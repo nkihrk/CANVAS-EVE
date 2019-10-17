@@ -3,14 +3,13 @@
  * Drag'n'Drop / Paste functionality for CANVAS EVE.
  *
  * Dependencies
- * - jQuery 3.4.1
  * - psd.js
+ * - extend-eve
  * - glb-eve
  * - lib-eve
  *
  */
 
-// import $ from 'jquery';
 import PSD from 'psd.js/dist/psd.min';
 
 import $ from '../common/extend-eve';
@@ -343,12 +342,10 @@ const FileEve = ((W, D, M) => {
       const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);
 
-      const testNum = 1;
-      console.log(D.querySelectorAll(`[id='${testNum}']`));
-
-      $(`${fileId} .canvas-colpick`).attr('width', 598);
-      $(`${fileId} .canvas-colpick`).attr('height', 598 * imgRatio);
-      $(`${fileId} .canvas-colpick`)[0]
+      $fileId.find('.canvas-colpick').attr('width', 598);
+      $fileId.find('.canvas-colpick').attr('height', 598 * imgRatio);
+      $fileId
+        .find('.canvas-colpick')[0]
         .getContext('2d')
         .drawImage(img, 0, 0, 598, 598 * imgRatio);
 
@@ -365,7 +362,9 @@ const FileEve = ((W, D, M) => {
         $fileId.addClass('grab-pointer');
       }
 
-      $(`#${GlbEve.NEWFILE_ID} .eve-main`).prepend(img);
+      $(`#${GlbEve.NEWFILE_ID}`)
+        .find('.eve-main')
+        .prepend(img);
 
       if (progSet.iterate === progSet.fileCount) {
         setTimeout(() => {

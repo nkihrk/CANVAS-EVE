@@ -46,7 +46,7 @@ const $ = (D => {
         }
       }
     }
-    console.log('root', this);
+    // console.log('root', this);
   }
 
   const modules = { ...L.prototype, ...LibEve.prototype };
@@ -172,7 +172,6 @@ const $ = (D => {
       let b;
 
       if (n === 1) {
-        console.log('hasClass', this);
         b = this[0].classList.contains(className);
       } else {
         return false;
@@ -220,7 +219,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.prepend() realisation.
      *
-     * @param {string} str - The HTML tags. i.e., '<div>hoge</div>'
+     * @param {string} str - The HTML tags. i.e., '<div>hoge</div>' or just an element
      */
     prepend(str) {
       const n = this.length;
@@ -228,19 +227,27 @@ const $ = (D => {
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          elem = this.str2node(str);
-          this[i].insertBefore(elem, this[i].firstChild);
+          if (this.isString(str)) {
+            elem = this.str2node(str);
+            this[i].insertBefore(elem, this[i].firstChild);
+          } else {
+            this[i].insertBefore(str, this[i].firstChild);
+          }
         }
       } else if (n === 1) {
-        elem = this.str2node(str);
-        this[0].insertBefore(elem, this[0].firstChild);
+        if (this.isString(str)) {
+          elem = this.str2node(str);
+          this[0].insertBefore(elem, this[0].firstChild);
+        } else {
+          this[0].insertBefore(str, this[0].firstChild);
+        }
       }
     },
 
     /**
      * Vanilla JS jQuery.append() realisation.
      *
-     * @param {string} str - The HTML tags. i.e., '<div>Hoge</div>'
+     * @param {string} str - The HTML tags. i.e., '<div>Hoge</div>' or just an element
      */
     append(str) {
       const n = this.length;
@@ -248,12 +255,20 @@ const $ = (D => {
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          elem = this.str2node(str);
-          this[i].appendChild(elem);
+          if (this.isString(str)) {
+            elem = this.str2node(str);
+            this[i].appendChild(elem);
+          } else {
+            this[i].appendChild(str);
+          }
         }
       } else if (n === 1) {
-        elem = this.str2node(str);
-        this[0].appendChild(elem);
+        if (this.isString(str)) {
+          elem = this.str2node(str);
+          this[0].appendChild(elem);
+        } else {
+          this[0].appendChild(str);
+        }
       }
     },
 
@@ -314,14 +329,20 @@ const $ = (D => {
      * Vanilla JS jQuery.attr() realisation.
      *
      * @param {string} prop - The name of an attribute
+     * @param {string} val - The vale of an attribute to set
      * @returns {string} - The value of an given attribute
      */
-    attr(prop) {
+    attr(prop, val) {
       const n = this.length;
       let elem;
 
       if (n === 1) {
-        elem = this[0] ? this[0].getAttribute(prop) : null;
+        if (val) {
+          elem = null;
+          this[0].setAttribute(prop, val);
+        } else {
+          elem = this[0] ? this[0].getAttribute(prop) : null;
+        }
       } else {
         return null;
       }
@@ -388,6 +409,26 @@ const $ = (D => {
       }
 
       return h;
+    },
+
+    /**
+     * Vanilla JS jQuery.val() realisation.
+     *
+     * @returns {number} - Return an input value
+     */
+    val() {
+      const n = this.length;
+      let v;
+
+      console.log(this);
+
+      if (n === 1) {
+        v = this[0] ? this[0].value : null;
+      } else {
+        return null;
+      }
+
+      return v;
     }
   });
 
