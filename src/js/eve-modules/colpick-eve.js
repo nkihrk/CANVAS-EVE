@@ -112,6 +112,7 @@ const ColpickEve = ((W, D) => {
                 .find('canvas').length > 0 &&
               e.button !== 1
             ) {
+              e.preventDefault();
               const col = this._getColor(e);
               const hex = this.rgb2hex([col[0], col[1], col[2]]);
 
@@ -155,6 +156,7 @@ const ColpickEve = ((W, D) => {
               const g = parseInt($('#g-colpick input').val(), 10);
               const b = parseInt($('#b-colpick input').val(), 10);
               const hex = this.rgb2hex([r, g, b]);
+              const col = this.hex2rgb(hex);
               this._updatePalette(hex);
               this._updateRgbBar(col);
             }
@@ -197,8 +199,6 @@ const ColpickEve = ((W, D) => {
     //
 
     _getHex(e) {
-      console.log(e.target);
-
       let hex = $(e.target).val();
       if (
         !$(e.target)
@@ -226,7 +226,7 @@ const ColpickEve = ((W, D) => {
         1,
         1
       );
-      if ($fileWrap.has('.flipped').length > 0) {
+      if ($fileWrap.find('.flipped').length > 0) {
         imagedata = context.getImageData(
           $fileWrap.find('img').width() - relPosX * GlbEve.MOUSE_WHEEL_VAL,
           relPosY * GlbEve.MOUSE_WHEEL_VAL,
@@ -310,21 +310,19 @@ const ColpickEve = ((W, D) => {
 
     _syncWithBar(e) {
       // Syncing rgb values with sliders
-      let x = e.clientX - this.circleRelPosX - $('.bar-colpick').offset().left;
+      const $barColpick = this.$barTop.parent();
+      let x = e.clientX - this.circleRelPosX - $barColpick.offset().left;
       x =
         // eslint-disable-next-line no-nested-ternary
         x >= -this.$barTop.width() / 2
-          ? x >= $('.bar-colpick').width() - this.$barTop.width() / 2
-            ? $('.bar-colpick').width() - this.$barTop.width() / 2
+          ? x >= $barColpick.width() - this.$barTop.width() / 2
+            ? $barColpick.width() - this.$barTop.width() / 2
             : x
           : -this.$barTop.width() / 2;
       const posLeft = x + this.$barTop.width() / 2;
-      const colorCode = parseInt((posLeft / $('.bar-colpick').width()) * 255, 10);
-      this.$barTop.css('left', `${(posLeft / $('.bar-colpick').width()) * 100}%`);
-      this.$barTop
-        .parents('.bar-colpick')
-        .find('.colbar-colpick')
-        .css('width', `${(posLeft / $('.bar-colpick').width()) * 100}%`);
+      const colorCode = parseInt((posLeft / $barColpick.width()) * 255, 10);
+      this.$barTop.css('left', `${(posLeft / $barColpick.width()) * 100}%`);
+      $barColpick.find('.colbar-colpick').css('width', `${(posLeft / $barColpick.width()) * 100}%`);
       this.$barTop
         .parent()
         .parent()

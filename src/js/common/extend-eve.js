@@ -28,8 +28,9 @@ const $ = (D => {
       for (let i = 0; i < e.length; i++) {
         this[i] = e[i];
       }
+      this.length = e.length;
     } else {
-      this[0] = e || null;
+      this[0] = e;
       this.length = e ? 1 : 0;
       if (this.isString(e)) {
         const isNum = parseInt(e.split('#')[1], 10);
@@ -74,9 +75,27 @@ const $ = (D => {
           elements.push(this[0]);
         }
       }
-      console.log('parents', this._ext(elements));
+      // console.log('parents', this._ext(elements));
 
       return this._ext(elements);
+    },
+
+    /**
+     * Vanilla JS jQuery.parent() realisation.
+     *
+     * @returns {element} - Return a parent selector
+     */
+    parent() {
+      const n = this.length;
+      let elem;
+
+      if (n === 1) {
+        // console.log('parent', this[0].parentNode);
+
+        elem = this[0].parentNode;
+      }
+
+      return this._ext(elem);
     },
 
     /**
@@ -89,9 +108,7 @@ const $ = (D => {
       let elem;
 
       if (n === 1) {
-        console.log('children', this[0]);
-
-        elem = this[0] ? this[0].children[0] : null;
+        elem = this[0].children;
       }
 
       return this._ext(elem);
@@ -108,7 +125,7 @@ const $ = (D => {
       let elem;
 
       if (n === 1) {
-        elem = this[0] ? this[0].querySelector(className) : null;
+        elem = this[0].querySelector(className);
       }
 
       return this._ext(elem);
@@ -341,7 +358,7 @@ const $ = (D => {
           elem = null;
           this[0].setAttribute(prop, val);
         } else {
-          elem = this[0] ? this[0].getAttribute(prop) : null;
+          elem = this[0].getAttribute(prop);
         }
       } else {
         return null;
@@ -362,12 +379,10 @@ const $ = (D => {
 
       if (n === 1) {
         rect = this[0].getBoundingClientRect();
-        elemCoord = this[0]
-          ? {
-              top: rect.top + D.body.scrollTop,
-              left: rect.left + D.body.scrollLeft
-            }
-          : null;
+        elemCoord = {
+          top: rect.top + D.body.scrollTop,
+          left: rect.left + D.body.scrollLeft
+        };
       } else {
         return null;
       }
@@ -385,7 +400,7 @@ const $ = (D => {
       let w;
 
       if (n === 1) {
-        w = this[0] ? this[0].offsetWidth : null;
+        w = this[0].offsetWidth;
       } else {
         return null;
       }
@@ -403,7 +418,43 @@ const $ = (D => {
       let h;
 
       if (n === 1) {
-        h = this[0] ? this[0].offsetHeight : null;
+        h = this[0].offsetHeight;
+      } else {
+        return null;
+      }
+
+      return h;
+    },
+
+    /**
+     * Vanilla JS jQuery.width() realisation.
+     *
+     * @returns {number} - The width of an element
+     */
+    width() {
+      const n = this.length;
+      let w;
+
+      if (n === 1) {
+        w = parseFloat(getComputedStyle(this[0], null).width.replace('px', ''));
+      } else {
+        return null;
+      }
+
+      return w;
+    },
+
+    /**
+     * Vanilla JS jQuery.height() realisation.
+     *
+     * @returns {number} - The height of an element
+     */
+    height() {
+      const n = this.length;
+      let h;
+
+      if (n === 1) {
+        h = parseFloat(getComputedStyle(this[0], null).height.replace('px', ''));
       } else {
         return null;
       }
@@ -413,17 +464,19 @@ const $ = (D => {
 
     /**
      * Vanilla JS jQuery.val() realisation.
-     *
+     * @param {string} str - The string to insert into an input
      * @returns {number} - Return an input value
      */
-    val() {
+    val(str) {
       const n = this.length;
       let v;
 
-      console.log(this);
-
       if (n === 1) {
-        v = this[0] ? this[0].value : null;
+        if (str) {
+          this[0].value = str;
+        } else {
+          v = this[0].value;
+        }
       } else {
         return null;
       }
