@@ -14,7 +14,7 @@ import $ from 'jquery';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const OekakiEve = ((w, D, M) => {
+const OekakiEve = ((W, D, M) => {
   function Oekaki(container) {
     const size = container.clientWidth;
     const wheelRadius = size / 2;
@@ -270,7 +270,7 @@ const OekakiEve = ((w, D, M) => {
         false
       );
 
-      if (w.PointerEvent) {
+      if (W.PointerEvent) {
         for (let i = 0; i < this.drawPointerEvents.length; i++) {
           D.addEventListener(
             this.drawPointerEvents[i],

@@ -7,7 +7,7 @@
  *
  */
 
-import $ from 'jquery';
+// import $ from 'jquery';
 
 function lib() {}
 
@@ -336,6 +336,26 @@ Object.assign(lib.prototype, {
    */
   isBoolean(val) {
     return typeof val === 'boolean';
+  },
+
+  /**
+   * Return a total number of keys in the object
+   *
+   * @param {object} obj
+   * @returns {number} Return a total number of keys
+   */
+  keysCount(obj) {
+    return _.keys(obj).length;
+  },
+
+  /**
+   * Return an array of the object keys
+   *
+   * @param {object} obj
+   * @returns {array} Return an array of keys
+   */
+  keysInArray(obj) {
+    return Object.keys(obj);
   }
 });
 

@@ -11,7 +11,8 @@
 
 import $ from 'jquery';
 
-import Extend from '../common/extend-eve';
+// import Extend from '../common/extend-eve';
+// import $ from '../common/extend-eve';
 import LibEve from '../common/lib-eve';
 import GlbEve from '../common/glb-eve';
 
@@ -69,18 +70,6 @@ const CanvasEve = ((W, D, M) => {
           if ($fileWrap.length === 0) {
             $fileWrap = $(e.target);
           }
-
-          const $fileWrapTest = Extend(e.target);
-          let $fileWrapTestParents = $fileWrapTest.parents('.file-wrap');
-          // console.log($fileWrapTestParents);
-          if ($fileWrapTest.hasClass('file-wrap')) {
-            $fileWrapTestParents = Extend(e.target);
-          }
-          console.log(
-            $fileWrapTestParents,
-            Extend('div'),
-            $fileWrapTestParents.hasClass('file-wrap')
-          );
 
           if ($fileWrap.hasClass('file-wrap')) {
             if ($fileWrap.find('only-draggable').length > 0) {
@@ -325,7 +314,7 @@ const CanvasEve = ((W, D, M) => {
                   // Global value for the selected ID
                   GlbEve.CURRENT_ID = $fileWrap.attr('id');
                   this.file.fileId = `#${GlbEve.CURRENT_ID}`;
-                  this.file.$fileId = $(this.file.fileId);
+                  this.file.$fileId = $(`#${GlbEve.CURRENT_ID}`);
 
                   this.file.fileIdWidth = this.file.$fileId.outerWidth();
                   this.file.fileIdHeight = this.file.$fileId.outerHeight();

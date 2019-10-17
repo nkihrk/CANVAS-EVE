@@ -15,8 +15,6 @@ const $ = (D => {
   L.prototype = {
     constructor: L,
 
-    //
-
     _ext(e) {
       return new $(e);
     }
@@ -26,13 +24,29 @@ const $ = (D => {
     L.call(this);
     LibEve.call(this);
 
-    this.e = e || null;
-    this.length = this.e ? 1 : 0;
-    if (this.isString(e)) {
-      this.e =
-        D.querySelectorAll(e).length === 1 ? D.querySelectorAll(e)[0] : D.querySelectorAll(e);
-      this.length = D.querySelectorAll(e).length;
+    if (this.isArray(e)) {
+      for (let i = 0; i < e.length; i++) {
+        this[i] = e[i];
+      }
+    } else {
+      this[0] = e || null;
+      this.length = e ? 1 : 0;
+      if (this.isString(e)) {
+        const isNum = parseInt(e.split('#')[1], 10);
+
+        if (this.isNumber(isNum)) {
+          this[0] = D.getElementById(isNum);
+          this.length = 1;
+        } else {
+          const n = D.querySelectorAll(e).length;
+          for (let i = 0; i < n; i++) {
+            this[i] = D.querySelectorAll(e)[i];
+          }
+          this.length = n;
+        }
+      }
     }
+    console.log('root', this);
   }
 
   const modules = { ...L.prototype, ...LibEve.prototype };
@@ -48,22 +62,39 @@ const $ = (D => {
      */
     parents(selector) {
       const elements = [];
-      let { e } = this;
       const isHaveSelector = selector !== undefined;
 
       // eslint-disable-next-line no-cond-assign
-      while ((e = e.parentElement) !== null) {
-        if (e.nodeType !== Node.ELEMENT_NODE) {
+      while ((this[0] = this[0].parentElement) !== null) {
+        if (this[0].nodeType !== Node.ELEMENT_NODE) {
           // eslint-disable-next-line no-continue
           continue;
         }
-
-        if (!isHaveSelector || e.matches(selector)) {
-          elements.push(e);
+        if (!isHaveSelector || this[0].matches(selector)) {
+          elements.push(this[0]);
         }
       }
+      console.log('parents', this._ext(elements));
 
-      return this._ext(elements[0]);
+      return this._ext(elements);
+    },
+
+    /**
+     * Vanilla JS jQuery.children() realisation.
+     *
+     * @returns {element} - Return a specific selector
+     */
+    children() {
+      const n = this.length;
+      let elem;
+
+      if (n === 1) {
+        console.log('children', this[0]);
+
+        elem = this[0] ? this[0].children[0] : null;
+      }
+
+      return this._ext(elem);
     },
 
     /**
@@ -73,12 +104,11 @@ const $ = (D => {
      * @returns {element} - Return a specific selector
      */
     find(className) {
-      const { e } = this;
       const n = this.length;
       let elem;
 
       if (n === 1) {
-        elem = e ? e.querySelector(className) : null;
+        elem = this[0] ? this[0].querySelector(className) : null;
       }
 
       return this._ext(elem);
@@ -90,15 +120,14 @@ const $ = (D => {
      * @param {string} className - The selector to add
      */
     addClass(className) {
-      const { e } = this;
-
       const n = this.length;
+
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          e[i].classList.add(className);
+          this[i].classList.add(className);
         }
       } else if (n === 1) {
-        e.classList.add(className);
+        this[0].classList.add(className);
       }
     },
 
@@ -108,15 +137,14 @@ const $ = (D => {
      * @param {string} className - The name of a class name
      */
     removeClass(className) {
-      const { e } = this;
-
       const n = this.length;
+
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          e[i].classList.remove(className);
+          this[i].classList.remove(className);
         }
       } else if (n === 1) {
-        e.classList.remove(className);
+        this[0].classList.remove(className);
       }
     },
 
@@ -126,11 +154,10 @@ const $ = (D => {
      * @param {string} className - The class to toggle
      */
     toggleClass(className) {
-      const { e } = this;
       const n = this.length;
 
       if (n === 1) {
-        e.classList.toggle(className);
+        this[0].classList.toggle(className);
       }
     },
 
@@ -141,12 +168,12 @@ const $ = (D => {
      * @returns {boolean} - Return true/false
      */
     hasClass(className) {
-      const { e } = this;
       const n = this.length;
       let b;
 
       if (n === 1) {
-        b = e.classList.contains(className);
+        console.log('hasClass', this);
+        b = this[0].classList.contains(className);
       } else {
         return false;
       }
@@ -159,15 +186,14 @@ const $ = (D => {
      *
      */
     remove() {
-      const { e } = this;
-
       const n = this.length;
+
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          e[i].parentNode.removeChild(e[i]);
+          this[i].parentNode.removeChild(e[i]);
         }
       } else if (n === 1) {
-        e.parentNode.removeChild(e);
+        this[0].parentNode.removeChild(this[0]);
       }
     },
 
@@ -176,18 +202,17 @@ const $ = (D => {
      *
      */
     empty() {
-      const { e } = this;
-
       const n = this.length;
+
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          while (e[i].firstChild) {
-            e[i].removeChild(e[i].firstChild);
+          while (this[i].firstChild) {
+            this[i].removeChild(this[i].firstChild);
           }
         }
       } else if (n === 1) {
-        while (e.firstChild) {
-          e.removeChild(e.firstChild);
+        while (this[0].firstChild) {
+          this[0].removeChild(this[0].firstChild);
         }
       }
     },
@@ -198,17 +223,17 @@ const $ = (D => {
      * @param {string} str - The HTML tags. i.e., '<div>hoge</div>'
      */
     prepend(str) {
-      const { e } = this;
       const n = this.length;
       let elem;
+
       if (n > 1) {
         for (let i = 0; i < n; i++) {
           elem = this.str2node(str);
-          e[i].insertBefore(elem, e[i].firstChild);
+          this[i].insertBefore(elem, this[i].firstChild);
         }
       } else if (n === 1) {
         elem = this.str2node(str);
-        e.insertBefore(elem, e.firstChild);
+        this[0].insertBefore(elem, this[0].firstChild);
       }
     },
 
@@ -218,17 +243,17 @@ const $ = (D => {
      * @param {string} str - The HTML tags. i.e., '<div>Hoge</div>'
      */
     append(str) {
-      const { e } = this;
       const n = this.length;
       let elem;
+
       if (n > 1) {
         for (let i = 0; i < n; i++) {
           elem = this.str2node(str);
-          e[i].appendChild(elem);
+          this[i].appendChild(elem);
         }
       } else if (n === 1) {
         elem = this.str2node(str);
-        e.appendChild(elem);
+        this[0].appendChild(elem);
       }
     },
 
@@ -240,32 +265,49 @@ const $ = (D => {
      * @returns {array} - The value of a given css property
      */
     css(prop, val) {
-      let propName;
-      let parts;
-
-      if (prop.match(/-/)) {
-        parts = prop.split('-');
-        propName = parts[0] + parts[1][0].toUpperCase() + parts[1].slice(1);
-      } else {
-        propName = prop;
-      }
-
-      const n = this.length;
-      const elements = [];
-      let style;
-      if (n > 1) {
-        for (let i = 0; i < n; i++) {
-          this.e[i].style[propName] = val;
-          style = getComputedStyle(this.e[i]);
-          elements.push(style[propName]);
+      function __css(propName, propVal, self) {
+        let fixedName;
+        let parts;
+        if (propName.match(/-/)) {
+          parts = propName.split('-');
+          fixedName = parts[0] + parts[1][0].toUpperCase() + parts[1].slice(1);
+        } else {
+          fixedName = propName;
         }
-      } else if (n === 1) {
-        this.e.style[propName] = val;
-        style = getComputedStyle(this.e);
-        return style[propName];
+
+        const n = self.length;
+        const elements = [];
+        let style;
+
+        if (n > 1) {
+          for (let i = 0; i < n; i++) {
+            self[i].style[fixedName] = propVal;
+            style = getComputedStyle(self[i]);
+            elements.push(style[fixedName]);
+          }
+        } else if (n === 1) {
+          self[0].style[fixedName] = propVal;
+          style = getComputedStyle(self[0]);
+          return style[fixedName];
+        }
+
+        return elements;
       }
 
-      return elements;
+      if (this.isObject(prop)) {
+        const propArray = this.keysInArray(prop);
+        const totalKeys = propArray.length;
+        let eachProp;
+        let eachVal;
+
+        for (let i = 0; i < totalKeys; i++) {
+          eachProp = propArray[i];
+          eachVal = prop[eachProp];
+          __css(eachProp, eachVal, this);
+        }
+      } else {
+        __css(prop, val, this);
+      }
     },
 
     /**
@@ -275,16 +317,77 @@ const $ = (D => {
      * @returns {string} - The value of an given attribute
      */
     attr(prop) {
-      const { e } = this;
       const n = this.length;
       let elem;
 
       if (n === 1) {
-        elem = e ? e.getAttribute(prop) : null;
+        elem = this[0] ? this[0].getAttribute(prop) : null;
       } else {
         return null;
       }
+
       return elem;
+    },
+
+    /**
+     * Vanilla JS jQuery.offset() realisation.
+     *
+     * @returns {object} - The screen-space coordinates of a given element
+     */
+    offset() {
+      const n = this.length;
+      let rect;
+      let elemCoord;
+
+      if (n === 1) {
+        rect = this[0].getBoundingClientRect();
+        elemCoord = this[0]
+          ? {
+              top: rect.top + D.body.scrollTop,
+              left: rect.left + D.body.scrollLeft
+            }
+          : null;
+      } else {
+        return null;
+      }
+
+      return elemCoord;
+    },
+
+    /**
+     * Vanilla JS jQuery.outerWidth() realisation.
+     *
+     * @returns {number} - The outer width of an element
+     */
+    outerWidth() {
+      const n = this.length;
+      let w;
+
+      if (n === 1) {
+        w = this[0] ? this[0].offsetWidth : null;
+      } else {
+        return null;
+      }
+
+      return w;
+    },
+
+    /**
+     * Vanilla JS jQuery.outerHeight() realisation.
+     *
+     * @returns {number} - The outer height of an element
+     */
+    outerHeight() {
+      const n = this.length;
+      let h;
+
+      if (n === 1) {
+        h = this[0] ? this[0].offsetHeight : null;
+      } else {
+        return null;
+      }
+
+      return h;
     }
   });
 

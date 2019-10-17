@@ -3,18 +3,20 @@
  * Screen-space coordinate for CANVAS EVE
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - extend-eve
  * - lib-eve
  *
  */
 
-import $ from 'jquery';
-
+import $ from '../common/extend-eve';
 import LibEve from '../common/lib-eve';
 
 const PlainEve = (D => {
   function Plain() {
     LibEve.call(this);
+
+    this.$plain = $('#plain');
+    this.$canvasEve = $('#canvas-eve');
 
     this.param = {
       pos: {
@@ -49,7 +51,7 @@ const PlainEve = (D => {
       D.addEventListener(
         'mousedown',
         e => {
-          const $plain = $('#plain');
+          const { $plain } = this;
           this.param.relPos.left = e.clientX - $plain.offset().left;
           this.param.relPos.top = e.clientY - $plain.offset().top;
           if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
@@ -77,14 +79,16 @@ const PlainEve = (D => {
         'mousemove',
         e => {
           e.preventDefault();
+          const { $plain } = this;
+          const { $canvasEve } = this;
 
           if (this.flgs.mousewheel_avail_flg === true) {
             this.iframePointerNone();
-            $('#plain').css({
+            $plain.css({
               left: `${e.clientX - this.param.relPos.left}px`,
               top: `${e.clientY - this.param.relPos.top}px`
             });
-            $('#canvas-eve').addClass('active-mousewheel');
+            $canvasEve.addClass('active-mousewheel');
           }
         },
         false

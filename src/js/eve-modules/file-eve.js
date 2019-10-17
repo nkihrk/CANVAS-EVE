@@ -10,9 +10,10 @@
  *
  */
 
-import $ from 'jquery';
+// import $ from 'jquery';
 import PSD from 'psd.js/dist/psd.min';
 
+import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -341,6 +342,9 @@ const FileEve = ((W, D, M) => {
 
       const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);
+
+      const testNum = 1;
+      console.log(D.querySelectorAll(`[id='${testNum}']`));
 
       $(`${fileId} .canvas-colpick`).attr('width', 598);
       $(`${fileId} .canvas-colpick`).attr('height', 598 * imgRatio);
