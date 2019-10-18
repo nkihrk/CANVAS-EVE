@@ -311,7 +311,6 @@ const ColpickEve = ((W, D) => {
     _syncWithBar(e) {
       // Syncing rgb values with sliders
       const $barColpick = this.$barCircle.parent();
-      console.log('-------------------------', $barColpick);
       let x = e.clientX - this.circleRelPosX - $barColpick.offset().left;
       x =
         // eslint-disable-next-line no-nested-ternary
@@ -324,14 +323,15 @@ const ColpickEve = ((W, D) => {
       const colorCode = parseInt((posLeft / $barColpick.width()) * 255, 10);
 
       this.$barCircle.css('left', `${(posLeft / $barColpick.width()) * 100}%`);
-      $barColpick.find('.colbar-colpick').css('width', `${(posLeft / $barColpick.width()) * 100}%`);
+      const $colBar = $barColpick.find('.colbar-colpick');
+      $colBar.css('width', `${(posLeft / $barColpick.width()) * 100}%`);
 
-      this.$barCircle
-        .parents('.bar-colpick')
+      $barColpick
+        .parent()
         .find('input')
         .val(colorCode);
 
-      // console.log('-------------------------', this.$barCircle);
+      console.log('-------------------------', this.$barCircle.parent(), this.$barCircle.parents());
 
       // Update rgb values, and convert it to hex, and apply to a color code input
       const r = parseInt($('#r-colpick input').val(), 10);

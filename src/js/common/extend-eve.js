@@ -84,11 +84,9 @@ const $ = (D => {
       let elem;
 
       if (n === 1) {
-        console.log('parent_1', this);
-
         elem = this[0].parentNode;
       } else {
-        console.log('parent_2', this);
+        console.log('parent', this);
       }
 
       return this._ext(elem);
