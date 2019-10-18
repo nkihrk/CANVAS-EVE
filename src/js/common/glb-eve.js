@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 /**
  *
  * Global variables for CANVAS EVE.
@@ -8,12 +7,12 @@
  *
  */
 
-let NEWFILE_ID = 0;
-let CURRENT_ID = 0;
-let HIGHEST_Z_INDEX = 1;
-let MOUSE_WHEEL_VAL = 1;
-let IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
-let YOUTUBE_API_KEY = null;
+const NEWFILE_ID = 0;
+const CURRENT_ID = 0;
+const HIGHEST_Z_INDEX = 1;
+const MOUSE_WHEEL_VAL = 1;
+const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
+const YOUTUBE_API_KEY = null;
 
 exports.NEWFILE_ID = NEWFILE_ID;
 exports.CURRENT_ID = CURRENT_ID;

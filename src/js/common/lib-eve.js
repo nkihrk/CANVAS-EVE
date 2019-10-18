@@ -3,7 +3,7 @@
  * Library for CANVAS EVE.
  *
  * * Dependencies
- * - jQuery 3.4.1
+ * - none
  *
  */
 

@@ -4,13 +4,12 @@
  * Model loader for CANVAS EVE.
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - extend-eve
  * - glb-eve
  * - lib-eve
  *
  */
 
-import $ from 'jquery';
 import {
   Box3,
   PerspectiveCamera,
@@ -23,8 +22,9 @@ import {
 } from 'three';
 import { VRM } from '@pixiv/three-vrm';
 
-import LibEve from '../common/lib-eve';
+import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
+import LibEve from '../common/lib-eve';
 import { OrbitControls } from '../three-modules/OrbitControls';
 import { FBXLoader } from '../three-modules/FBXLoader';
 import { DRACOLoader } from '../three-modules/DRACOLoader';
@@ -342,7 +342,7 @@ const ThreeEve = ((W, D, M) => {
         progSet.progress.style.width = '100%';
         setTimeout(() => {
           progSet.progress.classList.remove('loading');
-          $('div').remove('.hide-scissor');
+          $('.hide-scissor').remove();
         }, 1000);
       };
 
@@ -410,17 +410,20 @@ const ThreeEve = ((W, D, M) => {
     _addFileWrap(mousePos) {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
+      GlbEve.CURRENT_ID = GlbEve.NEWFILE_ID;
 
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="trash-wrapper"></div>';
       const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="glsl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
       $('#add-files').append(assertFile);
 
-      const hide = $('<div class="hide-scissor"></div>').css({
+      const hideScissor = D.createElement('div');
+      $('#add-files').append(hideScissor);
+      hideScissor.classList.add('hide-scissor');
+      $(hideScissor).css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
         top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`
       });
-      $('#add-files').append(hide);
 
       const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);

@@ -33,11 +33,17 @@ const $ = (D => {
       this[0] = e;
       this.length = e ? 1 : 0;
     } else if (this.isString(e)) {
-      const n = D.querySelectorAll(e).length;
-      for (let i = 0; i < n; i++) {
-        this[i] = D.querySelectorAll(e)[i];
+      const isNum = parseInt(e.split('#')[1], 10);
+      if (this.isNumber(isNum)) {
+        this[0] = D.getElementById(isNum);
+        this.length = 1;
+      } else {
+        const n = D.querySelectorAll(e).length;
+        for (let i = 0; i < n; i++) {
+          this[i] = D.querySelectorAll(e)[i];
+        }
+        this.length = n;
       }
-      this.length = n;
     } else {
       console.log('root', e);
       this.length = 0;
@@ -53,20 +59,21 @@ const $ = (D => {
      * Vanilla JS jQuery.parents() realisation.
      *
      * @param {string} selector - The selector to match. If a selector is empty, it returns its parent element
-     * @returns {element} - Return an element that matches the given selector
+     * @returns {element} Return an element that matches the given selector
      */
     parents(selector) {
       const elements = [];
       const isHaveSelector = selector !== undefined;
+      let tmpElem = this[0];
 
       // eslint-disable-next-line no-cond-assign
-      while ((this[0] = this[0].parentElement) !== null) {
-        if (this[0].nodeType !== Node.ELEMENT_NODE) {
+      while ((tmpElem = tmpElem.parentElement) !== null) {
+        if (tmpElem.nodeType !== Node.ELEMENT_NODE) {
           // eslint-disable-next-line no-continue
           continue;
         }
-        if (!isHaveSelector || this[0].matches(selector)) {
-          elements.push(this[0]);
+        if (!isHaveSelector || tmpElem.matches(selector)) {
+          elements.push(tmpElem);
         }
       }
       console.log('parents', this._ext(elements));
@@ -77,7 +84,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.parent() realisation.
      *
-     * @returns {element} - Return a parent selector
+     * @returns {element} Return a parent selector
      */
     parent() {
       const n = this.length;
@@ -95,7 +102,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.children() realisation.
      *
-     * @returns {element} - Return a specific selector
+     * @returns {element} Return a specific selector
      */
     children() {
       const n = this.length;
@@ -114,7 +121,7 @@ const $ = (D => {
      * Vanilla JS jQuery.find() realisation.
      *
      * @param {string} className - The selector to find
-     * @returns {element} - Return a specific selector
+     * @returns {element} Return a specific selector
      */
     find(className) {
       const n = this.length;
@@ -186,7 +193,7 @@ const $ = (D => {
      * Vanilla JS jQuery.hasClass() realisation.
      *
      * @param {string} className - The selector to match
-     * @returns {boolean} - Return true/false
+     * @returns {boolean} Return true/false
      */
     hasClass(className) {
       const n = this.length;
@@ -307,7 +314,7 @@ const $ = (D => {
      *
      * @param {string} prop - The name of a css property
      * @param {string} val - The value of a css property
-     * @returns {array} - The value of a given css property
+     * @returns {array} The value of a given css property
      */
     css(prop, val) {
       function __css(propName, propVal, self) {
@@ -362,7 +369,7 @@ const $ = (D => {
      *
      * @param {string} prop - The name of an attribute
      * @param {string} val - The vale of an attribute to set
-     * @returns {string} - The value of an given attribute
+     * @returns {string} The value of an given attribute
      */
     attr(prop, val) {
       const n = this.length;
@@ -386,7 +393,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.offset() realisation.
      *
-     * @returns {object} - The screen-space coordinates of a given element
+     * @returns {object} The screen-space coordinates of a given element
      */
     offset() {
       const n = this.length;
@@ -410,7 +417,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.outerWidth() realisation.
      *
-     * @returns {number} - The outer width of an element
+     * @returns {number} The outer width of an element
      */
     outerWidth() {
       const n = this.length;
@@ -429,7 +436,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.outerHeight() realisation.
      *
-     * @returns {number} - The outer height of an element
+     * @returns {number} The outer height of an element
      */
     outerHeight() {
       const n = this.length;
@@ -448,7 +455,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.width() realisation.
      *
-     * @returns {number} - The width of an element
+     * @returns {number} The width of an element
      */
     width() {
       const n = this.length;
@@ -467,7 +474,7 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.height() realisation.
      *
-     * @returns {number} - The height of an element
+     * @returns {number} The height of an element
      */
     height() {
       const n = this.length;
@@ -485,15 +492,16 @@ const $ = (D => {
 
     /**
      * Vanilla JS jQuery.val() realisation.
+     *
      * @param {string} str - The string to insert into an input
-     * @returns {number} - Return an input value
+     * @returns {number} Return an input value
      */
     val(str) {
       const n = this.length;
       let v;
 
       if (n === 1) {
-        if (str) {
+        if (this.isString(str) || this.isNumber(str)) {
           this[0].value = str;
         } else {
           v = this[0].value;
