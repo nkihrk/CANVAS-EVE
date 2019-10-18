@@ -300,6 +300,8 @@ Children
 
 /* Prefix for a search button */
 .child-search-button-youtube {
+  @include hover-shadow-single;
+
   width: 17%;
   /* max-width: 200px; */
   background-color: #e56470;

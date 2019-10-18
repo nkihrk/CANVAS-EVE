@@ -239,9 +239,8 @@ Object.assign(lib.prototype, {
     const array = document.querySelectorAll('iframe');
     for (let i = 0; i < array.length; i++) {
       array[i].style.pointerEvents = 'none';
-      console.log(array[i].style.pointerEvents);
+      // console.log(array[i].style.pointerEvents);
     }
-    // $('iframe').css('pointer-events', 'none');
   },
 
   /**
@@ -252,9 +251,8 @@ Object.assign(lib.prototype, {
     const array = document.querySelectorAll('iframe');
     for (let i = 0; i < array.length; i++) {
       array[i].style.pointerEvents = '';
-      console.log(array[i].style.pointerEvents);
+      // console.log(array[i].style.pointerEvents);
     }
-    // $('iframe').css('pointer-events', '');
   },
 
   /**
@@ -285,7 +283,8 @@ Object.assign(lib.prototype, {
    * @returns {boolean} - Return true/false
    */
   isArray(val) {
-    return val && typeof val === 'object' && val.constructor === Array;
+    // return val && typeof val === 'object' && val.constructor === Array;
+    return val && typeof val === 'object';
   },
 
   /**
@@ -305,7 +304,8 @@ Object.assign(lib.prototype, {
    * @returns {boolean} - Return true/false
    */
   isObject(val) {
-    return val && typeof val === 'object' && val.constructor === Object;
+    // return val && typeof val === 'object' && val.constructor === Object;
+    return val && typeof val === 'object';
   },
 
   /**

@@ -76,7 +76,6 @@ const $ = (D => {
           elements.push(tmpElem);
         }
       }
-      console.log('parents', this._ext(elements));
 
       return this._ext(elements);
     },
@@ -102,19 +101,23 @@ const $ = (D => {
     /**
      * Vanilla JS jQuery.children() realisation.
      *
+     * @param {string} str - The name of a child element
      * @returns {element} Return a specific selector
      */
-    children() {
+    children(str) {
       const n = this.length;
-      let elem;
+      let e;
 
       if (n === 1) {
-        elem = this[0].children;
+        e = this[0].children;
+        if (!!str && this.isString(str) && this.isObject(e)) {
+          e = this[0].querySelector(str);
+        }
       } else {
         console.log('children', this);
       }
 
-      return this._ext(elem);
+      return this._ext(e);
     },
 
     /**

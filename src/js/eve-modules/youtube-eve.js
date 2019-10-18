@@ -9,8 +9,7 @@
  *
  */
 
-import $ from 'jquery';
-
+import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 

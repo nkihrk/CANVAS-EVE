@@ -3,12 +3,11 @@
  * Color picker for CANVAS EVE.
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - extend-eve
+ * - glb-eve
  * - lib-eve
  *
  */
-
-// import $ from 'jquery';
 
 import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
