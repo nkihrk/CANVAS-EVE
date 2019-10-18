@@ -7,8 +7,6 @@
  *
  */
 
-// import $ from 'jquery';
-
 function lib() {}
 
 Object.assign(lib.prototype, {
@@ -176,8 +174,6 @@ Object.assign(lib.prototype, {
       style.getPropertyValue('-o-transform') ||
       style.getPropertyValue('transform');
 
-    console.log('matrix', matrix);
-
     if (matrix !== 'none') {
       const values = matrix
         .split('(')[1]
@@ -208,6 +204,7 @@ Object.assign(lib.prototype, {
 
   /**
    * Render a small circle for debugging coordinates.
+   * Head up: This method is jQuery dependency. It is no longer available. Rewrite to vanilla JS
    *
    * @param {string} name - The name of a debugCircle. No need for '#'
    * @param {string} col - The color for the circle
@@ -354,7 +351,7 @@ Object.assign(lib.prototype, {
   },
 
   /**
-   * Return a total number of keys in the object
+   * Return a total number of keys in an object
    *
    * @param {object} obj
    * @returns {number} Return a total number of keys
@@ -364,7 +361,7 @@ Object.assign(lib.prototype, {
   },
 
   /**
-   * Return an array of the object keys
+   * Return an array of an object keys
    *
    * @param {object} obj
    * @returns {array} Return an array of keys
