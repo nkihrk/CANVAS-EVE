@@ -3,14 +3,13 @@
  * Drawing app for CANVAS EVE.
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - extend-eve
  * - glb-eve
  * - lib-eve
  *
  */
 
-import $ from 'jquery';
-
+import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -152,7 +151,9 @@ const OekakiEve = ((W, D, M) => {
       THETA: 0,
       BRUSH_SIZE: 4,
       ERASER_SIZE: 30,
-      CANVAS_COLOR: '#f0e0d6'
+      CANVAS_COLOR: '#f0e0d6',
+      CREATE_CANVAS_DELAY: 200,
+      BUTTON_FOR_CIRCLE: 2
     },
 
     load() {
@@ -167,32 +168,29 @@ const OekakiEve = ((W, D, M) => {
       D.addEventListener(
         'mousedown',
         e => {
-          if (e.target) {
-            if (e.target.closest('#color-oekaki')) {
-              const isWheelArea = this._isWheelArea(e);
-              const isTriangleArea = this._isTriangleArea(e);
-              if (isWheelArea) this.flgs.oekaki.move_wheelcircle_flg = true;
-              if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
+          if (e.target.closest('#color-oekaki')) {
+            const isWheelArea = this._isWheelArea(e);
+            const isTriangleArea = this._isTriangleArea(e);
+            if (isWheelArea) this.flgs.oekaki.move_wheelcircle_flg = true;
+            if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
+          }
+
+          if (e.target.closest('#color-wheel-circle')) this.flgs.oekaki.move_wheelcircle_flg = true;
+
+          if (e.target.closest('#color-triangle-circle'))
+            this.flgs.oekaki.move_trianglecircle_flg = true;
+
+          if (e.target.closest('#reset-res')) {
+            if (this.flgs.newcanvas.newcanvas_flg === true) {
+              this.flgs.newcanvas.create_canvas_avail_flg = true;
+              this.canvas.newCanvasPos.x = e.clientX - $('#zoom').offset().left;
+              this.canvas.newCanvasPos.y = e.clientY - $('#zoom').offset().top;
+              this._createCanvasWrapper();
             }
+          }
 
-            if (e.target.closest('#color-wheel-circle'))
-              this.flgs.oekaki.move_wheelcircle_flg = true;
-
-            if (e.target.closest('#color-triangle-circle'))
-              this.flgs.oekaki.move_trianglecircle_flg = true;
-
-            if (e.target.closest('#reset-res')) {
-              if (this.flgs.newcanvas.newcanvas_flg === true) {
-                this.flgs.newcanvas.create_canvas_avail_flg = true;
-                this.canvas.newCanvasPos.x = e.clientX - $('#zoom').offset().left;
-                this.canvas.newCanvasPos.y = e.clientY - $('#zoom').offset().top;
-                this._createCanvasWrapper();
-              }
-            }
-
-            if (e.target.closest('.oekaki-canvas')) {
-              if (this.flgs.brush.brush_flg === true) this.flgs.brush.draw_canvas_avail_flg = true;
-            }
+          if (e.target.closest('.oekaki-canvas')) {
+            if (this.flgs.brush.brush_flg === true) this.flgs.brush.draw_canvas_avail_flg = true;
           }
         },
         false
@@ -212,7 +210,10 @@ const OekakiEve = ((W, D, M) => {
 
           if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
             this.flgs.newcanvas.create_canvas_avail_flg = false;
-            this._createCanvas();
+            // This duration is for IS_TRANSITION
+            setTimeout(() => {
+              this._createCanvas();
+            }, this.options.CREATE_CANVAS_DELAY);
           }
         },
         false
@@ -225,23 +226,21 @@ const OekakiEve = ((W, D, M) => {
       D.addEventListener(
         'mousedown',
         e => {
-          if (e.target) {
-            if (e.target.closest('#color-oekaki')) {
-              this._colorWheelArea(e);
-              this._colorTriangleArea(e);
-            }
+          if (e.target.closest('#color-oekaki') && e.button === this.options.BUTTON_FOR_CIRCLE) {
+            this._colorWheelArea(e);
+            this._colorTriangleArea(e);
+          }
 
-            if (
-              [
-                '#newcanvas-oekaki',
-                '#brush-oekaki',
-                '#eraser-oekaki',
-                '#spuit-oekaki',
-                '#filldrip-oekaki'
-              ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
-            ) {
-              this._toggleTool($(e.target), e);
-            }
+          if (
+            [
+              '#newcanvas-oekaki',
+              '#brush-oekaki',
+              '#eraser-oekaki',
+              '#spuit-oekaki',
+              '#filldrip-oekaki'
+            ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
+          ) {
+            this._toggleTool($(e.target), e);
           }
         },
         false
@@ -253,19 +252,19 @@ const OekakiEve = ((W, D, M) => {
           e.stopPropagation();
           e.preventDefault();
 
-          if (e.target) {
-            const originX = $(this.param.container).offset().left;
-            const originY = $(this.param.container).offset().top;
-            const centerX = originX + this.param.size / 2;
-            const centerY = originY + this.param.size / 2;
-            this.param.centerPos.x = centerX;
-            this.param.centerPos.y = centerY;
+          const originX = $(this.param.container).offset().left;
+          const originY = $(this.param.container).offset().top;
+          const centerX = originX + this.param.size / 2;
+          const centerY = originY + this.param.size / 2;
+          this.param.centerPos.x = centerX;
+          this.param.centerPos.y = centerY;
 
+          if (e.buttons === this.options.BUTTON_FOR_CIRCLE) {
             if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
             if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
-
-            if (this.flgs.newcanvas.create_canvas_avail_flg === true) this._updateCanvasVal(e);
           }
+
+          if (this.flgs.newcanvas.create_canvas_avail_flg === true) this._updateCanvasVal(e);
         },
         false
       );
@@ -276,8 +275,13 @@ const OekakiEve = ((W, D, M) => {
             this.drawPointerEvents[i],
             e => {
               if (this.flgs.brush.brush_flg === true) {
-                if (e.target.closest('.oekaki-canvas')) {
-                  const $canvas = $(e.target);
+                if (
+                  e.target.closest &&
+                  (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
+                ) {
+                  const $canvas = $(e.target)
+                    .parents('.file-wrap')
+                    .find('canvas');
                   this._drawCanvasPointer($canvas, e);
                 }
               }
@@ -291,8 +295,10 @@ const OekakiEve = ((W, D, M) => {
             this.drawEvents[i],
             e => {
               if (e.target && this.flgs.brush.brush_flg === true) {
-                if (e.target.closest('.oekaki-canvas')) {
-                  const $canvas = $(e.target);
+                if (e.target.closest('.oekaki-canvas') || e.target.closest('.selected')) {
+                  const $canvas = $(e.target)
+                    .parents('.file-wrap')
+                    .find('canvas');
                   this._drawCanvas($canvas, e);
                 }
               }
@@ -760,7 +766,6 @@ const OekakiEve = ((W, D, M) => {
       $fileId.css({
         left: `${startX * GlbEve.MOUSE_WHEEL_VAL}px`,
         top: `${startY * GlbEve.MOUSE_WHEEL_VAL}px`,
-        transform: 'translate(0, 0)',
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
@@ -799,8 +804,8 @@ const OekakiEve = ((W, D, M) => {
     _createCanvas() {
       const $newCanvas = this.canvas.$newCanvasId;
       const c = D.createElement('canvas');
-      const width = $newCanvas.width();
-      const height = $newCanvas.height();
+      const width = $newCanvas.width() - 2 * GlbEve.MOUSE_WHEEL_VAL;
+      const height = $newCanvas.height() - 2 * GlbEve.MOUSE_WHEEL_VAL;
 
       c.width = width;
       c.height = height;

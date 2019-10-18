@@ -45,7 +45,7 @@ const $ = (D => {
         this.length = n;
       }
     } else {
-      console.log('root', e);
+      // console.log('root', e);
       this.length = 0;
     }
   }
@@ -92,7 +92,7 @@ const $ = (D => {
       if (n === 1) {
         elem = this[0].parentNode;
       } else {
-        console.log('parent', this);
+        // console.log('parent', this);
       }
 
       return this._ext(elem);
@@ -114,7 +114,7 @@ const $ = (D => {
           e = this[0].querySelector(str);
         }
       } else {
-        console.log('children', this);
+        // console.log('children', this);
       }
 
       return this._ext(e);
@@ -133,7 +133,7 @@ const $ = (D => {
       if (n === 1) {
         elem = this[0].querySelector(className);
       } else {
-        console.log('find', this);
+        // console.log('find', this);
       }
 
       return this._ext(elem);
@@ -154,7 +154,7 @@ const $ = (D => {
       } else if (n === 1) {
         this[0].classList.add(className);
       } else {
-        console.log('addClass', this);
+        // console.log('addClass', this);
       }
     },
 
@@ -173,7 +173,7 @@ const $ = (D => {
       } else if (n === 1) {
         this[0].classList.remove(className);
       } else {
-        console.log('removeClass', this);
+        // console.log('removeClass', this);
       }
     },
 
@@ -188,7 +188,7 @@ const $ = (D => {
       if (n === 1) {
         this[0].classList.toggle(className);
       } else {
-        console.log('toggleClass', this);
+        // console.log('toggleClass', this);
       }
     },
 
@@ -205,7 +205,7 @@ const $ = (D => {
       if (n === 1) {
         b = this[0].classList.contains(className);
       } else {
-        console.log('find', this);
+        // console.log('find', this);
         return false;
       }
 
@@ -226,7 +226,7 @@ const $ = (D => {
       } else if (n === 1) {
         this[0].parentNode.removeChild(this[0]);
       } else {
-        console.log('remove', this);
+        // console.log('remove', this);
       }
     },
 
@@ -248,7 +248,7 @@ const $ = (D => {
           this[0].removeChild(this[0].firstChild);
         }
       } else {
-        console.log('empty', this);
+        // console.log('empty', this);
       }
     },
 
@@ -260,12 +260,16 @@ const $ = (D => {
     prepend(str) {
       const n = this.length;
       let elem;
+      let elemCount;
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
           if (this.isString(str)) {
             elem = this.str2node(str);
-            this[i].insertBefore(elem, this[i].firstChild);
+            elemCount = elem.length;
+            for (let j = 0; j < elemCount; j++) {
+              this[i].insertBefore(elem[elemCount - j - 1], this[i].firstChild);
+            }
           } else {
             this[i].insertBefore(str, this[i].firstChild);
           }
@@ -273,12 +277,15 @@ const $ = (D => {
       } else if (n === 1) {
         if (this.isString(str)) {
           elem = this.str2node(str);
-          this[0].insertBefore(elem, this[0].firstChild);
+          elemCount = elem.length;
+          for (let j = 0; j < elemCount; j++) {
+            this[0].insertBefore(elem[elemCount - j - 1], this[0].firstChild);
+          }
         } else {
           this[0].insertBefore(str, this[0].firstChild);
         }
       } else {
-        console.log('prepend', this);
+        // console.log('prepend', this);
       }
     },
 
@@ -290,12 +297,16 @@ const $ = (D => {
     append(str) {
       const n = this.length;
       let elem;
+      let elemCount;
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
           if (this.isString(str)) {
             elem = this.str2node(str);
-            this[i].appendChild(elem);
+            elemCount = elem.length;
+            for (let j = 0; j < elemCount; j++) {
+              this[i].appendChild(elem[elemCount - j - 1]);
+            }
           } else {
             this[i].appendChild(str);
           }
@@ -303,12 +314,15 @@ const $ = (D => {
       } else if (n === 1) {
         if (this.isString(str)) {
           elem = this.str2node(str);
-          this[0].appendChild(elem);
+          elemCount = elem.length;
+          for (let j = 0; j < elemCount; j++) {
+            this[0].appendChild(elem[elemCount - j - 1]);
+          }
         } else {
           this[0].appendChild(str);
         }
       } else {
-        console.log('append', this);
+        // console.log('append', this);
       }
     },
 
@@ -341,15 +355,17 @@ const $ = (D => {
             elements.push(style[fixedName]);
           }
         } else if (n === 1) {
-          self[0].style[fixedName] = propVal;
+          if (self.isString(propVal) || self.isNumber(propVal)) {
+            self[0].style[fixedName] = propVal;
+          }
           style = getComputedStyle(self[0]);
+
           return style[fixedName];
-        } else {
-          console.log('css', this);
         }
 
         return elements;
       }
+      let cssVal;
 
       if (this.isObject(prop)) {
         const propArray = this.keysInArray(prop);
@@ -363,8 +379,10 @@ const $ = (D => {
           __css(eachProp, eachVal, this);
         }
       } else {
-        __css(prop, val, this);
+        cssVal = __css(prop, val, this);
       }
+
+      return cssVal;
     },
 
     /**
@@ -379,14 +397,14 @@ const $ = (D => {
       let elem;
 
       if (n === 1) {
-        if (val) {
+        if (this.isString(val) || this.isNumber(val)) {
           elem = null;
           this[0].setAttribute(prop, val);
         } else {
           elem = this[0].getAttribute(prop);
         }
       } else {
-        console.log('attr', this);
+        // console.log('attr', this);
         return null;
       }
 
@@ -410,7 +428,7 @@ const $ = (D => {
           left: rect.left + D.body.scrollLeft
         };
       } else {
-        console.log('offset', this);
+        // console.log('offset', this);
         return null;
       }
 
@@ -429,7 +447,7 @@ const $ = (D => {
       if (n === 1) {
         w = this[0].offsetWidth;
       } else {
-        console.log('outerWidth', this);
+        // console.log('outerWidth', this);
         return null;
       }
 
@@ -448,7 +466,7 @@ const $ = (D => {
       if (n === 1) {
         h = this[0].offsetHeight;
       } else {
-        console.log('outerHeight', this);
+        // console.log('outerHeight', this);
         return null;
       }
 
@@ -467,7 +485,7 @@ const $ = (D => {
       if (n === 1) {
         w = parseFloat(getComputedStyle(this[0], null).width.replace('px', ''));
       } else {
-        console.log('width', this);
+        // console.log('width', this);
         return null;
       }
 
@@ -486,7 +504,7 @@ const $ = (D => {
       if (n === 1) {
         h = parseFloat(getComputedStyle(this[0], null).height.replace('px', ''));
       } else {
-        console.log('height', this);
+        // console.log('height', this);
         return null;
       }
 
@@ -510,7 +528,7 @@ const $ = (D => {
           v = this[0].value;
         }
       } else {
-        console.log('val', this);
+        // console.log('val', this);
         return null;
       }
 

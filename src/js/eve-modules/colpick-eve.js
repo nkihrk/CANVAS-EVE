@@ -324,21 +324,10 @@ const ColpickEve = ((W, D) => {
       this.$barCircle.css('left', `${(posLeft / $barColpick.width()) * 100}%`);
       const $colBar = $barColpick.find('.colbar-colpick');
       $colBar.css('width', `${(posLeft / $barColpick.width()) * 100}%`);
-
       $barColpick
         .parent()
         .find('input')
         .val(colorCode);
-
-      console.log(
-        'colorCode',
-        colorCode,
-        $barColpick.parent().find('input'),
-        $barColpick
-          .parent()
-          .find('input')
-          .val()
-      );
 
       // Update rgb values, and convert it to hex, and apply to a color code input
       const r = parseInt($('#r-colpick input').val(), 10);

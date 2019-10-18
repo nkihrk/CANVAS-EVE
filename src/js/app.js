@@ -80,8 +80,8 @@ import ThreeEve from './eve-modules/three-eve';
 import OekakiEve from './eve-modules/oekaki-eve';
 
 // New instances for modules
-const canvas = new CanvasEve();
 const common = new CommonEve();
+const canvas = new CanvasEve();
 const plain = new PlainEve();
 const zoom = new ZoomEve();
 const file = new FileEve();
@@ -91,8 +91,8 @@ const three = new ThreeEve();
 const oekaki = new OekakiEve(document.getElementById('color-oekaki'));
 
 // Execute modules
-canvas.load();
 common.load();
+canvas.load();
 plain.load();
 zoom.load();
 file.load();

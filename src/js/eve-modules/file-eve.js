@@ -32,7 +32,9 @@ const FileEve = ((W, D, M) => {
   File.prototype = Object.assign(modules, {
     constructor: File,
 
-    options: {},
+    options: {
+      SHOW_FILE_DELAY: 0
+    },
 
     load() {
       this.update();
@@ -133,8 +135,6 @@ const FileEve = ((W, D, M) => {
         left: x - $('#zoom').offset().left,
         top: y - $('#zoom').offset().top
       };
-
-      console.log(mousePos);
 
       const { files } = e.dataTransfer;
       // console.log('files', files);
@@ -369,7 +369,7 @@ const FileEve = ((W, D, M) => {
       if (progSet.iterate === progSet.fileCount) {
         setTimeout(() => {
           $('div').removeClass('transparent');
-        }, 0);
+        }, this.options.SHOW_FILE_DELAY);
       }
     }
   });

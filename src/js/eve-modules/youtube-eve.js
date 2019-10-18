@@ -5,7 +5,9 @@
  * Youtube streaming app for CANVAS EVE.
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - extend-eve
+ * - glb-eve
+ * - lib-eve
  *
  */
 

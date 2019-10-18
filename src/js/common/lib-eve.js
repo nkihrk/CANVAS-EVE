@@ -113,9 +113,10 @@ Object.assign(lib.prototype, {
    * Convert string to node
    *
    * @param {string} str - The string of which you want to convert into node. i.e., '<div>hoge</div>'
+   * @returns {object} Return generated elements in array
    */
   str2node(str) {
-    return new DOMParser().parseFromString(str, 'text/html').body.firstChild;
+    return new DOMParser().parseFromString(str, 'text/html').body.children;
   },
 
   /**
@@ -162,17 +163,21 @@ Object.assign(lib.prototype, {
   /**
    * Get a target`s specific transform-rotate value,and return the value as radian.
    *
-   * @param {object} obj - The jQuery object. i.e., $(elem)
+   * @param {element} elem - Input an element
    * @returns {number} The angle of a given element. The value will be in between 0 and 2PI
    */
-  getRotationRad(obj) {
+  getRotationRad(elem) {
     let angle;
+    const style = getComputedStyle(elem, null);
     const matrix =
-      obj.css('-webkit-transform') ||
-      obj.css('-moz-transform') ||
-      obj.css('-ms-transform') ||
-      obj.css('-o-transform') ||
-      obj.css('transform');
+      style.getPropertyValue('-webkit-transform') ||
+      style.getPropertyValue('-moz-transform') ||
+      style.getPropertyValue('-ms-transform') ||
+      style.getPropertyValue('-o-transform') ||
+      style.getPropertyValue('transform');
+
+    console.log('matrix', matrix);
+
     if (matrix !== 'none') {
       const values = matrix
         .split('(')[1]
