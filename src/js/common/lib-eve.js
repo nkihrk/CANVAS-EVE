@@ -309,6 +309,16 @@ Object.assign(lib.prototype, {
   },
 
   /**
+   * Check if it is element or not.
+   *
+   * @param val
+   * @returns {boolean} - Return true/false
+   */
+  isElement(val) {
+    return val instanceof Element || val instanceof HTMLDocument;
+  },
+
+  /**
    * Check if it is null or not.
    *
    * @param val

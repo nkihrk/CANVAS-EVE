@@ -19,7 +19,7 @@ const ColpickEve = ((W, D) => {
     LibEve.call(this);
 
     this.circleRelPosX = 0;
-    this.$barTop = null;
+    this.$barCircle = null;
     this.flgs = {
       move_circle_flg: false
     };
@@ -56,7 +56,7 @@ const ColpickEve = ((W, D) => {
               e.target.closest('#blue-cir-colpick')
             ) {
               this.circleRelPosX = e.clientX - $(e.target).offset().left;
-              this.$barTop = $(e.target);
+              this.$barCircle = $(e.target);
             }
           }
         },
@@ -310,24 +310,28 @@ const ColpickEve = ((W, D) => {
 
     _syncWithBar(e) {
       // Syncing rgb values with sliders
-      const $barColpick = this.$barTop.parent();
+      const $barColpick = this.$barCircle.parent();
+      console.log('-------------------------', $barColpick);
       let x = e.clientX - this.circleRelPosX - $barColpick.offset().left;
       x =
         // eslint-disable-next-line no-nested-ternary
-        x >= -this.$barTop.width() / 2
-          ? x >= $barColpick.width() - this.$barTop.width() / 2
-            ? $barColpick.width() - this.$barTop.width() / 2
+        x >= -this.$barCircle.width() / 2
+          ? x >= $barColpick.width() - this.$barCircle.width() / 2
+            ? $barColpick.width() - this.$barCircle.width() / 2
             : x
-          : -this.$barTop.width() / 2;
-      const posLeft = x + this.$barTop.width() / 2;
+          : -this.$barCircle.width() / 2;
+      const posLeft = x + this.$barCircle.width() / 2;
       const colorCode = parseInt((posLeft / $barColpick.width()) * 255, 10);
-      this.$barTop.css('left', `${(posLeft / $barColpick.width()) * 100}%`);
+
+      this.$barCircle.css('left', `${(posLeft / $barColpick.width()) * 100}%`);
       $barColpick.find('.colbar-colpick').css('width', `${(posLeft / $barColpick.width()) * 100}%`);
-      this.$barTop
-        .parent()
-        .parent()
+
+      this.$barCircle
+        .parents('.bar-colpick')
         .find('input')
         .val(colorCode);
+
+      // console.log('-------------------------', this.$barCircle);
 
       // Update rgb values, and convert it to hex, and apply to a color code input
       const r = parseInt($('#r-colpick input').val(), 10);

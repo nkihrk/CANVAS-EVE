@@ -24,30 +24,24 @@ const $ = (D => {
     L.call(this);
     LibEve.call(this);
 
-    if (this.isArray(e)) {
+    if (this.isArray(e) && this.isElement(e[0])) {
       for (let i = 0; i < e.length; i++) {
         this[i] = e[i];
       }
       this.length = e.length;
-    } else {
+    } else if (this.isElement(e)) {
       this[0] = e;
       this.length = e ? 1 : 0;
-      if (this.isString(e)) {
-        const isNum = parseInt(e.split('#')[1], 10);
-
-        if (this.isNumber(isNum)) {
-          this[0] = D.getElementById(isNum);
-          this.length = 1;
-        } else {
-          const n = D.querySelectorAll(e).length;
-          for (let i = 0; i < n; i++) {
-            this[i] = D.querySelectorAll(e)[i];
-          }
-          this.length = n;
-        }
+    } else if (this.isString(e)) {
+      const n = D.querySelectorAll(e).length;
+      for (let i = 0; i < n; i++) {
+        this[i] = D.querySelectorAll(e)[i];
       }
+      this.length = n;
+    } else {
+      console.log('root', e);
+      this.length = 0;
     }
-    // console.log('root', this);
   }
 
   const modules = { ...L.prototype, ...LibEve.prototype };
@@ -75,7 +69,7 @@ const $ = (D => {
           elements.push(this[0]);
         }
       }
-      // console.log('parents', this._ext(elements));
+      console.log('parents', this._ext(elements));
 
       return this._ext(elements);
     },
@@ -90,9 +84,11 @@ const $ = (D => {
       let elem;
 
       if (n === 1) {
-        // console.log('parent', this[0].parentNode);
+        console.log('parent_1', this);
 
         elem = this[0].parentNode;
+      } else {
+        console.log('parent_2', this);
       }
 
       return this._ext(elem);
@@ -109,6 +105,8 @@ const $ = (D => {
 
       if (n === 1) {
         elem = this[0].children;
+      } else {
+        console.log('children', this);
       }
 
       return this._ext(elem);
@@ -126,6 +124,8 @@ const $ = (D => {
 
       if (n === 1) {
         elem = this[0].querySelector(className);
+      } else {
+        console.log('find', this);
       }
 
       return this._ext(elem);
@@ -145,6 +145,8 @@ const $ = (D => {
         }
       } else if (n === 1) {
         this[0].classList.add(className);
+      } else {
+        console.log('addClass', this);
       }
     },
 
@@ -162,6 +164,8 @@ const $ = (D => {
         }
       } else if (n === 1) {
         this[0].classList.remove(className);
+      } else {
+        console.log('removeClass', this);
       }
     },
 
@@ -175,6 +179,8 @@ const $ = (D => {
 
       if (n === 1) {
         this[0].classList.toggle(className);
+      } else {
+        console.log('toggleClass', this);
       }
     },
 
@@ -191,6 +197,7 @@ const $ = (D => {
       if (n === 1) {
         b = this[0].classList.contains(className);
       } else {
+        console.log('find', this);
         return false;
       }
 
@@ -210,6 +217,8 @@ const $ = (D => {
         }
       } else if (n === 1) {
         this[0].parentNode.removeChild(this[0]);
+      } else {
+        console.log('remove', this);
       }
     },
 
@@ -230,6 +239,8 @@ const $ = (D => {
         while (this[0].firstChild) {
           this[0].removeChild(this[0].firstChild);
         }
+      } else {
+        console.log('empty', this);
       }
     },
 
@@ -258,6 +269,8 @@ const $ = (D => {
         } else {
           this[0].insertBefore(str, this[0].firstChild);
         }
+      } else {
+        console.log('prepend', this);
       }
     },
 
@@ -286,6 +299,8 @@ const $ = (D => {
         } else {
           this[0].appendChild(str);
         }
+      } else {
+        console.log('append', this);
       }
     },
 
@@ -321,6 +336,8 @@ const $ = (D => {
           self[0].style[fixedName] = propVal;
           style = getComputedStyle(self[0]);
           return style[fixedName];
+        } else {
+          console.log('css', this);
         }
 
         return elements;
@@ -361,6 +378,7 @@ const $ = (D => {
           elem = this[0].getAttribute(prop);
         }
       } else {
+        console.log('attr', this);
         return null;
       }
 
@@ -384,6 +402,7 @@ const $ = (D => {
           left: rect.left + D.body.scrollLeft
         };
       } else {
+        console.log('offset', this);
         return null;
       }
 
@@ -402,6 +421,7 @@ const $ = (D => {
       if (n === 1) {
         w = this[0].offsetWidth;
       } else {
+        console.log('outerWidth', this);
         return null;
       }
 
@@ -420,6 +440,7 @@ const $ = (D => {
       if (n === 1) {
         h = this[0].offsetHeight;
       } else {
+        console.log('outerHeight', this);
         return null;
       }
 
@@ -438,6 +459,7 @@ const $ = (D => {
       if (n === 1) {
         w = parseFloat(getComputedStyle(this[0], null).width.replace('px', ''));
       } else {
+        console.log('width', this);
         return null;
       }
 
@@ -456,6 +478,7 @@ const $ = (D => {
       if (n === 1) {
         h = parseFloat(getComputedStyle(this[0], null).height.replace('px', ''));
       } else {
+        console.log('height', this);
         return null;
       }
 
@@ -478,6 +501,7 @@ const $ = (D => {
           v = this[0].value;
         }
       } else {
+        console.log('val', this);
         return null;
       }
 

@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "start": "nodemon --watch webpack.config.js --watch webpack.dev.js --watch webpack.prod.js --exec webpack-dev-server --port 8080 --host 0.0.0.0 --config webpack.dev.js'",
+    "start": "nodemon --watch webpack.config.js --watch webpack.dev.js --watch webpack.prod.js --exec webpack-dev-server --devtool inline-source-map --port 8080 --host 0.0.0.0 --config webpack.dev.js'",
     "build": "webpack --config webpack.prod.js",
     "deploy": "node gh-pages.js",
     "clean": "rm -rf node_modules",
