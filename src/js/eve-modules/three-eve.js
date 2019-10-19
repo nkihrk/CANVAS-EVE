@@ -185,23 +185,14 @@ const ThreeEve = ((W, D, M) => {
 
     options: {},
 
-    drop() {
-      const self = this;
+    dragOverEvent(e) {
+      this._handleDragEvent(e);
+    },
 
-      this.canvasEveWrap.addEventListener(
-        'dragover',
-        e => {
-          self._handleDragEvent(e);
-        },
-        false
-      );
-      this.canvasEveWrap.addEventListener(
-        'drop',
-        e => {
-          self._handleDropEvent(e);
-        },
-        false
-      );
+    //
+
+    dropEvent(e) {
+      this._handleDropEvent(e);
     },
 
     //
@@ -251,13 +242,13 @@ const ThreeEve = ((W, D, M) => {
         Array.from(files).forEach(file => {
           if (this._isSupported(file.name)) supportedModelFlg = true;
         });
-        if (supportedModelFlg === true) this.read(files, this.scenes, mousePos, progSet);
+        if (supportedModelFlg === true) this._read(files, this.scenes, mousePos, progSet);
       }
     },
 
     //
 
-    read(files, scenes, mousePos, progSet) {
+    _read(files, scenes, mousePos, progSet) {
       let rootFileName;
       let rootFilePath;
       let mtlFileName;
@@ -475,8 +466,6 @@ const ThreeEve = ((W, D, M) => {
     //
 
     init() {
-      this.Reader.drop();
-
       this.renderer = new WebGLRenderer({
         canvas: this.canvas,
         antialias: true,

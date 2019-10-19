@@ -157,134 +157,37 @@ const OekakiEve = ((W, D, M) => {
     load() {
       this.drawWheel();
       this.drawTriangle();
-      this.setFlgs();
-      this.resetFlgs();
-      this.handleEvents();
+      this.drawEvent();
     },
 
     //
 
-    setFlgs() {
-      D.addEventListener(
-        'mousedown',
-        e => {
-          if (e.target.closest('#color-oekaki')) {
-            const isWheelArea = this._isWheelArea(e);
-            const isTriangleArea = this._isTriangleArea(e);
-            if (isWheelArea) this.flgs.oekaki.move_wheelcircle_flg = true;
-            if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
-          }
-
-          if (e.target.closest('#color-wheel-circle')) this.flgs.oekaki.move_wheelcircle_flg = true;
-
-          if (e.target.closest('#color-triangle-circle'))
-            this.flgs.oekaki.move_trianglecircle_flg = true;
-
-          if (e.target.closest('#reset-res')) {
-            if (this.flgs.newcanvas.newcanvas_flg === true) {
-              this.flgs.newcanvas.create_canvas_avail_flg = true;
-              this.canvas.newCanvasPos.x = e.clientX - $('#zoom').offset().left;
-              this.canvas.newCanvasPos.y = e.clientY - $('#zoom').offset().top;
-              this._createCanvasWrapper();
-            }
-          }
-
-          if (e.target.closest('.oekaki-canvas')) {
-            if (this.flgs.brush.brush_flg === true) this.flgs.brush.draw_canvas_avail_flg = true;
-          }
-        },
-        false
-      );
+    mouseDownEvent(e) {
+      this._setFlgs(e);
+      this._handleEventMouseDown(e);
     },
 
     //
 
-    resetFlgs() {
-      D.addEventListener(
-        'mouseup',
-        () => {
-          if (this.flgs.oekaki.move_wheelcircle_flg === true)
-            this.flgs.oekaki.move_wheelcircle_flg = false;
-          if (this.flgs.oekaki.move_trianglecircle_flg === true)
-            this.flgs.oekaki.move_trianglecircle_flg = false;
-
-          if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
-            this.flgs.newcanvas.create_canvas_avail_flg = false;
-            // This duration is for IS_TRANSITION
-            setTimeout(() => {
-              this._createCanvas();
-            }, this.options.CREATE_CANVAS_DELAY);
-          }
-        },
-        false
-      );
+    mouseUpEvent() {
+      this._resetFlgs();
     },
 
     //
 
-    handleEvents() {
-      D.addEventListener(
-        'mousedown',
-        e => {
-          if (e.target.closest('#color-oekaki') && e.button === this.options.BUTTON_FOR_CIRCLE) {
-            this._colorWheelArea(e);
-            this._colorTriangleArea(e);
-          }
+    mouseMoveEvent(e) {
+      this._handleEventMouseMove(e);
+    },
 
-          if (
-            [
-              '#newcanvas-oekaki',
-              '#brush-oekaki',
-              '#eraser-oekaki',
-              '#spuit-oekaki',
-              '#filldrip-oekaki'
-            ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
-          ) {
-            this._toggleTool($(e.target), e);
-          }
-        },
-        false
-      );
+    //
 
-      D.addEventListener(
-        'mousemove',
-        e => {
-          e.stopPropagation();
-          e.preventDefault();
-
-          const originX = $(this.param.container).offset().left;
-          const originY = $(this.param.container).offset().top;
-          const centerX = originX + this.param.size / 2;
-          const centerY = originY + this.param.size / 2;
-          this.param.centerPos.x = centerX;
-          this.param.centerPos.y = centerY;
-
-          if (e.buttons === this.options.BUTTON_FOR_CIRCLE) {
-            if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
-            if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
-          }
-
-          if (this.flgs.newcanvas.create_canvas_avail_flg === true) this._updateCanvasVal(e);
-        },
-        false
-      );
-
+    drawEvent() {
       if (W.PointerEvent) {
         for (let i = 0; i < this.drawPointerEvents.length; i++) {
           D.addEventListener(
             this.drawPointerEvents[i],
             e => {
-              if (this.flgs.brush.brush_flg === true) {
-                if (
-                  e.target.closest &&
-                  (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
-                ) {
-                  const $canvas = $(e.target)
-                    .parents('.file-wrap')
-                    .find('canvas');
-                  this._drawCanvasPointer($canvas, e);
-                }
-              }
+              this._drawPointerEvents(e);
             },
             false
           );
@@ -294,17 +197,127 @@ const OekakiEve = ((W, D, M) => {
           D.addEventListener(
             this.drawEvents[i],
             e => {
-              if (e.target && this.flgs.brush.brush_flg === true) {
-                if (e.target.closest('.oekaki-canvas') || e.target.closest('.selected')) {
-                  const $canvas = $(e.target)
-                    .parents('.file-wrap')
-                    .find('canvas');
-                  this._drawCanvas($canvas, e);
-                }
-              }
+              this._drawEvents(e);
             },
             false
           );
+        }
+      }
+    },
+
+    //
+
+    _setFlgs(e) {
+      if (e.target.closest('#color-oekaki')) {
+        const isWheelArea = this._isWheelArea(e);
+        const isTriangleArea = this._isTriangleArea(e);
+        if (isWheelArea) this.flgs.oekaki.move_wheelcircle_flg = true;
+        if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
+      }
+
+      if (e.target.closest('#color-wheel-circle')) this.flgs.oekaki.move_wheelcircle_flg = true;
+
+      if (e.target.closest('#color-triangle-circle'))
+        this.flgs.oekaki.move_trianglecircle_flg = true;
+
+      if (e.target.closest('#reset-res')) {
+        if (this.flgs.newcanvas.newcanvas_flg === true) {
+          this.flgs.newcanvas.create_canvas_avail_flg = true;
+          this.canvas.newCanvasPos.x = e.clientX - $('#zoom').offset().left;
+          this.canvas.newCanvasPos.y = e.clientY - $('#zoom').offset().top;
+          this._createCanvasWrapper();
+        }
+      }
+
+      if (e.target.closest('.oekaki-canvas')) {
+        if (this.flgs.brush.brush_flg === true) this.flgs.brush.draw_canvas_avail_flg = true;
+      }
+    },
+
+    //
+
+    _resetFlgs() {
+      if (this.flgs.oekaki.move_wheelcircle_flg === true)
+        this.flgs.oekaki.move_wheelcircle_flg = false;
+      if (this.flgs.oekaki.move_trianglecircle_flg === true)
+        this.flgs.oekaki.move_trianglecircle_flg = false;
+
+      if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
+        this.flgs.newcanvas.create_canvas_avail_flg = false;
+        // This duration is for IS_TRANSITION
+        setTimeout(() => {
+          this._createCanvas();
+        }, this.options.CREATE_CANVAS_DELAY);
+      }
+    },
+
+    //
+
+    _handleEventMouseDown(e) {
+      if (e.target.closest('#color-oekaki') && e.button === this.options.BUTTON_FOR_CIRCLE) {
+        this._colorWheelArea(e);
+        this._colorTriangleArea(e);
+      }
+
+      if (
+        [
+          '#newcanvas-oekaki',
+          '#brush-oekaki',
+          '#eraser-oekaki',
+          '#spuit-oekaki',
+          '#filldrip-oekaki'
+        ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
+      ) {
+        this._toggleTool($(e.target), e);
+      }
+    },
+
+    //
+
+    _handleEventMouseMove(e) {
+      e.stopPropagation();
+      e.preventDefault();
+
+      const originX = $(this.param.container).offset().left;
+      const originY = $(this.param.container).offset().top;
+      const centerX = originX + this.param.size / 2;
+      const centerY = originY + this.param.size / 2;
+      this.param.centerPos.x = centerX;
+      this.param.centerPos.y = centerY;
+
+      if (e.buttons === this.options.BUTTON_FOR_CIRCLE) {
+        if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
+        if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
+      }
+
+      if (this.flgs.newcanvas.create_canvas_avail_flg === true) this._updateCanvasVal(e);
+    },
+
+    //
+
+    _drawPointerEvents(e) {
+      if (this.flgs.brush.brush_flg === true) {
+        if (
+          e.target.closest &&
+          (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
+        ) {
+          const $canvas = $(e.target)
+            .parents('.file-wrap')
+            .find('canvas');
+          this._drawCanvasPointer($canvas, e);
+        }
+      }
+    },
+
+    //
+
+    _drawEvents(e) {
+      if (e.target && this.flgs.brush.brush_flg === true) {
+        if (e.target.closest('.oekaki-canvas') || e.target.closest('.selected')) {
+          const $canvas = $(e.target)
+            .parents('.file-wrap')
+            .find('canvas');
+          this._drawCanvas($canvas, e);
         }
       }
     },

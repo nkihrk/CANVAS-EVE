@@ -11,7 +11,7 @@
 import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 
-const ZoomEve = (D => {
+const ZoomEve = (() => {
   function Zoom() {
     this.i = 1;
     this.xLast = 0;
@@ -31,35 +31,15 @@ const ZoomEve = (D => {
 
     options: {},
 
-    load() {
-      this.setZoom();
+    //
+
+    mouseWheelEvent(e) {
+      this._setZoom(e);
     },
 
     //
 
-    setZoom() {
-      const self = this;
-      // IE9+, Chrome, Safari, Opera
-      D.addEventListener(
-        'mousewheel',
-        e => {
-          self._zoom(e);
-        },
-        false
-      );
-      // Firefox
-      D.addEventListener(
-        'DOMMouseScroll',
-        () => {
-          self._zoom(e);
-        },
-        false
-      );
-    },
-
-    //
-
-    _zoom(e) {
+    _setZoom(e) {
       this.xScreen = e.clientX - $('#plain').offset().left;
       this.yScreen = e.clientY - $('#plain').offset().top;
       this.xImage += (this.xScreen - this.xLast) / this.i;
@@ -132,6 +112,6 @@ const ZoomEve = (D => {
   });
 
   return Zoom;
-})(document);
+})();
 
 export default ZoomEve;

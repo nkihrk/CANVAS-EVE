@@ -60,43 +60,8 @@ import '../scss/themes/_theme.scss';
  */
 import '../scss/_shame.scss';
 
-// Load JS modules
-/**
- * Common
- *
- */
-import CommonEve from './common/common-eve';
-/**
- * Eve modules
- *
- */
-import CanvasEve from './eve-modules/canvas-eve';
-import PlainEve from './eve-modules/plain-eve';
-import ZoomEve from './eve-modules/zoom-eve';
-import FileEve from './eve-modules/file-eve';
-import YoutubeEve from './eve-modules/youtube-eve';
-import ColpickEve from './eve-modules/colpick-eve';
-import ThreeEve from './eve-modules/three-eve';
-import OekakiEve from './eve-modules/oekaki-eve';
+// // Load JS modules
+import EventEve from './event-eve';
 
-// New instances for modules
-const common = new CommonEve();
-const canvas = new CanvasEve();
-const plain = new PlainEve();
-const zoom = new ZoomEve();
-const file = new FileEve();
-const youtube = new YoutubeEve();
-const colpick = new ColpickEve();
-const three = new ThreeEve();
-const oekaki = new OekakiEve(document.getElementById('color-oekaki'));
-
-// Execute modules
-common.load();
-canvas.load();
-plain.load();
-zoom.load();
-file.load();
-youtube.load();
-colpick.load();
-three.load();
-oekaki.load();
+const event = new EventEve();
+event.load();

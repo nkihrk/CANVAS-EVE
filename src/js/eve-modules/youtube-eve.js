@@ -15,7 +15,7 @@ import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const YoutubeEve = ((W, D) => {
+const YoutubeEve = (() => {
   function Youtube() {}
 
   const modules = {};
@@ -25,54 +25,54 @@ const YoutubeEve = ((W, D) => {
 
     options: {},
 
-    load() {
-      this.handleEvents();
+    //
+
+    mouseDownEvent(e) {
+      this._handleEventMouseDown(e);
     },
 
     //
 
-    handleEvents() {
-      D.addEventListener(
-        'mousedown',
-        e => {
-          if (e.target) {
-            if (
-              e.target.closest('#add-youtube') ||
-              e.target.closest('.tab-block-youtube') ||
-              e.target.closest('.child-search-youtube')
-            ) {
-              LibEve.iframePointerNone();
-            }
+    mouseUpEvent(e) {
+      this._handleEventMouseUp(e);
+    },
 
-            if (e.button !== 1) {
-              if (e.target.closest('.backspace-icon')) {
-                $(e.target)
-                  .parent()
-                  .children('input')
-                  .val('');
-              }
+    //
 
-              if (e.target.closest('.search-button-youtube')) {
-                this._parent(e);
-              }
+    _handleEventMouseDown(e) {
+      if (e.target) {
+        if (
+          e.target.closest('#add-youtube') ||
+          e.target.closest('.tab-block-youtube') ||
+          e.target.closest('.child-search-youtube')
+        ) {
+          LibEve.iframePointerNone();
+        }
 
-              if (e.target.closest('.child-search-button-youtube')) this._child(e);
-            }
+        if (e.button !== 1) {
+          if (e.target.closest('.backspace-icon')) {
+            $(e.target)
+              .parent()
+              .children('input')
+              .val('');
           }
-        },
-        false
-      );
 
-      D.addEventListener(
-        'mouseup',
-        e => {
-          if (e.target) {
-            if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
-              LibEve.iframePointerReset();
+          if (e.target.closest('.search-button-youtube')) {
+            this._parent(e);
           }
-        },
-        false
-      );
+
+          if (e.target.closest('.child-search-button-youtube')) this._child(e);
+        }
+      }
+    },
+
+    //
+
+    _handleEventMouseUp(e) {
+      if (e.target) {
+        if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
+          LibEve.iframePointerReset();
+      }
     },
 
     //
@@ -285,6 +285,6 @@ const YoutubeEve = ((W, D) => {
   });
 
   return Youtube;
-})(window, document);
+})();
 
 export default YoutubeEve;

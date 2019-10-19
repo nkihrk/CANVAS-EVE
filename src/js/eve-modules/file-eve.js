@@ -32,73 +32,51 @@ const FileEve = ((W, D, M) => {
       SHOW_FILE_DELAY: 0
     },
 
-    load() {
-      this.update();
-      this.handleEvents();
+    //
+
+    mouseDownEvent(e) {
+      this._updateMousePos(e);
     },
 
     //
 
-    update() {
-      const self = this;
+    mouseMoveEvent(e) {
+      this._updateMousePos(e);
+    },
 
-      function __mousePos(e) {
-        let x;
-        let y;
-        if (e.changedTouches) {
-          x = e.changedTouches[0].clientX;
-          y = e.changedTouches[0].clientY;
-        } else {
-          x = e.clientX;
-          y = e.clientY;
-        }
+    //
 
-        self.currentMousePos.x = x;
-        self.currentMousePos.y = y;
+    dragOverEvent(e) {
+      this._dragOver(e);
+    },
+
+    //
+
+    dropEvent(e) {
+      this._drop(e);
+    },
+
+    //
+
+    pasteEvent(e) {
+      this._paste(e);
+    },
+
+    //
+
+    _updateMousePos(e) {
+      let x;
+      let y;
+      if (e.changedTouches) {
+        x = e.changedTouches[0].clientX;
+        y = e.changedTouches[0].clientY;
+      } else {
+        x = e.clientX;
+        y = e.clientY;
       }
 
-      this.canvasEveWrap.addEventListener(
-        'mousedown',
-        e => {
-          __mousePos(e);
-        },
-        false
-      );
-
-      this.canvasEveWrap.addEventListener(
-        'mousemove',
-        e => {
-          __mousePos(e);
-        },
-        false
-      );
-    },
-
-    //
-
-    handleEvents() {
-      const self = this;
-      this.canvasEveWrap.addEventListener(
-        'dragover',
-        e => {
-          self._dragOver(e);
-        },
-        false
-      );
-      this.canvasEveWrap.addEventListener(
-        'drop',
-        e => {
-          self._drop(e);
-        },
-        false
-      );
-      this.canvasEveWrap.addEventListener(
-        'paste',
-        e => {
-          self._paste(e);
-        },
-        false
-      );
+      this.currentMousePos.x = x;
+      this.currentMousePos.y = y;
     },
 
     //

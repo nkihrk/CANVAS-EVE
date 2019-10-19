@@ -77,76 +77,33 @@ const CanvasEve = ((W, D, M) => {
 
     options: {},
 
-    load() {
-      this.mouseDownEvent();
-      this.mouseUpEvent();
-      this.mouseMoveEvent();
-      this.mouseWheelEvent();
-    },
-
     //
 
-    mouseDownEvent() {
-      D.addEventListener(
-        'mousedown',
-        e => {
-          this.setFlgs(e);
-          this._init(e);
-          this._reset(e);
-          this._handleEventsMouseDown(e);
-        },
-        false
-      );
+    mouseDownEvent(e) {
+      this.setFlgs(e);
+      this._init(e);
+      this._reset(e);
+      this._handleEventMouseDown(e);
     },
 
     //
 
     mouseUpEvent() {
-      D.addEventListener(
-        'mouseup',
-        () => {
-          this.resetFlgs();
-          this._update();
-        },
-        false
-      );
+      this.resetFlgs();
+      this._update();
     },
 
     //
 
-    mouseMoveEvent() {
-      D.addEventListener(
-        'mousemove',
-        e => {
-          this._handleEventsMouseMove(e);
-        },
-        false
-      );
+    mouseMoveEvent(e) {
+      this._handleEventMouseMove(e);
     },
 
     //
 
     mouseWheelEvent() {
-      // IE9+, Chrome, Safari, Opera
-      D.addEventListener(
-        'mousewheel',
-        () => {
-          setTimeout(() => {
-            this._updateUiVal();
-          }, 1);
-        },
-        false
-      );
-      // Firefox
-      D.addEventListener(
-        'DOMMouseScroll',
-        () => {
-          setTimeout(() => {
-            this._updateUiVal();
-          }, 1);
-        },
-        false
-      );
+      this._updateUiVal();
+      this._updateUiVal();
     },
 
     //
@@ -328,7 +285,7 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _handleEventsMouseDown(e) {
+    _handleEventMouseDown(e) {
       const self = this;
       if (e.button === 0) {
         e.stopPropagation();
@@ -435,7 +392,7 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _handleEventsMouseMove(e) {
+    _handleEventMouseMove(e) {
       e.preventDefault();
       const pClientX = e.clientX - $('#zoom').offset().left;
       const pClientY = e.clientY - $('#zoom').offset().top;

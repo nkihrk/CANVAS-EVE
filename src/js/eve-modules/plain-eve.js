@@ -11,7 +11,7 @@
 import $ from '../common/extend-eve';
 import LibEve from '../common/lib-eve';
 
-const PlainEve = (D => {
+const PlainEve = (() => {
   function Plain() {
     this.$plain = $('#plain');
     this.$canvasEve = $('#canvas-eve');
@@ -39,46 +39,22 @@ const PlainEve = (D => {
 
     options: {},
 
-    load() {
-      this.mouseDownEvent();
-      this.mouseUpEvent();
-      this.mouseMoveEvent();
-    },
-
     //
 
-    mouseDownEvent() {
-      D.addEventListener(
-        'mousedown',
-        e => {
-          this._setFlgs(e);
-        },
-        false
-      );
+    mouseDownEvent(e) {
+      this._setFlgs(e);
     },
 
     //
 
     mouseUpEvent() {
-      D.addEventListener(
-        'mouseup',
-        () => {
-          this._resetFlgs();
-        },
-        false
-      );
+      this._resetFlgs();
     },
 
     //
 
-    mouseMoveEvent() {
-      D.addEventListener(
-        'mousemove',
-        e => {
-          this._handleEvents(e);
-        },
-        false
-      );
+    mouseMoveEvent(e) {
+      this._handleEvents(e);
     },
 
     //
@@ -119,6 +95,6 @@ const PlainEve = (D => {
   });
 
   return Plain;
-})(document);
+})();
 
 export default PlainEve;

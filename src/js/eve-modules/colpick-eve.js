@@ -13,7 +13,7 @@ import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
-const ColpickEve = ((W, D) => {
+const ColpickEve = (() => {
   function Colpick() {
     this.circleRelPosX = 0;
     this.$barCircle = null;
@@ -33,60 +33,32 @@ const ColpickEve = ((W, D) => {
 
     load() {
       this._initColpick();
-      this.mouseDownEvent();
-      this.mouseUpEvent();
-      this.mouseMoveEvent();
-      this.changeEvent();
     },
 
     //
 
-    mouseDownEvent() {
-      D.addEventListener(
-        'mousedown',
-        e => {
-          this._init(e);
-          this._setFlgs(e);
-          this._handleEventsMouseDown(e);
-        },
-        false
-      );
+    mouseDownEvent(e) {
+      this._init(e);
+      this._setFlgs(e);
+      this._handleEventMouseDown(e);
     },
 
     //
 
     mouseUpEvent() {
-      D.addEventListener(
-        'mouseup',
-        () => {
-          this._resetFlgs();
-        },
-        false
-      );
+      this._resetFlgs();
     },
 
     //
 
-    mouseMoveEvent() {
-      D.addEventListener(
-        'mousemove',
-        e => {
-          this._handleEventsMouseMove(e);
-        },
-        false
-      );
+    mouseMoveEvent(e) {
+      this._handleEventMouseMove(e);
     },
 
     //
 
-    changeEvent() {
-      D.addEventListener(
-        'change',
-        e => {
-          this._handleEventsChange(e);
-        },
-        false
-      );
+    changeEvent(e) {
+      this._handleEventChange(e);
     },
 
     //
@@ -126,7 +98,7 @@ const ColpickEve = ((W, D) => {
 
     //
 
-    _handleEventsMouseDown(e) {
+    _handleEventMouseDown(e) {
       if (e.target) {
         if (e.target.closest('#copy-colpick')) this._copyHex();
         if (e.target.closest('#toggle-colpick')) this._toggleColpick();
@@ -158,13 +130,13 @@ const ColpickEve = ((W, D) => {
 
     //
 
-    _handleEventsMouseMove(e) {
+    _handleEventMouseMove(e) {
       if (this.flgs.move_circle_flg === true) this._syncWithBar(e);
     },
 
     //
 
-    _handleEventsChange(e) {
+    _handleEventChange(e) {
       if (e.target) {
         if (e.target.closest('#input-colpick')) {
           const hex = this._getHex(e);
@@ -358,6 +330,6 @@ const ColpickEve = ((W, D) => {
   });
 
   return Colpick;
-})(window, document);
+})();
 
 export default ColpickEve;
