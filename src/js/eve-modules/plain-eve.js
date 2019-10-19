@@ -13,8 +13,6 @@ import LibEve from '../common/lib-eve';
 
 const PlainEve = (D => {
   function Plain() {
-    LibEve.call(this);
-
     this.$plain = $('#plain');
     this.$canvasEve = $('#canvas-eve');
 
@@ -34,7 +32,7 @@ const PlainEve = (D => {
     };
   }
 
-  const modules = { ...LibEve.prototype };
+  const modules = {};
 
   Plain.prototype = Object.assign(modules, {
     constructor: Plain,
@@ -42,57 +40,81 @@ const PlainEve = (D => {
     options: {},
 
     load() {
-      this.setFlgs();
-      this.resetFlgs();
-      this.handleEvents();
+      this.mouseDownEvent();
+      this.mouseUpEvent();
+      this.mouseMoveEvent();
     },
 
-    setFlgs() {
+    //
+
+    mouseDownEvent() {
       D.addEventListener(
         'mousedown',
         e => {
-          const { $plain } = this;
-          this.param.relPos.left = e.clientX - $plain.offset().left;
-          this.param.relPos.top = e.clientY - $plain.offset().top;
-          if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
+          this._setFlgs(e);
         },
         false
       );
     },
 
-    resetFlgs() {
+    //
+
+    mouseUpEvent() {
       D.addEventListener(
         'mouseup',
         () => {
-          if (this.flgs.mousewheel_avail_flg === true) {
-            this.iframePointerReset();
-            this.flgs.mousewheel_avail_flg = false;
-            $('#canvas-eve').removeClass('active-mousewheel');
-          }
+          this._resetFlgs();
         },
         false
       );
     },
 
-    handleEvents() {
+    //
+
+    mouseMoveEvent() {
       D.addEventListener(
         'mousemove',
         e => {
-          e.preventDefault();
-          const { $plain } = this;
-          const { $canvasEve } = this;
-
-          if (this.flgs.mousewheel_avail_flg === true) {
-            this.iframePointerNone();
-            $plain.css({
-              left: `${e.clientX - this.param.relPos.left}px`,
-              top: `${e.clientY - this.param.relPos.top}px`
-            });
-            $canvasEve.addClass('active-mousewheel');
-          }
+          this._handleEvents(e);
         },
         false
       );
+    },
+
+    //
+
+    _setFlgs(e) {
+      const { $plain } = this;
+      this.param.relPos.left = e.clientX - $plain.offset().left;
+      this.param.relPos.top = e.clientY - $plain.offset().top;
+      if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
+    },
+
+    //
+
+    _resetFlgs() {
+      if (this.flgs.mousewheel_avail_flg === true) {
+        LibEve.iframePointerReset();
+        this.flgs.mousewheel_avail_flg = false;
+        $('#canvas-eve').removeClass('active-mousewheel');
+      }
+    },
+
+    //
+
+    _handleEvents(e) {
+      e.preventDefault();
+      const { $plain } = this;
+      const { $canvasEve } = this;
+
+      if (this.flgs.mousewheel_avail_flg === true) {
+        LibEve.iframePointerNone();
+        $plain.css({
+          left: `${e.clientX - this.param.relPos.left}px`,
+          top: `${e.clientY - this.param.relPos.top}px`
+        });
+        $canvasEve.addClass('active-mousewheel');
+      }
     }
   });
 

@@ -16,11 +16,9 @@ import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
 const YoutubeEve = ((W, D) => {
-  function Youtube() {
-    LibEve.call(this);
-  }
+  function Youtube() {}
 
-  const modules = { ...LibEve.prototype };
+  const modules = {};
 
   Youtube.prototype = Object.assign(modules, {
     constructor: Youtube,
@@ -43,7 +41,7 @@ const YoutubeEve = ((W, D) => {
               e.target.closest('.tab-block-youtube') ||
               e.target.closest('.child-search-youtube')
             ) {
-              this.iframePointerNone();
+              LibEve.iframePointerNone();
             }
 
             if (e.button !== 1) {
@@ -70,7 +68,7 @@ const YoutubeEve = ((W, D) => {
         e => {
           if (e.target) {
             if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
-              this.iframePointerReset();
+              LibEve.iframePointerReset();
           }
         },
         false
@@ -156,7 +154,7 @@ const YoutubeEve = ((W, D) => {
         GlbEve.HIGHEST_Z_INDEX
       }; transition:${GlbEve.IS_TRANSITION};`;
       const assertFile =
-        `<div id="${GlbEve.NEWFILE_ID}" class="grab-pointer file-wrap limit-size" style="${childStyle}">` +
+        `<div id="${GlbEve.NEWFILE_ID}" class="grab-pointer file-wrap limit-size ignore-selected" style="${childStyle}">` +
         `<div class="function-wrapper">` +
         `<div class="thumbtack-wrapper"></div>` +
         `<div class="resize-wrapper"></div>` +

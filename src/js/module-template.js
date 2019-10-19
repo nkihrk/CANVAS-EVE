@@ -3,12 +3,12 @@
  * hogehoge for CANVAS EVE.
  *
  * Dependencies // list up dependecies here
- * - jQuery 3.4.1
+ * - extend-eve
  * - lib-eve
  *
  */
 
-import $ from 'jquery';
+import $ from './common/extend-eve';
 import LibEve from './common/lib-eve'; // Just for example
 
 // The app`s capital letter must be uppercase. Add 'Eve' after the name
@@ -29,21 +29,45 @@ const HogeEve = ((W, D) => {
 
     // The main functions must be executed through load()
     load() {
-      this.hogehoge();
+      this.mouseDownEvent();
+      this.mouseUpEvent();
+      this.mouseMoveEvent();
     },
 
-    hogehoge() {
+    mouseDownEvent() {
+      D.addEventListener(
+        'mousedown',
+        () => {
+          this._hogehoge();
+        },
+        false
+      );
+    },
+
+    //
+
+    mouseUpEvent() {
+      D.addEventListener('mouseup', () => {}, false);
+    },
+
+    //
+
+    mouseMoveEvent() {
+      D.addEventListener('mousemove', () => {}, false);
+    },
+
+    _hogehoge() {
       // It is recommended to define 'self' first to ensure 'this' object to be HogeEve.
       // Sometimes it will change its scope inside other objects like $(d).on('hoge', func);
       // It's not MUST anyway. I don't use normally, just a technique.
       const self = this;
 
-      self._hogehoge();
+      self._hogehogehoge();
     },
 
     // Always put underscore before function`s name if it's a private method
-    _hogehoge() {
-      console.log('hogehoge');
+    _hogehogehoge() {
+      console.log('hogehogehoge');
     }
   });
 

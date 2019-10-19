@@ -6,7 +6,6 @@
  * - psd.js
  * - extend-eve
  * - glb-eve
- * - lib-eve
  *
  */
 
@@ -14,12 +13,9 @@ import PSD from 'psd.js/dist/psd.min';
 
 import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
-import LibEve from '../common/lib-eve';
 
 const FileEve = ((W, D, M) => {
   function File() {
-    LibEve.call(this);
-
     this.canvasEveWrap = D.getElementById('canvas-eve-wrapper');
     this.currentMousePos = {
       x: 0,
@@ -27,7 +23,7 @@ const FileEve = ((W, D, M) => {
     };
   }
 
-  const modules = { ...LibEve.prototype };
+  const modules = {};
 
   File.prototype = Object.assign(modules, {
     constructor: File,

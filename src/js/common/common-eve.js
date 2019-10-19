@@ -4,20 +4,16 @@
  *
  * Dependencies
  * - jQuery 3.4.1
- * - lib-eve
  *
  */
 
 import $ from 'jquery';
 import GlbEve from './glb-eve';
-import LibEve from './lib-eve';
 
 const CommonEve = ((W, D) => {
-  function Common() {
-    LibEve.call(this);
-  }
+  function Common() {}
 
-  const modules = { ...LibEve.prototype };
+  const modules = {};
 
   Common.prototype = Object.assign(modules, {
     constructor: Common,

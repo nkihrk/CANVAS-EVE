@@ -6,7 +6,6 @@
  * Dependencies
  * - extend-eve
  * - glb-eve
- * - lib-eve
  *
  */
 
@@ -24,7 +23,6 @@ import { VRM } from '@pixiv/three-vrm';
 
 import $ from '../common/extend-eve';
 import GlbEve from '../common/glb-eve';
-import LibEve from '../common/lib-eve';
 import { OrbitControls } from '../three-modules/OrbitControls';
 import { FBXLoader } from '../three-modules/FBXLoader';
 import { DRACOLoader } from '../three-modules/DRACOLoader';
@@ -456,15 +454,13 @@ const ThreeEve = ((W, D, M) => {
    * - vrm
    */
   function Three() {
-    LibEve.call(this);
-
     this.scenes = [];
     this.renderer = null; // lazy load
     this.canvas = D.getElementById('c');
     this.Reader = new Reader(this.scenes);
   }
 
-  const modules = { ...LibEve.prototype };
+  const modules = {};
 
   Three.prototype = Object.assign(modules, {
     constructor: Three,
@@ -524,6 +520,7 @@ const ThreeEve = ((W, D, M) => {
           if (controls) {
             controls.rotateSpeed = 1 * GlbEve.MOUSE_WHEEL_VAL;
             controls.panSpeed = 1 * GlbEve.MOUSE_WHEEL_VAL;
+
             if (
               $(`#${GlbEve.CURRENT_ID}`)
                 .find('.thumbtack-wrapper')

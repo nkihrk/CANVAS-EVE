@@ -3,11 +3,9 @@
  * hogehoge for CANVAS EVE
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - none
  *
  */
-
-// import $ from 'jquery';
 
 function Hoge() {}
 

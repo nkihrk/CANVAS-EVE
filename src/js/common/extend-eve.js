@@ -22,35 +22,35 @@ const $ = (D => {
 
   function J(e) {
     L.call(this);
-    LibEve.call(this);
 
-    if (this.isArray(e) && this.isElement(e[0])) {
+    if (LibEve.isArray(e) && LibEve.isElement(e[0])) {
       for (let i = 0; i < e.length; i++) {
         this[i] = e[i];
       }
       this.length = e.length;
-    } else if (this.isElement(e)) {
+    } else if (LibEve.isElement(e)) {
       this[0] = e;
       this.length = e ? 1 : 0;
-    } else if (this.isString(e)) {
+    } else if (LibEve.isString(e)) {
       const isNum = parseInt(e.split('#')[1], 10);
-      if (this.isNumber(isNum)) {
+      if (LibEve.isNumber(isNum)) {
         this[0] = D.getElementById(isNum);
-        this.length = 1;
+        this.length = this[0] ? 1 : 0;
       } else {
         const n = D.querySelectorAll(e).length;
         for (let i = 0; i < n; i++) {
           this[i] = D.querySelectorAll(e)[i];
         }
-        this.length = n;
+        this.length = n || 0;
       }
     } else {
       // console.log('root', e);
+      this[0] = null;
       this.length = 0;
     }
   }
 
-  const modules = { ...L.prototype, ...LibEve.prototype };
+  const modules = { ...L.prototype };
 
   J.prototype = Object.assign(modules, {
     constructor: J,
@@ -93,6 +93,7 @@ const $ = (D => {
         elem = this[0].parentNode;
       } else {
         // console.log('parent', this);
+        elem = null;
       }
 
       return this._ext(elem);
@@ -110,11 +111,12 @@ const $ = (D => {
 
       if (n === 1) {
         e = this[0].children;
-        if (!!str && this.isString(str) && this.isObject(e)) {
+        if (!!str && LibEve.isString(str) && LibEve.isObject(e)) {
           e = this[0].querySelector(str);
         }
       } else {
         // console.log('children', this);
+        e = null;
       }
 
       return this._ext(e);
@@ -134,6 +136,7 @@ const $ = (D => {
         elem = this[0].querySelector(className);
       } else {
         // console.log('find', this);
+        elem = null;
       }
 
       return this._ext(elem);
@@ -264,8 +267,8 @@ const $ = (D => {
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          if (this.isString(str)) {
-            elem = this.str2node(str);
+          if (LibEve.isString(str)) {
+            elem = LibEve.str2node(str);
             elemCount = elem.length;
             for (let j = 0; j < elemCount; j++) {
               this[i].insertBefore(elem[elemCount - j - 1], this[i].firstChild);
@@ -275,8 +278,8 @@ const $ = (D => {
           }
         }
       } else if (n === 1) {
-        if (this.isString(str)) {
-          elem = this.str2node(str);
+        if (LibEve.isString(str)) {
+          elem = LibEve.str2node(str);
           elemCount = elem.length;
           for (let j = 0; j < elemCount; j++) {
             this[0].insertBefore(elem[elemCount - j - 1], this[0].firstChild);
@@ -301,8 +304,8 @@ const $ = (D => {
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          if (this.isString(str)) {
-            elem = this.str2node(str);
+          if (LibEve.isString(str)) {
+            elem = LibEve.str2node(str);
             elemCount = elem.length;
             for (let j = 0; j < elemCount; j++) {
               this[i].appendChild(elem[elemCount - j - 1]);
@@ -312,8 +315,8 @@ const $ = (D => {
           }
         }
       } else if (n === 1) {
-        if (this.isString(str)) {
-          elem = this.str2node(str);
+        if (LibEve.isString(str)) {
+          elem = LibEve.str2node(str);
           elemCount = elem.length;
           for (let j = 0; j < elemCount; j++) {
             this[0].appendChild(elem[elemCount - j - 1]);
@@ -355,7 +358,7 @@ const $ = (D => {
             elements.push(style[fixedName]);
           }
         } else if (n === 1) {
-          if (self.isString(propVal) || self.isNumber(propVal)) {
+          if (LibEve.isString(propVal) || LibEve.isNumber(propVal)) {
             self[0].style[fixedName] = propVal;
           }
           style = getComputedStyle(self[0]);
@@ -367,8 +370,8 @@ const $ = (D => {
       }
       let cssVal;
 
-      if (this.isObject(prop)) {
-        const propArray = this.keysInArray(prop);
+      if (LibEve.isObject(prop)) {
+        const propArray = LibEve.keysInArray(prop);
         const totalKeys = propArray.length;
         let eachProp;
         let eachVal;
@@ -397,7 +400,7 @@ const $ = (D => {
       let elem;
 
       if (n === 1) {
-        if (this.isString(val) || this.isNumber(val)) {
+        if (LibEve.isString(val) || LibEve.isNumber(val)) {
           elem = null;
           this[0].setAttribute(prop, val);
         } else {
@@ -522,7 +525,7 @@ const $ = (D => {
       let v;
 
       if (n === 1) {
-        if (this.isString(str) || this.isNumber(str)) {
+        if (LibEve.isString(str) || LibEve.isNumber(str)) {
           this[0].value = str;
         } else {
           v = this[0].value;

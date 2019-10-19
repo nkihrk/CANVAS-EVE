@@ -26,8 +26,6 @@ const OekakiEve = ((W, D, M) => {
     const centerX = originX + size / 2;
     const centerY = originY + size / 2;
 
-    LibEve.call(this);
-
     this.param = {
       container: container,
       size: size,
@@ -140,7 +138,7 @@ const OekakiEve = ((W, D, M) => {
     ];
   }
 
-  const modules = { ...LibEve.prototype };
+  const modules = {};
 
   Oekaki.prototype = Object.assign(modules, {
     constructor: Oekaki,
@@ -163,6 +161,8 @@ const OekakiEve = ((W, D, M) => {
       this.resetFlgs();
       this.handleEvents();
     },
+
+    //
 
     setFlgs() {
       D.addEventListener(
@@ -423,7 +423,7 @@ const OekakiEve = ((W, D, M) => {
     _isWheelArea(e) {
       const minR = this.colorWheel.innerRadius;
       const maxR = this.colorWheel.radius;
-      const mouseR = this.getDistance(
+      const mouseR = LibEve.getDistance(
         this.param.centerPos.x,
         this.param.centerPos.y,
         e.clientX,
@@ -691,7 +691,7 @@ const OekakiEve = ((W, D, M) => {
       const l = (this.colorTriangle.radius * 3) / 2;
 
       const hsl = [this.param.color.hue / 360, 1.0, 0.5];
-      const b = this.hsl2rgb(hsl);
+      const b = LibEve.hsl2rgb(hsl);
       const s = [255, 255, 255];
 
       const co = [];
