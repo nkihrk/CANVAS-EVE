@@ -89,8 +89,8 @@ const CanvasEve = ((W, D, M) => {
     //
 
     mouseUpEvent() {
-      this.resetFlgs();
       this._update();
+      this.resetFlgs();
     },
 
     //
@@ -102,7 +102,6 @@ const CanvasEve = ((W, D, M) => {
     //
 
     mouseWheelEvent() {
-      this._updateUiVal();
       this._updateUiVal();
     },
 
@@ -267,6 +266,8 @@ const CanvasEve = ((W, D, M) => {
           this.flgs.canvas.re.right_bottom_flg === true ||
           this.flgs.canvas.re.left_bottom_flg === true
         ) {
+          console.log('aaaaaa');
+
           setTimeout(() => {
             const img = new Image();
             img.src = this.file.$fileId.find('img').attr('src');
