@@ -10,7 +10,7 @@
 import $ from 'jquery';
 import GlbEve from './glb-eve';
 
-const CommonEve = ((W, D) => {
+const CommonEve = (W => {
   function Common() {}
 
   const modules = {};
@@ -21,44 +21,9 @@ const CommonEve = ((W, D) => {
     options: {},
 
     load() {
-      this.eventInstant();
       this.eventReady();
       this.eventLoad();
       this.eventLoadResize();
-    },
-
-    //
-
-    eventInstant() {
-      // Prevent default right-click events for the time being
-      D.addEventListener(
-        'contextmenu',
-        e => {
-          e.preventDefault();
-        },
-        false
-      );
-
-      W.addEventListener(
-        'touchmove',
-        e => {
-          e.preventDefault();
-        },
-        {
-          passive: false
-        },
-        false
-      );
-      W.removeEventListener(
-        'touchmove',
-        e => {
-          e.preventDefault();
-        },
-        {
-          passive: false
-        },
-        false
-      );
     },
 
     //
@@ -107,6 +72,6 @@ const CommonEve = ((W, D) => {
   });
 
   return Common;
-})(window, document);
+})(window);
 
 export default CommonEve;

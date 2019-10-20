@@ -461,6 +461,11 @@ const OekakiEve = ((W, D, M) => {
       const hue = this._calculateHue(e);
       this.param.color.hue = hue;
       this._updateTriangle(e);
+
+      $('#color-wheel-circle').css(
+        'background-color',
+        `hsla(${M.round(this.param.color.hue)}, 100%, 50%, 1)`
+      );
     },
 
     //
@@ -564,7 +569,7 @@ const OekakiEve = ((W, D, M) => {
 
     _updateTriangle() {
       this._initTriangle();
-      this._setRgb('#test-oekaki');
+      this._setRgb('#color-triangle-circle');
     },
 
     //
@@ -664,7 +669,7 @@ const OekakiEve = ((W, D, M) => {
 
       this.colorTriangle.circlePos.x = pointer.style.left.replace('px', '');
       this.colorTriangle.circlePos.y = pointer.style.top.replace('px', '');
-      this._setRgb('#test-oekaki');
+      this._setRgb('#color-triangle-circle');
     },
 
     //
