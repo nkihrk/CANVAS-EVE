@@ -419,6 +419,7 @@ const OekakiEve = ((W, D, M) => {
       wheelCircle.id = 'color-wheel-circle';
       wheelCircle.style.left = `${left}px`;
       wheelCircle.style.top = `${top}px`;
+      wheelCircle.style.backgroundColor = `hsla(${M.round(this.options.HUE)}, 100%, 50%, 1)`;
 
       this.wheelCircle = wheelCircle;
       this.param.container.appendChild(wheelCircle);
@@ -595,6 +596,7 @@ const OekakiEve = ((W, D, M) => {
 
       this.triangleCircle = triangleCircle;
       this.param.container.appendChild(triangleCircle);
+      this._setRgb('#color-triangle-circle');
     },
 
     //
