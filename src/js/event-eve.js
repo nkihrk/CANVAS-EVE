@@ -65,10 +65,10 @@ const EventEve = ((W, D) => {
     //
 
     initEvent() {
+      this.common.load();
       this.oekaki.load();
       this.three.load();
       this.colpick.load();
-      this.common.load();
     },
 
     //
