@@ -266,8 +266,6 @@ const CanvasEve = ((W, D, M) => {
           this.flgs.canvas.re.right_bottom_flg === true ||
           this.flgs.canvas.re.left_bottom_flg === true
         ) {
-          console.log('aaaaaa');
-
           setTimeout(() => {
             const img = new Image();
             img.src = this.file.$fileId.find('img').attr('src');
@@ -554,8 +552,6 @@ const CanvasEve = ((W, D, M) => {
     _updateUiVal() {
       // A selected area
       $('#canvas-eve .selected').css({
-        // top: `${-1 * GlbEve.MOUSE_WHEEL_VAL}px`,
-        // left: `${-1 * GlbEve.MOUSE_WHEEL_VAL}px`,
         'border-width': `${GlbEve.MOUSE_WHEEL_VAL}px`
       });
 

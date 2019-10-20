@@ -374,6 +374,7 @@ Common
 }
 
 #color-wheel-circle {
+  box-sizing: content-box;
   position: absolute;
   z-index: 2;
   transform: translateX(-50%) translateY(-50%);
@@ -385,6 +386,7 @@ Common
 }
 
 #color-triangle-circle {
+  box-sizing: content-box;
   position: absolute;
   z-index: 2;
   transform: translateX(-50%) translateY(-50%);

@@ -13,10 +13,8 @@ video:focus {
   pointer-events: none;
 }
 
-// .eve-main,
-// .is-flipped {
-//   width: 0;
-//   height: 0;
+// .eve-main {
+//   margin: 2px;
 // }
 
 /*———————————————————————————————————————————————————————
@@ -135,11 +133,12 @@ GLSL
 
 /* A wrapper for a pasted image */
 .file-wrap {
+  pointer-events: auto;
   position: absolute;
   z-index: 1;
   width: 600px;
   /* min-width: 192px; */
-  border: solid 1px rgba(255, 0, 0, 0);
+  // border: solid 1px rgba(255, 0, 0, 0);
   transform-origin: center;
 
   /* Make it transparent at first when a drop event is called. dnd-eve.js  */
@@ -160,6 +159,7 @@ GLSL
 
 /* Being selected */
 .selected {
+  pointer-events: none;
   box-sizing: border-box;
   position: absolute;
   z-index: 1;

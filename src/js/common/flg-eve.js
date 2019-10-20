@@ -4,10 +4,12 @@
  *
  * Dependencies
  * - extend-eve
+ * - lib-eve
  *
  */
 
 import $ from './extend-eve';
+import LibEve from './lib-eve';
 
 const FlgEve = (() => {
   function Flg() {
@@ -88,6 +90,7 @@ const FlgEve = (() => {
         e.target.closest('.re-right-bottom') ||
         e.target.closest('.re-left-bottom')
       ) {
+        LibEve.iframePointerNone();
         this.flgs.canvas.resize_flg = true;
 
         if (e.target.closest('.re-left-top')) this.flgs.canvas.re.left_top_flg = true;
@@ -102,6 +105,7 @@ const FlgEve = (() => {
         e.target.closest('.ro-right-bottom') ||
         e.target.closest('.ro-left-bottom')
       ) {
+        LibEve.iframePointerNone();
         this.flgs.canvas.rotate_flg = true;
 
         if (e.target.closest('.ro-left-top')) this.flgs.canvas.ro.left_top_flg = true;
@@ -122,6 +126,8 @@ const FlgEve = (() => {
     //
 
     resetFlgs() {
+      LibEve.iframePointerReset();
+
       // A flag for colpick`s bar circle. colpick-eve.js
       if (this.flgs.colpick.move_circle_flg === true) this.flgs.colpick.move_circle_flg = false;
 

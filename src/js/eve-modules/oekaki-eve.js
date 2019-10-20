@@ -817,8 +817,10 @@ const OekakiEve = ((W, D, M) => {
     _createCanvas() {
       const $newCanvas = this.canvas.$newCanvasId;
       const c = D.createElement('canvas');
-      const width = $newCanvas.width() - 2 * GlbEve.MOUSE_WHEEL_VAL;
-      const height = $newCanvas.height() - 2 * GlbEve.MOUSE_WHEEL_VAL;
+      const width = $newCanvas.width();
+      const height = $newCanvas.height();
+      // const width = $newCanvas.width() - 2 * GlbEve.MOUSE_WHEEL_VAL;
+      // const height = $newCanvas.height() - 2 * GlbEve.MOUSE_WHEEL_VAL;
 
       c.width = width;
       c.height = height;
