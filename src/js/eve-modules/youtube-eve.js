@@ -5,13 +5,13 @@
  * Youtube streaming app for CANVAS EVE.
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  * - lib-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -23,7 +23,9 @@ const YoutubeEve = (() => {
   Youtube.prototype = Object.assign(modules, {
     constructor: Youtube,
 
-    options: {},
+    options: {
+      BUTTON_FOR_MOUSEWHEEL: 1
+    },
 
     //
 
@@ -40,39 +42,35 @@ const YoutubeEve = (() => {
     //
 
     _handleEventMouseDown(e) {
-      if (e.target) {
-        if (
-          e.target.closest('#add-youtube') ||
-          e.target.closest('.tab-block-youtube') ||
-          e.target.closest('.child-search-youtube')
-        ) {
-          LibEve.iframePointerNone();
+      if (
+        e.target.closest('#add-youtube') ||
+        e.target.closest('.tab-block-youtube') ||
+        e.target.closest('.child-search-youtube')
+      ) {
+        LibEve.iframePointerNone();
+      }
+
+      if (e.button !== this.options.BUTTON_FOR_MOUSEWHEEL) {
+        if (e.target.closest('.backspace-icon')) {
+          $(e.target)
+            .parent()
+            .children('input')
+            .val('');
         }
 
-        if (e.button !== 1) {
-          if (e.target.closest('.backspace-icon')) {
-            $(e.target)
-              .parent()
-              .children('input')
-              .val('');
-          }
-
-          if (e.target.closest('.search-button-youtube')) {
-            this._parent(e);
-          }
-
-          if (e.target.closest('.child-search-button-youtube')) this._child(e);
+        if (e.target.closest('.search-button-youtube')) {
+          this._parent(e);
         }
+
+        if (e.target.closest('.child-search-button-youtube')) this._child(e);
       }
     },
 
     //
 
     _handleEventMouseUp(e) {
-      if (e.target) {
-        if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
-          LibEve.iframePointerReset();
-      }
+      if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
+        LibEve.iframePointerReset();
     },
 
     //

@@ -3,12 +3,12 @@
  * Zooming functionality for CANVAS EVE
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 
 const ZoomEve = (() => {

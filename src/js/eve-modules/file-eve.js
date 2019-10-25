@@ -4,14 +4,14 @@
  *
  * Dependencies
  * - psd.js
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  *
  */
 
 import PSD from 'psd.js/dist/psd.min';
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 
 const FileEve = ((W, D, M) => {

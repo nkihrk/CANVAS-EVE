@@ -4,7 +4,7 @@
  * Model loader for CANVAS EVE.
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  *
  */
@@ -21,7 +21,7 @@ import {
 } from 'three';
 import { VRM } from '@pixiv/three-vrm';
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import { OrbitControls } from '../three-modules/OrbitControls';
 import { FBXLoader } from '../three-modules/FBXLoader';
@@ -481,9 +481,6 @@ const ThreeEve = ((W, D, M) => {
     animate() {
       const self = this;
       self._render();
-      // requestAnimationFrame(() => {
-      //   self.animate();
-      // });
       setTimeout(() => {
         requestAnimationFrame(() => {
           self.animate();

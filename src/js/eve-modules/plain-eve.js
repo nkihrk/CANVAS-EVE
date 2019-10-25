@@ -3,12 +3,12 @@
  * Screen-space coordinate for CANVAS EVE
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - lib-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import LibEve from '../common/lib-eve';
 
 const PlainEve = (() => {
@@ -37,7 +37,9 @@ const PlainEve = (() => {
   Plain.prototype = Object.assign(modules, {
     constructor: Plain,
 
-    options: {},
+    options: {
+      BUTTON_FOR_MOUSEWHEEL: 1
+    },
 
     //
 
@@ -63,7 +65,7 @@ const PlainEve = (() => {
       const { $plain } = this;
       this.param.relPos.left = e.clientX - $plain.offset().left;
       this.param.relPos.top = e.clientY - $plain.offset().top;
-      if (e.button === 1) this.flgs.mousewheel_avail_flg = true;
+      if (e.button === this.options.BUTTON_FOR_MOUSEWHEEL) this.flgs.mousewheel_avail_flg = true;
     },
 
     //
