@@ -3,14 +3,14 @@
  * 2D Engine for CANVAS EVE.
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - lib-eve
  * - glb-eve
  * - flg-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import LibEve from '../common/lib-eve';
 import GlbEve from '../common/glb-eve';
 import FlgEve from '../common/flg-eve';
@@ -58,16 +58,16 @@ const CanvasEve = ((W, D, M) => {
     };
 
     this.resizeBox =
-      '<div class="re-left-top ignore"></div>' +
-      '<div class="re-right-top ignore"></div>' +
-      '<div class="re-right-bottom ignore"></div>' +
-      '<div class="re-left-bottom ignore"></div>';
+      '<div class="re-left-top"></div>' +
+      '<div class="re-right-top"></div>' +
+      '<div class="re-right-bottom"></div>' +
+      '<div class="re-left-bottom"></div>';
 
     this.rotateBox =
-      '<div class="ro-left-top ignore"></div>' +
-      '<div class="ro-right-top ignore"></div>' +
-      '<div class="ro-right-bottom ignore"></div>' +
-      '<div class="ro-left-bottom ignore"></div>';
+      '<div class="ro-left-top"></div>' +
+      '<div class="ro-right-top"></div>' +
+      '<div class="ro-right-bottom"></div>' +
+      '<div class="ro-left-bottom"></div>';
   }
 
   const modules = { ...FlgEve.prototype };
@@ -75,15 +75,21 @@ const CanvasEve = ((W, D, M) => {
   Canvas.prototype = Object.assign(modules, {
     constructor: Canvas,
 
-    options: {},
+    options: {
+      BUTTON_FOR_FUNC: 0,
+      BUTTON_FOR_MOUSEWHEEL: 1,
+      UPDATE_CANVAS_SIZE_DELAY: 150
+    },
 
     //
 
     mouseDownEvent(e) {
-      this.setFlgs(e);
-      this._init(e);
-      this._reset(e);
-      this._handleEventMouseDown(e);
+      if (e.button === this.options.BUTTON_FOR_FUNC) {
+        this.setFlgs(e);
+        this._init(e);
+        if ($(e.target)[0].id === 'reset-res') this._reset();
+        this._handleEventMouseDown(e);
+      }
     },
 
     //
@@ -109,118 +115,96 @@ const CanvasEve = ((W, D, M) => {
 
     _init(e) {
       const self = this;
-      let $fileWrap;
 
-      if (!$(e.target).hasClass('.ignore')) {
-        $fileWrap = $(e.target).parents('.file-wrap');
-        if ($fileWrap.length === 0) {
-          $fileWrap = $(e.target);
-        }
+      let $fileWrap = $(e.target).parents('.file-wrap');
+      if ($fileWrap.length === 0) {
+        $fileWrap = $(e.target);
       }
 
       if ($fileWrap && $fileWrap.hasClass('file-wrap')) {
-        if (e.button === 0) {
-          if ($fileWrap.find('.selected').length === 0) {
-            $('.selected').remove();
-            $('.thumbtack-icon').remove();
-            $('.resize-icon').remove();
-            $('.rotate-icon').remove();
-            $('.flip-icon').remove();
-            $('.trash-icon').remove();
+        if ($fileWrap.find('.selected').length === 0) {
+          this._reset();
+        }
 
-            $('.re-left-top').remove();
-            $('.re-right-top').remove();
-            $('.re-right-bottom').remove();
-            $('.re-left-bottom').remove();
-
-            $('.ro-left-top').remove();
-            $('.ro-right-top').remove();
-            $('.ro-right-bottom').remove();
-            $('.ro-left-bottom').remove();
-          }
-
-          // This if argument is the prefix for colpick-eve.js
-          if (this.flgs.colpick.active_spuit_flg === false) {
-            // Added selected symbols and other functions
-            if (this.flgs.config.only_draggable_flg === false) {
-              if ($fileWrap.find('.selected').length === 0) {
-                $fileWrap.prepend('<div class="selected"></div>');
-                // Resizing boxes
-                if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
-                  $fileWrap.prepend(self.resizeBox);
-                }
-
-                if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
-                  $fileWrap.prepend(self.rotateBox); // Rotating circles
-                }
-
-                $fileWrap
-                  .find('.thumbtack-wrapper')
-                  .prepend('<div class="thumbtack-icon ignore"></div>'); // Add a thumbtack icon
-                $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon ignore"></div>'); // Add a resizing icon
-                $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon ignore"></div>'); // Add a rotating icon
-                $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon ignore"></div>'); // Add a flipping icon
-                $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon ignore"></div>'); // Add a trash icon
+        // This if argument is the prefix for colpick-eve.js
+        if (this.flgs.colpick.active_spuit_flg === false) {
+          // Added selected symbols and other functions
+          if (this.flgs.config.only_draggable_flg === false) {
+            if ($fileWrap.find('.selected').length === 0) {
+              $fileWrap.prepend('<div class="selected"></div>');
+              // Resizing boxes
+              if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
+                $fileWrap.prepend(self.resizeBox);
               }
 
-              this._updateUiVal();
+              if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
+                $fileWrap.prepend(self.rotateBox); // Rotating circles
+              }
+
+              $fileWrap.find('.thumbtack-wrapper').prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
+              $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon"></div>'); // Add a resizing icon
+              $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
+              $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon"></div>'); // Add a flipping icon
+              $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon"></div>'); // Add a trash icon
             }
 
-            // Add #id to #image, and initialize its values
-            if (this.flgs.canvas.drag_flg === false) {
-              // Global value for the selected ID
-              GlbEve.CURRENT_ID = $fileWrap.attr('id');
-              this.file.fileId = `#${GlbEve.CURRENT_ID}`;
-              this.file.$fileId = $(`#${GlbEve.CURRENT_ID}`);
+            this._updateUiVal();
+          }
 
-              this.file.fileIdWidth = this.file.$fileId.outerWidth();
-              this.file.fileIdHeight = this.file.$fileId.outerHeight();
-              this.file.fileIdRatio = this.file.fileIdHeight / this.file.fileIdWidth;
+          // Add #id to #image, and initialize its values
+          if (this.flgs.canvas.drag_flg === false) {
+            // Global value for the selected ID
+            GlbEve.CURRENT_ID = $fileWrap.attr('id');
+            this.file.fileId = `#${GlbEve.CURRENT_ID}`;
+            this.file.$fileId = $(`#${GlbEve.CURRENT_ID}`);
 
-              this.file.fileIdTheta = LibEve.getRotationRad(this.file.$fileId[0]);
-              this.file.rotatedSize.width =
-                this.file.fileIdWidth * M.abs(M.cos(this.file.fileIdTheta)) +
-                this.file.fileIdHeight * M.abs(M.sin(this.file.fileIdTheta));
-              this.file.rotatedSize.height =
-                this.file.fileIdHeight * M.abs(M.cos(this.file.fileIdTheta)) +
-                this.file.fileIdWidth * M.abs(M.sin(this.file.fileIdTheta));
+            this.file.fileIdWidth = this.file.$fileId.outerWidth();
+            this.file.fileIdHeight = this.file.$fileId.outerHeight();
+            this.file.fileIdRatio = this.file.fileIdHeight / this.file.fileIdWidth;
 
-              this.file.fileIdPos = this.file.$fileId.offset();
+            this.file.fileIdTheta = LibEve.getRotationRad(this.file.$fileId[0]);
+            this.file.rotatedSize.width =
+              this.file.fileIdWidth * M.abs(M.cos(this.file.fileIdTheta)) +
+              this.file.fileIdHeight * M.abs(M.sin(this.file.fileIdTheta));
+            this.file.rotatedSize.height =
+              this.file.fileIdHeight * M.abs(M.cos(this.file.fileIdTheta)) +
+              this.file.fileIdWidth * M.abs(M.sin(this.file.fileIdTheta));
 
-              this.file.fileIdRelPosX = e.clientX - this.file.fileIdPos.left;
-              this.file.fileIdRelPosY = e.clientY - this.file.fileIdPos.top;
+            this.file.fileIdPos = this.file.$fileId.offset();
 
-              // Initialize this.file.rotatedCenterPos. These are screen-space coordinates
-              this.file.rotatedCenterPos.left =
-                this.file.$fileId.offset().left +
-                this.file.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
-              this.file.rotatedCenterPos.top =
-                this.file.$fileId.offset().top +
-                this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            this.file.fileIdRelPosX = e.clientX - this.file.fileIdPos.left;
+            this.file.fileIdRelPosY = e.clientY - this.file.fileIdPos.top;
 
-              // Initialize the initRads for a rotating function
-              this.tmp.ro.left_top_initRad = LibEve.calcRadians(
-                -this.file.fileIdWidth / 2,
-                -this.file.fileIdHeight / 2
-              );
-              this.tmp.ro.right_top_initRad = LibEve.calcRadians(
-                this.file.fileIdWidth / 2,
-                -this.file.fileIdHeight / 2
-              );
-              this.tmp.ro.right_bottom_initRad = LibEve.calcRadians(
-                this.file.fileIdWidth / 2,
-                this.file.fileIdHeight / 2
-              );
-              this.tmp.ro.left_bottom_initRad = LibEve.calcRadians(
-                -this.file.fileIdWidth / 2,
-                this.file.fileIdHeight / 2
-              );
+            // Initialize this.file.rotatedCenterPos. These are screen-space coordinates
+            this.file.rotatedCenterPos.left =
+              this.file.$fileId.offset().left +
+              this.file.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            this.file.rotatedCenterPos.top =
+              this.file.$fileId.offset().top +
+              this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
-              // Set the $fileId to be the highest of all the other unselected elements
-              GlbEve.HIGHEST_Z_INDEX += 1;
-              this.file.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
-              this.flgs.canvas.drag_flg = true;
-            }
+            // Initialize the initRads for a rotating function
+            this.tmp.ro.left_top_initRad = LibEve.calcRadians(
+              -this.file.fileIdWidth / 2,
+              -this.file.fileIdHeight / 2
+            );
+            this.tmp.ro.right_top_initRad = LibEve.calcRadians(
+              this.file.fileIdWidth / 2,
+              -this.file.fileIdHeight / 2
+            );
+            this.tmp.ro.right_bottom_initRad = LibEve.calcRadians(
+              this.file.fileIdWidth / 2,
+              this.file.fileIdHeight / 2
+            );
+            this.tmp.ro.left_bottom_initRad = LibEve.calcRadians(
+              -this.file.fileIdWidth / 2,
+              this.file.fileIdHeight / 2
+            );
+
+            // Set the $fileId to be the highest of all the other unselected elements
+            GlbEve.HIGHEST_Z_INDEX += 1;
+            this.file.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
+            this.flgs.canvas.drag_flg = true;
           }
         }
       }
@@ -228,30 +212,24 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _reset(e) {
-      const $resetRes = $(e.target);
+    _reset() {
+      $('.selected').remove();
 
-      if ($resetRes[0].id === 'reset-res') {
-        if (e.button === 0) {
-          $('.selected').remove();
+      $('.thumbtack-icon').remove();
+      $('.resize-icon').remove();
+      $('.rotate-icon').remove();
+      $('.flip-icon').remove();
+      $('.trash-icon').remove();
 
-          $('.thumbtack-icon').remove();
-          $('.resize-icon').remove();
-          $('.rotate-icon').remove();
-          $('.flip-icon').remove();
-          $('.trash-icon').remove();
+      $('.re-left-top').remove();
+      $('.re-right-top').remove();
+      $('.re-right-bottom').remove();
+      $('.re-left-bottom').remove();
 
-          $('.re-left-top').remove();
-          $('.re-right-top').remove();
-          $('.re-right-bottom').remove();
-          $('.re-left-bottom').remove();
-
-          $('.ro-left-top').remove();
-          $('.ro-right-top').remove();
-          $('.ro-right-bottom').remove();
-          $('.ro-left-bottom').remove();
-        }
-      }
+      $('.ro-left-top').remove();
+      $('.ro-right-top').remove();
+      $('.ro-right-bottom').remove();
+      $('.ro-left-bottom').remove();
     },
 
     //
@@ -277,7 +255,7 @@ const CanvasEve = ((W, D, M) => {
             };
             this.file.$fileId.find('.canvas-colpick').attr('width', this.file.$fileId.width());
             this.file.$fileId.find('.canvas-colpick').attr('height', this.file.$fileId.height());
-          }, 1);
+          }, this.options.UPDATE_CANVAS_SIZE_DELAY);
         }
       }
     },
@@ -286,105 +264,103 @@ const CanvasEve = ((W, D, M) => {
 
     _handleEventMouseDown(e) {
       const self = this;
-      if (e.button === 0) {
-        e.stopPropagation();
+      e.stopPropagation();
 
-        if (e.target.closest('.thumbtack-icon')) {
+      if (e.target.closest('.thumbtack-icon')) {
+        $(e.target)
+          .parents('.thumbtack-wrapper')
+          .toggleClass('active');
+
+        if (
           $(e.target)
             .parents('.thumbtack-wrapper')
-            .toggleClass('active');
-
-          if (
-            $(e.target)
-              .parents('.thumbtack-wrapper')
-              .hasClass('active')
-          ) {
-            this.flgs.canvas.thumbtack_flg = true;
-            this._updateUiVal();
-          } else {
-            this.flgs.canvas.thumbtack_flg = false;
-          }
+            .hasClass('active')
+        ) {
+          this.flgs.canvas.thumbtack_flg = true;
+          this._updateUiVal();
+        } else {
+          this.flgs.canvas.thumbtack_flg = false;
         }
+      }
 
-        if (e.target.closest('.resize-icon')) {
+      if (e.target.closest('.resize-icon')) {
+        $(e.target)
+          .parents('.resize-wrapper')
+          .toggleClass('active');
+
+        if (
           $(e.target)
             .parents('.resize-wrapper')
-            .toggleClass('active');
-
-          if (
-            $(e.target)
-              .parents('.resize-wrapper')
-              .hasClass('active')
-          ) {
-            if (!this.file.$fileId.hasClass('ro-left-top')) {
-              this.file.$fileId.prepend(self.resizeBox);
-              this._updateUiVal();
-            }
-          } else {
-            this.file.$fileId.children('.re-left-top').remove();
-            this.file.$fileId.children('.re-right-top').remove();
-            this.file.$fileId.children('.re-right-bottom').remove();
-            this.file.$fileId.children('.re-left-bottom').remove();
+            .hasClass('active')
+        ) {
+          if (!this.file.$fileId.hasClass('ro-left-top')) {
+            this.file.$fileId.prepend(self.resizeBox);
+            this._updateUiVal();
           }
+        } else {
+          this.file.$fileId.children('.re-left-top').remove();
+          this.file.$fileId.children('.re-right-top').remove();
+          this.file.$fileId.children('.re-right-bottom').remove();
+          this.file.$fileId.children('.re-left-bottom').remove();
         }
+      }
 
-        if (e.target.closest('.rotate-icon')) {
+      if (e.target.closest('.rotate-icon')) {
+        $(e.target)
+          .parents('.rotate-wrapper')
+          .toggleClass('active');
+
+        if (
           $(e.target)
             .parents('.rotate-wrapper')
-            .toggleClass('active');
-
-          if (
-            $(e.target)
-              .parents('.rotate-wrapper')
-              .hasClass('active')
-          ) {
-            if (!this.file.$fileId.hasClass('ro-left-top')) {
-              this.file.$fileId.removeClass('not-rotated');
-              this.file.$fileId.prepend(self.rotateBox);
-              this._updateUiVal();
-            }
-          } else {
-            this.file.$fileId.addClass('not-rotated');
-            this.file.$fileId.children('.ro-left-top').remove();
-            this.file.$fileId.children('.ro-right-top').remove();
-            this.file.$fileId.children('.ro-right-bottom').remove();
-            this.file.$fileId.children('.ro-left-bottom').remove();
+            .hasClass('active')
+        ) {
+          if (!this.file.$fileId.hasClass('ro-left-top')) {
+            this.file.$fileId.removeClass('not-rotated');
+            this.file.$fileId.prepend(self.rotateBox);
+            this._updateUiVal();
           }
+        } else {
+          this.file.$fileId.addClass('not-rotated');
+          this.file.$fileId.children('.ro-left-top').remove();
+          this.file.$fileId.children('.ro-right-top').remove();
+          this.file.$fileId.children('.ro-right-bottom').remove();
+          this.file.$fileId.children('.ro-left-bottom').remove();
         }
+      }
 
-        if (e.target.closest('.flip-icon')) {
+      if (e.target.closest('.flip-icon')) {
+        $(e.target)
+          .parents('.flip-wrapper')
+          .toggleClass('active');
+
+        if (
           $(e.target)
             .parents('.flip-wrapper')
-            .toggleClass('active');
-
-          if (
-            $(e.target)
-              .parents('.flip-wrapper')
-              .hasClass('active')
-          ) {
-            $(`${this.file.fileId}`)
-              .find('.is-flipped')
-              .addClass('flipped');
-            this._updateUiVal();
-          } else {
-            $(`${this.file.fileId}`)
-              .find('.is-flipped')
-              .removeClass('flipped');
-          }
+            .hasClass('active')
+        ) {
+          $(`${this.file.fileId}`)
+            .find('.is-flipped')
+            .addClass('flipped');
+          this._updateUiVal();
+        } else {
+          $(`${this.file.fileId}`)
+            .find('.is-flipped')
+            .removeClass('flipped');
         }
+      }
 
-        if (e.target.closest('.trash-icon')) {
+      if (e.target.closest('.trash-icon')) {
+        $(e.target)
+          .parents('.trash-wrapper')
+          .toggleClass('active');
+
+        if (
           $(e.target)
             .parents('.trash-wrapper')
-            .toggleClass('active');
-
-          if (
-            $(e.target)
-              .parents('.trash-wrapper')
-              .hasClass('active')
-          ) {
-            $(this.file.fileId).remove();
-          }
+            .hasClass('active')
+        ) {
+          $(this.file.fileId).remove();
         }
       }
     },
@@ -396,7 +372,7 @@ const CanvasEve = ((W, D, M) => {
       const pClientX = e.clientX - $('#zoom').offset().left;
       const pClientY = e.clientY - $('#zoom').offset().top;
       let mouseWheelAvailFlg = false;
-      if (e.button === 1) {
+      if (e.button === this.options.BUTTON_FOR_MOUSEWHEEL) {
         mouseWheelAvailFlg = true;
       }
 

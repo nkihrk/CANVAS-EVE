@@ -3,13 +3,13 @@
  * Drawing app for CANVAS EVE.
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  * - lib-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -25,6 +25,8 @@ const OekakiEve = ((W, D, M) => {
     // centerX and centerY are screen-space coordinates of the center position of its container
     const centerX = originX + size / 2;
     const centerY = originY + size / 2;
+
+    this.$cOekaki = $('#c-oekaki');
 
     this.param = {
       container: container,
@@ -78,13 +80,18 @@ const OekakiEve = ((W, D, M) => {
     };
 
     this.flgs = {
+      cOekaki: {
+        draw_canvas_avail_flg: false
+      },
       newcanvas: {
         newcanvas_flg: false,
         create_canvas_avail_flg: false
       },
       brush: {
-        brush_flg: false,
-        draw_canvas_avail_flg: false
+        brush_flg: false
+      },
+      eraser: {
+        eraser_flg: false
       },
       oekaki: {
         move_wheelcircle_flg: false,
@@ -151,7 +158,9 @@ const OekakiEve = ((W, D, M) => {
       ERASER_SIZE: 30,
       CANVAS_COLOR: '#f0e0d6',
       CREATE_CANVAS_DELAY: 200,
-      BUTTON_FOR_CIRCLE: 2
+      BUTTON_FOR_LEFT: 0,
+      BUTTON_FOR_MIDDLE: 1,
+      BUTTON_FOR_RIGHT: 2
     },
 
     load() {
@@ -228,10 +237,6 @@ const OekakiEve = ((W, D, M) => {
           this._createCanvasWrapper();
         }
       }
-
-      if (e.target.closest('.oekaki-canvas')) {
-        if (this.flgs.brush.brush_flg === true) this.flgs.brush.draw_canvas_avail_flg = true;
-      }
     },
 
     //
@@ -249,12 +254,15 @@ const OekakiEve = ((W, D, M) => {
           this._createCanvas();
         }, this.options.CREATE_CANVAS_DELAY);
       }
+
+      // if (this.flgs.cOekaki.draw_canvas_avail_flg === true)
+      //   this.flgs.cOekaki.draw_canvas_avail_flg = false;
     },
 
     //
 
     _handleEventMouseDown(e) {
-      if (e.target.closest('#color-oekaki') && e.button === this.options.BUTTON_FOR_CIRCLE) {
+      if (e.target.closest('#color-oekaki') && e.button === this.options.BUTTON_FOR_RIGHT) {
         this._colorWheelArea(e);
         this._colorTriangleArea(e);
       }
@@ -268,7 +276,7 @@ const OekakiEve = ((W, D, M) => {
           '#filldrip-oekaki'
         ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
       ) {
-        this._toggleTool($(e.target), e);
+        if (e.button === this.options.BUTTON_FOR_LEFT) this._toggleTool($(e.target), e);
       }
     },
 
@@ -285,7 +293,7 @@ const OekakiEve = ((W, D, M) => {
       this.param.centerPos.x = centerX;
       this.param.centerPos.y = centerY;
 
-      if (e.buttons === this.options.BUTTON_FOR_CIRCLE) {
+      if (e.buttons === this.options.BUTTON_FOR_RIGHT) {
         if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
         if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
       }
@@ -296,7 +304,7 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _drawPointerEvents(e) {
-      if (this.flgs.brush.brush_flg === true) {
+      if (this.flgs.brush.brush_flg === true || this.flgs.eraser.eraser_flg === true) {
         if (
           e.target.closest &&
           (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
@@ -305,6 +313,9 @@ const OekakiEve = ((W, D, M) => {
             .parents('.file-wrap')
             .find('canvas');
           this._drawCanvasPointer($canvas, e);
+        } else if (e.target.closest && e.target.closest('#reset-res')) {
+          const $canvas = this.$cOekaki;
+          this._drawCanvasPointer($canvas, e);
         }
       }
     },
@@ -312,7 +323,7 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _drawEvents(e) {
-      if (e.target && this.flgs.brush.brush_flg === true) {
+      if (this.flgs.brush.brush_flg === true || this.flgs.eraser.eraser_flg === true) {
         if (e.target.closest('.oekaki-canvas') || e.target.closest('.selected')) {
           const $canvas = $(e.target)
             .parents('.file-wrap')
@@ -603,9 +614,7 @@ const OekakiEve = ((W, D, M) => {
 
     _colorTriangleArea(e) {
       const isTriangleArea = this._isTriangleArea(e);
-      if (isTriangleArea) {
-        this._updateTriangleCircle(e);
-      }
+      if (isTriangleArea) this._updateTriangleCircle(e);
     },
 
     //
@@ -618,10 +627,7 @@ const OekakiEve = ((W, D, M) => {
       const maxY = (-mouseX + maxX) / M.sqrt(3);
 
       if (mouseX > minX && maxX > mouseX) {
-        if (M.abs(mouseY) >= 0 && maxY >= M.abs(mouseY)) {
-          return true;
-        }
-        return false;
+        if (M.abs(mouseY) >= 0 && maxY >= M.abs(mouseY)) return true;
       }
       return false;
     },
@@ -730,30 +736,34 @@ const OekakiEve = ((W, D, M) => {
      *
      */
     _toggleTool($container, e) {
-      if (e.button !== 1) {
-        e.stopPropagation();
-        $container.toggleClass('active');
+      e.stopPropagation();
+      $container.toggleClass('active');
 
-        if (
-          this.__$toggleButton !== undefined &&
-          this.__$toggleButton[0] !== $container[0] &&
-          this.__$toggleButton.hasClass('active')
-        ) {
-          this.__$toggleButton.removeClass('active');
-        }
-        if ($container.hasClass('active')) this.__$toggleButton = $container;
+      if (
+        this.__$toggleButton !== undefined &&
+        this.__$toggleButton[0] !== $container[0] &&
+        this.__$toggleButton.hasClass('active')
+      ) {
+        this.__$toggleButton.removeClass('active');
+      }
+      if ($container.hasClass('active')) this.__$toggleButton = $container;
 
-        if ($container.hasClass('active') && $container.attr('id') === 'newcanvas-oekaki') {
-          this.flgs.newcanvas.newcanvas_flg = true;
-        } else {
-          this.flgs.newcanvas.newcanvas_flg = false;
-        }
+      if ($container.hasClass('active') && $container.attr('id') === 'newcanvas-oekaki') {
+        this.flgs.newcanvas.newcanvas_flg = true;
+      } else {
+        this.flgs.newcanvas.newcanvas_flg = false;
+      }
 
-        if ($container.hasClass('active') && $container.attr('id') === 'brush-oekaki') {
-          this.flgs.brush.brush_flg = true;
-        } else {
-          this.flgs.brush.brush_flg = false;
-        }
+      if ($container.hasClass('active') && $container.attr('id') === 'brush-oekaki') {
+        this.flgs.brush.brush_flg = true;
+      } else {
+        this.flgs.brush.brush_flg = false;
+      }
+
+      if ($container.hasClass('active') && $container.attr('id') === 'eraser-oekaki') {
+        this.flgs.eraser.eraser_flg = true;
+      } else {
+        this.flgs.eraser.eraser_flg = false;
       }
     },
 
@@ -846,14 +856,20 @@ const OekakiEve = ((W, D, M) => {
     _drawCanvasPointer($canvas, e) {
       const ctx = $canvas[0].getContext('2d');
       const canvasRect = $canvas[0].getBoundingClientRect();
+      const isCoekaki = $('.oekaki-canvas').length;
+
+      if (isCoekaki === 0 && this.flgs.cOekaki.draw_canvas_avail_flg === false) {
+        this._initCanvas(ctx);
+        this.flgs.cOekaki.draw_canvas_avail_flg = true;
+      }
 
       const screenPos = {
         x: e.clientX,
         y: e.clientY
       };
       const pos = {
-        x: (screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL,
-        y: (screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL
+        x: (screenPos.x - canvasRect.left) * (isCoekaki > 0 ? GlbEve.MOUSE_WHEEL_VAL : 1),
+        y: (screenPos.y - canvasRect.top) * (isCoekaki > 0 ? GlbEve.MOUSE_WHEEL_VAL : 1)
       };
 
       let pressure = this.options.BRUSH_SIZE;
@@ -898,7 +914,12 @@ const OekakiEve = ((W, D, M) => {
             break;
         }
 
-        if (e.buttons === this.oekakiParam.EPenButton.eraser) ctx.strokeStyle = colorBackground;
+        if (
+          this.flgs.eraser.eraser_flg === true ||
+          e.buttons === this.oekakiParam.EPenButton.eraser
+        ) {
+          ctx.strokeStyle = colorBackground;
+        }
 
         switch (e.type) {
           case 'pointerdown':
@@ -1018,6 +1039,17 @@ const OekakiEve = ((W, D, M) => {
         default:
           break;
       }
+    },
+
+    //
+
+    _initCanvas(ctx) {
+      const width = W.innerWidth;
+      const height = W.innerHeight;
+      ctx.canvas.width = width;
+      ctx.canvas.height = height;
+      // ctx.fillStyle = this.options.CANVAS_COLOR;
+      // ctx.fillRect(0, 0, width, height);
     },
 
     //

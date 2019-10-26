@@ -3,12 +3,12 @@
  * Global flags for CANVAS EVE.
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - lib-eve
  *
  */
 
-import $ from './extend-eve';
+import $ from './jquery-eve';
 import LibEve from './lib-eve';
 
 const FlgEve = (() => {

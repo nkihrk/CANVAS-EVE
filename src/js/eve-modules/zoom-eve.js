@@ -3,12 +3,12 @@
  * Zooming functionality for CANVAS EVE
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 
 const ZoomEve = (() => {
@@ -108,6 +108,7 @@ const ZoomEve = (() => {
         transform: `scale(${this.i}) translate(${this.xNew}px, ${this.yNew}px)`,
         'transform-origin': `${this.xImage}px ${this.yImage}px`
       });
+      $('.oekaki-canvas').css({});
     }
   });
 

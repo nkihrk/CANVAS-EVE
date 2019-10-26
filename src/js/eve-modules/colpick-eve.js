@@ -3,13 +3,13 @@
  * Color picker for CANVAS EVE.
  *
  * Dependencies
- * - extend-eve
+ * - jquery-eve
  * - glb-eve
  * - lib-eve
  *
  */
 
-import $ from '../common/extend-eve';
+import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
 
@@ -64,29 +64,25 @@ const ColpickEve = (() => {
     //
 
     _init(e) {
-      if (e.target) {
-        if (
-          e.target.closest('#red-cir-colpick') ||
-          e.target.closest('#green-cir-colpick') ||
-          e.target.closest('#blue-cir-colpick')
-        ) {
-          this.circleRelPosX = e.clientX - $(e.target).offset().left;
-          this.$barCircle = $(e.target);
-        }
+      if (
+        e.target.closest('#red-cir-colpick') ||
+        e.target.closest('#green-cir-colpick') ||
+        e.target.closest('#blue-cir-colpick')
+      ) {
+        this.circleRelPosX = e.clientX - $(e.target).offset().left;
+        this.$barCircle = $(e.target);
       }
     },
 
     //
 
     _setFlgs(e) {
-      if (e.target) {
-        if (
-          e.target.closest('#red-cir-colpick') ||
-          e.target.closest('#green-cir-colpick') ||
-          e.target.closest('#blue-cir-colpick')
-        ) {
-          this.flgs.move_circle_flg = true;
-        }
+      if (
+        e.target.closest('#red-cir-colpick') ||
+        e.target.closest('#green-cir-colpick') ||
+        e.target.closest('#blue-cir-colpick')
+      ) {
+        this.flgs.move_circle_flg = true;
       }
     },
 
@@ -99,32 +95,30 @@ const ColpickEve = (() => {
     //
 
     _handleEventMouseDown(e) {
-      if (e.target) {
-        if (e.target.closest('#copy-colpick')) this._copyHex();
-        if (e.target.closest('#toggle-colpick')) this._toggleColpick();
-        if (
-          $('#toggle-colpick').hasClass('active') &&
-          $(e.target)
-            .parents('.file-wrap')
-            .find('canvas').length > 0 &&
-          e.button !== 1
-        ) {
-          e.preventDefault();
-          const col = this._getColor(e);
-          const hex = LibEve.rgb2hex([col[0], col[1], col[2]]);
+      if (e.target.closest('#copy-colpick')) this._copyHex();
+      if (e.target.closest('#toggle-colpick')) this._toggleColpick();
+      if (
+        $('#toggle-colpick').hasClass('active') &&
+        $(e.target)
+          .parents('.file-wrap')
+          .find('canvas').length > 0 &&
+        e.button !== 1
+      ) {
+        e.preventDefault();
+        const col = this._getColor(e);
+        const hex = LibEve.rgb2hex([col[0], col[1], col[2]]);
 
-          if (col[3] > 0) {
-            this._updatePalette(hex);
-            this._updateRgbBar(col);
-            this._updateRgbInput(col);
-          } else {
-            this._initColpick();
-          }
+        if (col[3] > 0) {
+          this._updatePalette(hex);
+          this._updateRgbBar(col);
+          this._updateRgbInput(col);
+        } else {
+          this._initColpick();
         }
+      }
 
-        if (e.target.closest('#reset-res')) {
-          if ($('#toggle-colpick').hasClass('active') && e.button !== 1) this._initColpick();
-        }
+      if (e.target.closest('#reset-res')) {
+        if ($('#toggle-colpick').hasClass('active') && e.button !== 1) this._initColpick();
       }
     },
 
@@ -137,30 +131,28 @@ const ColpickEve = (() => {
     //
 
     _handleEventChange(e) {
-      if (e.target) {
-        if (e.target.closest('#input-colpick')) {
-          const hex = this._getHex(e);
-          this._updatePalette(hex);
+      if (e.target.closest('#input-colpick')) {
+        const hex = this._getHex(e);
+        this._updatePalette(hex);
 
-          const col = LibEve.hex2rgb(hex);
-          this._updateRgbInput(col);
-          this._updateRgbBar(col);
-        }
+        const col = LibEve.hex2rgb(hex);
+        this._updateRgbInput(col);
+        this._updateRgbBar(col);
+      }
 
-        if (
-          e.target.closest('#input-r-colpick') ||
-          e.target.closest('#input-g-colpick') ||
-          e.target.closest('#input-b-colpick')
-        ) {
-          // Update rgb values, convert it to hex and apply to a color code input
-          const r = parseInt($('#r-colpick input').val(), 10);
-          const g = parseInt($('#g-colpick input').val(), 10);
-          const b = parseInt($('#b-colpick input').val(), 10);
-          const hex = LibEve.rgb2hex([r, g, b]);
-          const col = LibEve.hex2rgb(hex);
-          this._updatePalette(hex);
-          this._updateRgbBar(col);
-        }
+      if (
+        e.target.closest('#input-r-colpick') ||
+        e.target.closest('#input-g-colpick') ||
+        e.target.closest('#input-b-colpick')
+      ) {
+        // Update rgb values, convert it to hex and apply to a color code input
+        const r = parseInt($('#r-colpick input').val(), 10);
+        const g = parseInt($('#g-colpick input').val(), 10);
+        const b = parseInt($('#b-colpick input').val(), 10);
+        const hex = LibEve.rgb2hex([r, g, b]);
+        const col = LibEve.hex2rgb(hex);
+        this._updatePalette(hex);
+        this._updateRgbBar(col);
       }
     },
 
