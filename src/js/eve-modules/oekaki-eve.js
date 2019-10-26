@@ -12,9 +12,119 @@
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
-import PlainEve from './plain-eve';
 
 const OekakiEve = ((W, D, M) => {
+  function Plain(element) {
+    this.canvas = element;
+    this.$plain = $(element);
+    this.$canvasEve = $('#canvas-eve');
+
+    this.base64Image = null; // lazy generate
+
+    this.param = {
+      pos: {
+        left: 0,
+        top: 0
+      },
+      relPos: {
+        left: 0,
+        top: 0
+      }
+    };
+
+    this.flgs = {
+      mousewheel_avail_flg: false
+    };
+  }
+
+  Plain.prototype = {
+    constructor: Plain,
+
+    options: {
+      RESET_CANVAS_COLOR: '#32303f',
+      BUTTON_FOR_MIDDLE: 1
+    },
+
+    //
+
+    load() {},
+
+    //
+
+    _setFlgs(e) {
+      const { $plain } = this;
+      this.param.relPos.left = e.clientX - $plain.offset().left;
+      this.param.relPos.top = e.clientY - $plain.offset().top;
+      this.base64Image = this._getBase64($plain[0]);
+      if (e.button === this.options.BUTTON_FOR_MIDDLE) this.flgs.mousewheel_avail_flg = true;
+    },
+
+    //
+
+    _resetFlgs() {
+      if (this.flgs.mousewheel_avail_flg === true) {
+        LibEve.iframePointerReset();
+        this.flgs.mousewheel_avail_flg = false;
+        $('#canvas-eve').removeClass('active-mousewheel');
+      }
+    },
+
+    //
+
+    _handleEvents(e) {
+      e.preventDefault();
+      const { $plain } = this;
+      const { $canvasEve } = this;
+
+      if (this.flgs.mousewheel_avail_flg === true) {
+        LibEve.iframePointerNone();
+
+        const ctx = $plain[0].getContext('2d');
+        const self = this;
+        self._updateCanvasSize();
+        self._resetCanvas(ctx);
+        self._drawImage(ctx, e);
+
+        $canvasEve.addClass('active-mousewheel');
+      }
+    },
+
+    //
+
+    _drawImage(ctx, e) {
+      const left = e.clientX - this.param.relPos.left;
+      const top = e.clientY - this.param.relPos.top;
+      const img = new Image();
+      img.src = this.base64Image;
+      ctx.drawImage(img, left, top);
+    },
+
+    //
+
+    _getBase64(canvas) {
+      return canvas.toDataURL();
+    },
+
+    //
+
+    _resetCanvas(ctx) {
+      ctx.fillStyle = this.options.RESET_CANVAS_COLOR;
+      ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+
+    //
+
+    _updateCanvasSize() {
+      const cWidth = this.canvas.clientWidth;
+      const cHeight = this.canvas.clientHeight;
+
+      if (this.canvas.width !== cWidth || this.canvas.height !== cHeight) {
+        this.canvas.width = cWidth;
+        this.canvas.height = cHeight;
+      }
+    }
+  };
+
   function Oekaki(container) {
     const size = container.clientWidth;
     const wheelRadius = size / 2;
@@ -27,7 +137,7 @@ const OekakiEve = ((W, D, M) => {
     const centerX = originX + size / 2;
     const centerY = originY + size / 2;
 
-    this.Plain = new PlainEve(D.getElementById('c-oekaki'));
+    this.Plain = new Plain(D.getElementById('c-oekaki'));
 
     this.$cOekaki = $('#c-oekaki');
 
@@ -311,18 +421,18 @@ const OekakiEve = ((W, D, M) => {
 
     _drawPointerEvents(e) {
       if (this.flgs.brush.brush_flg === true || this.flgs.eraser.eraser_flg === true) {
-        if (
-          e.target.closest &&
-          (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
-        ) {
-          const $canvas = $(e.target)
-            .parents('.file-wrap')
-            .find('canvas');
-          this._drawCanvasPointer($canvas, e);
-        } else if (e.target.closest && e.target.closest('#reset-res')) {
-          const $canvas = this.$cOekaki;
-          this._drawCanvasPointer($canvas, e);
-        }
+        // if (
+        //   e.target.closest &&
+        //   (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
+        // ) {
+        //   const $canvas = $(e.target)
+        //     .parents('.file-wrap')
+        //     .find('canvas');
+        //   this._drawCanvasPointer($canvas, e);
+        // } else {
+        const $canvas = this.$cOekaki;
+        this._drawCanvasPointer($canvas, e);
+        // }
       }
     },
 
@@ -884,7 +994,8 @@ const OekakiEve = ((W, D, M) => {
       const brushColor = `rgba(${this.param.color.rgb[0]},${this.param.color.rgb[1]},${
         this.param.color.rgb[2]
       },1.0)`;
-      const colorBackground = this.options.CANVAS_COLOR;
+      // const colorBackground = this.options.CANVAS_COLOR;
+      const colorBackground = this.Plain.options.RESET_CANVAS_COLOR;
 
       if (e.pointerType) {
         switch (e.pointerType) {
@@ -967,13 +1078,13 @@ const OekakiEve = ((W, D, M) => {
             this.oekakiParam.lastBrushPos = pos;
             break;
 
-          case 'pointerenter':
-            D.body.style.cursor = 'crosshair';
-            break;
+          // case 'pointerenter':
+          //   D.body.style.cursor = 'crosshair';
+          //   break;
 
-          case 'pointerleave':
-            D.body.style.cursor = 'default';
-            break;
+          // case 'pointerleave':
+          //   D.body.style.cursor = 'default';
+          //   break;
 
           default:
             break;

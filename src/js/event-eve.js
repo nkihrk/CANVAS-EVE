@@ -69,6 +69,7 @@ const EventEve = ((W, D) => {
       this.Oekaki.load();
       this.Three.load();
       this.Colpick.load();
+      this.Plain.load();
     },
 
     //
@@ -123,18 +124,8 @@ const EventEve = ((W, D) => {
     //
 
     mouseWheelEvent() {
-      // IE9+, Chrome, Safari, Opera
       D.addEventListener(
-        'mousewheel',
-        e => {
-          this.Zoom.mouseWheelEvent(e);
-          this.Canvas.mouseWheelEvent();
-        },
-        false
-      );
-      // Firefox
-      D.addEventListener(
-        'DOMMouseScroll',
+        'wheel',
         e => {
           this.Zoom.mouseWheelEvent(e);
           this.Canvas.mouseWheelEvent();

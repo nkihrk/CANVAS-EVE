@@ -5,11 +5,13 @@
  * Dependencies
  * - jquery-eve
  * - lib-eve
+ * - glb-eve
  *
  */
 
 import $ from '../common/jquery-eve';
 import LibEve from '../common/lib-eve';
+import GlbEve from '../common/glb-eve';
 
 const PlainEve = (() => {
   function Plain(element) {
@@ -39,7 +41,13 @@ const PlainEve = (() => {
     constructor: Plain,
 
     options: {
-      BUTTON_FOR_MOUSEWHEEL: 1
+      BUTTON_FOR_MIDDLE: 1
+    },
+
+    //
+
+    load() {
+      this.$plain.css('transition', GlbEve.IS_TRANSITION);
     },
 
     //
@@ -66,7 +74,7 @@ const PlainEve = (() => {
       const { $plain } = this;
       this.param.relPos.left = e.clientX - $plain.offset().left;
       this.param.relPos.top = e.clientY - $plain.offset().top;
-      if (e.button === this.options.BUTTON_FOR_MOUSEWHEEL) this.flgs.mousewheel_avail_flg = true;
+      if (e.button === this.options.BUTTON_FOR_MIDDLE) this.flgs.mousewheel_avail_flg = true;
     },
 
     //

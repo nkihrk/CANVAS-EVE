@@ -41,16 +41,15 @@ const CommonEve = (W => {
 
     eventLoad() {
       $(W).on('load', () => {
-        $('#loader-bg')
-          .delay(900)
-          .fadeOut(800, () => {
-            $(this).remove();
-          });
-        $('#loading')
-          .delay(600)
-          .fadeOut(300, () => {
-            $(this).remove();
-          });
+        const $loaderBg = $('#loader-bg');
+        const $loading = $('#loading');
+
+        $loaderBg.delay(900).fadeOut(800, () => {
+          $loaderBg.remove();
+        });
+        $loading.delay(600).fadeOut(300, () => {
+          $loading.remove();
+        });
 
         $('.file-wrap').css('transition', GlbEve.IS_TRANSITION);
       });

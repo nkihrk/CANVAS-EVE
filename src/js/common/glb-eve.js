@@ -11,7 +11,12 @@ const NEWFILE_ID = 0;
 const CURRENT_ID = 0;
 const HIGHEST_Z_INDEX = 1;
 const MOUSE_WHEEL_VAL = 1;
-const IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
+let IS_TRANSITION;
+if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+  IS_TRANSITION = '';
+} else {
+  IS_TRANSITION = 'width .1s, height .1s, top .1s, left .1s';
+}
 const YOUTUBE_API_KEY = null;
 
 exports.NEWFILE_ID = NEWFILE_ID;
