@@ -447,7 +447,7 @@ const ThreeEve = ((W, D, M) => {
   function Three() {
     this.scenes = [];
     this.renderer = null; // lazy load
-    this.canvas = D.getElementById('c');
+    this.canvas = D.getElementById('c-three');
     this.Reader = new Reader(this.scenes);
   }
 

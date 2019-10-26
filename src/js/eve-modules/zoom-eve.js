@@ -108,6 +108,7 @@ const ZoomEve = (() => {
         transform: `scale(${this.i}) translate(${this.xNew}px, ${this.yNew}px)`,
         'transform-origin': `${this.xImage}px ${this.yImage}px`
       });
+      $('.oekaki-canvas').css({});
     }
   });
 

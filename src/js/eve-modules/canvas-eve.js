@@ -58,16 +58,16 @@ const CanvasEve = ((W, D, M) => {
     };
 
     this.resizeBox =
-      '<div class="re-left-top ignore"></div>' +
-      '<div class="re-right-top ignore"></div>' +
-      '<div class="re-right-bottom ignore"></div>' +
-      '<div class="re-left-bottom ignore"></div>';
+      '<div class="re-left-top"></div>' +
+      '<div class="re-right-top"></div>' +
+      '<div class="re-right-bottom"></div>' +
+      '<div class="re-left-bottom"></div>';
 
     this.rotateBox =
-      '<div class="ro-left-top ignore"></div>' +
-      '<div class="ro-right-top ignore"></div>' +
-      '<div class="ro-right-bottom ignore"></div>' +
-      '<div class="ro-left-bottom ignore"></div>';
+      '<div class="ro-left-top"></div>' +
+      '<div class="ro-right-top"></div>' +
+      '<div class="ro-right-bottom"></div>' +
+      '<div class="ro-left-bottom"></div>';
   }
 
   const modules = { ...FlgEve.prototype };
@@ -115,13 +115,10 @@ const CanvasEve = ((W, D, M) => {
 
     _init(e) {
       const self = this;
-      let $fileWrap;
 
-      if (!$(e.target).hasClass('.ignore')) {
-        $fileWrap = $(e.target).parents('.file-wrap');
-        if ($fileWrap.length === 0) {
-          $fileWrap = $(e.target);
-        }
+      let $fileWrap = $(e.target).parents('.file-wrap');
+      if ($fileWrap.length === 0) {
+        $fileWrap = $(e.target);
       }
 
       if ($fileWrap && $fileWrap.hasClass('file-wrap')) {
@@ -144,13 +141,11 @@ const CanvasEve = ((W, D, M) => {
                 $fileWrap.prepend(self.rotateBox); // Rotating circles
               }
 
-              $fileWrap
-                .find('.thumbtack-wrapper')
-                .prepend('<div class="thumbtack-icon ignore"></div>'); // Add a thumbtack icon
-              $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon ignore"></div>'); // Add a resizing icon
-              $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon ignore"></div>'); // Add a rotating icon
-              $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon ignore"></div>'); // Add a flipping icon
-              $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon ignore"></div>'); // Add a trash icon
+              $fileWrap.find('.thumbtack-wrapper').prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
+              $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon"></div>'); // Add a resizing icon
+              $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
+              $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon"></div>'); // Add a flipping icon
+              $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon"></div>'); // Add a trash icon
             }
 
             this._updateUiVal();

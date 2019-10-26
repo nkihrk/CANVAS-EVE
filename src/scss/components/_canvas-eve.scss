@@ -24,7 +24,7 @@ GLSL
 —————————————————————————————————————————————————————————*/
 
 /* A multiple rendering canvas */
-#c {
+#c-three {
   top: 0;
   left: 0;
   width: 100%;
@@ -52,6 +52,21 @@ GLSL
   width: 600px;
   height: 600px;
   background-color: #32303f;
+}
+
+/*———————————————————————————————————————————————————————
+
+Oekaki Canvas
+
+—————————————————————————————————————————————————————————*/
+
+/* A multiple rendering canvas */
+#c-oekaki {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
 }
 
 /*———————————————————————————————————————————————————————
