@@ -12,8 +12,9 @@ import $ from '../common/jquery-eve';
 import LibEve from '../common/lib-eve';
 
 const PlainEve = (() => {
-  function Plain() {
-    this.$plain = $('#plain');
+  function Plain(element) {
+    // this.$plain = $('#plain');
+    this.$plain = $(element);
     this.$canvasEve = $('#canvas-eve');
 
     this.param = {

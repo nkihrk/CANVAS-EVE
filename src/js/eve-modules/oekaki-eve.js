@@ -12,6 +12,7 @@
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
+import PlainEve from './plain-eve';
 
 const OekakiEve = ((W, D, M) => {
   function Oekaki(container) {
@@ -25,6 +26,8 @@ const OekakiEve = ((W, D, M) => {
     // centerX and centerY are screen-space coordinates of the center position of its container
     const centerX = originX + size / 2;
     const centerY = originY + size / 2;
+
+    this.Plain = new PlainEve(D.getElementById('c-oekaki'));
 
     this.$cOekaki = $('#c-oekaki');
 
@@ -174,18 +177,21 @@ const OekakiEve = ((W, D, M) => {
     mouseDownEvent(e) {
       this._setFlgs(e);
       this._handleEventMouseDown(e);
+      this.Plain._setFlgs(e);
     },
 
     //
 
     mouseUpEvent() {
       this._resetFlgs();
+      this.Plain._resetFlgs();
     },
 
     //
 
     mouseMoveEvent(e) {
       this._handleEventMouseMove(e);
+      this.Plain._handleEvents(e);
     },
 
     //

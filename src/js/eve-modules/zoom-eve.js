@@ -12,7 +12,9 @@ import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 
 const ZoomEve = (() => {
-  function Zoom() {
+  function Zoom(element) {
+    this.$zoom = $(element);
+
     this.i = 1;
     this.xLast = 0;
     this.yLast = 0;
@@ -104,11 +106,10 @@ const ZoomEve = (() => {
       this.yLast = this.yScreen;
 
       GlbEve.MOUSE_WHEEL_VAL = 1 / this.i;
-      $('#zoom').css({
+      this.$zoom.css({
         transform: `scale(${this.i}) translate(${this.xNew}px, ${this.yNew}px)`,
         'transform-origin': `${this.xImage}px ${this.yImage}px`
       });
-      $('.oekaki-canvas').css({});
     }
   });
 

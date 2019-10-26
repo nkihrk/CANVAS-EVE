@@ -29,15 +29,15 @@ const EventEve = ((W, D) => {
   function Event() {
     this.canvasEveWrap = D.getElementById('canvas-eve-wrapper');
 
-    this.oekaki = new OekakiEve(D.getElementById('color-oekaki'));
-    this.three = new ThreeEve();
-    this.colpick = new ColpickEve();
-    this.youtube = new YoutubeEve();
-    this.file = new FileEve();
-    this.zoom = new ZoomEve();
-    this.plain = new PlainEve();
-    this.canvas = new CanvasEve();
-    this.common = new CommonEve();
+    this.Oekaki = new OekakiEve(D.getElementById('color-oekaki'));
+    this.Three = new ThreeEve();
+    this.Colpick = new ColpickEve();
+    this.Youtube = new YoutubeEve();
+    this.File = new FileEve();
+    this.Zoom = new ZoomEve(D.getElementById('zoom'));
+    this.Plain = new PlainEve(D.getElementById('plain'));
+    this.Canvas = new CanvasEve();
+    this.Common = new CommonEve();
   }
 
   const modules = {};
@@ -65,10 +65,10 @@ const EventEve = ((W, D) => {
     //
 
     initEvent() {
-      this.common.load();
-      this.oekaki.load();
-      this.three.load();
-      this.colpick.load();
+      this.Common.load();
+      this.Oekaki.load();
+      this.Three.load();
+      this.Colpick.load();
     },
 
     //
@@ -77,12 +77,12 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
-          this.oekaki.mouseDownEvent(e);
-          this.colpick.mouseDownEvent(e);
-          this.youtube.mouseDownEvent(e);
-          this.file.mouseDownEvent(e);
-          this.plain.mouseDownEvent(e);
-          this.canvas.mouseDownEvent(e);
+          this.Oekaki.mouseDownEvent(e);
+          this.Colpick.mouseDownEvent(e);
+          this.Youtube.mouseDownEvent(e);
+          this.File.mouseDownEvent(e);
+          this.Plain.mouseDownEvent(e);
+          this.Canvas.mouseDownEvent(e);
         },
         false
       );
@@ -94,11 +94,11 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mouseup',
         e => {
-          this.oekaki.mouseUpEvent();
-          this.colpick.mouseUpEvent();
-          this.youtube.mouseUpEvent(e);
-          this.plain.mouseUpEvent();
-          this.canvas.mouseUpEvent();
+          this.Oekaki.mouseUpEvent();
+          this.Colpick.mouseUpEvent();
+          this.Youtube.mouseUpEvent(e);
+          this.Plain.mouseUpEvent();
+          this.Canvas.mouseUpEvent();
         },
         false
       );
@@ -110,11 +110,11 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousemove',
         e => {
-          this.oekaki.mouseMoveEvent(e);
-          this.colpick.mouseMoveEvent(e);
-          this.file.mouseMoveEvent(e);
-          this.plain.mouseMoveEvent(e);
-          this.canvas.mouseMoveEvent(e);
+          this.Oekaki.mouseMoveEvent(e);
+          this.Colpick.mouseMoveEvent(e);
+          this.File.mouseMoveEvent(e);
+          this.Plain.mouseMoveEvent(e);
+          this.Canvas.mouseMoveEvent(e);
         },
         false
       );
@@ -127,8 +127,8 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousewheel',
         e => {
-          this.zoom.mouseWheelEvent(e);
-          this.canvas.mouseWheelEvent();
+          this.Zoom.mouseWheelEvent(e);
+          this.Canvas.mouseWheelEvent();
         },
         false
       );
@@ -136,8 +136,8 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'DOMMouseScroll',
         e => {
-          this.zoom.mouseWheelEvent(e);
-          this.canvas.mouseWheelEvent();
+          this.Zoom.mouseWheelEvent(e);
+          this.Canvas.mouseWheelEvent();
         },
         false
       );
@@ -161,7 +161,7 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'change',
         e => {
-          this.colpick.changeEvent(e);
+          this.Colpick.changeEvent(e);
         },
         false
       );
@@ -199,8 +199,8 @@ const EventEve = ((W, D) => {
       this.canvasEveWrap.addEventListener(
         'dragover',
         e => {
-          self.three.Reader.dragOverEvent(e);
-          self.file.dragOverEvent(e);
+          self.Three.Reader.dragOverEvent(e);
+          self.File.dragOverEvent(e);
         },
         false
       );
@@ -213,8 +213,8 @@ const EventEve = ((W, D) => {
       this.canvasEveWrap.addEventListener(
         'drop',
         e => {
-          self.three.Reader.dropEvent(e);
-          self.file.dropEvent(e);
+          self.Three.Reader.dropEvent(e);
+          self.File.dropEvent(e);
         },
         false
       );
@@ -227,7 +227,7 @@ const EventEve = ((W, D) => {
       this.canvasEveWrap.addEventListener(
         'paste',
         e => {
-          self.file.pasteEvent(e);
+          self.File.pasteEvent(e);
         },
         false
       );
