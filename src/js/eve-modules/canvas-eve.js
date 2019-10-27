@@ -469,17 +469,18 @@ const CanvasEve = ((W, D, M) => {
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
               (this.file.fileIdHeight -
                 (this.file.fileIdWidth -
-                  (e.clientX - this.file.fileIdPos.left < this.file.fileIdWidth
+                  (e.clientX - this.file.fileIdPos.left <
+                  this.file.fileIdWidth / GlbEve.MOUSE_WHEEL_VAL
                     ? e.clientX - this.file.fileIdPos.left
-                    : this.file.fileIdWidth) *
+                    : this.file.fileIdWidth / GlbEve.MOUSE_WHEEL_VAL) *
                     GlbEve.MOUSE_WHEEL_VAL) *
                   this.file.fileIdRatio)}px`,
-            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
-              GlbEve.MOUSE_WHEEL_VAL +
-              (e.clientX - this.file.fileIdPos.left < this.file.fileIdWidth
+            left: `${(this.file.fileIdPos.left -
+              $('#zoom').offset().left +
+              (e.clientX - this.file.fileIdPos.left < this.file.fileIdWidth / GlbEve.MOUSE_WHEEL_VAL
                 ? e.clientX - this.file.fileIdPos.left
-                : this.file.fileIdWidth) *
-                GlbEve.MOUSE_WHEEL_VAL}px`,
+                : this.file.fileIdWidth / GlbEve.MOUSE_WHEEL_VAL)) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
             width: `${this.file.fileIdWidth -
               (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
@@ -516,9 +517,9 @@ const CanvasEve = ((W, D, M) => {
               GlbEve.MOUSE_WHEEL_VAL}px`,
             left: `${(this.file.fileIdPos.left -
               $('#zoom').offset().left +
-              (e.clientX - this.file.fileIdPos.left < this.file.fileIdWidth
+              (e.clientX - this.file.fileIdPos.left < this.file.fileIdWidth / GlbEve.MOUSE_WHEEL_VAL
                 ? e.clientX - this.file.fileIdPos.left
-                : this.file.fileIdWidth)) *
+                : this.file.fileIdWidth / GlbEve.MOUSE_WHEEL_VAL)) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
             width: `${this.file.fileIdWidth -
               (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
