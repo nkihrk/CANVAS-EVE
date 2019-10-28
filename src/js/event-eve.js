@@ -66,10 +66,10 @@ const EventEve = ((W, D) => {
 
     initEvent() {
       this.Common.load();
+      this.Plain.load();
       this.Oekaki.load();
       this.Three.load();
       this.Colpick.load();
-      this.Plain.load();
     },
 
     //
@@ -78,11 +78,11 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
+          this.Plain.mouseDownEvent(e);
+          this.File.mouseDownEvent(e);
           this.Oekaki.mouseDownEvent(e);
           this.Colpick.mouseDownEvent(e);
           this.Youtube.mouseDownEvent(e);
-          this.File.mouseDownEvent(e);
-          this.Plain.mouseDownEvent(e);
           this.Canvas.mouseDownEvent(e);
         },
         false
@@ -95,10 +95,10 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mouseup',
         e => {
+          this.Plain.mouseUpEvent();
           this.Oekaki.mouseUpEvent();
           this.Colpick.mouseUpEvent();
           this.Youtube.mouseUpEvent(e);
-          this.Plain.mouseUpEvent();
           this.Canvas.mouseUpEvent();
         },
         false
@@ -111,10 +111,10 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousemove',
         e => {
+          this.Plain.mouseMoveEvent(e);
+          this.File.mouseMoveEvent(e);
           this.Oekaki.mouseMoveEvent(e);
           this.Colpick.mouseMoveEvent(e);
-          this.File.mouseMoveEvent(e);
-          this.Plain.mouseMoveEvent(e);
           this.Canvas.mouseMoveEvent(e);
         },
         false
@@ -128,6 +128,7 @@ const EventEve = ((W, D) => {
         'wheel',
         e => {
           this.Zoom.mouseWheelEvent(e);
+          this.Oekaki.mouseWheelEvent(e);
           this.Canvas.mouseWheelEvent();
         },
         false

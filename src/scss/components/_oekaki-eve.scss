@@ -1,9 +1,10 @@
+@import '../abstracts/mixins';
+
 /*———————————————————————————————————————————————————————
 
 Common
 
 —————————————————————————————————————————————————————————*/
-
 :root {
   --half-white: rgba(255, 255, 255, 0.5);
   --transparent-white: rgba(255, 255, 255, 0.05);
@@ -68,6 +69,41 @@ Common
     width: 0;
     transition: '';
   }
+}
+
+/*———————————————————————————————————————————————————————
+
+Coordinate systems for Oekaki renderer
+
+—————————————————————————————————————————————————————————*/
+
+#c-oekaki-wrapper {
+  @include coord-wrapper;
+}
+
+#c-oekaki-plain {
+  @include plain;
+}
+
+#c-oekaki-zoom {
+  @include zoom;
+}
+
+/*———————————————————————————————————————————————————————
+
+Oekaki Canvas
+
+—————————————————————————————————————————————————————————*/
+
+#c-oekaki {
+  top: 0;
+  left: 0;
+  width: 10000px;
+  height: 10000px;
+  touch-action: none;
+  // background: #4a4858;
+  transform-origin: center;
+  transform: translate(calc(-50% + 50vw), calc(-50% + 50vh));
 }
 
 /*———————————————————————————————————————————————————————

@@ -57,7 +57,13 @@
       </div>
 
       <!-- Canvas for oekaki-eve -->
-      <canvas id="c-oekaki" style="position: absolute; z-index: -2;"></canvas>
+      <div id="c-oekaki-wrapper" style="position: fixed; z-index: -2;">
+        <div id="c-oekaki-plain" style="position: relative;">
+          <div id="c-oekaki-zoom">
+            <canvas id="c-oekaki" width="10000" height="10000" style="position: absolute;"></canvas>
+          </div>
+        </div>
+      </div>
 
       <!-- Canvas for three-eve -->
       <canvas id="c-three" style="position: absolute; z-index: -1;"></canvas>

@@ -8,9 +8,62 @@
  */
 
 const LibEve = (() => {
-  function Lib() {}
+  /**
+   * Library for treating canvas element.
+   *
+   */
+  function CanvasTool() {}
 
-  const modules = {};
+  CanvasTool.prototype = {
+    constructor: CanvasTool,
+
+    options: {},
+
+    /**
+     * Draw an image on a given canvas element.
+     *
+     * @param {element} canvasElement - The canvas element to treat
+     * @param {array} rgb - The path or base64 of a specific image
+     */
+    drawImage(canvasElement, imgSrc) {
+      const ctx = canvasElement.getContext('2d');
+      const img = new Image();
+      img.src = imgSrc;
+      ctx.drawImage(img, 0, 0);
+    },
+
+    /**
+     * Get a base64 image of a given canvas element
+     *
+     * @param {element} canvasElement - The canvas element to treat
+     * @returns {base64} - Return a base64 image
+     */
+    getBase64(canvasElement) {
+      return canvasElement.toDataURL();
+    },
+
+    /**
+     * Clear rendering result on a given canvas element with a reset color.
+     *
+     * @param {element} canvasElement - The canvas element to treat
+     * @param {color} resetColor - The color for reset
+     */
+    resetCanvas(canvasElement, resetColor) {
+      const ctx = canvasElement.getContext('2d');
+      ctx.fillStyle = resetColor;
+      ctx.fillRect(0, 0, canvasElement.width, canvasElement.height);
+    }
+  };
+
+  /**
+   * Library for various use cases.
+   *
+   */
+  function Lib() {
+    CanvasTool.call(this);
+  }
+
+  const modules = { ...CanvasTool.prototype };
 
   Lib.prototype = Object.assign(modules, {
     constructor: Lib,

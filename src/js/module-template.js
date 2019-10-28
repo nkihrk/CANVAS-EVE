@@ -3,12 +3,10 @@
  * hogehoge for CANVAS EVE.
  *
  * Dependencies // list up dependecies here
- * - extend-eve
  * - lib-eve
  *
  */
 
-import $ from './common/extend-eve';
 import LibEve from './common/lib-eve'; // Just for example
 
 // The app`s capital letter must be uppercase. Add 'Eve' after the name

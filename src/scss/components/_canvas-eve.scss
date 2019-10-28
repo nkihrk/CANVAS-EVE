@@ -1,3 +1,5 @@
+@import '../abstracts/mixins';
+
 /*———————————————————————————————————————————————————————
 
 Common
@@ -12,10 +14,6 @@ video:focus {
 .pointer-events-none {
   pointer-events: none;
 }
-
-// .eve-main {
-//   margin: 2px;
-// }
 
 /*———————————————————————————————————————————————————————
 
@@ -56,21 +54,6 @@ GLSL
 
 /*———————————————————————————————————————————————————————
 
-Oekaki Canvas
-
-—————————————————————————————————————————————————————————*/
-
-/* A multiple rendering canvas */
-#c-oekaki {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  touch-action: none;
-}
-
-/*———————————————————————————————————————————————————————
-
 #canvas-eve-wrapper / #canvas-eve
 
 —————————————————————————————————————————————————————————*/
@@ -93,11 +76,7 @@ Oekaki Canvas
 
 #canvas-eve,
 #canvas-eve-wrapper {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  @include coord-wrapper;
 }
 
 /* Change a mouse pointer to a grabbing */
@@ -114,20 +93,12 @@ Oekaki Canvas
 
 /* For moving entire expected elements */
 #plain {
-  width: 0 !important;
-  height: 0 !important;
-  scroll-behavior: auto;
-  // transition: all 0.1s;
+  @include plain;
 }
 
 /* For zooming */
 #zoom {
-  width: 0 !important;
-  height: 0 !important;
-  position: relative;
-  /* background: rgba(255, 0, 0, 0.2);
-    width: 600px;
-    height: 600px; */
+  @include zoom;
 }
 
 /* To reset */
