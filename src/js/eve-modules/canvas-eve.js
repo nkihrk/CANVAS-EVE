@@ -76,15 +76,15 @@ const CanvasEve = ((W, D, M) => {
     constructor: Canvas,
 
     options: {
-      BUTTON_FOR_FUNC: 0,
-      BUTTON_FOR_MOUSEWHEEL: 1,
+      BUTTON_FOR_LEFT: 0,
+      BUTTON_FOR_MIDDLE: 1,
       UPDATE_CANVAS_SIZE_DELAY: 150
     },
 
     //
 
     mouseDownEvent(e) {
-      if (e.button === this.options.BUTTON_FOR_FUNC) {
+      if (e.button === this.options.BUTTON_FOR_LEFT) {
         this.setFlgs(e);
         this._init(e);
         if ($(e.target)[0].id === 'reset-res') this._reset();
@@ -372,7 +372,7 @@ const CanvasEve = ((W, D, M) => {
       const pClientX = e.clientX - $('#zoom').offset().left;
       const pClientY = e.clientY - $('#zoom').offset().top;
       let mouseWheelAvailFlg = false;
-      if (e.button === this.options.BUTTON_FOR_MOUSEWHEEL) {
+      if (e.button === this.options.BUTTON_FOR_MIDDLE) {
         mouseWheelAvailFlg = true;
       }
 

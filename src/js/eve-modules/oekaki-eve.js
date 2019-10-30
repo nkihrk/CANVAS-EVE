@@ -34,6 +34,10 @@ const OekakiEve = ((W, D, M) => {
     this.Zoom = new ZoomEve(D.getElementById('c-oekaki-zoom'));
 
     this.$cOekaki = $('#c-oekaki');
+    this.$cOekaki.css({
+      width: `${this.options.CANVAS_SIZE_WIDTH}px`,
+      height: `${this.options.CANVAS_SIZE_HEIGHT}px`
+    });
 
     this.param = {
       container: container,
@@ -163,6 +167,8 @@ const OekakiEve = ((W, D, M) => {
       THETA: 0,
       BRUSH_SIZE: 4,
       ERASER_SIZE: 30,
+      CANVAS_SIZE_WIDTH: 10000,
+      CANVAS_SIZE_HEIGHT: 10000,
       CANVAS_COLOR: '#f0e0d6',
       RESET_CANVAS_COLOR: '#32303f',
       CREATE_CANVAS_DELAY: 200,
@@ -172,6 +178,7 @@ const OekakiEve = ((W, D, M) => {
     },
 
     load() {
+      this.Zoom.load();
       this.drawWheel();
       this.drawTriangle();
       this.drawEvent();
@@ -180,23 +187,23 @@ const OekakiEve = ((W, D, M) => {
     //
 
     mouseDownEvent(e) {
+      this.Plain.mouseDownEvent(e);
       this._setFlgs(e);
       this._handleEventMouseDown(e);
-      this.Plain.mouseDownEvent(e);
     },
 
     //
 
     mouseUpEvent() {
-      this._resetFlgs();
       this.Plain.mouseUpEvent();
+      this._resetFlgs();
     },
 
     //
 
     mouseMoveEvent(e) {
-      this._handleEventMouseMove(e);
       this.Plain.mouseMoveEvent(e);
+      this._handleEventMouseMove(e);
     },
 
     //
@@ -873,9 +880,8 @@ const OekakiEve = ((W, D, M) => {
     _drawCanvasPointer($canvas, e) {
       const ctx = $canvas[0].getContext('2d');
       const canvasRect = $canvas[0].getBoundingClientRect();
-      const isCoekaki = $('.oekaki-canvas').length;
 
-      if (isCoekaki === 0 && this.flgs.cOekaki.draw_canvas_avail_flg === false) {
+      if (this.flgs.cOekaki.draw_canvas_avail_flg === false) {
         this._initCanvas(ctx);
         this.flgs.cOekaki.draw_canvas_avail_flg = true;
       }
@@ -885,8 +891,8 @@ const OekakiEve = ((W, D, M) => {
         y: e.clientY
       };
       const pos = {
-        x: (screenPos.x - canvasRect.left) * (isCoekaki > 0 ? GlbEve.MOUSE_WHEEL_VAL : 1),
-        y: (screenPos.y - canvasRect.top) * (isCoekaki > 0 ? GlbEve.MOUSE_WHEEL_VAL : 1)
+        x: (screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL,
+        y: (screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL
       };
 
       let pressure = this.options.BRUSH_SIZE;
@@ -1063,14 +1069,10 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _initCanvas(ctx) {
-      // const width = W.innerWidth;
-      // const height = W.innerHeight;
-      const width = 10000;
-      const height = 10000;
+      const width = this.options.CANVAS_SIZE_WIDTH;
+      const height = this.options.CANVAS_SIZE_HEIGHT;
       ctx.canvas.width = width;
       ctx.canvas.height = height;
-      // ctx.fillStyle = this.options.CANVAS_COLOR;
-      // ctx.fillRect(0, 0, width, height);
     },
 
     //

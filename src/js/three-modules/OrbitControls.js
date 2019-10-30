@@ -707,9 +707,11 @@ var OrbitControls = function(object, domElement) {
           case MOUSE.DOLLY:
             if (scope.enableZoom === false) return;
 
-            handleMouseDownDolly(event);
+            // handleMouseDownDolly(event);
 
-            state = STATE.DOLLY;
+            // state = STATE.DOLLY;
+            // To disable this action
+            state = STATE.NONE;
 
             break;
 

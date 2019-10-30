@@ -11,7 +11,7 @@
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 
-const ZoomEve = (() => {
+const ZoomEve = (W => {
   function Zoom(element) {
     this.$zoom = $(element);
 
@@ -35,7 +35,23 @@ const ZoomEve = (() => {
 
     //
 
+    load() {
+      this._init();
+    },
+
+    //
+
     mouseWheelEvent(e) {
+      this._setZoom(e);
+    },
+
+    //
+
+    _init() {
+      const e = {
+        clientX: W.innerWidth / 2,
+        clientY: W.innerHeight / 2
+      };
       this._setZoom(e);
     },
 
@@ -50,9 +66,27 @@ const ZoomEve = (() => {
       const delta = e.deltaY;
 
       if (delta > 0) {
-        if (this.i > 2) {
-          this.i = 2;
-          this.i -= 0.09;
+        if (this.i > 10) {
+          this.i = 10;
+          this.i -= 0.9;
+        } else if (this.i > 9) {
+          this.i -= 0.9;
+        } else if (this.i > 8) {
+          this.i -= 0.8;
+        } else if (this.i > 7) {
+          this.i -= 0.7;
+        } else if (this.i > 6) {
+          this.i -= 0.6;
+        } else if (this.i > 5) {
+          this.i -= 0.5;
+        } else if (this.i > 4) {
+          this.i -= 0.4;
+        } else if (this.i > 3) {
+          this.i -= 0.3;
+        } else if (this.i > 2) {
+          this.i -= 0.2;
+        } else if (this.i > 1) {
+          this.i -= 0.1;
         } else if (this.i > 0.9) {
           this.i -= 0.09;
         } else if (this.i > 0.8) {
@@ -74,8 +108,26 @@ const ZoomEve = (() => {
         } else {
           this.i = 0.09;
         }
+      } else if (this.i > 10) {
+        this.i = 10.9;
+      } else if (this.i > 9) {
+        this.i += 0.9;
+      } else if (this.i > 8) {
+        this.i += 0.8;
+      } else if (this.i > 7) {
+        this.i += 0.7;
+      } else if (this.i > 6) {
+        this.i += 0.6;
+      } else if (this.i > 5) {
+        this.i += 0.5;
+      } else if (this.i > 4) {
+        this.i += 0.4;
+      } else if (this.i > 3) {
+        this.i += 0.3;
       } else if (this.i > 2) {
-        this.i = 2.09;
+        this.i += 0.2;
+      } else if (this.i > 1) {
+        this.i += 0.1;
       } else if (this.i > 0.9) {
         this.i += 0.09;
       } else if (this.i > 0.8) {
@@ -99,6 +151,57 @@ const ZoomEve = (() => {
         this.i += 0.01;
       }
 
+      // if (delta > 0) {
+      //   if (this.i > 10) {
+      //     this.i = 10;
+      //     this.i -= 0.9;
+      //   } else if (this.i > 9) {
+      //     this.i -= 0.9;
+      //   } else if (this.i > 8) {
+      //     this.i -= 0.8;
+      //   } else if (this.i > 7) {
+      //     this.i -= 0.7;
+      //   } else if (this.i > 6) {
+      //     this.i -= 0.6;
+      //   } else if (this.i > 5) {
+      //     this.i -= 0.5;
+      //   } else if (this.i > 4) {
+      //     this.i -= 0.4;
+      //   } else if (this.i > 3) {
+      //     this.i -= 0.3;
+      //   } else if (this.i > 2) {
+      //     this.i -= 0.2;
+      //   } else if (this.i >= 1) {
+      //     this.i -= 0.1;
+      //   } else {
+      //     this.i = 1;
+      //     this.i -= 0.1;
+      //   }
+      // } else if (this.i > 10) {
+      //   this.i = 10.09;
+      // } else if (this.i > 9) {
+      //   this.i += 0.9;
+      // } else if (this.i > 8) {
+      //   this.i += 0.8;
+      // } else if (this.i > 7) {
+      //   this.i += 0.7;
+      // } else if (this.i > 6) {
+      //   this.i += 0.6;
+      // } else if (this.i > 5) {
+      //   this.i += 0.5;
+      // } else if (this.i > 4) {
+      //   this.i += 0.4;
+      // } else if (this.i > 3) {
+      //   this.i += 0.3;
+      // } else if (this.i > 2) {
+      //   this.i += 0.2;
+      // } else if (this.i > 1) {
+      //   this.i += 0.1;
+      // } else {
+      //   this.i = 1;
+      //   this.i += 0.1;
+      // }
+
       this.xNew = (this.xScreen - this.xImage) / this.i;
       this.yNew = (this.yScreen - this.yImage) / this.i;
 
@@ -114,6 +217,6 @@ const ZoomEve = (() => {
   });
 
   return Zoom;
-})();
+})(window);
 
 export default ZoomEve;

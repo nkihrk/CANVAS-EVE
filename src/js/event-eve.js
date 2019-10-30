@@ -67,6 +67,7 @@ const EventEve = ((W, D) => {
     initEvent() {
       this.Common.load();
       this.Plain.load();
+      this.Zoom.load();
       this.Oekaki.load();
       this.Three.load();
       this.Colpick.load();

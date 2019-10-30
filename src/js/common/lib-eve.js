@@ -29,7 +29,9 @@ const LibEve = (() => {
       const ctx = canvasElement.getContext('2d');
       const img = new Image();
       img.src = imgSrc;
-      ctx.drawImage(img, 0, 0);
+      img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+      };
     },
 
     /**
