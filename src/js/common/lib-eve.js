@@ -430,6 +430,18 @@ const LibEve = (() => {
      */
     keysInArray(obj) {
       return Object.keys(obj);
+    },
+
+    /**
+     * Return true if firefox
+     *
+     * @returns {boolean} Return true or false
+     */
+    isFirefox() {
+      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        return true;
+      }
+      return false;
     }
   });
 

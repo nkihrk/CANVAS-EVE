@@ -35,9 +35,10 @@ const OekakiEve = ((W, D, M) => {
 
     this.$cOekaki = $('#c-oekaki');
     this.$cOekaki.css({
-      width: `${this.options.CANVAS_SIZE_WIDTH}px`,
-      height: `${this.options.CANVAS_SIZE_HEIGHT}px`
+      width: `${this.options.CANVAS_SIZE}px`,
+      height: `${this.options.CANVAS_SIZE}px`
     });
+    this.$cOekakiPlain = $('#c-oekaki-plain');
 
     this.param = {
       container: container,
@@ -165,19 +166,21 @@ const OekakiEve = ((W, D, M) => {
       HUE: 0,
       RGB: [0, 0, 0],
       THETA: 0,
-      BRUSH_SIZE: 4,
-      ERASER_SIZE: 30,
-      CANVAS_SIZE_WIDTH: 10000,
-      CANVAS_SIZE_HEIGHT: 10000,
+      BRUSH_SIZE: 4 / 2,
+      ERASER_SIZE: 30 / 2,
+      CANVAS_SIZE: 10000,
+      CANVAS_RESOLUTION: 5000,
+      CANVAS_RATIO: 2, // CANVAS_SIZE / CANVAS_RESOLUTION
       CANVAS_COLOR: '#f0e0d6',
       RESET_CANVAS_COLOR: '#32303f',
-      CREATE_CANVAS_DELAY: 200,
+      CREATE_CANVAS_DELAY: 200, // Currently not in use
       BUTTON_FOR_LEFT: 0,
       BUTTON_FOR_MIDDLE: 1,
       BUTTON_FOR_RIGHT: 2
     },
 
     load() {
+      this.Plain.load();
       this.Zoom.load();
       this.drawWheel();
       this.drawTriangle();
@@ -210,6 +213,9 @@ const OekakiEve = ((W, D, M) => {
 
     mouseWheelEvent(e) {
       this.Zoom.mouseWheelEvent(e);
+      if (!LibEve.isFirefox()) {
+        this._magicFix(e); // This is totally a magic function. I have no idea for the issue. This function somehow fixes it miraculously.
+      }
     },
 
     //
@@ -891,8 +897,8 @@ const OekakiEve = ((W, D, M) => {
         y: e.clientY
       };
       const pos = {
-        x: (screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL,
-        y: (screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL
+        x: ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO,
+        y: ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
       };
 
       let pressure = this.options.BRUSH_SIZE;
@@ -1011,8 +1017,8 @@ const OekakiEve = ((W, D, M) => {
       };
 
       const pos = {
-        x: screenPos.x - canvasRect.left,
-        y: screenPos.y - canvasRect.top
+        x: ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO,
+        y: ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
       };
 
       if (pos.x === undefined || pos.y === undefined) {
@@ -1069,10 +1075,32 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _initCanvas(ctx) {
-      const width = this.options.CANVAS_SIZE_WIDTH;
-      const height = this.options.CANVAS_SIZE_HEIGHT;
+      const width = this.options.CANVAS_RESOLUTION;
+      const height = this.options.CANVAS_RESOLUTION;
       ctx.canvas.width = width;
       ctx.canvas.height = height;
+    },
+
+    //
+
+    _magicFix(e) {
+      const { left } = this.$cOekakiPlain.offset();
+      const { top } = this.$cOekakiPlain.offset();
+      const delta = e.deltaY;
+
+      if (GlbEve.MOUSE_WHEEL_VAL > 1 && GlbEve.MOUSE_WHEEL_VAL < 10.9) {
+        if (delta > 0) {
+          this.$cOekakiPlain.css({
+            left: `${left - 1}px`,
+            top: `${top - 1}px`
+          });
+        } else {
+          this.$cOekakiPlain.css({
+            left: `${left + 1}px`,
+            top: `${top + 1}px`
+          });
+        }
+      }
     },
 
     //

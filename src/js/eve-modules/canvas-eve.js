@@ -265,6 +265,7 @@ const CanvasEve = ((W, D, M) => {
     _handleEventMouseDown(e) {
       const self = this;
       e.stopPropagation();
+      e.preventDefault();
 
       if (e.target.closest('.thumbtack-icon')) {
         $(e.target)
