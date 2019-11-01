@@ -151,57 +151,6 @@ const ZoomEve = (W => {
         this.i += 0.01;
       }
 
-      // if (delta > 0) {
-      //   if (this.i > 10) {
-      //     this.i = 10;
-      //     this.i -= 0.9;
-      //   } else if (this.i > 9) {
-      //     this.i -= 0.9;
-      //   } else if (this.i > 8) {
-      //     this.i -= 0.8;
-      //   } else if (this.i > 7) {
-      //     this.i -= 0.7;
-      //   } else if (this.i > 6) {
-      //     this.i -= 0.6;
-      //   } else if (this.i > 5) {
-      //     this.i -= 0.5;
-      //   } else if (this.i > 4) {
-      //     this.i -= 0.4;
-      //   } else if (this.i > 3) {
-      //     this.i -= 0.3;
-      //   } else if (this.i > 2) {
-      //     this.i -= 0.2;
-      //   } else if (this.i >= 1) {
-      //     this.i -= 0.1;
-      //   } else {
-      //     this.i = 1;
-      //     this.i -= 0.1;
-      //   }
-      // } else if (this.i > 10) {
-      //   this.i = 10.09;
-      // } else if (this.i > 9) {
-      //   this.i += 0.9;
-      // } else if (this.i > 8) {
-      //   this.i += 0.8;
-      // } else if (this.i > 7) {
-      //   this.i += 0.7;
-      // } else if (this.i > 6) {
-      //   this.i += 0.6;
-      // } else if (this.i > 5) {
-      //   this.i += 0.5;
-      // } else if (this.i > 4) {
-      //   this.i += 0.4;
-      // } else if (this.i > 3) {
-      //   this.i += 0.3;
-      // } else if (this.i > 2) {
-      //   this.i += 0.2;
-      // } else if (this.i > 1) {
-      //   this.i += 0.1;
-      // } else {
-      //   this.i = 1;
-      //   this.i += 0.1;
-      // }
-
       this.xNew = (this.xScreen - this.xImage) / this.i;
       this.yNew = (this.yScreen - this.yImage) / this.i;
 

@@ -3,15 +3,17 @@
  * Loading animation for CANVAS EVE.
  *
  * Dependencies
- * - jQuery 3.4.1
+ * - jquery-eve
  *
  */
 
-import $ from 'jquery';
+import $ from './jquery-eve';
 import GlbEve from './glb-eve';
 
 const CommonEve = (W => {
-  function Common() {}
+  function Common() {
+    this.$footer = $('#footer');
+  }
 
   const modules = {};
 
@@ -23,49 +25,72 @@ const CommonEve = (W => {
     load() {
       this.eventReady();
       this.eventLoad();
-      this.eventLoadResize();
     },
 
     //
 
     eventReady() {
-      $(() => {
+      function ready() {
         const h = $(W).height();
-        $('#loader-bg, #loader')
-          .height(h)
-          .css('display', 'block');
-      });
+        const $load = $('#loader-bg, #loader');
+        $load.height(h);
+        $load.css('display', 'block');
+      }
+
+      if (document.readyState !== 'loading') {
+        ready();
+      } else {
+        document.addEventListener('DOMContentLoaded', ready);
+      }
     },
 
     //
 
     eventLoad() {
-      $(W).on('load', () => {
+      const self = this;
+
+      function load() {
         const $loaderBg = $('#loader-bg');
         const $loading = $('#loading');
 
-        $loaderBg.delay(900).fadeOut(800, () => {
-          $loaderBg.remove();
-        });
-        $loading.delay(600).fadeOut(300, () => {
-          $loading.remove();
-        });
+        setTimeout(() => {
+          $loaderBg.fadeOut(800, () => {
+            $loaderBg.remove();
+          });
+        }, 900);
+        setTimeout(() => {
+          $loading.fadeOut(300, () => {
+            $loading.remove();
+          });
+        }, 600);
 
         $('.file-wrap').css('transition', GlbEve.IS_TRANSITION);
-      });
+
+        self._fixFooter();
+        self.eventLoadResize();
+      }
+
+      W.addEventListener('load', load);
     },
 
     //
 
     eventLoadResize() {
-      $(W).on('load resize', () => {
-        const top = `${W.innerHeight - 60}px`;
-        const left = `${W.innerWidth / 2}px`;
+      const self = this;
 
-        $('#footer').css({
-          top,
-          left
-        });
+      function resize() {
+        self._fixFooter();
+      }
+
+      W.addEventListener('resize', resize);
+    },
+
+    //
+
+    _fixFooter() {
+      this.$footer.css({
+        top: `${W.innerHeight - 60}px`,
+        left: `${W.innerWidth / 2}px`
       });
     }
   });

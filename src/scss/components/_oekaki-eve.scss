@@ -222,11 +222,10 @@ Oekaki Canvas
 //  Wrapper for a toggling button of oekaki
 #brush-oekaki {
   position: relative;
-  width: 60px;
-  height: 30px;
+  width: 150px;
+  height: 40px;
+  border-radius: 6px 0 0 6px;
   border: solid 1px #c1125b;
-  border-left: none;
-  border-right: none;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
@@ -265,10 +264,11 @@ Oekaki Canvas
 //  Wrapper for a toggling button of oekaki
 #eraser-oekaki {
   position: relative;
-  width: 60px;
-  height: 30px;
+  width: 150px;
+  height: 40px;
+  border-radius: 0 6px 6px 0;
   border: solid 1px #c1125b;
-  border-right: none;
+  border-left: none;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 

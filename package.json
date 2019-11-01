@@ -37,6 +37,7 @@
     "gh-pages": "^2.1.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "jquery": "^3.4.1",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "nodemon": "^1.19.3",
@@ -54,7 +55,6 @@
   },
   "dependencies": {
     "@pixiv/three-vrm": "^0.2.0",
-    "jquery": "^3.4.1",
     "psd.js": "^3.3.3-beta.3",
     "three": "^0.109.0"
   }

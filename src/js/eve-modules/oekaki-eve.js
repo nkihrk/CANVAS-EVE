@@ -897,8 +897,12 @@ const OekakiEve = ((W, D, M) => {
         y: e.clientY
       };
       const pos = {
-        x: ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO,
-        y: ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
+        x: M.floor(
+          ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
+        ),
+        y: M.floor(
+          ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
+        )
       };
 
       let pressure = this.options.BRUSH_SIZE;
@@ -1091,13 +1095,13 @@ const OekakiEve = ((W, D, M) => {
       if (GlbEve.MOUSE_WHEEL_VAL > 1 && GlbEve.MOUSE_WHEEL_VAL < 10.9) {
         if (delta > 0) {
           this.$cOekakiPlain.css({
-            left: `${left - 1}px`,
-            top: `${top - 1}px`
+            left: `${left - 0.5}px`,
+            top: `${top - 0.5}px`
           });
         } else {
           this.$cOekakiPlain.css({
-            left: `${left + 1}px`,
-            top: `${top + 1}px`
+            left: `${left + 0.5}px`,
+            top: `${top + 0.5}px`
           });
         }
       }

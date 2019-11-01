@@ -20,8 +20,63 @@ const $ = (D => {
     }
   };
 
+  function E() {}
+
+  E.prototype = {
+    constructor: E,
+
+    /**
+     * Vanilla JS jQuery.ready() realisation.
+     *
+     * @param {function} fn - The function to execute when DOM content is loaded
+     */
+    ready(fn) {
+      if (document.readyState !== 'loading') {
+        fn();
+      } else {
+        document.addEventListener('DOMContentLoaded', fn);
+      }
+    }
+  };
+
+  function A() {}
+
+  A.prototype = {
+    constructor: A,
+
+    /**
+     * Vanilla JS jQuery.fadeOut() realisation.
+     *
+     * @param {number} t - The total time to finish fading out. The unit is ms
+     * @param {function} f - The function to execute when fade-out is done
+     */
+    fadeOut(t, f) {
+      const n = this.length;
+      let fadeTarget = this[0];
+
+      if (n === 1) {
+        const fadeEffect = setInterval(() => {
+          if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+          }
+          if (fadeTarget.style.opacity > 0) {
+            fadeTarget.style.opacity -= 0.1;
+          } else {
+            clearInterval(fadeEffect);
+            f();
+          }
+        }, t / 10);
+      } else {
+        // console.log('parent', this);
+        fadeTarget = null;
+      }
+    }
+  };
+
   function J(e) {
     L.call(this);
+    E.call(this);
+    A.call(this);
 
     if (LibEve.isArray(e) && LibEve.isElement(e[0])) {
       for (let i = 0; i < e.length; i++) {
@@ -50,7 +105,7 @@ const $ = (D => {
     }
   }
 
-  const modules = { ...L.prototype };
+  const modules = { ...L.prototype, ...E.prototype, ...A.prototype };
 
   J.prototype = Object.assign(modules, {
     constructor: J,
