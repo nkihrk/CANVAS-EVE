@@ -158,4 +158,4 @@ const FlgEve = (() => {
   return Flg;
 })();
 
-export default FlgEve;
+export default new FlgEve();

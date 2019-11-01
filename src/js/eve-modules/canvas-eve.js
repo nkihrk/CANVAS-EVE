@@ -20,12 +20,101 @@ const CanvasEve = ((W, D, M) => {
    * Entry point for CanvasEve.
    *
    */
-  function MultiSelect() {}
+  function MultiSelect() {
+    this.$canvasEveWrapper = $('#canvas-eve-wrapper');
+    this.$selectedArea = null; // lazy load
+
+    this.newSelectedAreaPos = {
+      x: null, // lazy load
+      y: null // lazy load
+    };
+
+    this.flgs = {
+      create_selected_area_flg: false
+    };
+  }
 
   MultiSelect.prototype = {
     constructor: MultiSelect,
 
-    options: {}
+    options: {
+      BUTTON_FOR_LEFT: 0
+    },
+
+    mouseDownEvent(e) {
+      if (e.button === this.options.BUTTON_FOR_LEFT && e.target.closest('#reset-res')) {
+        this._setFlgs(e);
+        this._createSelectedArea();
+      }
+    },
+
+    //
+
+    mouseUpEvent() {
+      this._resetFlgs();
+      if (this.$selectedArea !== null) this._releaseSelectedArea();
+    },
+
+    //
+
+    mouseMoveEvent(e) {
+      if (this.flgs.create_selected_area_flg === true) this._updateSelectedArea(e);
+    },
+
+    //
+
+    _setFlgs(e) {
+      if (e.target.closest('#reset-res')) this.flgs.create_selected_area_flg = true;
+      this.newSelectedAreaPos.x = e.clientX - this.$canvasEveWrapper.offset().left;
+      this.newSelectedAreaPos.y = e.clientY - this.$canvasEveWrapper.offset().top;
+    },
+
+    //
+
+    _resetFlgs() {
+      if (this.flgs.create_selected_area_flg === true) this.flgs.create_selected_area_flg = false;
+    },
+
+    //
+
+    _createSelectedArea() {
+      const startX = this.newSelectedAreaPos.x;
+      const startY = this.newSelectedAreaPos.y;
+      const selectedArea = D.createElement('div');
+      selectedArea.id = 'selected-area';
+      selectedArea.classList.add('file-wrap');
+      selectedArea.style.left = `${startX}px`;
+      selectedArea.style.top = `${startY}px`;
+      selectedArea.style.zIndex = 1;
+
+      this.$selectedArea = $(selectedArea);
+      this.$canvasEveWrapper.append(selectedArea);
+    },
+
+    //
+
+    _updateSelectedArea(e) {
+      const { $selectedArea } = this;
+      const startX = this.newSelectedAreaPos.x;
+      const startY = this.newSelectedAreaPos.y;
+      const endX = e.clientX - this.$canvasEveWrapper.offset().left;
+      const endY = e.clientY - this.$canvasEveWrapper.offset().top;
+
+      const resultX = endX - startX;
+      const resultY = endY - startY;
+
+      $selectedArea.css({
+        width: `${resultX}px`,
+        height: `${resultY}px`
+      });
+    },
+
+    //
+
+    _releaseSelectedArea() {
+      this.$selectedArea.remove();
+      this.$selectedArea = null;
+    }
   };
 
   /**
@@ -33,8 +122,7 @@ const CanvasEve = ((W, D, M) => {
    *
    */
   function Canvas() {
-    FlgEve.call(this);
-    MultiSelect.call(this);
+    this.MultiSelect = new MultiSelect();
 
     this.file = {
       $fileId: null,
@@ -83,7 +171,7 @@ const CanvasEve = ((W, D, M) => {
       '<div class="ro-left-bottom"></div>';
   }
 
-  const modules = { ...FlgEve.prototype };
+  const modules = {};
 
   Canvas.prototype = Object.assign(modules, {
     constructor: Canvas,
@@ -98,10 +186,11 @@ const CanvasEve = ((W, D, M) => {
 
     mouseDownEvent(e) {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
-        this.setFlgs(e);
+        FlgEve.setFlgs(e);
         this._init(e);
         if ($(e.target)[0].id === 'reset-res') this._reset();
         this._handleEventMouseDown(e);
+        this.MultiSelect.mouseDownEvent(e);
       }
     },
 
@@ -109,13 +198,15 @@ const CanvasEve = ((W, D, M) => {
 
     mouseUpEvent() {
       this._update();
-      this.resetFlgs();
+      FlgEve.resetFlgs();
+      this.MultiSelect.mouseUpEvent();
     },
 
     //
 
     mouseMoveEvent(e) {
       this._handleEventMouseMove(e);
+      this.MultiSelect.mouseMoveEvent(e);
     },
 
     //
@@ -140,9 +231,9 @@ const CanvasEve = ((W, D, M) => {
         }
 
         // This if argument is the prefix for colpick-eve.js
-        if (this.flgs.colpick.active_spuit_flg === false) {
+        if (FlgEve.flgs.colpick.active_spuit_flg === false) {
           // Added selected symbols and other functions
-          if (this.flgs.config.only_draggable_flg === false) {
+          if (FlgEve.flgs.config.only_draggable_flg === false) {
             if ($fileWrap.find('.selected').length === 0) {
               $fileWrap.prepend('<div class="selected"></div>');
               // Resizing boxes
@@ -165,7 +256,7 @@ const CanvasEve = ((W, D, M) => {
           }
 
           // Add #id to #image, and initialize its values
-          if (this.flgs.canvas.drag_flg === false) {
+          if (FlgEve.flgs.canvas.drag_flg === false) {
             // Global value for the selected ID
             GlbEve.CURRENT_ID = $fileWrap.attr('id');
             this.file.fileId = `#${GlbEve.CURRENT_ID}`;
@@ -217,7 +308,7 @@ const CanvasEve = ((W, D, M) => {
             // Set the $fileId to be the highest of all the other unselected elements
             GlbEve.HIGHEST_Z_INDEX += 1;
             this.file.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
-            this.flgs.canvas.drag_flg = true;
+            FlgEve.flgs.canvas.drag_flg = true;
           }
         }
       }
@@ -252,10 +343,10 @@ const CanvasEve = ((W, D, M) => {
       // This canvas is for color picking.colpick-eve.js
       if (this.file.$fileId !== null && this.file.$fileId.find('.canvas-colpick').length > 0) {
         if (
-          this.flgs.canvas.re.left_top_flg === true ||
-          this.flgs.canvas.re.right_top_flg === true ||
-          this.flgs.canvas.re.right_bottom_flg === true ||
-          this.flgs.canvas.re.left_bottom_flg === true
+          FlgEve.flgs.canvas.re.left_top_flg === true ||
+          FlgEve.flgs.canvas.re.right_top_flg === true ||
+          FlgEve.flgs.canvas.re.right_bottom_flg === true ||
+          FlgEve.flgs.canvas.re.left_bottom_flg === true
         ) {
           setTimeout(() => {
             const img = new Image();
@@ -290,10 +381,10 @@ const CanvasEve = ((W, D, M) => {
             .parents('.thumbtack-wrapper')
             .hasClass('active')
         ) {
-          this.flgs.canvas.thumbtack_flg = true;
+          FlgEve.flgs.canvas.thumbtack_flg = true;
           this._updateUiVal();
         } else {
-          this.flgs.canvas.thumbtack_flg = false;
+          FlgEve.flgs.canvas.thumbtack_flg = false;
         }
       }
 
@@ -403,7 +494,7 @@ const CanvasEve = ((W, D, M) => {
       let resLeft;
       let resTop;
 
-      if (this.flgs.config.no_zooming_flg === true) {
+      if (FlgEve.flgs.config.no_zooming_flg === true) {
         targetPosLeft = e.clientX - this.file.fileIdRelPosX;
         targetPosTop = e.clientY - this.file.fileIdRelPosY;
 
@@ -423,16 +514,16 @@ const CanvasEve = ((W, D, M) => {
 
       if (
         mouseWheelAvailFlg === false &&
-        this.flgs.canvas.thumbtack_flg === false &&
-        this.flgs.canvas.resize_flg === false &&
-        this.flgs.canvas.rotate_flg === false
+        FlgEve.flgs.canvas.thumbtack_flg === false &&
+        FlgEve.flgs.canvas.resize_flg === false &&
+        FlgEve.flgs.canvas.rotate_flg === false
       ) {
-        if (this.flgs.canvas.drag_flg === true) {
+        if (FlgEve.flgs.canvas.drag_flg === true) {
           if (
-            this.flgs.oekaki.move_wheelcircle_flg === false &&
-            this.flgs.oekaki.move_trianglecircle_flg === false &&
-            this.flgs.colpick.active_spuit_flg === false &&
-            this.flgs.colpick.move_circle_flg === false
+            FlgEve.flgs.oekaki.move_wheelcircle_flg === false &&
+            FlgEve.flgs.oekaki.move_trianglecircle_flg === false &&
+            FlgEve.flgs.colpick.active_spuit_flg === false &&
+            FlgEve.flgs.colpick.move_circle_flg === false
           ) {
             this.file.$fileId.css({
               left: `${resLeft}px`,
@@ -453,8 +544,8 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _resize(e, mouseWheelAvailFlg) {
-      if (mouseWheelAvailFlg === false && this.flgs.canvas.resize_flg === true) {
-        if (this.flgs.canvas.re.left_top_flg === true) {
+      if (mouseWheelAvailFlg === false && FlgEve.flgs.canvas.resize_flg === true) {
+        if (FlgEve.flgs.canvas.re.left_top_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
               (this.file.fileIdHeight -
@@ -469,7 +560,7 @@ const CanvasEve = ((W, D, M) => {
           });
         }
 
-        if (this.flgs.canvas.re.right_top_flg === true) {
+        if (FlgEve.flgs.canvas.re.right_top_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
               (this.file.fileIdHeight -
@@ -482,7 +573,7 @@ const CanvasEve = ((W, D, M) => {
           });
         }
 
-        if (this.flgs.canvas.re.right_bottom_flg === true) {
+        if (FlgEve.flgs.canvas.re.right_bottom_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
@@ -492,7 +583,7 @@ const CanvasEve = ((W, D, M) => {
           });
         }
 
-        if (this.flgs.canvas.re.left_bottom_flg === true) {
+        if (FlgEve.flgs.canvas.re.left_bottom_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
@@ -514,23 +605,23 @@ const CanvasEve = ((W, D, M) => {
       const fileCenterPosY = this.file.rotatedCenterPos.top;
       const rad = LibEve.calcRadians(e.clientX - fileCenterPosX, e.clientY - fileCenterPosY);
 
-      if (mouseWheelAvailFlg === false && this.flgs.canvas.rotate_flg === true) {
-        if (this.flgs.canvas.ro.left_top_flg === true) {
+      if (mouseWheelAvailFlg === false && FlgEve.flgs.canvas.rotate_flg === true) {
+        if (FlgEve.flgs.canvas.ro.left_top_flg === true) {
           const resRad = rad - this.tmp.ro.left_top_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
-        if (this.flgs.canvas.ro.right_top_flg === true) {
+        if (FlgEve.flgs.canvas.ro.right_top_flg === true) {
           const resRad = rad - this.tmp.ro.right_top_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
-        if (this.flgs.canvas.ro.right_bottom_flg === true) {
+        if (FlgEve.flgs.canvas.ro.right_bottom_flg === true) {
           const resRad = rad - this.tmp.ro.right_bottom_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
-        if (this.flgs.canvas.ro.left_bottom_flg === true) {
+        if (FlgEve.flgs.canvas.ro.left_bottom_flg === true) {
           const resRad = rad - this.tmp.ro.left_bottom_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }

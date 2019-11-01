@@ -403,7 +403,7 @@ const ThreeEve = ((W, D, M) => {
 
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="trash-wrapper"></div>';
-      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="glsl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
+      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="webgl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
       $('#add-files').append(assertFile);
 
       const hideScissor = D.createElement('div');

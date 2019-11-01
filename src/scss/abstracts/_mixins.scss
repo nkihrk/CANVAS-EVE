@@ -77,3 +77,48 @@ Used:
     transform: scale(1, 1);
   }
 }
+
+/*———————————————————————————————————————————————————————
+
+Add a selected area
+
+Used:
+- components/_canvas-eve.scss
+- components/_oekaki-eve.scss
+
+—————————————————————————————————————————————————————————*/
+
+@mixin selected-area($dot-color, $background-color) {
+  position: relative;
+  @if $background-color != false {
+    background-color: $background-color;
+  }
+
+  &::before {
+    content: '';
+    background-image: linear-gradient(
+        to right,
+        $dot-color,
+        $dot-color 3px,
+        transparent 3px,
+        transparent 8px
+      ),
+      linear-gradient(to right, $dot-color, $dot-color 3px, transparent 3px, transparent 8px),
+      linear-gradient(to bottom, $dot-color, $dot-color 3px, transparent 3px, transparent 8px),
+      linear-gradient(to bottom, $dot-color, $dot-color 3px, transparent 3px, transparent 8px);
+    background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
+    background-position: left top, left bottom, left top, right top;
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+  }
+
+  &.file-wrap {
+    width: 0;
+    transition: '';
+  }
+}

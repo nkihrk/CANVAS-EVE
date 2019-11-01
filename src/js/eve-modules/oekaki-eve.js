@@ -68,15 +68,6 @@ const OekakiEve = ((W, D, M) => {
       }
     };
 
-    this.canvas = {
-      newCanvasPos: {
-        x: null,
-        y: null
-      },
-      $newCanvasId: null,
-      $canvasId: null
-    };
-
     this.oekakiParam = {
       lastBrushPos: {
         x: 0,
@@ -95,10 +86,6 @@ const OekakiEve = ((W, D, M) => {
     this.flgs = {
       cOekaki: {
         draw_canvas_avail_flg: false
-      },
-      newcanvas: {
-        newcanvas_flg: false,
-        create_canvas_avail_flg: false
       },
       brush: {
         brush_flg: false
@@ -259,15 +246,6 @@ const OekakiEve = ((W, D, M) => {
 
       if (e.target.closest('#color-triangle-circle'))
         this.flgs.oekaki.move_trianglecircle_flg = true;
-
-      if (e.target.closest('#reset-res')) {
-        if (this.flgs.newcanvas.newcanvas_flg === true) {
-          this.flgs.newcanvas.create_canvas_avail_flg = true;
-          this.canvas.newCanvasPos.x = e.clientX - $('#zoom').offset().left;
-          this.canvas.newCanvasPos.y = e.clientY - $('#zoom').offset().top;
-          this._createCanvasWrapper();
-        }
-      }
     },
 
     //
@@ -277,17 +255,6 @@ const OekakiEve = ((W, D, M) => {
         this.flgs.oekaki.move_wheelcircle_flg = false;
       if (this.flgs.oekaki.move_trianglecircle_flg === true)
         this.flgs.oekaki.move_trianglecircle_flg = false;
-
-      if (this.flgs.newcanvas.create_canvas_avail_flg === true) {
-        this.flgs.newcanvas.create_canvas_avail_flg = false;
-        // This duration is for IS_TRANSITION
-        setTimeout(() => {
-          this._createCanvas();
-        }, this.options.CREATE_CANVAS_DELAY);
-      }
-
-      // if (this.flgs.cOekaki.draw_canvas_avail_flg === true)
-      //   this.flgs.cOekaki.draw_canvas_avail_flg = false;
     },
 
     //
@@ -298,15 +265,7 @@ const OekakiEve = ((W, D, M) => {
         this._colorTriangleArea(e);
       }
 
-      if (
-        [
-          '#newcanvas-oekaki',
-          '#brush-oekaki',
-          '#eraser-oekaki',
-          '#spuit-oekaki',
-          '#filldrip-oekaki'
-        ].indexOf(`#${e.target.getAttribute('id')}`) !== -1
-      ) {
+      if (['#brush-oekaki', '#eraser-oekaki'].indexOf(`#${e.target.getAttribute('id')}`) !== -1) {
         if (e.button === this.options.BUTTON_FOR_LEFT) this._toggleTool($(e.target), e);
       }
     },
@@ -328,8 +287,6 @@ const OekakiEve = ((W, D, M) => {
         if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
         if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
       }
-
-      if (this.flgs.newcanvas.create_canvas_avail_flg === true) this._updateCanvasVal(e);
     },
 
     //
@@ -779,12 +736,6 @@ const OekakiEve = ((W, D, M) => {
       }
       if ($container.hasClass('active')) this.__$toggleButton = $container;
 
-      if ($container.hasClass('active') && $container.attr('id') === 'newcanvas-oekaki') {
-        this.flgs.newcanvas.newcanvas_flg = true;
-      } else {
-        this.flgs.newcanvas.newcanvas_flg = false;
-      }
-
       if ($container.hasClass('active') && $container.attr('id') === 'brush-oekaki') {
         this.flgs.brush.brush_flg = true;
       } else {
@@ -796,90 +747,6 @@ const OekakiEve = ((W, D, M) => {
       } else {
         this.flgs.eraser.eraser_flg = false;
       }
-    },
-
-    /**
-     * Canvas
-     *
-     */
-    _createCanvasWrapper() {
-      const startX = this.canvas.newCanvasPos.x;
-      const startY = this.canvas.newCanvasPos.y;
-
-      GlbEve.NEWFILE_ID += 1;
-      GlbEve.HIGHEST_Z_INDEX += 1;
-
-      const funcTags =
-        '<div class="thumbtack-wrapper"></div>' +
-        '<div class="resize-wrapper"></div>' +
-        '<div class="flip-wrapper"></div>' +
-        '<div class="trash-wrapper"></div>';
-      const assertFile =
-        `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap selected-dot oekaki-canvas" style="transition: ${GlbEve.IS_TRANSITION};">` +
-        `<div class="function-wrapper">${funcTags}</div>` +
-        '<div class="eve-main is-flipped"></div>' +
-        '</div>';
-      $('#add-files').append(assertFile);
-
-      const fileId = `#${GlbEve.NEWFILE_ID}`;
-      const $fileId = $(fileId);
-
-      $fileId.css({
-        left: `${startX * GlbEve.MOUSE_WHEEL_VAL}px`,
-        top: `${startY * GlbEve.MOUSE_WHEEL_VAL}px`,
-        'z-index': GlbEve.HIGHEST_Z_INDEX
-      });
-
-      // // For colpick-eve.js
-      // if ($('#toggle-colpick').length > 0) {
-      //     if (!$('#toggle-colpick').hasClass('active')) {
-      //         $fileId.addClass('grab-pointer');
-      //     }
-      // } else {
-      //     $fileId.addClass('grab-pointer');
-      // }
-
-      this.canvas.$newCanvasId = $fileId;
-    },
-
-    //
-
-    _updateCanvasVal(e) {
-      const $canvas = this.canvas.$newCanvasId;
-      const startX = this.canvas.newCanvasPos.x;
-      const startY = this.canvas.newCanvasPos.y;
-      const endX = e.clientX - $('#zoom').offset().left;
-      const endY = e.clientY - $('#zoom').offset().top;
-
-      const resultX = M.abs(endX - startX);
-      const resultY = M.abs(endY - startY);
-
-      $canvas.css({
-        width: `${resultX * GlbEve.MOUSE_WHEEL_VAL}px`,
-        height: `${resultY * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-    },
-
-    //
-
-    _createCanvas() {
-      const $newCanvas = this.canvas.$newCanvasId;
-      const c = D.createElement('canvas');
-      const width = $newCanvas.width();
-      const height = $newCanvas.height();
-      // const width = $newCanvas.width() - 2 * GlbEve.MOUSE_WHEEL_VAL;
-      // const height = $newCanvas.height() - 2 * GlbEve.MOUSE_WHEEL_VAL;
-
-      c.width = width;
-      c.height = height;
-
-      const ctx = c.getContext('2d');
-      ctx.canvas.style.touchAction = 'none';
-      ctx.fillStyle = this.options.CANVAS_COLOR;
-      ctx.fillRect(0, 0, width, height);
-
-      $newCanvas.find('.eve-main').append(c);
-      $newCanvas.removeClass('selected-dot');
     },
 
     //
