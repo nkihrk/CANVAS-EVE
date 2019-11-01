@@ -39,6 +39,7 @@ const OekakiEve = ((W, D, M) => {
       height: `${this.options.CANVAS_SIZE}px`
     });
     this.$cOekakiPlain = $('#c-oekaki-plain');
+    this.$plain = $('#plain');
 
     this.param = {
       container: container,
@@ -1098,8 +1099,16 @@ const OekakiEve = ((W, D, M) => {
             left: `${left - 0.5}px`,
             top: `${top - 0.5}px`
           });
+          this.$plain.css({
+            left: `${left - 0.5}px`,
+            top: `${top - 0.5}px`
+          });
         } else {
           this.$cOekakiPlain.css({
+            left: `${left + 0.5}px`,
+            top: `${top + 0.5}px`
+          });
+          this.$plain.css({
             left: `${left + 0.5}px`,
             top: `${top + 0.5}px`
           });

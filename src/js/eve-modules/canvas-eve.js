@@ -20,8 +20,21 @@ const CanvasEve = ((W, D, M) => {
    * Entry point for CanvasEve.
    *
    */
+  function MultiSelect() {}
+
+  MultiSelect.prototype = {
+    constructor: MultiSelect,
+
+    options: {}
+  };
+
+  /**
+   * Entry point for CanvasEve.
+   *
+   */
   function Canvas() {
     FlgEve.call(this);
+    MultiSelect.call(this);
 
     this.file = {
       $fileId: null,
