@@ -266,16 +266,13 @@ const OekakiEve = ((W, D, M) => {
       }
 
       if (['#brush-oekaki', '#eraser-oekaki'].indexOf(`#${e.target.getAttribute('id')}`) !== -1) {
-        if (e.button === this.options.BUTTON_FOR_LEFT) this._toggleTool($(e.target), e);
+        if (e.button === this.options.BUTTON_FOR_LEFT) this._toggleTool($(e.target));
       }
     },
 
     //
 
     _handleEventMouseMove(e) {
-      e.stopPropagation();
-      e.preventDefault();
-
       const originX = $(this.param.container).offset().left;
       const originY = $(this.param.container).offset().top;
       const centerX = originX + this.param.size / 2;
@@ -293,18 +290,8 @@ const OekakiEve = ((W, D, M) => {
 
     _drawPointerEvents(e) {
       if (this.flgs.brush.brush_flg === true || this.flgs.eraser.eraser_flg === true) {
-        // if (
-        //   e.target.closest &&
-        //   (e.target.closest('.oekaki-canvas') || e.target.closest('.selected'))
-        // ) {
-        //   const $canvas = $(e.target)
-        //     .parents('.file-wrap')
-        //     .find('canvas');
-        //   this._drawCanvasPointer($canvas, e);
-        // } else {
         const $canvas = this.$cOekaki;
         this._drawCanvasPointer($canvas, e);
-        // }
       }
     },
 
@@ -723,8 +710,7 @@ const OekakiEve = ((W, D, M) => {
      * Toggling tools
      *
      */
-    _toggleTool($container, e) {
-      e.stopPropagation();
+    _toggleTool($container) {
       $container.toggleClass('active');
 
       if (

@@ -82,8 +82,6 @@ const FileEve = ((W, D, M) => {
     //
 
     _dragOver(e) {
-      e.preventDefault();
-      e.stopPropagation();
       e.dataTransfer.dropEffect = 'copy';
       // Not clear why this will help. I should have to reset pointer-events, but still works fine
       $('iframe').css('pointer-events', 'none');
@@ -92,9 +90,6 @@ const FileEve = ((W, D, M) => {
     //
 
     _drop(e) {
-      e.stopPropagation();
-      e.preventDefault();
-
       let x;
       let y;
       if (e.changedTouches) {

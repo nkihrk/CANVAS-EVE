@@ -17,7 +17,7 @@ import FlgEve from '../common/flg-eve';
 
 const CanvasEve = ((W, D, M) => {
   /**
-   * Entry point for CanvasEve.
+   * Multi-select functionality for CanvasEve.
    *
    */
   function MultiSelect() {
@@ -368,8 +368,12 @@ const CanvasEve = ((W, D, M) => {
 
     _handleEventMouseDown(e) {
       const self = this;
-      e.stopPropagation();
-      e.preventDefault();
+
+      if (e.target.closest('input')) {
+        e.target.focus();
+      } else {
+        D.activeElement.blur();
+      }
 
       if (e.target.closest('.thumbtack-icon')) {
         $(e.target)
@@ -473,7 +477,6 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _handleEventMouseMove(e) {
-      e.preventDefault();
       const pClientX = e.clientX - $('#zoom').offset().left;
       const pClientY = e.clientY - $('#zoom').offset().top;
       let mouseWheelAvailFlg = false;

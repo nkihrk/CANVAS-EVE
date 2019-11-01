@@ -79,6 +79,8 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
+          e.stopPropagation();
+
           this.Plain.mouseDownEvent(e);
           this.File.mouseDownEvent(e);
           this.Oekaki.mouseDownEvent(e);
@@ -112,6 +114,9 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousemove',
         e => {
+          e.preventDefault();
+          e.stopPropagation();
+
           this.Plain.mouseMoveEvent(e);
           this.File.mouseMoveEvent(e);
           this.Oekaki.mouseMoveEvent(e);
@@ -192,6 +197,9 @@ const EventEve = ((W, D) => {
       this.canvasEveWrap.addEventListener(
         'dragover',
         e => {
+          e.preventDefault();
+          e.stopPropagation();
+
           self.Three.Reader.dragOverEvent(e);
           self.File.dragOverEvent(e);
         },
@@ -206,6 +214,9 @@ const EventEve = ((W, D) => {
       this.canvasEveWrap.addEventListener(
         'drop',
         e => {
+          e.preventDefault();
+          e.stopPropagation();
+
           self.Three.Reader.dropEvent(e);
           self.File.dropEvent(e);
         },

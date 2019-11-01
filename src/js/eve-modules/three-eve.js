@@ -198,8 +198,6 @@ const ThreeEve = ((W, D, M) => {
     //
 
     _handleDragEvent(e) {
-      e.preventDefault();
-      e.stopPropagation();
       e.dataTransfer.dropEffect = 'copy';
       // Not clear why this will help. I should have to reset pointer-events, but still works fine
       $('iframe').css('pointer-events', 'none');
@@ -208,9 +206,6 @@ const ThreeEve = ((W, D, M) => {
     //
 
     _handleDropEvent(e) {
-      e.stopPropagation();
-      e.preventDefault();
-
       let x;
       let y;
       if (e.changedTouches) {

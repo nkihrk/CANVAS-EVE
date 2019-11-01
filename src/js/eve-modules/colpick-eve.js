@@ -28,6 +28,7 @@ const ColpickEve = (() => {
     constructor: Colpick,
 
     options: {
+      BUTTON_FOR_LEFT: 0,
       HEX: '#32303f'
     },
 
@@ -38,9 +39,11 @@ const ColpickEve = (() => {
     //
 
     mouseDownEvent(e) {
-      this._init(e);
-      this._setFlgs(e);
-      this._handleEventMouseDown(e);
+      if (e.button === this.options.BUTTON_FOR_LEFT) {
+        this._init(e);
+        this._setFlgs(e);
+        this._handleEventMouseDown(e);
+      }
     },
 
     //
@@ -104,7 +107,6 @@ const ColpickEve = (() => {
           .find('canvas').length > 0 &&
         e.button !== 1
       ) {
-        e.preventDefault();
         const col = this._getColor(e);
         const hex = LibEve.rgb2hex([col[0], col[1], col[2]]);
 

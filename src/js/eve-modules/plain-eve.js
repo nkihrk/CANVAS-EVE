@@ -90,7 +90,6 @@ const PlainEve = (() => {
     //
 
     _handleEvents(e) {
-      e.preventDefault();
       const { $plain } = this;
       const { $canvasEve } = this;
 
