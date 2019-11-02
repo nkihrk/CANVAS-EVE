@@ -279,7 +279,7 @@ const $ = (D => {
 
       if (n > 1) {
         for (let i = 0; i < n; i++) {
-          this[i].parentNode.removeChild(e[i]);
+          this[i].parentNode.removeChild(this[i]);
         }
       } else if (n === 1) {
         this[0].parentNode.removeChild(this[0]);

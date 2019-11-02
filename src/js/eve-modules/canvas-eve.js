@@ -48,7 +48,7 @@ const CanvasEve = ((W, D, M) => {
     mouseDownEvent(e) {
       if (e.button === this.options.BUTTON_FOR_LEFT && e.target.closest('#reset-res')) {
         this._setFlgs(e);
-        this._createSelectedArea();
+        this._createSelectedArea(e);
       }
     },
 
@@ -68,9 +68,11 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _setFlgs(e) {
-      if (e.target.closest('#reset-res')) this.flgs.create_selected_area_flg = true;
-      this.newSelectedAreaPos.x = e.clientX - this.$canvasEveWrapper.offset().left;
-      this.newSelectedAreaPos.y = e.clientY - this.$canvasEveWrapper.offset().top;
+      if (e.target.closest('#reset-res')) {
+        this.flgs.create_selected_area_flg = true;
+
+        if (FlgEve.canvas.multi_select_flg === true) FlgEve.canvas.multi_select_flg = false;
+      }
     },
 
     //
@@ -81,9 +83,9 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _createSelectedArea() {
-      const startX = this.newSelectedAreaPos.x;
-      const startY = this.newSelectedAreaPos.y;
+    _createSelectedArea(e) {
+      const startX = e.clientX;
+      const startY = e.clientY;
       const selectedArea = D.createElement('div');
       selectedArea.id = 'selected-area';
       selectedArea.classList.add('file-wrap');
@@ -91,6 +93,8 @@ const CanvasEve = ((W, D, M) => {
       selectedArea.style.top = `${startY}px`;
       selectedArea.style.zIndex = 1;
 
+      this.newSelectedAreaPos.x = startX;
+      this.newSelectedAreaPos.y = startY;
       this.$selectedArea = $(selectedArea);
       this.$canvasEveWrapper.append(selectedArea);
     },
@@ -122,6 +126,14 @@ const CanvasEve = ((W, D, M) => {
       this.$selectedArea = null;
 
       this._evaluateArea();
+      this.newSelectedAreaPos = {
+        x: null,
+        y: null
+      };
+      this.endSelectedAreaPos = {
+        x: null,
+        y: null
+      };
     },
 
     _evaluateArea() {
@@ -144,12 +156,13 @@ const CanvasEve = ((W, D, M) => {
         endX: areaEndX,
         endY: areaEndY
       };
-      console.log($fileWraps);
+      let onlyDraggableFlg = false;
+      // console.log($fileWraps);
 
       for (let i = 0; i < n; i++) {
         fileWrap = $fileWraps[i];
         $fileWrap = $(fileWrap);
-        console.log($fileWrap);
+        // console.log($fileWrap);
 
         if ($fileWrap.parents('#canvas-eve').length === 1) {
           fileStartX = $fileWrap.offset().left;
@@ -163,20 +176,45 @@ const CanvasEve = ((W, D, M) => {
             endY: fileEndY
           };
 
+          if ($fileWrap.find('.only-draggable').length > 0) {
+            onlyDraggableFlg = true;
+          } else {
+            onlyDraggableFlg = false;
+          }
+
           const isAvail = this._estimateBounding(areaPos, filePos);
-          console.log(isAvail);
+          if (isAvail === true && onlyDraggableFlg === false) {
+            FlgEve.canvas.multi_select_flg = true;
+            $fileWrap.prepend(
+              `<div class="selected" style="border-width: ${GlbEve.MOUSE_WHEEL_VAL}px"></div>`
+            );
+          }
         }
       }
     },
 
     _estimateBounding(areaPos, filePos) {
       // console.log('filePos', filePos, 'areaPos', areaPos);
-      const isLeftTop = this._isInBounding(areaPos, [filePos.startX, filePos.startY]);
-      const isRightTop = this._isInBounding(areaPos, [filePos.endX, filePos.startY]);
-      const isRightBottom = this._isInBounding(areaPos, [filePos.endX, filePos.endY]);
-      const isLeftBottom = this._isInBounding(areaPos, [filePos.startX, filePos.endY]);
+      const isLeftTopFile = this._isInBounding(areaPos, [filePos.startX, filePos.startY]);
+      const isRightTopFile = this._isInBounding(areaPos, [filePos.endX, filePos.startY]);
+      const isRightBottomFile = this._isInBounding(areaPos, [filePos.endX, filePos.endY]);
+      const isLeftBottomFile = this._isInBounding(areaPos, [filePos.startX, filePos.endY]);
 
-      if (isLeftTop || isRightTop || isRightBottom || isLeftBottom) {
+      const isLeftTopArea = this._isInBounding(filePos, [areaPos.startX, areaPos.startY]);
+      const isRightTopArea = this._isInBounding(filePos, [areaPos.endX, areaPos.startY]);
+      const isRightBottomArea = this._isInBounding(filePos, [areaPos.endX, areaPos.endY]);
+      const isLeftBottomArea = this._isInBounding(filePos, [areaPos.startX, areaPos.endY]);
+
+      if (
+        isLeftTopFile ||
+        isRightTopFile ||
+        isRightBottomFile ||
+        isLeftBottomFile ||
+        isLeftTopArea ||
+        isRightTopArea ||
+        isRightBottomArea ||
+        isLeftBottomArea
+      ) {
         return true;
       }
 
@@ -328,11 +366,15 @@ const CanvasEve = ((W, D, M) => {
         }
 
         // This if argument is the prefix for colpick-eve.js
-        if (FlgEve.flgs.colpick.active_spuit_flg === false) {
+        if (FlgEve.colpick.active_spuit_flg === false) {
           // Added selected symbols and other functions
-          if (FlgEve.flgs.config.only_draggable_flg === false) {
-            if ($fileWrap.find('.selected').length === 0) {
-              $fileWrap.prepend('<div class="selected"></div>');
+          if (FlgEve.config.only_draggable_flg === false) {
+            if (
+              FlgEve.canvas.multi_select_flg === false ||
+              $fileWrap.find('.selected').length === 0
+            ) {
+              if ($fileWrap.find('.selected').length === 0)
+                $fileWrap.prepend('<div class="selected"></div>');
               // Resizing boxes
               if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
                 $fileWrap.prepend(self.resizeBox);
@@ -342,18 +384,23 @@ const CanvasEve = ((W, D, M) => {
                 $fileWrap.prepend(self.rotateBox); // Rotating circles
               }
 
-              $fileWrap.find('.thumbtack-wrapper').prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
-              $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon"></div>'); // Add a resizing icon
-              $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
-              $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon"></div>'); // Add a flipping icon
-              $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon"></div>'); // Add a trash icon
+              if ($fileWrap.find('.thumbtack-icon').length === 0)
+                $fileWrap.find('.thumbtack-wrapper').prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
+              if ($fileWrap.find('.resize-icon').length === 0)
+                $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon"></div>'); // Add a resizing icon
+              if ($fileWrap.find('.rotate-icon').length === 0)
+                $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
+              if ($fileWrap.find('.flip-icon').length === 0)
+                $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon"></div>'); // Add a flipping icon
+              if ($fileWrap.find('.trash-icon').length === 0)
+                $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon"></div>'); // Add a trash icon
             }
 
             this._updateUiVal();
           }
 
           // Add #id to #image, and initialize its values
-          if (FlgEve.flgs.canvas.drag_flg === false) {
+          if (FlgEve.canvas.drag_flg === false) {
             // Global value for the selected ID
             GlbEve.CURRENT_ID = $fileWrap.attr('id');
             this.file.fileId = `#${GlbEve.CURRENT_ID}`;
@@ -405,7 +452,7 @@ const CanvasEve = ((W, D, M) => {
             // Set the $fileId to be the highest of all the other unselected elements
             GlbEve.HIGHEST_Z_INDEX += 1;
             this.file.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
-            FlgEve.flgs.canvas.drag_flg = true;
+            FlgEve.canvas.drag_flg = true;
           }
         }
       }
@@ -440,10 +487,10 @@ const CanvasEve = ((W, D, M) => {
       // This canvas is for color picking.colpick-eve.js
       if (this.file.$fileId !== null && this.file.$fileId.find('.canvas-colpick').length > 0) {
         if (
-          FlgEve.flgs.canvas.re.left_top_flg === true ||
-          FlgEve.flgs.canvas.re.right_top_flg === true ||
-          FlgEve.flgs.canvas.re.right_bottom_flg === true ||
-          FlgEve.flgs.canvas.re.left_bottom_flg === true
+          FlgEve.canvas.re.left_top_flg === true ||
+          FlgEve.canvas.re.right_top_flg === true ||
+          FlgEve.canvas.re.right_bottom_flg === true ||
+          FlgEve.canvas.re.left_bottom_flg === true
         ) {
           setTimeout(() => {
             const img = new Image();
@@ -482,10 +529,10 @@ const CanvasEve = ((W, D, M) => {
             .parents('.thumbtack-wrapper')
             .hasClass('active')
         ) {
-          FlgEve.flgs.canvas.thumbtack_flg = true;
+          FlgEve.canvas.thumbtack_flg = true;
           this._updateUiVal();
         } else {
-          FlgEve.flgs.canvas.thumbtack_flg = false;
+          FlgEve.canvas.thumbtack_flg = false;
         }
       }
 
@@ -594,7 +641,7 @@ const CanvasEve = ((W, D, M) => {
       let resLeft;
       let resTop;
 
-      if (FlgEve.flgs.config.no_zooming_flg === true) {
+      if (FlgEve.config.no_zooming_flg === true) {
         targetPosLeft = e.clientX - this.file.fileIdRelPosX;
         targetPosTop = e.clientY - this.file.fileIdRelPosY;
 
@@ -614,16 +661,16 @@ const CanvasEve = ((W, D, M) => {
 
       if (
         mouseWheelAvailFlg === false &&
-        FlgEve.flgs.canvas.thumbtack_flg === false &&
-        FlgEve.flgs.canvas.resize_flg === false &&
-        FlgEve.flgs.canvas.rotate_flg === false
+        FlgEve.canvas.thumbtack_flg === false &&
+        FlgEve.canvas.resize_flg === false &&
+        FlgEve.canvas.rotate_flg === false
       ) {
-        if (FlgEve.flgs.canvas.drag_flg === true) {
+        if (FlgEve.canvas.drag_flg === true) {
           if (
-            FlgEve.flgs.oekaki.move_wheelcircle_flg === false &&
-            FlgEve.flgs.oekaki.move_trianglecircle_flg === false &&
-            FlgEve.flgs.colpick.active_spuit_flg === false &&
-            FlgEve.flgs.colpick.move_circle_flg === false
+            FlgEve.oekaki.move_wheelcircle_flg === false &&
+            FlgEve.oekaki.move_trianglecircle_flg === false &&
+            FlgEve.colpick.active_spuit_flg === false &&
+            FlgEve.colpick.move_circle_flg === false
           ) {
             this.file.$fileId.css({
               left: `${resLeft}px`,
@@ -644,8 +691,8 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _resize(e, mouseWheelAvailFlg) {
-      if (mouseWheelAvailFlg === false && FlgEve.flgs.canvas.resize_flg === true) {
-        if (FlgEve.flgs.canvas.re.left_top_flg === true) {
+      if (mouseWheelAvailFlg === false && FlgEve.canvas.resize_flg === true) {
+        if (FlgEve.canvas.re.left_top_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
               (this.file.fileIdHeight -
@@ -660,7 +707,7 @@ const CanvasEve = ((W, D, M) => {
           });
         }
 
-        if (FlgEve.flgs.canvas.re.right_top_flg === true) {
+        if (FlgEve.canvas.re.right_top_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
               (this.file.fileIdHeight -
@@ -673,7 +720,7 @@ const CanvasEve = ((W, D, M) => {
           });
         }
 
-        if (FlgEve.flgs.canvas.re.right_bottom_flg === true) {
+        if (FlgEve.canvas.re.right_bottom_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
@@ -683,7 +730,7 @@ const CanvasEve = ((W, D, M) => {
           });
         }
 
-        if (FlgEve.flgs.canvas.re.left_bottom_flg === true) {
+        if (FlgEve.canvas.re.left_bottom_flg === true) {
           this.file.$fileId.css({
             top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
@@ -705,23 +752,23 @@ const CanvasEve = ((W, D, M) => {
       const fileCenterPosY = this.file.rotatedCenterPos.top;
       const rad = LibEve.calcRadians(e.clientX - fileCenterPosX, e.clientY - fileCenterPosY);
 
-      if (mouseWheelAvailFlg === false && FlgEve.flgs.canvas.rotate_flg === true) {
-        if (FlgEve.flgs.canvas.ro.left_top_flg === true) {
+      if (mouseWheelAvailFlg === false && FlgEve.canvas.rotate_flg === true) {
+        if (FlgEve.canvas.ro.left_top_flg === true) {
           const resRad = rad - this.tmp.ro.left_top_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
-        if (FlgEve.flgs.canvas.ro.right_top_flg === true) {
+        if (FlgEve.canvas.ro.right_top_flg === true) {
           const resRad = rad - this.tmp.ro.right_top_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
-        if (FlgEve.flgs.canvas.ro.right_bottom_flg === true) {
+        if (FlgEve.canvas.ro.right_bottom_flg === true) {
           const resRad = rad - this.tmp.ro.right_bottom_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
-        if (FlgEve.flgs.canvas.ro.left_bottom_flg === true) {
+        if (FlgEve.canvas.ro.left_bottom_flg === true) {
           const resRad = rad - this.tmp.ro.left_bottom_initRad;
           this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
