@@ -17,7 +17,7 @@ import FlgEve from '../common/flg-eve';
 
 const CanvasEve = ((W, D, M) => {
   /**
-   * Multi-select functionality for CanvasEve.
+   * Multi-select function for CanvasEve.
    *
    */
   function MultiSelect() {
@@ -25,6 +25,10 @@ const CanvasEve = ((W, D, M) => {
     this.$selectedArea = null; // lazy load
 
     this.newSelectedAreaPos = {
+      x: null, // lazy load
+      y: null // lazy load
+    };
+    this.endSelectedAreaPos = {
       x: null, // lazy load
       y: null // lazy load
     };
@@ -99,9 +103,11 @@ const CanvasEve = ((W, D, M) => {
       const startY = this.newSelectedAreaPos.y;
       const endX = e.clientX - this.$canvasEveWrapper.offset().left;
       const endY = e.clientY - this.$canvasEveWrapper.offset().top;
-
       const resultX = endX - startX;
       const resultY = endY - startY;
+
+      this.endSelectedAreaPos.x = endX;
+      this.endSelectedAreaPos.y = endY;
 
       $selectedArea.css({
         width: `${resultX}px`,
@@ -114,6 +120,97 @@ const CanvasEve = ((W, D, M) => {
     _releaseSelectedArea() {
       this.$selectedArea.remove();
       this.$selectedArea = null;
+
+      this._evaluateArea();
+    },
+
+    _evaluateArea() {
+      const $fileWraps = $('.file-wrap');
+      const n = $fileWraps.length;
+      let fileWrap;
+      let $fileWrap;
+      let fileStartX;
+      let fileStartY;
+      let fileEndX;
+      let fileEndY;
+      let filePos;
+      const areaStartX = this.newSelectedAreaPos.x;
+      const areaStartY = this.newSelectedAreaPos.y;
+      const areaEndX = this.endSelectedAreaPos.x;
+      const areaEndY = this.endSelectedAreaPos.y;
+      const areaPos = {
+        startX: areaStartX,
+        startY: areaStartY,
+        endX: areaEndX,
+        endY: areaEndY
+      };
+      console.log($fileWraps);
+
+      for (let i = 0; i < n; i++) {
+        fileWrap = $fileWraps[i];
+        $fileWrap = $(fileWrap);
+        console.log($fileWrap);
+
+        if ($fileWrap.parents('#canvas-eve').length === 1) {
+          fileStartX = $fileWrap.offset().left;
+          fileStartY = $fileWrap.offset().top;
+          fileEndX = fileStartX + $fileWrap.width() / GlbEve.MOUSE_WHEEL_VAL;
+          fileEndY = fileStartY + $fileWrap.height() / GlbEve.MOUSE_WHEEL_VAL;
+          filePos = {
+            startX: fileStartX,
+            startY: fileStartY,
+            endX: fileEndX,
+            endY: fileEndY
+          };
+
+          const isAvail = this._estimateBounding(areaPos, filePos);
+          console.log(isAvail);
+        }
+      }
+    },
+
+    _estimateBounding(areaPos, filePos) {
+      // console.log('filePos', filePos, 'areaPos', areaPos);
+      const isLeftTop = this._isInBounding(areaPos, [filePos.startX, filePos.startY]);
+      const isRightTop = this._isInBounding(areaPos, [filePos.endX, filePos.startY]);
+      const isRightBottom = this._isInBounding(areaPos, [filePos.endX, filePos.endY]);
+      const isLeftBottom = this._isInBounding(areaPos, [filePos.startX, filePos.endY]);
+
+      if (isLeftTop || isRightTop || isRightBottom || isLeftBottom) {
+        return true;
+      }
+
+      if (
+        areaPos.startX < filePos.startX &&
+        filePos.endX < areaPos.endX &&
+        filePos.startY < areaPos.startY &&
+        areaPos.endY < filePos.endY
+      ) {
+        return true;
+      }
+
+      if (
+        filePos.startX < areaPos.startX &&
+        areaPos.endX < filePos.endX &&
+        areaPos.startY < filePos.startY &&
+        filePos.endY < areaPos.endY
+      ) {
+        return true;
+      }
+
+      return false;
+    },
+
+    //
+
+    _isInBounding(aPos, tPos) {
+      if (aPos.startX < tPos[0] && tPos[0] < aPos.endX) {
+        if (aPos.startY < tPos[1] && tPos[1] < aPos.endY) {
+          return true;
+        }
+      }
+
+      return false;
     }
   };
 

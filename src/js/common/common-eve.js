@@ -4,13 +4,14 @@
  *
  * Dependencies
  * - jquery-eve
+ * - glb-eve
  *
  */
 
 import $ from './jquery-eve';
 import GlbEve from './glb-eve';
 
-const CommonEve = (W => {
+const CommonEve = ((W, D) => {
   function Common() {
     this.$footer = $('#footer');
   }
@@ -37,10 +38,10 @@ const CommonEve = (W => {
         $load.css('display', 'block');
       }
 
-      if (document.readyState !== 'loading') {
+      if (D.readyState !== 'loading') {
         ready();
       } else {
-        document.addEventListener('DOMContentLoaded', ready);
+        D.addEventListener('DOMContentLoaded', ready);
       }
     },
 
@@ -96,6 +97,6 @@ const CommonEve = (W => {
   });
 
   return Common;
-})(window);
+})(window, document);
 
 export default CommonEve;
