@@ -73,7 +73,7 @@ const CanvasEve = ((W, D, M) => {
 
     _setFlgs() {
       this.flgs.create_selected_area_flg = true;
-      if (FlgEve.canvas.multi_select_flg === true) FlgEve.canvas.multi_select_flg = false;
+      if (FlgEve.canvas.select.is_multi_flg === true) FlgEve.canvas.select.is_multi_flg = false;
     },
 
     //
@@ -135,19 +135,10 @@ const CanvasEve = ((W, D, M) => {
       this.$selectedArea = null;
 
       this._evaluateArea();
-      this.newAreaPos = {
-        x: null,
-        y: null
-      };
-      this.newSelectedAreaPos = {
-        x: null,
-        y: null
-      };
-      this.endSelectedAreaPos = {
-        x: null,
-        y: null
-      };
+      this._initVal();
     },
+
+    //
 
     _evaluateArea() {
       const $fileWraps = $('.file-wrap');
@@ -170,6 +161,7 @@ const CanvasEve = ((W, D, M) => {
         endY: areaEndY
       };
       let onlyDraggableFlg = false;
+      let availCount = 0;
       // console.log($fileWraps);
 
       for (let i = 0; i < n; i++) {
@@ -197,7 +189,9 @@ const CanvasEve = ((W, D, M) => {
 
           const isAvail = this._estimateBounding(areaPos, filePos);
           if (isAvail === true && onlyDraggableFlg === false) {
-            FlgEve.canvas.multi_select_flg = true;
+            availCount++;
+            FlgEve.canvas.select.is_multi_flg = true;
+            if (availCount === 1) FlgEve.canvas.select.is_multi_flg = false;
             $fileWrap.prepend(
               `<div class="selected" style="border-width: ${GlbEve.MOUSE_WHEEL_VAL}px"></div>`
             );
@@ -262,6 +256,23 @@ const CanvasEve = ((W, D, M) => {
       }
 
       return false;
+    },
+
+    //
+
+    _initVal() {
+      this.newAreaPos = {
+        x: null,
+        y: null
+      };
+      this.newSelectedAreaPos = {
+        x: null,
+        y: null
+      };
+      this.endSelectedAreaPos = {
+        x: null,
+        y: null
+      };
     }
   };
 
@@ -335,7 +346,11 @@ const CanvasEve = ((W, D, M) => {
     mouseDownEvent(e) {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
         FlgEve.setFlgs(e);
-        this._init(e);
+        if (FlgEve.canvas.select.is_multi_flg === true) {
+          this._initMulti(e);
+        } else {
+          this._initSingle(e);
+        }
         if ($(e.target)[0].id === 'reset-res') this._reset();
         this._handleEventMouseDown(e);
         this.MultiSelect.mouseDownEvent(e);
@@ -365,7 +380,7 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _init(e) {
+    _initSingle(e) {
       const self = this;
 
       let $fileWrap = $(e.target).parents('.file-wrap');
@@ -374,27 +389,23 @@ const CanvasEve = ((W, D, M) => {
       }
 
       if ($fileWrap && $fileWrap.hasClass('file-wrap')) {
-        console.log($fileWrap);
-
-        if ($fileWrap.find('.selected').length === 0) {
-          this._reset();
-        }
+        if ($fileWrap.find('.selected').length === 0) this._reset();
 
         // This if argument is the prefix for colpick-eve.js
         if (FlgEve.colpick.active_spuit_flg === false) {
           // Added selected symbols and other functions
           if (FlgEve.config.only_draggable_flg === false) {
             if (
-              FlgEve.canvas.multi_select_flg === false ||
+              FlgEve.canvas.select.is_multi_flg === false ||
               $fileWrap.find('.selected').length === 0
             ) {
               if ($fileWrap.find('.selected').length === 0)
                 $fileWrap.prepend('<div class="selected"></div>');
+
               // Resizing boxes
               if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
                 if ($fileWrap.find('.re-left-top').length === 0) $fileWrap.prepend(self.resizeBox);
               }
-
               if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
                 if ($fileWrap.find('.ro-left-top').length === 0) $fileWrap.prepend(self.rotateBox); // Rotating circles
               }
@@ -472,6 +483,10 @@ const CanvasEve = ((W, D, M) => {
         }
       }
     },
+
+    //
+
+    _initMulti(e) {},
 
     //
 

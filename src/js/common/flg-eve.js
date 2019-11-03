@@ -19,6 +19,9 @@ const FlgEve = (() => {
     };
     this.canvas = {
       multi_select_flg: false,
+      select: {
+        is_multi_flg: false
+      },
       drag_flg: false,
       rotate_flg: false,
       resize_flg: false,
