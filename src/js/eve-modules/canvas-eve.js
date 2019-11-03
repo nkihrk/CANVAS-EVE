@@ -47,7 +47,7 @@ const CanvasEve = ((W, D, M) => {
 
     mouseDownEvent(e) {
       if (e.button === this.options.BUTTON_FOR_LEFT && e.target.closest('#reset-res')) {
-        this._setFlgs(e);
+        this._setFlgs();
         this._createSelectedArea(e);
       }
     },
@@ -67,12 +67,9 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _setFlgs(e) {
-      if (e.target.closest('#reset-res')) {
-        this.flgs.create_selected_area_flg = true;
-
-        if (FlgEve.canvas.multi_select_flg === true) FlgEve.canvas.multi_select_flg = false;
-      }
+    _setFlgs() {
+      this.flgs.create_selected_area_flg = true;
+      if (FlgEve.canvas.multi_select_flg === true) FlgEve.canvas.multi_select_flg = false;
     },
 
     //
@@ -107,15 +104,21 @@ const CanvasEve = ((W, D, M) => {
       const startY = this.newSelectedAreaPos.y;
       const endX = e.clientX - this.$canvasEveWrapper.offset().left;
       const endY = e.clientY - this.$canvasEveWrapper.offset().top;
-      const resultX = endX - startX;
-      const resultY = endY - startY;
+      const tmpW = endX - startX;
+      const tmpH = endY - startY;
+      // const resultX = 0;
+      // const resultY = 0;
+      const resultW = tmpW > 0 ? tmpW : -tmpW;
+      const resultH = tmpH > 0 ? tmpH : -tmpH;
 
-      this.endSelectedAreaPos.x = endX;
-      this.endSelectedAreaPos.y = endY;
+      this.endSelectedAreaPos.x = tmpW > 0 ? endX : startX;
+      this.endSelectedAreaPos.y = tmpH > 0 ? endY : startY;
 
       $selectedArea.css({
-        width: `${resultX}px`,
-        height: `${resultY}px`
+        // top: `${resultX}px`,
+        // left: `${resultY}px`,
+        width: `${resultW}px`,
+        height: `${resultH}px`
       });
     },
 
@@ -361,6 +364,8 @@ const CanvasEve = ((W, D, M) => {
       }
 
       if ($fileWrap && $fileWrap.hasClass('file-wrap')) {
+        console.log($fileWrap);
+
         if ($fileWrap.find('.selected').length === 0) {
           this._reset();
         }
@@ -377,11 +382,11 @@ const CanvasEve = ((W, D, M) => {
                 $fileWrap.prepend('<div class="selected"></div>');
               // Resizing boxes
               if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
-                $fileWrap.prepend(self.resizeBox);
+                if ($fileWrap.find('.re-left-top').length === 0) $fileWrap.prepend(self.resizeBox);
               }
 
               if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
-                $fileWrap.prepend(self.rotateBox); // Rotating circles
+                if ($fileWrap.find('.ro-left-top').length === 0) $fileWrap.prepend(self.rotateBox); // Rotating circles
               }
 
               if ($fileWrap.find('.thumbtack-icon').length === 0)
@@ -512,12 +517,6 @@ const CanvasEve = ((W, D, M) => {
 
     _handleEventMouseDown(e) {
       const self = this;
-
-      if (e.target.closest('input')) {
-        e.target.focus();
-      } else {
-        D.activeElement.blur();
-      }
 
       if (e.target.closest('.thumbtack-icon')) {
         $(e.target)

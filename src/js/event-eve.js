@@ -79,8 +79,6 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
-          e.stopPropagation();
-
           this.Plain.mouseDownEvent(e);
           this.File.mouseDownEvent(e);
           this.Oekaki.mouseDownEvent(e);
