@@ -38,7 +38,8 @@ const CanvasEve = ((W, D, M) => {
     };
 
     this.flgs = {
-      create_selected_area_flg: false
+      create_selected_area_flg: false,
+      is_multi_mode_flg: false
     };
   }
 
@@ -50,9 +51,14 @@ const CanvasEve = ((W, D, M) => {
     },
 
     mouseDownEvent(e) {
-      if (e.button === this.options.BUTTON_FOR_LEFT && e.target.closest('#reset-res')) {
-        this._setFlgs();
-        this._createSelectedArea(e);
+      if (e.button === this.options.BUTTON_FOR_LEFT) {
+        this._handleMultiMode(e);
+
+        if (e.target.closest('#reset-res')) {
+          this._setFlgs();
+          this._createSelectedArea(e);
+        }
+        console.log(this.flgs.is_multi_mode_flg);
       }
     },
 
@@ -67,19 +73,31 @@ const CanvasEve = ((W, D, M) => {
 
     mouseMoveEvent(e) {
       if (this.flgs.create_selected_area_flg === true) this._updateSelectedArea(e);
+      console.log(this.flgs.is_multi_mode_flg);
+    },
+
+    //
+
+    _handleMultiMode(e) {
+      let $fileWrap = $(e.target).parents('.file-wrap');
+      if ($fileWrap.length === 0) {
+        $fileWrap = $(e.target);
+      }
+      if ($fileWrap.find('.selected').length !== 1) this.flgs.is_multi_mode_flg = false;
     },
 
     //
 
     _setFlgs() {
       this.flgs.create_selected_area_flg = true;
-      if (FlgEve.canvas.select.is_multi_flg === true) FlgEve.canvas.select.is_multi_flg = false;
     },
 
     //
 
     _resetFlgs() {
       if (this.flgs.create_selected_area_flg === true) this.flgs.create_selected_area_flg = false;
+      if (FlgEve.canvas.select.is_multi_flg === true && this.flgs.is_multi_mode_flg === false)
+        FlgEve.canvas.select.is_multi_flg = false;
     },
 
     //
@@ -190,8 +208,12 @@ const CanvasEve = ((W, D, M) => {
           const isAvail = this._estimateBounding(areaPos, filePos);
           if (isAvail === true && onlyDraggableFlg === false) {
             availCount++;
-            FlgEve.canvas.select.is_multi_flg = true;
-            if (availCount === 1) FlgEve.canvas.select.is_multi_flg = false;
+            if (availCount === 1) {
+              FlgEve.canvas.select.is_multi_flg = false;
+            } else {
+              FlgEve.canvas.select.is_multi_flg = true;
+              this.flgs.is_multi_mode_flg = true;
+            }
             $fileWrap.prepend(
               `<div class="selected" style="border-width: ${GlbEve.MOUSE_WHEEL_VAL}px"></div>`
             );
@@ -302,6 +324,7 @@ const CanvasEve = ((W, D, M) => {
         top: 0
       }
     };
+    this.multiFile = {}; // lazy generated
 
     this.tmp = {
       ro: {
@@ -351,7 +374,10 @@ const CanvasEve = ((W, D, M) => {
         } else {
           this._initSingle(e);
         }
-        if ($(e.target)[0].id === 'reset-res') this._reset();
+        if ($(e.target)[0].id === 'reset-res') {
+          this._reset();
+          this._initMultiFile();
+        }
         this._handleEventMouseDown(e);
         this.MultiSelect.mouseDownEvent(e);
       }
@@ -486,7 +512,67 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _initMulti(e) {},
+    _initMulti(e) {
+      const $fileWraps = $('.file-wrap');
+      const n = $fileWraps.length;
+      let availCount = 0;
+
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+
+        if ($fileWrap.find('.selected').length === 1) {
+          // This if argument is the prefix for colpick-eve.js
+          if (FlgEve.colpick.active_spuit_flg === false) {
+            if (FlgEve.canvas.drag_flg === false) {
+              // Global value for the selected ID
+              GlbEve.CURRENT_ID = $fileWrap.attr('id');
+              this.multiFile[availCount] = {};
+              const m = this.multiFile[availCount];
+              m.fileId = `#${GlbEve.CURRENT_ID}`;
+              m.$fileId = $(`#${GlbEve.CURRENT_ID}`);
+
+              m.fileIdWidth = m.$fileId.outerWidth();
+              m.fileIdHeight = m.$fileId.outerHeight();
+              m.fileIdRatio = m.fileIdHeight / m.fileIdWidth;
+
+              m.fileIdTheta = LibEve.getRotationRad(m.$fileId[0]);
+              m.rotatedSize = {};
+              m.rotatedSize.width =
+                m.fileIdWidth * M.abs(M.cos(m.fileIdTheta)) +
+                m.fileIdHeight * M.abs(M.sin(m.fileIdTheta));
+              m.rotatedSize.height =
+                m.fileIdHeight * M.abs(M.cos(m.fileIdTheta)) +
+                m.fileIdWidth * M.abs(M.sin(m.fileIdTheta));
+
+              m.fileIdPos = m.$fileId.offset();
+
+              m.fileIdRelPosX = e.clientX - m.fileIdPos.left;
+              m.fileIdRelPosY = e.clientY - m.fileIdPos.top;
+
+              // Initialize m.rotatedCenterPos. These are screen-space coordinates
+              m.rotatedCenterPos = {};
+              m.rotatedCenterPos.left =
+                m.$fileId.offset().left + m.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+              m.rotatedCenterPos.top =
+                m.$fileId.offset().top + m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+
+              // Set the $fileId to be the highest of all the other unselected elements
+              GlbEve.HIGHEST_Z_INDEX += 1;
+              m.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
+              availCount++;
+            }
+          }
+        }
+      }
+      FlgEve.canvas.drag_flg = true;
+      console.log(this.multiFile);
+    },
+
+    //
+
+    _initMultiFile() {
+      this.multiFile = {};
+    },
 
     //
 
@@ -652,14 +738,18 @@ const CanvasEve = ((W, D, M) => {
         mouseWheelAvailFlg = true;
       }
 
-      this._dragged(e, pClientX, pClientY, mouseWheelAvailFlg);
+      if (FlgEve.canvas.select.is_multi_flg === true) {
+        this._draggedMulti(e, pClientX, pClientY, mouseWheelAvailFlg);
+      } else {
+        this._draggedSingle(e, pClientX, pClientY, mouseWheelAvailFlg);
+      }
       this._rotate(e, mouseWheelAvailFlg);
       this._resize(e, mouseWheelAvailFlg);
     },
 
     //
 
-    _dragged(e, pClientX, pClientY, mouseWheelAvailFlg) {
+    _draggedSingle(e, pClientX, pClientY, mouseWheelAvailFlg) {
       let targetPosLeft;
       let targetPosTop;
       let resLeft;
@@ -708,6 +798,48 @@ const CanvasEve = ((W, D, M) => {
           this.file.rotatedCenterPos.top =
             this.file.$fileId.offset().top +
             this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+        }
+      }
+    },
+
+    //
+
+    _draggedMulti(e, pClientX, pClientY, mouseWheelAvailFlg) {
+      const n = LibEve.keysCount(this.multiFile);
+      for (let i = 0; i < n; i++) {
+        const m = this.multiFile[i];
+        const targetPosLeft = pClientX - m.fileIdRelPosX;
+        const targetPosTop = pClientY - m.fileIdRelPosY;
+
+        const resLeft =
+          (m.rotatedSize.width - m.fileIdWidth) / 2 + targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
+        const resTop =
+          (m.rotatedSize.height - m.fileIdHeight) / 2 + targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
+
+        if (
+          mouseWheelAvailFlg === false &&
+          FlgEve.canvas.thumbtack_flg === false &&
+          FlgEve.canvas.resize_flg === false &&
+          FlgEve.canvas.rotate_flg === false
+        ) {
+          if (FlgEve.canvas.drag_flg === true) {
+            if (
+              FlgEve.oekaki.move_wheelcircle_flg === false &&
+              FlgEve.oekaki.move_trianglecircle_flg === false &&
+              FlgEve.colpick.active_spuit_flg === false &&
+              FlgEve.colpick.move_circle_flg === false
+            ) {
+              m.$fileId.css({
+                left: `${resLeft}px`,
+                top: `${resTop}px`
+              });
+            }
+
+            m.rotatedCenterPos.left =
+              m.$fileId.offset().left + m.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            m.rotatedCenterPos.top =
+              m.$fileId.offset().top + m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+          }
         }
       }
     },
