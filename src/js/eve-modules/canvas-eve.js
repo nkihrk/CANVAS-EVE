@@ -24,6 +24,10 @@ const CanvasEve = ((W, D, M) => {
     this.$canvasEveWrapper = $('#canvas-eve-wrapper');
     this.$selectedArea = null; // lazy load
 
+    this.newAreaPos = {
+      x: null, // lazy load
+      y: null // lazy load
+    };
     this.newSelectedAreaPos = {
       x: null, // lazy load
       y: null // lazy load
@@ -90,8 +94,8 @@ const CanvasEve = ((W, D, M) => {
       selectedArea.style.top = `${startY}px`;
       selectedArea.style.zIndex = 1;
 
-      this.newSelectedAreaPos.x = startX;
-      this.newSelectedAreaPos.y = startY;
+      this.newAreaPos.x = startX;
+      this.newAreaPos.y = startY;
       this.$selectedArea = $(selectedArea);
       this.$canvasEveWrapper.append(selectedArea);
     },
@@ -100,23 +104,25 @@ const CanvasEve = ((W, D, M) => {
 
     _updateSelectedArea(e) {
       const { $selectedArea } = this;
-      const startX = this.newSelectedAreaPos.x;
-      const startY = this.newSelectedAreaPos.y;
-      const endX = e.clientX - this.$canvasEveWrapper.offset().left;
-      const endY = e.clientY - this.$canvasEveWrapper.offset().top;
+      const startX = this.newAreaPos.x;
+      const startY = this.newAreaPos.y;
+      const endX = e.clientX;
+      const endY = e.clientY;
       const tmpW = endX - startX;
       const tmpH = endY - startY;
-      // const resultX = 0;
-      // const resultY = 0;
       const resultW = tmpW > 0 ? tmpW : -tmpW;
       const resultH = tmpH > 0 ? tmpH : -tmpH;
+      const resultX = tmpW > 0 ? startX : startX - resultW;
+      const resultY = tmpH > 0 ? startY : startY - resultH;
 
+      this.newSelectedAreaPos.x = tmpW > 0 ? startX : endX;
+      this.newSelectedAreaPos.y = tmpH > 0 ? startY : endY;
       this.endSelectedAreaPos.x = tmpW > 0 ? endX : startX;
       this.endSelectedAreaPos.y = tmpH > 0 ? endY : startY;
 
       $selectedArea.css({
-        // top: `${resultX}px`,
-        // left: `${resultY}px`,
+        left: `${resultX}px`,
+        top: `${resultY}px`,
         width: `${resultW}px`,
         height: `${resultH}px`
       });
@@ -129,6 +135,10 @@ const CanvasEve = ((W, D, M) => {
       this.$selectedArea = null;
 
       this._evaluateArea();
+      this.newAreaPos = {
+        x: null,
+        y: null
+      };
       this.newSelectedAreaPos = {
         x: null,
         y: null
