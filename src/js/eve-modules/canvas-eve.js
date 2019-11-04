@@ -17,7 +17,7 @@ import FlgEve from '../common/flg-eve';
 
 const CanvasEve = ((W, D, M) => {
   /**
-   * Multi-select function for CanvasEve.
+   * Multi-selecting function for CanvasEve.
    *
    */
   function MultiSelect() {
@@ -294,11 +294,48 @@ const CanvasEve = ((W, D, M) => {
   };
 
   /**
+   * Auto-alignment function for CanvasEve.
+   *
+   */
+  function AutoAlign() {}
+
+  AutoAlign.prototype = {
+    constructor: AutoAlign,
+
+    options: {
+      THRESHOLD: 10000
+    },
+
+    _verticalAlign() {
+      const $fileWraps = $('.file-wrap');
+      const n = $fileWraps.length;
+      let minTop = this.options.THRESHOLD;
+      let maxBottom = -this.options.THRESHOLD;
+
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+
+        if ($fileWrap.find('.multi').length === 1) {
+          const { top } = $fileWrap.offset();
+          const bottom = top + $fileWrap.height();
+          minTop = top < minTop ? top : minTop;
+          maxBottom = bottom > maxBottom ? bottom : maxBottom;
+        }
+      }
+    },
+
+    //
+
+    _horizontalAlign() {}
+  };
+
+  /**
    * Entry point for CanvasEve.
    *
    */
   function Canvas() {
     this.MultiSelect = new MultiSelect();
+    this.AutoAlign = new AutoAlign();
 
     this.file = {
       $fileId: null,
@@ -450,55 +487,54 @@ const CanvasEve = ((W, D, M) => {
           if (FlgEve.canvas.drag_flg === false) {
             // Global value for the selected ID
             GlbEve.CURRENT_ID = $fileWrap.attr('id');
-            this.file.fileId = `#${GlbEve.CURRENT_ID}`;
-            this.file.$fileId = $(`#${GlbEve.CURRENT_ID}`);
+            const f = this.file;
+            f.fileId = `#${GlbEve.CURRENT_ID}`;
+            f.$fileId = $(`#${GlbEve.CURRENT_ID}`);
 
-            this.file.fileIdWidth = this.file.$fileId.outerWidth();
-            this.file.fileIdHeight = this.file.$fileId.outerHeight();
-            this.file.fileIdRatio = this.file.fileIdHeight / this.file.fileIdWidth;
+            f.fileIdWidth = f.$fileId.outerWidth();
+            f.fileIdHeight = f.$fileId.outerHeight();
+            f.fileIdRatio = f.fileIdHeight / f.fileIdWidth;
 
-            this.file.fileIdTheta = LibEve.getRotationRad(this.file.$fileId[0]);
-            this.file.rotatedSize.width =
-              this.file.fileIdWidth * M.abs(M.cos(this.file.fileIdTheta)) +
-              this.file.fileIdHeight * M.abs(M.sin(this.file.fileIdTheta));
-            this.file.rotatedSize.height =
-              this.file.fileIdHeight * M.abs(M.cos(this.file.fileIdTheta)) +
-              this.file.fileIdWidth * M.abs(M.sin(this.file.fileIdTheta));
+            f.fileIdTheta = LibEve.getRotationRad(f.$fileId[0]);
+            f.rotatedSize.width =
+              f.fileIdWidth * M.abs(M.cos(f.fileIdTheta)) +
+              f.fileIdHeight * M.abs(M.sin(f.fileIdTheta));
+            f.rotatedSize.height =
+              f.fileIdHeight * M.abs(M.cos(f.fileIdTheta)) +
+              f.fileIdWidth * M.abs(M.sin(f.fileIdTheta));
 
-            this.file.fileIdPos = this.file.$fileId.offset();
+            f.fileIdPos = f.$fileId.offset();
 
-            this.file.fileIdRelPosX = e.clientX - this.file.fileIdPos.left;
-            this.file.fileIdRelPosY = e.clientY - this.file.fileIdPos.top;
+            f.fileIdRelPosX = e.clientX - f.fileIdPos.left;
+            f.fileIdRelPosY = e.clientY - f.fileIdPos.top;
 
-            // Initialize this.file.rotatedCenterPos. These are screen-space coordinates
-            this.file.rotatedCenterPos.left =
-              this.file.$fileId.offset().left +
-              this.file.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
-            this.file.rotatedCenterPos.top =
-              this.file.$fileId.offset().top +
-              this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            // Initialize f.rotatedCenterPos. These are screen-space coordinates
+            f.rotatedCenterPos.left =
+              f.$fileId.offset().left + f.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            f.rotatedCenterPos.top =
+              f.$fileId.offset().top + f.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
             // Initialize the initRads for a rotating function
             this.tmp.ro.left_top_initRad = LibEve.calcRadians(
-              -this.file.fileIdWidth / 2,
-              -this.file.fileIdHeight / 2
+              -f.fileIdWidth / 2,
+              -f.fileIdHeight / 2
             );
             this.tmp.ro.right_top_initRad = LibEve.calcRadians(
-              this.file.fileIdWidth / 2,
-              -this.file.fileIdHeight / 2
+              f.fileIdWidth / 2,
+              -f.fileIdHeight / 2
             );
             this.tmp.ro.right_bottom_initRad = LibEve.calcRadians(
-              this.file.fileIdWidth / 2,
-              this.file.fileIdHeight / 2
+              f.fileIdWidth / 2,
+              f.fileIdHeight / 2
             );
             this.tmp.ro.left_bottom_initRad = LibEve.calcRadians(
-              -this.file.fileIdWidth / 2,
-              this.file.fileIdHeight / 2
+              -f.fileIdWidth / 2,
+              f.fileIdHeight / 2
             );
 
             // Set the $fileId to be the highest of all the other unselected elements
             GlbEve.HIGHEST_Z_INDEX += 1;
-            this.file.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
+            f.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
             FlgEve.canvas.drag_flg = true;
           }
         }
@@ -593,9 +629,10 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _update() {
+      const f = this.file;
       // Refrash the rendering result of each canvas when changing its size.
       // This canvas is for color picking.colpick-eve.js
-      if (this.file.$fileId !== null && this.file.$fileId.find('.canvas-colpick').length > 0) {
+      if (f.$fileId !== null && f.$fileId.find('.canvas-colpick').length > 0) {
         if (
           FlgEve.canvas.re.left_top_flg === true ||
           FlgEve.canvas.re.right_top_flg === true ||
@@ -604,15 +641,15 @@ const CanvasEve = ((W, D, M) => {
         ) {
           setTimeout(() => {
             const img = new Image();
-            img.src = this.file.$fileId.find('img').attr('src');
+            img.src = f.$fileId.find('img').attr('src');
             img.onload = () => {
-              this.file.$fileId
+              f.$fileId
                 .find('.canvas-colpick')[0]
                 .getContext('2d')
-                .drawImage(img, 0, 0, this.file.$fileId.width(), this.file.$fileId.height());
+                .drawImage(img, 0, 0, f.$fileId.width(), f.$fileId.height());
             };
-            this.file.$fileId.find('.canvas-colpick').attr('width', this.file.$fileId.width());
-            this.file.$fileId.find('.canvas-colpick').attr('height', this.file.$fileId.height());
+            f.$fileId.find('.canvas-colpick').attr('width', f.$fileId.width());
+            f.$fileId.find('.canvas-colpick').attr('height', f.$fileId.height());
           }, this.options.UPDATE_CANVAS_SIZE_DELAY);
         }
       }
@@ -622,6 +659,7 @@ const CanvasEve = ((W, D, M) => {
 
     _handleEventMouseDown(e) {
       const self = this;
+      const f = this.file;
 
       if (e.target.closest('.thumbtack-icon')) {
         $(e.target)
@@ -650,15 +688,15 @@ const CanvasEve = ((W, D, M) => {
             .parents('.resize-wrapper')
             .hasClass('active')
         ) {
-          if (!this.file.$fileId.hasClass('ro-left-top')) {
-            this.file.$fileId.prepend(self.resizeBox);
+          if (!f.$fileId.hasClass('ro-left-top')) {
+            f.$fileId.prepend(self.resizeBox);
             this._updateUiVal();
           }
         } else {
-          this.file.$fileId.children('.re-left-top').remove();
-          this.file.$fileId.children('.re-right-top').remove();
-          this.file.$fileId.children('.re-right-bottom').remove();
-          this.file.$fileId.children('.re-left-bottom').remove();
+          f.$fileId.children('.re-left-top').remove();
+          f.$fileId.children('.re-right-top').remove();
+          f.$fileId.children('.re-right-bottom').remove();
+          f.$fileId.children('.re-left-bottom').remove();
         }
       }
 
@@ -672,17 +710,17 @@ const CanvasEve = ((W, D, M) => {
             .parents('.rotate-wrapper')
             .hasClass('active')
         ) {
-          if (!this.file.$fileId.hasClass('ro-left-top')) {
-            this.file.$fileId.removeClass('not-rotated');
-            this.file.$fileId.prepend(self.rotateBox);
+          if (!f.$fileId.hasClass('ro-left-top')) {
+            f.$fileId.removeClass('not-rotated');
+            f.$fileId.prepend(self.rotateBox);
             this._updateUiVal();
           }
         } else {
-          this.file.$fileId.addClass('not-rotated');
-          this.file.$fileId.children('.ro-left-top').remove();
-          this.file.$fileId.children('.ro-right-top').remove();
-          this.file.$fileId.children('.ro-right-bottom').remove();
-          this.file.$fileId.children('.ro-left-bottom').remove();
+          f.$fileId.addClass('not-rotated');
+          f.$fileId.children('.ro-left-top').remove();
+          f.$fileId.children('.ro-right-top').remove();
+          f.$fileId.children('.ro-right-bottom').remove();
+          f.$fileId.children('.ro-left-bottom').remove();
         }
       }
 
@@ -696,12 +734,12 @@ const CanvasEve = ((W, D, M) => {
             .parents('.flip-wrapper')
             .hasClass('active')
         ) {
-          $(`${this.file.fileId}`)
+          $(`${f.fileId}`)
             .find('.is-flipped')
             .addClass('flipped');
           this._updateUiVal();
         } else {
-          $(`${this.file.fileId}`)
+          $(`${f.fileId}`)
             .find('.is-flipped')
             .removeClass('flipped');
         }
@@ -717,7 +755,7 @@ const CanvasEve = ((W, D, M) => {
             .parents('.trash-wrapper')
             .hasClass('active')
         ) {
-          $(this.file.fileId).remove();
+          $(f.fileId).remove();
         }
       }
     },
@@ -744,27 +782,26 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _draggedSingle(e, pClientX, pClientY, mouseWheelAvailFlg) {
+      const f = this.file;
       let targetPosLeft;
       let targetPosTop;
       let resLeft;
       let resTop;
 
       if (FlgEve.config.no_zooming_flg === true) {
-        targetPosLeft = e.clientX - this.file.fileIdRelPosX;
-        targetPosTop = e.clientY - this.file.fileIdRelPosY;
+        targetPosLeft = e.clientX - f.fileIdRelPosX;
+        targetPosTop = e.clientY - f.fileIdRelPosY;
 
-        resLeft = (this.file.rotatedSize.width - this.file.fileIdWidth) / 2 + targetPosLeft;
-        resTop = (this.file.rotatedSize.height - this.file.fileIdHeight) / 2 + targetPosTop;
+        resLeft = (f.rotatedSize.width - f.fileIdWidth) / 2 + targetPosLeft;
+        resTop = (f.rotatedSize.height - f.fileIdHeight) / 2 + targetPosTop;
       } else {
-        targetPosLeft = pClientX - this.file.fileIdRelPosX;
-        targetPosTop = pClientY - this.file.fileIdRelPosY;
+        targetPosLeft = pClientX - f.fileIdRelPosX;
+        targetPosTop = pClientY - f.fileIdRelPosY;
 
         resLeft =
-          (this.file.rotatedSize.width - this.file.fileIdWidth) / 2 +
-          targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
+          (f.rotatedSize.width - f.fileIdWidth) / 2 + targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
         resTop =
-          (this.file.rotatedSize.height - this.file.fileIdHeight) / 2 +
-          targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
+          (f.rotatedSize.height - f.fileIdHeight) / 2 + targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
       }
 
       if (
@@ -780,18 +817,16 @@ const CanvasEve = ((W, D, M) => {
             FlgEve.colpick.active_spuit_flg === false &&
             FlgEve.colpick.move_circle_flg === false
           ) {
-            this.file.$fileId.css({
+            f.$fileId.css({
               left: `${resLeft}px`,
               top: `${resTop}px`
             });
           }
 
-          this.file.rotatedCenterPos.left =
-            this.file.$fileId.offset().left +
-            this.file.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
-          this.file.rotatedCenterPos.top =
-            this.file.$fileId.offset().top +
-            this.file.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+          f.rotatedCenterPos.left =
+            f.$fileId.offset().left + f.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+          f.rotatedCenterPos.top =
+            f.$fileId.offset().top + f.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
         }
       }
     },
@@ -841,55 +876,47 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _resize(e, mouseWheelAvailFlg) {
+      const f = this.file;
+
       if (mouseWheelAvailFlg === false && FlgEve.canvas.resize_flg === true) {
         if (FlgEve.canvas.re.left_top_flg === true) {
-          this.file.$fileId.css({
-            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
-              (this.file.fileIdHeight -
-                (this.file.fileIdWidth -
-                  (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL) *
-                  this.file.fileIdRatio)}px`,
-            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
-              GlbEve.MOUSE_WHEEL_VAL +
-              (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${this.file.fileIdWidth -
-              (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          f.$fileId.css({
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
+              (f.fileIdHeight -
+                (f.fileIdWidth - (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL) *
+                  f.fileIdRatio)}px`,
+            left: `${(f.fileIdPos.left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL +
+              (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${f.fileIdWidth - (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
 
         if (FlgEve.canvas.re.right_top_flg === true) {
-          this.file.$fileId.css({
-            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
-              (this.file.fileIdHeight -
-                (e.clientX - this.file.fileIdPos.left) *
-                  GlbEve.MOUSE_WHEEL_VAL *
-                  this.file.fileIdRatio)}px`,
-            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
-              GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${(e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          f.$fileId.css({
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
+              (f.fileIdHeight -
+                (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL * f.fileIdRatio)}px`,
+            left: `${(f.fileIdPos.left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${(e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
 
         if (FlgEve.canvas.re.right_bottom_flg === true) {
-          this.file.$fileId.css({
-            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
-              GlbEve.MOUSE_WHEEL_VAL}px`,
-            left: `${(this.file.fileIdPos.left - $('#zoom').offset().left) *
-              GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${(e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+          f.$fileId.css({
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            left: `${(f.fileIdPos.left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${(e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
 
         if (FlgEve.canvas.re.left_bottom_flg === true) {
-          this.file.$fileId.css({
-            top: `${(this.file.fileIdPos.top - $('#zoom').offset().top) *
-              GlbEve.MOUSE_WHEEL_VAL}px`,
-            left: `${(this.file.fileIdPos.left -
+          f.$fileId.css({
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            left: `${(f.fileIdPos.left -
               $('#zoom').offset().left +
-              (e.clientX - this.file.fileIdPos.left)) *
+              (e.clientX - f.fileIdPos.left)) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${this.file.fileIdWidth -
-              (e.clientX - this.file.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+            width: `${f.fileIdWidth - (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
       }
@@ -898,29 +925,30 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _rotate(e, mouseWheelAvailFlg) {
-      const fileCenterPosX = this.file.rotatedCenterPos.left;
-      const fileCenterPosY = this.file.rotatedCenterPos.top;
+      const f = this.file;
+      const fileCenterPosX = f.rotatedCenterPos.left;
+      const fileCenterPosY = f.rotatedCenterPos.top;
       const rad = LibEve.calcRadians(e.clientX - fileCenterPosX, e.clientY - fileCenterPosY);
 
       if (mouseWheelAvailFlg === false && FlgEve.canvas.rotate_flg === true) {
         if (FlgEve.canvas.ro.left_top_flg === true) {
           const resRad = rad - this.tmp.ro.left_top_initRad;
-          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+          f.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
         if (FlgEve.canvas.ro.right_top_flg === true) {
           const resRad = rad - this.tmp.ro.right_top_initRad;
-          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+          f.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
         if (FlgEve.canvas.ro.right_bottom_flg === true) {
           const resRad = rad - this.tmp.ro.right_bottom_initRad;
-          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+          f.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
 
         if (FlgEve.canvas.ro.left_bottom_flg === true) {
           const resRad = rad - this.tmp.ro.left_bottom_initRad;
-          this.file.$fileId.css('transform', `rotate(${resRad}rad)`);
+          f.$fileId.css('transform', `rotate(${resRad}rad)`);
         }
       }
     },
