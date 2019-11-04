@@ -58,7 +58,6 @@ const CanvasEve = ((W, D, M) => {
           this._setFlgs();
           this._createSelectedArea(e);
         }
-        console.log(this.flgs.is_multi_mode_flg);
       }
     },
 
@@ -73,7 +72,6 @@ const CanvasEve = ((W, D, M) => {
 
     mouseMoveEvent(e) {
       if (this.flgs.create_selected_area_flg === true) this._updateSelectedArea(e);
-      console.log(this.flgs.is_multi_mode_flg);
     },
 
     //
@@ -83,7 +81,7 @@ const CanvasEve = ((W, D, M) => {
       if ($fileWrap.length === 0) {
         $fileWrap = $(e.target);
       }
-      if ($fileWrap.find('.selected').length !== 1) this.flgs.is_multi_mode_flg = false;
+      if ($fileWrap.find('.multi').length !== 1) FlgEve.canvas.select.is_multi_flg = false;
     },
 
     //
@@ -96,8 +94,6 @@ const CanvasEve = ((W, D, M) => {
 
     _resetFlgs() {
       if (this.flgs.create_selected_area_flg === true) this.flgs.create_selected_area_flg = false;
-      if (FlgEve.canvas.select.is_multi_flg === true && this.flgs.is_multi_mode_flg === false)
-        FlgEve.canvas.select.is_multi_flg = false;
     },
 
     //
@@ -212,10 +208,9 @@ const CanvasEve = ((W, D, M) => {
               FlgEve.canvas.select.is_multi_flg = false;
             } else {
               FlgEve.canvas.select.is_multi_flg = true;
-              this.flgs.is_multi_mode_flg = true;
             }
             $fileWrap.prepend(
-              `<div class="selected" style="border-width: ${GlbEve.MOUSE_WHEEL_VAL}px"></div>`
+              `<div class="selected multi" style="border-width: ${GlbEve.MOUSE_WHEEL_VAL}px"></div>`
             );
           }
         }
@@ -369,6 +364,7 @@ const CanvasEve = ((W, D, M) => {
     mouseDownEvent(e) {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
         FlgEve.setFlgs(e);
+        this.MultiSelect.mouseDownEvent(e);
         if (FlgEve.canvas.select.is_multi_flg === true) {
           this._initMulti(e);
         } else {
@@ -379,23 +375,22 @@ const CanvasEve = ((W, D, M) => {
           this._initMultiFile();
         }
         this._handleEventMouseDown(e);
-        this.MultiSelect.mouseDownEvent(e);
       }
     },
 
     //
 
     mouseUpEvent() {
-      this._update();
       FlgEve.resetFlgs();
       this.MultiSelect.mouseUpEvent();
+      this._update();
     },
 
     //
 
     mouseMoveEvent(e) {
-      this._handleEventMouseMove(e);
       this.MultiSelect.mouseMoveEvent(e);
+      this._handleEventMouseMove(e);
     },
 
     //
@@ -565,7 +560,6 @@ const CanvasEve = ((W, D, M) => {
         }
       }
       FlgEve.canvas.drag_flg = true;
-      console.log(this.multiFile);
     },
 
     //
