@@ -297,7 +297,9 @@ const CanvasEve = ((W, D, M) => {
    * Auto-alignment function for CanvasEve.
    *
    */
-  function AutoAlign() {}
+  function AutoAlign() {
+    this.keyMap = {};
+  }
 
   AutoAlign.prototype = {
     constructor: AutoAlign,
@@ -305,6 +307,50 @@ const CanvasEve = ((W, D, M) => {
     options: {
       THRESHOLD: 10000
     },
+
+    //
+
+    keyDownEvent(e) {
+      this.keyMap[e.key] = true;
+
+      const isCtrlKey = this.keyMap.Control;
+      if (isCtrlKey) {
+        this._verticalAlignEntry(e);
+      } else {
+        this.keyMap = {};
+      }
+
+      // console.log(this.keyMap);
+    },
+
+    //
+
+    // Reset specific keys in the keyMap when keyUp events are called
+    keyUpEvent(e) {
+      if (e.key === 'Control') this.keyMap.Control = false;
+    },
+
+    //
+
+    // Initialize all keyMaps values when the key events are finshed executing
+    _initKeyMap() {
+      this.keyMap.ArrowUp = false;
+      this.keyMap.ArrowDown = false;
+    },
+
+    //
+
+    _verticalAlignEntry(e) {
+      const isDownKey = this.keyMap.ArrowDown;
+      const isUpKey = this.keyMap.ArrowUp;
+
+      if (isDownKey || isUpKey) {
+        e.preventDefault();
+        this._verticalAlign(e);
+      }
+    },
+
+    //
 
     _verticalAlign() {
       const $fileWraps = $('.file-wrap');
@@ -320,6 +366,46 @@ const CanvasEve = ((W, D, M) => {
           const bottom = top + $fileWrap.height();
           minTop = top < minTop ? top : minTop;
           maxBottom = bottom > maxBottom ? bottom : maxBottom;
+        }
+      }
+
+      const isUpKey = this.keyMap.ArrowUp;
+      const isDownKey = this.keyMap.ArrowDown;
+
+      if (isUpKey) {
+        this._verticalAlignTop($fileWraps, minTop);
+      }
+      if (isDownKey) {
+        this._verticalAlignBottom($fileWraps, maxBottom);
+      }
+
+      this._initKeyMap();
+    },
+
+    //
+
+    _verticalAlignTop($fileWraps, minTop) {
+      const n = $fileWraps.length;
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+        if ($fileWrap.find('.multi').length === 1) {
+          $fileWrap.css({
+            top: `${minTop}px`
+          });
+        }
+      }
+    },
+
+    //
+
+    _verticalAlignBottom($fileWraps, maxBottom) {
+      const n = $fileWraps.length;
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+        if ($fileWrap.find('.multi').length === 1) {
+          $fileWrap.css({
+            top: `${maxBottom}px`
+          });
         }
       }
     },
@@ -434,6 +520,18 @@ const CanvasEve = ((W, D, M) => {
 
     mouseWheelEvent() {
       this._updateUiVal();
+    },
+
+    //
+
+    keyDownEvent(e) {
+      this.AutoAlign.keyDownEvent(e);
+    },
+
+    //
+
+    keyUpEvent(e) {
+      this.AutoAlign.keyUpEvent(e);
     },
 
     //

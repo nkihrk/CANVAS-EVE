@@ -60,6 +60,8 @@ const EventEve = ((W, D) => {
       this.dragOverEvent();
       this.dropEvent();
       this.pasteEvent();
+      this.keyDownEvent();
+      this.keyUpEvent();
     },
 
     //
@@ -233,6 +235,22 @@ const EventEve = ((W, D) => {
         },
         false
       );
+    },
+
+    //
+
+    keyDownEvent() {
+      D.addEventListener('keydown', e => {
+        this.Canvas.keyDownEvent(e);
+      });
+    },
+
+    //
+
+    keyUpEvent() {
+      D.addEventListener('keyup', e => {
+        this.Canvas.keyUpEvent(e);
+      });
     }
   });
 
