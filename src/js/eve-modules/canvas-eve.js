@@ -777,7 +777,7 @@ const CanvasEve = ((W, D, M) => {
                 m.$fileId.offset().top + m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
               // Set the $fileId to be the highest of all the other unselected elements
-              GlbEve.HIGHEST_Z_INDEX += 1;
+              GlbEve.HIGHEST_Z_INDEX = m.$fileId.css('z-index') + 1;
               m.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
               availCount++;
             }
