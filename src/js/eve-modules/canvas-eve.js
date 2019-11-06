@@ -316,6 +316,7 @@ const CanvasEve = ((W, D, M) => {
       const isCtrlKey = this.keyMap.Control;
       if (isCtrlKey) {
         this._verticalAlignEntry(e);
+        this._horizontalAlignEntry(e);
       } else {
         this.keyMap = {};
       }
@@ -336,6 +337,8 @@ const CanvasEve = ((W, D, M) => {
     _initKeyMap() {
       this.keyMap.ArrowUp = false;
       this.keyMap.ArrowDown = false;
+      this.keyMap.ArrowLeft = false;
+      this.keyMap.ArrowRight = false;
     },
 
     //
@@ -363,7 +366,9 @@ const CanvasEve = ((W, D, M) => {
 
         if ($fileWrap.find('.multi').length === 1) {
           const { top } = $fileWrap.offset();
-          const bottom = top + $fileWrap.height();
+          const height = $fileWrap.height();
+          const bottom = top + height / GlbEve.MOUSE_WHEEL_VAL;
+
           minTop = top < minTop ? top : minTop;
           maxBottom = bottom > maxBottom ? bottom : maxBottom;
         }
@@ -386,11 +391,14 @@ const CanvasEve = ((W, D, M) => {
 
     _verticalAlignTop($fileWraps, minTop) {
       const n = $fileWraps.length;
+
       for (let i = 0; i < n; i++) {
         const $fileWrap = $($fileWraps[i]);
+        const resultMinTop = (minTop - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL;
+
         if ($fileWrap.find('.multi').length === 1) {
           $fileWrap.css({
-            top: `${minTop}px`
+            top: `${resultMinTop}px`
           });
         }
       }
@@ -400,11 +408,16 @@ const CanvasEve = ((W, D, M) => {
 
     _verticalAlignBottom($fileWraps, maxBottom) {
       const n = $fileWraps.length;
+
       for (let i = 0; i < n; i++) {
         const $fileWrap = $($fileWraps[i]);
+        const height = $fileWrap.height();
+        const resultMaxBottom =
+          (maxBottom - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL - height;
+
         if ($fileWrap.find('.multi').length === 1) {
           $fileWrap.css({
-            top: `${maxBottom}px`
+            top: `${resultMaxBottom}px`
           });
         }
       }
@@ -412,7 +425,85 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    _horizontalAlign() {}
+    _horizontalAlignEntry(e) {
+      const isLeftKey = this.keyMap.ArrowLeft;
+      const isRightKey = this.keyMap.ArrowRight;
+
+      if (isLeftKey || isRightKey) {
+        e.preventDefault();
+        this._horizontalAlign(e);
+      }
+    },
+
+    //
+
+    _horizontalAlign() {
+      const $fileWraps = $('.file-wrap');
+      const n = $fileWraps.length;
+      let minLeft = this.options.THRESHOLD;
+      let maxRight = -this.options.THRESHOLD;
+
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+
+        if ($fileWrap.find('.multi').length === 1) {
+          const { left } = $fileWrap.offset();
+          const width = $fileWrap.width();
+          const right = left + width / GlbEve.MOUSE_WHEEL_VAL;
+
+          minLeft = left < minLeft ? left : minLeft;
+          maxRight = right > maxRight ? right : maxRight;
+        }
+      }
+
+      const isLeftKey = this.keyMap.ArrowLeft;
+      const isRightKey = this.keyMap.ArrowRight;
+
+      if (isLeftKey) {
+        this._horizontalAlignLeft($fileWraps, minLeft);
+      }
+      if (isRightKey) {
+        this._horizontalAlignRight($fileWraps, maxRight);
+      }
+
+      this._initKeyMap();
+    },
+
+    //
+
+    _horizontalAlignLeft($fileWraps, minLeft) {
+      const n = $fileWraps.length;
+
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+        const resultMinLeft = (minLeft - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL;
+
+        if ($fileWrap.find('.multi').length === 1) {
+          $fileWrap.css({
+            left: `${resultMinLeft}px`
+          });
+        }
+      }
+    },
+
+    //
+
+    _horizontalAlignRight($fileWraps, maxRight) {
+      const n = $fileWraps.length;
+
+      for (let i = 0; i < n; i++) {
+        const $fileWrap = $($fileWraps[i]);
+        const width = $fileWrap.width();
+        const resultMaxRight =
+          (maxRight - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL - width;
+
+        if ($fileWrap.find('.multi').length === 1) {
+          $fileWrap.css({
+            left: `${resultMaxRight}px`
+          });
+        }
+      }
+    }
   };
 
   /**
