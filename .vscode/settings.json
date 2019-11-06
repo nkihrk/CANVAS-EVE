@@ -26,7 +26,6 @@
   "emmet.triggerExpansionOnTab": true,
   "liveServer.settings.root": "/build/",
   "liveServer.settings.CustomBrowser": "chrome",
-  "liveServer.settings.NoBrowser": true,
   "liveServer.settings.useLocalIp": true,
   "liveServer.settings.donotShowInfoMsg": true,
   "editor.formatOnSaveTimeout": 5000,
