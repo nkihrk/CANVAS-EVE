@@ -398,6 +398,8 @@ const CanvasEve = ((W, D, M) => {
         const originId = $fileWrapOrigin.attr('id');
         let isInsertedFlg = false;
 
+        console.log('------------------------------------');
+
         if ($fileWrapOrigin.find('.multi').length === 1) {
           const originWidth = $fileWrapOrigin.width();
           const originLeft = $fileWrapOrigin.offset().left;
@@ -421,38 +423,49 @@ const CanvasEve = ((W, D, M) => {
               const isMiddle = targetLeft <= originLeft && originRight <= targetRight;
               const isRight = originLeft <= targetLeft && targetLeft <= originRight;
 
-              // console.log(
-              //   '------------------------------------',
-              //   '$fileWrapTarget',
-              //   $fileWrapTarget,
-              //   'isHigher',
-              //   isHigher,
-              //   'isLeft',
-              //   isLeft,
-              //   'isMiddle',
-              //   isMiddle,
-              //   'isRight',
-              //   isRight
-              // );
+              console.log(
+                '$fileWrapTarget',
+                $fileWrapTarget,
+                'isHigher',
+                isHigher,
+                'isLeft',
+                isLeft,
+                'isMiddle',
+                isMiddle,
+                'isRight',
+                isRight
+              );
 
               if (isHigher) {
                 if (isLeft || isMiddle || isRight) {
                   targetMaxBottom = targetBottom > targetMaxBottom ? targetBottom : targetMaxBottom;
                   isInsertedFlg = true;
+
+                  console.log(
+                    'targetBottom',
+                    targetBottom,
+                    'minTop',
+                    minTop,
+                    'targetMaxBottom',
+                    targetMaxBottom
+                  );
                 }
               }
 
-              if (!isInsertedFlg) targetMaxBottom = minTop;
+              if (!isInsertedFlg) {
+                targetMaxBottom = minTop;
+                console.log('aaaaaaaaaaaaaaaaaaa');
+              }
             }
           }
-        }
 
-        const resultMinTop = (targetMaxBottom - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL;
+          const resultMinTop = (targetMaxBottom - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL;
 
-        if ($fileWrapOrigin.find('.multi').length === 1) {
-          $fileWrapOrigin.css({
-            top: `${resultMinTop}px`
-          });
+          if ($fileWrapOrigin.find('.multi').length === 1) {
+            $fileWrapOrigin.css({
+              top: `${resultMinTop}px`
+            });
+          }
         }
       }
     },
@@ -461,17 +474,80 @@ const CanvasEve = ((W, D, M) => {
 
     _verticalAlignBottom($fileWraps, maxBottom) {
       const n = $fileWraps.length;
+      let targetMaxTop = -this.options.THRESHOLD;
 
       for (let i = 0; i < n; i++) {
-        const $fileWrap = $($fileWraps[i]);
-        const height = $fileWrap.height();
-        const resultMaxBottom =
-          (maxBottom - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL - height;
+        const $fileWrapOrigin = $($fileWraps[i]);
+        const originId = $fileWrapOrigin.attr('id');
+        const originWidth = $fileWrapOrigin.width();
+        const originHeight = $fileWrapOrigin.height();
+        const originLeft = $fileWrapOrigin.offset().left;
+        const originRight = originLeft + originWidth / GlbEve.MOUSE_WHEEL_VAL;
+        const originTop = $fileWrapOrigin.offset().top;
+        const originBottom = originTop + originHeight / GlbEve.MOUSE_WHEEL_VAL;
+        let isInsertedFlg = false;
 
-        if ($fileWrap.find('.multi').length === 1) {
-          $fileWrap.css({
-            top: `${resultMaxBottom}px`
-          });
+        console.log('------------------------------------');
+
+        if ($fileWrapOrigin.find('.multi').length === 1) {
+          for (let j = 0; j < n; j++) {
+            const $fileWrapTarget = $($fileWraps[j]);
+            const targetId = $fileWrapTarget.attr('id');
+            const targetWidth = $fileWrapTarget.width();
+            const targetLeft = $fileWrapTarget.offset().left;
+            const targetRight = targetLeft + targetWidth / GlbEve.MOUSE_WHEEL_VAL;
+            const targetTop = $fileWrapTarget.offset().top;
+
+            if ($fileWrapTarget.find('.multi').length === 1 && originId !== targetId) {
+              const isHigher = targetTop + 1 >= originBottom; // This additional number "1" is a magic number
+              const isLeft = originLeft <= targetRight && targetRight <= originRight;
+              const isMiddle = targetLeft <= originLeft && originRight <= targetRight;
+              const isRight = originLeft <= targetLeft && targetLeft <= originRight;
+
+              console.log(
+                '$fileWrapTarget',
+                $fileWrapTarget,
+                'isHigher',
+                isHigher,
+                'isLeft',
+                isLeft,
+                'isMiddle',
+                isMiddle,
+                'isRight',
+                isRight
+              );
+
+              if (isHigher) {
+                if (isLeft || isMiddle || isRight) {
+                  targetMaxTop = targetTop < targetMaxTop ? targetTop : targetMaxTop; // This line seems weird to me, but it works fine for some reason that idk
+                  isInsertedFlg = true;
+
+                  console.log(
+                    'targetTop',
+                    targetTop,
+                    'maxBottom',
+                    maxBottom,
+                    'targetMaxTop',
+                    targetMaxTop
+                  );
+                }
+              }
+
+              if (!isInsertedFlg) {
+                targetMaxTop = maxBottom;
+                console.log('aaaaaaaaaaaaaaaaaaa');
+              }
+            }
+          }
+
+          const resultMaxBottom =
+            (targetMaxTop - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL - originHeight;
+
+          if ($fileWrapOrigin.find('.multi').length === 1) {
+            $fileWrapOrigin.css({
+              top: `${resultMaxBottom}px`
+            });
+          }
         }
       }
     },
