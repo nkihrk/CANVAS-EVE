@@ -391,7 +391,7 @@ const CanvasEve = ((W, D, M) => {
 
     _verticalAlignTop($fileWraps, minTop) {
       const n = $fileWraps.length;
-      let targetMaxBottom = -this.options.THRESHOLD;
+      let targetMaxBottom;
 
       for (let i = 0; i < n; i++) {
         const $fileWrapOrigin = $($fileWraps[i]);
@@ -409,19 +409,19 @@ const CanvasEve = ((W, D, M) => {
           for (let j = 0; j < n; j++) {
             const $fileWrapTarget = $($fileWraps[j]);
             const targetId = $fileWrapTarget.attr('id');
+            const targetWidth = $fileWrapTarget.width();
+            const targetHeight = $fileWrapTarget.height();
+            const targetLeft = $fileWrapTarget.offset().left;
+            const targetRight = targetLeft + targetWidth / GlbEve.MOUSE_WHEEL_VAL;
+            const targetTop = $fileWrapTarget.offset().top;
+            const targetBottom = targetTop + targetHeight / GlbEve.MOUSE_WHEEL_VAL;
 
             if ($fileWrapTarget.find('.multi').length === 1 && originId !== targetId) {
-              const targetWidth = $fileWrapTarget.width();
-              const targetHeight = $fileWrapTarget.height();
-              const targetLeft = $fileWrapTarget.offset().left;
-              const targetRight = targetLeft + targetWidth / GlbEve.MOUSE_WHEEL_VAL;
-              const targetTop = $fileWrapTarget.offset().top;
-              const targetBottom = targetTop + targetHeight / GlbEve.MOUSE_WHEEL_VAL;
-
-              const isHigher = targetBottom <= originTop + 1; // This additional number "1" is a music number
-              const isLeft = originLeft <= targetRight && targetRight <= originRight;
+              const isHigher = targetBottom < originTop + 1; // This additional number "1" is a music number
+              const isLeft = originLeft < targetRight && targetRight <= originRight;
               const isMiddle = targetLeft <= originLeft && originRight <= targetRight;
-              const isRight = originLeft <= targetLeft && targetLeft <= originRight;
+              const isRight = originLeft <= targetLeft && targetLeft < originRight;
+              const isCover = originLeft <= targetLeft && targetRight <= originRight;
 
               console.log(
                 '$fileWrapTarget',
@@ -433,11 +433,18 @@ const CanvasEve = ((W, D, M) => {
                 'isMiddle',
                 isMiddle,
                 'isRight',
-                isRight
+                isRight,
+                'isCover',
+                isCover
               );
 
+              if (!isInsertedFlg) {
+                targetMaxBottom = minTop;
+                console.log('aaaaaaaaaaaaaaaaaaa');
+              }
+
               if (isHigher) {
-                if (isLeft || isMiddle || isRight) {
+                if (isLeft || isMiddle || isRight || isCover) {
                   targetMaxBottom = targetBottom > targetMaxBottom ? targetBottom : targetMaxBottom;
                   isInsertedFlg = true;
 
@@ -450,11 +457,6 @@ const CanvasEve = ((W, D, M) => {
                     targetMaxBottom
                   );
                 }
-              }
-
-              if (!isInsertedFlg) {
-                targetMaxBottom = minTop;
-                console.log('aaaaaaaaaaaaaaaaaaa');
               }
             }
           }
@@ -474,7 +476,7 @@ const CanvasEve = ((W, D, M) => {
 
     _verticalAlignBottom($fileWraps, maxBottom) {
       const n = $fileWraps.length;
-      let targetMaxTop = -this.options.THRESHOLD;
+      let targetMaxTop;
 
       for (let i = 0; i < n; i++) {
         const $fileWrapOrigin = $($fileWraps[i]);
@@ -499,10 +501,11 @@ const CanvasEve = ((W, D, M) => {
             const targetTop = $fileWrapTarget.offset().top;
 
             if ($fileWrapTarget.find('.multi').length === 1 && originId !== targetId) {
-              const isHigher = targetTop + 1 >= originBottom; // This additional number "1" is a magic number
-              const isLeft = originLeft <= targetRight && targetRight <= originRight;
+              const isHigher = targetTop > originBottom - 1; // This additional number "1" is a magic number
+              const isLeft = originLeft < targetRight && targetRight <= originRight;
               const isMiddle = targetLeft <= originLeft && originRight <= targetRight;
-              const isRight = originLeft <= targetLeft && targetLeft <= originRight;
+              const isRight = originLeft <= targetLeft && targetLeft < originRight;
+              const isCover = originLeft <= targetLeft && targetRight <= originRight;
 
               console.log(
                 '$fileWrapTarget',
@@ -514,11 +517,18 @@ const CanvasEve = ((W, D, M) => {
                 'isMiddle',
                 isMiddle,
                 'isRight',
-                isRight
+                isRight,
+                'isCover',
+                isCover
               );
 
+              if (!isInsertedFlg) {
+                targetMaxTop = maxBottom;
+                console.log('aaaaaaaaaaaaaaaaaaa');
+              }
+
               if (isHigher) {
-                if (isLeft || isMiddle || isRight) {
+                if (isLeft || isMiddle || isRight || isCover) {
                   targetMaxTop = targetTop < targetMaxTop ? targetTop : targetMaxTop; // This line seems weird to me, but it works fine for some reason that idk
                   isInsertedFlg = true;
 
@@ -531,11 +541,6 @@ const CanvasEve = ((W, D, M) => {
                     targetMaxTop
                   );
                 }
-              }
-
-              if (!isInsertedFlg) {
-                targetMaxTop = maxBottom;
-                console.log('aaaaaaaaaaaaaaaaaaa');
               }
             }
           }
@@ -602,15 +607,85 @@ const CanvasEve = ((W, D, M) => {
 
     _horizontalAlignLeft($fileWraps, minLeft) {
       const n = $fileWraps.length;
+      let targetMinLeft;
 
       for (let i = 0; i < n; i++) {
-        const $fileWrap = $($fileWraps[i]);
-        const resultMinLeft = (minLeft - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL;
+        const $fileWrapOrigin = $($fileWraps[i]);
+        const originId = $fileWrapOrigin.attr('id');
+        let isInsertedFlg = false;
 
-        if ($fileWrap.find('.multi').length === 1) {
-          $fileWrap.css({
-            left: `${resultMinLeft}px`
-          });
+        console.log('------------------------------------');
+
+        if ($fileWrapOrigin.find('.multi').length === 1) {
+          // const originWidth = $fileWrapOrigin.width();
+          const originHeight = $fileWrapOrigin.height();
+          const originLeft = $fileWrapOrigin.offset().left;
+          // const originRight = originLeft + originWidth / GlbEve.MOUSE_WHEEL_VAL;
+          const originTop = $fileWrapOrigin.offset().top;
+          const originBottom = originTop + originHeight / GlbEve.MOUSE_WHEEL_VAL;
+
+          for (let j = 0; j < n; j++) {
+            const $fileWrapTarget = $($fileWraps[j]);
+            const targetId = $fileWrapTarget.attr('id');
+            const targetWidth = $fileWrapTarget.width();
+            const targetHeight = $fileWrapTarget.height();
+            const targetLeft = $fileWrapTarget.offset().left;
+            const targetRight = targetLeft + targetWidth / GlbEve.MOUSE_WHEEL_VAL;
+            const targetTop = $fileWrapTarget.offset().top;
+            const targetBottom = targetTop + targetHeight / GlbEve.MOUSE_WHEEL_VAL;
+
+            if ($fileWrapTarget.find('.multi').length === 1 && originId !== targetId) {
+              const isHigher = targetRight < originLeft + 1;
+              const isTop = originTop < targetBottom && targetBottom <= originBottom;
+              const isMiddle = targetTop <= originTop && originBottom <= targetBottom;
+              const isBottom = originTop <= targetTop && targetTop < originBottom;
+              const isCover = originTop <= targetTop && targetBottom <= originBottom;
+
+              console.log(
+                '$fileWrapTarget',
+                $fileWrapTarget,
+                'isHigher',
+                isHigher,
+                'isTop',
+                isTop,
+                'isMiddle',
+                isMiddle,
+                'isBottom',
+                isBottom,
+                'isCover',
+                isCover
+              );
+
+              if (!isInsertedFlg) {
+                targetMinLeft = minLeft;
+                console.log('aaaaaaaaaaaaaaaaaaa');
+              }
+
+              if (isHigher) {
+                if (isTop || isMiddle || isBottom || isCover) {
+                  targetMinLeft = targetRight > targetMinLeft ? targetRight : targetMinLeft;
+                  isInsertedFlg = true;
+
+                  console.log(
+                    'targetRight',
+                    targetRight,
+                    'minLeft',
+                    minLeft,
+                    'targetMinLeft',
+                    targetMinLeft
+                  );
+                }
+              }
+            }
+          }
+
+          const resultMinLeft = (targetMinLeft - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL;
+
+          if ($fileWrapOrigin.find('.multi').length === 1) {
+            $fileWrapOrigin.css({
+              left: `${resultMinLeft}px`
+            });
+          }
         }
       }
     },
@@ -619,17 +694,84 @@ const CanvasEve = ((W, D, M) => {
 
     _horizontalAlignRight($fileWraps, maxRight) {
       const n = $fileWraps.length;
+      let targetMaxRight;
 
       for (let i = 0; i < n; i++) {
-        const $fileWrap = $($fileWraps[i]);
-        const width = $fileWrap.width();
-        const resultMaxRight =
-          (maxRight - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL - width;
+        const $fileWrapOrigin = $($fileWraps[i]);
+        const originId = $fileWrapOrigin.attr('id');
+        const originWidth = $fileWrapOrigin.width();
+        const originHeight = $fileWrapOrigin.height();
+        const originLeft = $fileWrapOrigin.offset().left;
+        const originRight = originLeft + originWidth / GlbEve.MOUSE_WHEEL_VAL;
+        const originTop = $fileWrapOrigin.offset().top;
+        const originBottom = originTop + originHeight / GlbEve.MOUSE_WHEEL_VAL;
+        let isInsertedFlg = false;
 
-        if ($fileWrap.find('.multi').length === 1) {
-          $fileWrap.css({
-            left: `${resultMaxRight}px`
-          });
+        console.log('------------------------------------');
+
+        if ($fileWrapOrigin.find('.multi').length === 1) {
+          for (let j = 0; j < n; j++) {
+            const $fileWrapTarget = $($fileWraps[j]);
+            const targetId = $fileWrapTarget.attr('id');
+            // const targetWidth = $fileWrapTarget.width();
+            const targetHeight = $fileWrapTarget.height();
+            const targetLeft = $fileWrapTarget.offset().left;
+            // const targetRight = targetLeft + targetWidth / GlbEve.MOUSE_WHEEL_VAL;
+            const targetTop = $fileWrapTarget.offset().top;
+            const targetBottom = targetTop + targetHeight / GlbEve.MOUSE_WHEEL_VAL;
+
+            if ($fileWrapTarget.find('.multi').length === 1 && originId !== targetId) {
+              const isHigher = targetLeft > originRight - 1;
+              const isTop = originTop < targetBottom && targetBottom <= originBottom;
+              const isMiddle = targetTop <= originTop && originBottom <= targetBottom;
+              const isBottom = originTop <= targetTop && targetTop < originBottom;
+              const isCover = originTop <= targetTop && targetBottom <= originBottom;
+
+              console.log(
+                '$fileWrapTarget',
+                $fileWrapTarget,
+                'isHigher',
+                isHigher,
+                'isTop',
+                isTop,
+                'isMiddle',
+                isMiddle,
+                'isBottom',
+                isBottom,
+                'isCover',
+                isCover
+              );
+
+              if (!isInsertedFlg) {
+                targetMaxRight = maxRight;
+              }
+
+              if (isHigher) {
+                if (isTop || isMiddle || isBottom || isCover) {
+                  targetMaxRight = targetLeft < targetMaxRight ? targetLeft : targetMaxRight; // This line seems weird to me, but it works fine for some reason that idk
+                  isInsertedFlg = true;
+
+                  console.log(
+                    'targetLeft',
+                    targetLeft,
+                    'maxRight',
+                    maxRight,
+                    'targetMaxRight',
+                    targetMaxRight
+                  );
+                }
+              }
+            }
+          }
+
+          const resultMaxRight =
+            (targetMaxRight - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL - originWidth;
+
+          if ($fileWrapOrigin.find('.multi').length === 1) {
+            $fileWrapOrigin.css({
+              left: `${resultMaxRight}px`
+            });
+          }
         }
       }
     }
@@ -906,7 +1048,7 @@ const CanvasEve = ((W, D, M) => {
                 m.$fileId.offset().top + m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
               // Set the $fileId to be the highest of all the other unselected elements
-              GlbEve.HIGHEST_Z_INDEX = m.$fileId.css('z-index') + 1;
+              GlbEve.HIGHEST_Z_INDEX += 1;
               m.$fileId.css('z-index', GlbEve.HIGHEST_Z_INDEX);
               availCount++;
             }
