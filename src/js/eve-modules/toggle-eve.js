@@ -30,7 +30,6 @@ const ToggleEve = (() => {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
         this._toggleEntry(e);
       }
-      console.log(FlgEve);
     },
 
     //
