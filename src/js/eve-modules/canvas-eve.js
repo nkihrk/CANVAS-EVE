@@ -54,7 +54,11 @@ const CanvasEve = ((W, D, M) => {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
         this._handleMultiMode(e);
 
-        if (e.target.closest('#reset-res')) {
+        if (
+          FlgEve.colpick.tools.is_active_flg === false &&
+          FlgEve.oekaki.tools.is_active_flg === false &&
+          e.target.closest('#reset-res')
+        ) {
           this._setFlgs();
           this._createSelectedArea(e);
         }

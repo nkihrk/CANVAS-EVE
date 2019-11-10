@@ -41,11 +41,19 @@ const FlgEve = (() => {
     };
     this.colpick = {
       active_spuit_flg: false,
-      move_circle_flg: false
+      move_circle_flg: false,
+      tools: {
+        is_active_flg: false
+      }
     };
     this.oekaki = {
       move_wheelcircle_flg: false,
-      move_trianglecircle_flg: false
+      move_trianglecircle_flg: false,
+      tools: {
+        is_active_flg: false,
+        brush_flg: false,
+        eraser_flg: false
+      }
     };
   }
 

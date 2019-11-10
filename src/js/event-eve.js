@@ -11,6 +11,7 @@
  * - zoom-eve
  * - plain-eve
  * - canvas-eve
+ * - toggle-eve
  * - common-eve
  *
  */
@@ -23,6 +24,7 @@ import FileEve from './eve-modules/file-eve';
 import ZoomEve from './eve-modules/zoom-eve';
 import PlainEve from './eve-modules/plain-eve';
 import CanvasEve from './eve-modules/canvas-eve';
+import ToggleEve from './eve-modules/toggle-eve';
 import CommonEve from './common/common-eve';
 
 const EventEve = ((W, D) => {
@@ -37,6 +39,7 @@ const EventEve = ((W, D) => {
     this.Zoom = new ZoomEve(D.getElementById('zoom'));
     this.Plain = new PlainEve(D.getElementById('plain'));
     this.Canvas = new CanvasEve();
+    this.Toggle = new ToggleEve();
     this.Common = new CommonEve();
   }
 
@@ -81,6 +84,7 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
+          this.Toggle.mouseDownEvent(e);
           this.Plain.mouseDownEvent(e);
           this.File.mouseDownEvent(e);
           this.Oekaki.mouseDownEvent(e);

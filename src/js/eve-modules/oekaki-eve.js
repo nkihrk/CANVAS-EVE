@@ -13,6 +13,7 @@
 
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
+import FlgEve from '../common/flg-eve';
 import LibEve from '../common/lib-eve';
 import PlainEve from './plain-eve';
 import ZoomEve from './zoom-eve';
@@ -86,12 +87,6 @@ const OekakiEve = ((W, D, M) => {
     this.flgs = {
       cOekaki: {
         draw_canvas_avail_flg: false
-      },
-      brush: {
-        brush_flg: false
-      },
-      eraser: {
-        eraser_flg: false
       },
       oekaki: {
         move_wheelcircle_flg: false,
@@ -264,10 +259,6 @@ const OekakiEve = ((W, D, M) => {
         this._colorWheelArea(e);
         this._colorTriangleArea(e);
       }
-
-      if (['#brush-oekaki', '#eraser-oekaki'].indexOf(`#${e.target.getAttribute('id')}`) !== -1) {
-        if (e.button === this.options.BUTTON_FOR_LEFT) this._toggleTool($(e.target));
-      }
     },
 
     //
@@ -289,7 +280,7 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _drawPointerEvents(e) {
-      if (this.flgs.brush.brush_flg === true || this.flgs.eraser.eraser_flg === true) {
+      if (FlgEve.oekaki.tools.brush_flg === true || FlgEve.oekaki.tools.eraser_flg === true) {
         const $canvas = this.$cOekaki;
         this._drawCanvasPointer($canvas, e);
       }
@@ -298,7 +289,7 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _drawEvents(e) {
-      if (this.flgs.brush.brush_flg === true || this.flgs.eraser.eraser_flg === true) {
+      if (FlgEve.oekaki.tools.brush_flg === true || FlgEve.oekaki.tools.eraser_flg === true) {
         if (e.target.closest('.oekaki-canvas') || e.target.closest('.selected')) {
           const $canvas = $(e.target)
             .parents('.file-wrap')
@@ -706,35 +697,6 @@ const OekakiEve = ((W, D, M) => {
       return co;
     },
 
-    /**
-     * Toggling tools
-     *
-     */
-    _toggleTool($container) {
-      $container.toggleClass('active');
-
-      if (
-        this.__$toggleButton !== undefined &&
-        this.__$toggleButton[0] !== $container[0] &&
-        this.__$toggleButton.hasClass('active')
-      ) {
-        this.__$toggleButton.removeClass('active');
-      }
-      if ($container.hasClass('active')) this.__$toggleButton = $container;
-
-      if ($container.hasClass('active') && $container.attr('id') === 'brush-oekaki') {
-        this.flgs.brush.brush_flg = true;
-      } else {
-        this.flgs.brush.brush_flg = false;
-      }
-
-      if ($container.hasClass('active') && $container.attr('id') === 'eraser-oekaki') {
-        this.flgs.eraser.eraser_flg = true;
-      } else {
-        this.flgs.eraser.eraser_flg = false;
-      }
-    },
-
     //
 
     _drawCanvasPointer($canvas, e) {
@@ -803,7 +765,7 @@ const OekakiEve = ((W, D, M) => {
         }
 
         if (
-          this.flgs.eraser.eraser_flg === true ||
+          FlgEve.oekaki.tools.eraser_flg === true ||
           e.buttons === this.oekakiParam.EPenButton.eraser
         ) {
           ctx.strokeStyle = colorBackground;

@@ -99,7 +99,6 @@ const ColpickEve = (() => {
 
     _handleEventMouseDown(e) {
       if (e.target.closest('#copy-colpick')) this._copyHex();
-      if (e.target.closest('#toggle-colpick')) this._toggleColpick();
       if (
         $('#toggle-colpick').hasClass('active') &&
         $(e.target)
