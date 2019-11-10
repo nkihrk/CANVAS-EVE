@@ -30,6 +30,7 @@ const ToggleEve = (() => {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
         this._toggleEntry(e);
       }
+      console.log(FlgEve);
     },
 
     //
@@ -51,11 +52,32 @@ const ToggleEve = (() => {
         this.__$toggleButton.hasClass('active')
       ) {
         this.__$toggleButton.removeClass('active');
+        this._resetIsActiveFlg(this.__$toggleButton);
       }
       if ($container.hasClass('active')) this.__$toggleButton = $container;
 
       this._colpick($container);
       this._oekaki($container);
+    },
+
+    //
+
+    _resetIsActiveFlg($container) {
+      const btnName = $container.attr('id');
+
+      switch (btnName) {
+        case 'toggle-colpick':
+          FlgEve.colpick.tools.is_active_flg = false;
+          break;
+
+        case 'brush-oekaki':
+        case 'eraser-oekaki':
+          FlgEve.oekaki.tools.is_active_flg = false;
+          break;
+
+        default:
+          break;
+      }
     },
 
     //
