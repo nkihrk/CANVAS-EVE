@@ -127,7 +127,7 @@
     <!-- To prevent scrolling -->
     <div id="canvas-eve-wrapper" style="position: fixed; z-index: 0;">
       <!-- A Right-click context sub-menu -->
-      <div id="ctx-submenu" class="ctxmenu-template" style="z-index: 7;">
+      <div id="ctx-submenu" class="ctxmenu-template bold agency-fb" style="z-index: 7;">
         <ul>
           <li id="ctx-sub-text">
             <div>Text</div>
@@ -148,7 +148,7 @@
         </ul>
       </div>
       <!-- A Right-click context menu -->
-      <div id="ctx-menu" class="ctxmenu-template" style="z-index: 6;">
+      <div id="ctx-menu" class="ctxmenu-template bold agency-fb" style="z-index: 6;">
         <ul>
           <li id="ctx-help"><div>Help</div></li>
           <li id="ctx-about"><div>About</div></li>
@@ -185,20 +185,75 @@
         </ul>
       </div>
 
-      <div id="canvas-eve-ui" style="z-index: 5;">
-        <div id="ui-top-bar"></div>
-        <div id="ui-left-bar"></div>
+      <div id="canvas-eve-ui" class="bold agency-fb" style="z-index: 5;">
+        <div id="ui-top-bar">
+          <div id="home-ui-button"></div>
+          <ul>
+            <li>File(F)</li>
+            <li>Edit(E)</li>
+            <li>Window(W)</li>
+          </ul>
+        </div>
+        <div id="ui-left-bar">
+          <hr />
+          <ul>
+            <li><div id="pen-ui-button"></div></li>
+            <li><div id="eraser-ui-button"></div></li>
+            <li><div id="crop-ui-button"></div></li>
+            <li><div id="spuit-ui-button"></div></li>
+            <li><div id="thumbtack-ui-button"></div></li>
+            <li><div id="resize-ui-button"></div></li>
+            <li><div id="rotate-ui-button"></div></li>
+            <li><div id="flip-ui-button"></div></li>
+          </ul>
+        </div>
         <div id="ui-right-bar"></div>
-        <div id="ui-middle-bar"></div>
-        <div id="ui-bottom-bar">ZOOM: 100%</div>
+        <div id="ui-middle-bar">
+          <ul>
+            <li id="new-canvas" class="current-canvas">
+              <div class="info-canvas">
+                <div class="canvas-name">new_canvas*</div>
+                <div class="close-button"></div>
+              </div>
+            </li>
+            <li id="new-canvas-2" class="rest-canvas">
+              <div class="info-canvas">
+                <div class="canvas-name">new_canvas_2*</div>
+                <div class="close-button"></div>
+              </div>
+            </li>
+            <li id="new-canvas-3" class="rest-canvas">
+              <div class="info-canvas">
+                <div class="canvas-name">new_canvas_3*</div>
+                <div class="close-button"></div>
+              </div>
+            </li>
+            <li id="new-canvas-4" class="rest-canvas">
+              <div class="info-canvas">
+                <div class="canvas-name">new_canvas_4*</div>
+                <div class="close-button"></div>
+              </div>
+            </li>
+            <li id="new-canvas-5" class="rest-canvas">
+              <div class="info-canvas">
+                <div class="canvas-name">new_canvas_5*</div>
+                <div class="close-button"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div id="ui-bottom-bar">
+          <div>ZOOM: 100%</div>
+          <div>2019 © NkiHrk</div>
+        </div>
       </div>
 
       <!-- add-eve.js -->
       <div id="progress-bar" style="position: absolute; z-index: 4;"></div>
 
-      <div id="footer" class="bold agency-fb" style="position: absolute; z-index: 3;">
+      <!-- <div id="footer" class="bold agency-fb" style="position: absolute; z-index: 3;">
         2019 © NkiHrk
-      </div>
+      </div> -->
 
       <!-- Canvas for oekaki-eve -->
       <div id="c-oekaki-wrapper" style="position: fixed; z-index: -2;">

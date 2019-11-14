@@ -87,12 +87,14 @@ The UI for CANVAS EVE
 
 #canvas-eve-ui {
   pointer-events: none;
+  cursor: context-menu;
   position: absolute;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100%;
   color: var(--grey);
+  font-size: 1rem;
 }
 
 /*———————————————————————————————————————————————————————
@@ -325,6 +327,19 @@ Resize
     transition: opacity 0.1s ease-in-out;
   }
 }
+// .resize-icon {
+//   @include put-icon('after', 30px, 30px, '../../../assets/img/resize.png');
+
+//   transition: all 0.1s ease-in-out;
+//   &::after {
+//     opacity: 0.5;
+//     transition: opacity 0.1s ease-in-out;
+//   }
+// }
+
+// .resize-wrapper.active .resize-icon::after {
+//   opacity: 1;
+// }
 
 .resize-wrapper.active .resize-icon::after {
   opacity: 1;

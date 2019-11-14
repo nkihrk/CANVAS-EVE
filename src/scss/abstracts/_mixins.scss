@@ -130,8 +130,60 @@ Drop shadow
 Used:
 - components/_canvas-eve.scss
 - layout/_navigation.scss
+- layout/sidebar.scss
 
 —————————————————————————————————————————————————————————*/
 @mixin drop-shadow {
   filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.3));
+}
+
+/*———————————————————————————————————————————————————————
+
+Put an icon
+
+Used:
+- components/_canvas-eve.scss
+- layout/_navigation.scss
+- layout/sidebar.scss
+
+—————————————————————————————————————————————————————————*/
+
+@mixin put-icon($where, $cWidth, $cHeight, $iWidth, $iHeight, $src) {
+  position: relative;
+  width: $cWidth;
+  height: $cHeight;
+
+  @if $where == 'after' {
+    &::after {
+      content: '';
+      display: inline-block;
+      width: $iWidth;
+      height: $iHeight;
+      background-image: url($src);
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
+
+  @if $where == 'before' {
+    &::before {
+      content: '';
+      display: inline-block;
+      width: $iWidth;
+      height: $iHeight;
+      background-image: url($src);
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
 }

@@ -8,11 +8,12 @@ Common
 
 :root {
   --bar-border-width: 2px;
-  --top-bar-height: 25px;
+  --touch-bar-width: 2px;
+  --top-bar-height: 30px;
   --left-bar-width: 45px;
   --right-bar-width: 16px;
   --middle-bar-height: 40px;
-  --bottom-bar-height: 20px;
+  --bottom-bar-height: 30px;
 }
 
 @mixin bar-prefix {
@@ -41,6 +42,40 @@ Top-bar UI
   width: 100%;
   height: var(--top-bar-height);
   border-bottom: solid var(--bar-border-width) var(--medium-purple);
+
+  display: flex;
+  li {
+    display: inline-block;
+    // vertical-align: middle;
+    line-height: var(--top-bar-height);
+    padding: 0 calc((var(--left-bar-width) - 20px) / 4);
+
+    &:hover {
+      background-color: var(--dark-purple);
+    }
+  }
+}
+
+#home-ui-button {
+  @include put-icon(
+    'after',
+    var(--left-bar-width),
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/home.png'
+  );
+
+  display: inline-block;
+  top: 50%;
+  transform: translateY(-50%);
+  // margin: 0 calc((var(--left-bar-width) - 30px) / 2);
+  // border-right: solid 2px rgba(#ffffff, 0.1);
+
+  &:hover {
+    background-color: var(--dark-purple);
+    // border-right: solid 2px var(--dark-purple);
+  }
 }
 
 /*———————————————————————————————————————————————————————
@@ -60,6 +95,63 @@ Left-bar UI
   left: 0;
   width: var(--left-bar-width);
   border-right: solid var(--bar-border-width) var(--medium-purple);
+  padding: 0 6px;
+
+  hr {
+    background-color: var(--grey);
+    border: 1px solid var(--grey);
+    border-radius: 8px;
+    height: var(--touch-bar-width);
+    margin: calc((var(--middle-bar-height) - 4px) / 2) 0;
+  }
+}
+
+#pen-ui-button,
+#eraser-ui-button,
+#crop-ui-button,
+#spuit-ui-button,
+#thumbtack-ui-button,
+#resize-ui-button,
+#rotate-ui-button,
+#flip-ui-button {
+  margin: 1px 0;
+
+  &:hover {
+    background-color: var(--dark-purple);
+    border-radius: 3px;
+  }
+}
+
+#pen-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/pen.png');
+}
+
+#eraser-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/eraser.png');
+}
+
+#crop-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/crop.png');
+}
+
+#spuit-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/spuit.png');
+}
+
+#thumbtack-ui-button {
+  @include put-icon('after', 30px, 30px, 37.6%, 50%, '../../../assets/img/system_ui/thumbtack.png');
+}
+
+#resize-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/resize.png');
+}
+
+#rotate-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/rotate.png');
+}
+
+#flip-ui-button {
+  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/flip.png');
 }
 
 /*———————————————————————————————————————————————————————
@@ -98,6 +190,54 @@ Middle-bar UI
   width: calc(100vw - var(--left-bar-width) - var(--right-bar-width));
   height: var(--middle-bar-height);
   border-bottom: solid var(--bar-border-width) var(--medium-purple);
+
+  li {
+    display: inline-block;
+  }
+
+  .close-button {
+    @include put-icon('after', 20px, 20px, 50%, 50%, '../../../assets/img/system_ui/close.png');
+
+    margin: auto 0;
+    &:hover {
+      border-radius: 50%;
+    }
+  }
+}
+
+.current-canvas {
+  width: 150px;
+  height: calc(100% + var(--bar-border-width));
+  background-color: var(--canvas-color);
+  border-radius: 0 6px 0 0;
+  padding: 0 calc((var(--left-bar-width) - 20px) / 2);
+
+  .close-button {
+    &:hover {
+      background-color: var(--light-purple);
+    }
+  }
+}
+
+.rest-canvas {
+  width: 150px;
+  height: 100%;
+  padding: 0 calc((var(--left-bar-width) - 20px) / 2);
+  // border-right: solid 2px var(--grey);
+
+  .close-button {
+    &:hover {
+      background-color: var(--medium-purple);
+    }
+  }
+}
+
+.info-canvas {
+  display: flex;
+  justify-content: space-between;
+  .canvas-name {
+    line-height: calc(var(--middle-bar-height));
+  }
 }
 
 /*———————————————————————————————————————————————————————
@@ -117,4 +257,12 @@ Bottom-bar UI
   width: calc(100vw - var(--left-bar-width) - var(--right-bar-width));
   height: var(--bottom-bar-height);
   border-top: solid var(--bar-border-width) var(--medium-purple);
+
+  padding: 0 calc((var(--left-bar-width) - 20px) / 4);
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  div {
+    line-height: var(--bottom-bar-height);
+  }
 }
