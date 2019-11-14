@@ -4,11 +4,6 @@
   src: url('../../../assets/font/MADE_Bruno.otf');
 }
 
-/* Variables */
-:root {
-  --bar-width: 17px;
-}
-
 html,
 body {
   height: 100%;
@@ -70,27 +65,27 @@ body {
   font-style: normal;
 
   /* Regular font - agency-fb */
-  .regular {
+  &.regular {
     font-weight: 200;
   }
 
   /* Bold - agency-fb */
-  .bold {
+  &.bold {
     font-weight: bold;
   }
 
   /* White - agency-fb */
-  .white {
+  &.white {
     color: white;
   }
 
   /* Gray - agency-fb */
-  .gray {
+  &.gray {
     color: #4d4b55;
   }
 
   /* half-opacity - agency-fb */
-  .half-opacity {
+  &.half-opacity {
     opacity: 0.5;
   }
 }

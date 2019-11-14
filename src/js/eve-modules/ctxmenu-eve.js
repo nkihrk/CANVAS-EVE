@@ -1,6 +1,6 @@
 /**
  *
- * Context menu for CANVAS EVE.
+ * Context-menu for CANVAS EVE.
  *
  * Dependencies
  * - none

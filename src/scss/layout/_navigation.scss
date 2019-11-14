@@ -1,0 +1,61 @@
+@import '../abstracts/mixins';
+
+/*———————————————————————————————————————————————————————
+
+Context-menu
+
+—————————————————————————————————————————————————————————*/
+
+.ctxmenu-template {
+  @include drop-shadow;
+
+  color: var(--grey);
+  background-color: var(--dark);
+  cursor: context-menu;
+  position: absolute;
+  font-size: 1.2rem;
+  line-height: 35px;
+  border-radius: 3px;
+  overflow: hidden;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px 0 30px;
+  }
+
+  li:hover {
+    background-color: var(--dark-grey);
+  }
+}
+
+#ctx-menu {
+  left: 50%;
+  top: 40%;
+  width: 260px;
+
+  #ctx-new {
+    border-top: solid 1px var(--dark-grey);
+  }
+
+  #ctx-new,
+  #ctx-redo,
+  #ctx-save {
+    border-bottom: solid 1px var(--dark-grey);
+  }
+}
+
+#ctx-submenu {
+  left: 63.5%;
+  top: 51%;
+  width: 260px;
+
+  #ctx-sub-color {
+    border-top: solid 1px var(--dark-grey);
+  }
+
+  #ctx-sub-color {
+    border-bottom: solid 1px var(--dark-grey);
+  }
+}

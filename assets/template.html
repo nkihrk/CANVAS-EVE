@@ -126,6 +126,64 @@
 
     <!-- To prevent scrolling -->
     <div id="canvas-eve-wrapper" style="position: fixed; z-index: 0;">
+      <div id="ctx-menu" class="ctxmenu-template" style="z-index: 5;">
+        <ul>
+          <li id="ctx-help"><div>Help</div></li>
+          <li id="ctx-about"><div>About</div></li>
+          <li id="ctx-settings"><div>Settings</div></li>
+          <li id="ctx-new">
+            <div>New</div>
+            <div>&gt;</div>
+          </li>
+          <li id="ctx-undo">
+            <div>Undo</div>
+            <div>Ctrl + Z</div>
+          </li>
+          <li id="ctx-redo">
+            <div>Redo</div>
+            <div>Ctrl + Shift + Z</div>
+          </li>
+          <li id="ctx-cut">
+            <div>Cut</div>
+            <div>Ctrl + X</div>
+          </li>
+          <li id="ctx-copy">
+            <div>Copy</div>
+            <div>Ctrl + C</div>
+          </li>
+          <li id="ctx-paste">
+            <div>Paste</div>
+            <div>Ctrl + V</div>
+          </li>
+          <li id="ctx-save">
+            <div>Save</div>
+            <div>Ctrl + S</div>
+          </li>
+          <li id="ctx-close"><div>Close</div></li>
+        </ul>
+      </div>
+
+      <div id="ctx-submenu" class="ctxmenu-template" style="z-index: 6;">
+        <ul>
+          <li id="ctx-sub-text">
+            <div>Text</div>
+            <div>+</div>
+          </li>
+          <li id="ctx-sub-color">
+            <div>Color Picker</div>
+            <div>+</div>
+          </li>
+          <li id="ctx-sub-youtube">
+            <div>YouTube</div>
+            <div>+</div>
+          </li>
+          <li id="ctx-sub-browser">
+            <div>Browser</div>
+            <div>+</div>
+          </li>
+        </ul>
+      </div>
+
       <!-- add-eve.js -->
       <div id="progress-bar" style="position: absolute; z-index: 4;"></div>
 

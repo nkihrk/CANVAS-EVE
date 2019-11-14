@@ -122,3 +122,16 @@ Used:
     transition: '';
   }
 }
+
+/*———————————————————————————————————————————————————————
+
+Drop shadow
+
+Used:
+- components/_canvas-eve.scss
+- layout/_navigation.scss
+
+—————————————————————————————————————————————————————————*/
+@mixin drop-shadow {
+  filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.3));
+}
