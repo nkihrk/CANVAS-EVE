@@ -126,7 +126,29 @@
 
     <!-- To prevent scrolling -->
     <div id="canvas-eve-wrapper" style="position: fixed; z-index: 0;">
-      <div id="ctx-menu" class="ctxmenu-template" style="z-index: 5;">
+      <!-- A Right-click context sub-menu -->
+      <div id="ctx-submenu" class="ctxmenu-template" style="z-index: 7;">
+        <ul>
+          <li id="ctx-sub-text">
+            <div>Text</div>
+            <div>+</div>
+          </li>
+          <li id="ctx-sub-color">
+            <div>Color Picker</div>
+            <div>+</div>
+          </li>
+          <li id="ctx-sub-youtube">
+            <div>YouTube</div>
+            <div>+</div>
+          </li>
+          <li id="ctx-sub-browser">
+            <div>Browser</div>
+            <div>+</div>
+          </li>
+        </ul>
+      </div>
+      <!-- A Right-click context menu -->
+      <div id="ctx-menu" class="ctxmenu-template" style="z-index: 6;">
         <ul>
           <li id="ctx-help"><div>Help</div></li>
           <li id="ctx-about"><div>About</div></li>
@@ -163,25 +185,12 @@
         </ul>
       </div>
 
-      <div id="ctx-submenu" class="ctxmenu-template" style="z-index: 6;">
-        <ul>
-          <li id="ctx-sub-text">
-            <div>Text</div>
-            <div>+</div>
-          </li>
-          <li id="ctx-sub-color">
-            <div>Color Picker</div>
-            <div>+</div>
-          </li>
-          <li id="ctx-sub-youtube">
-            <div>YouTube</div>
-            <div>+</div>
-          </li>
-          <li id="ctx-sub-browser">
-            <div>Browser</div>
-            <div>+</div>
-          </li>
-        </ul>
+      <div id="canvas-eve-ui" style="z-index: 5;">
+        <div id="ui-top-bar"></div>
+        <div id="ui-left-bar"></div>
+        <div id="ui-right-bar"></div>
+        <div id="ui-middle-bar"></div>
+        <div id="ui-bottom-bar">ZOOM: 100%</div>
       </div>
 
       <!-- add-eve.js -->

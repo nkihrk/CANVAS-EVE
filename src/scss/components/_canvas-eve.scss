@@ -78,6 +78,25 @@ Webgl
 
 /*———————————————————————————————————————————————————————
 
+#canvas-eve-wrapper / #canvas-eve-ui
+
+Description:
+The UI for CANVAS EVE
+
+—————————————————————————————————————————————————————————*/
+
+#canvas-eve-ui {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100%;
+  color: var(--grey);
+}
+
+/*———————————————————————————————————————————————————————
+
 #canvas-eve-wrapper / #canvas-eve
 
 —————————————————————————————————————————————————————————*/

@@ -43,18 +43,18 @@ body {
   font-family: made-bruno;
 
   /* White - made-bruno */
-  .white {
+  &.white {
     color: white;
   }
 
   /* half-opacity - made-bruno */
-  .half-opacity {
+  &.half-opacity {
     color: white;
     opacity: 0.5;
   }
 
   /* Gray - made-bruno */
-  .gray {
+  &.gray {
     color: #4d4b55;
   }
 }

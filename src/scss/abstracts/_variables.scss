@@ -2,6 +2,10 @@
 
 Global variables
 
+Used:
+- components/_canvas-eve.scss
+- layout/_navigation.scss
+
 —————————————————————————————————————————————————————————*/
 
 :root {
@@ -10,5 +14,7 @@ Global variables
   --transparent-white: rgba(255, 255, 255, 0.05);
   --grey: #939399;
   --dark-grey: #3c3c48;
-  --dark: #272734;
+  --light-purple: #454456;
+  --medium-purple: #2e2e3a;
+  --dark-purple: #272734;
 }

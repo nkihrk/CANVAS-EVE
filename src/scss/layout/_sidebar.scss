@@ -1,0 +1,120 @@
+@import '../abstracts/mixins';
+
+/*———————————————————————————————————————————————————————
+
+Common
+
+—————————————————————————————————————————————————————————*/
+
+:root {
+  --bar-border-width: 2px;
+  --top-bar-height: 25px;
+  --left-bar-width: 45px;
+  --right-bar-width: 16px;
+  --middle-bar-height: 40px;
+  --bottom-bar-height: 20px;
+}
+
+@mixin bar-prefix {
+  pointer-events: auto;
+  position: absolute;
+  background-color: var(--light-purple);
+}
+
+@mixin side-bar-prefix {
+  top: var(--top-bar-height);
+  height: calc(100% - var(--top-bar-height));
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-top-bar
+
+Description:
+Top-bar UI
+
+—————————————————————————————————————————————————————————*/
+
+#ui-top-bar {
+  @include bar-prefix;
+
+  width: 100%;
+  height: var(--top-bar-height);
+  border-bottom: solid var(--bar-border-width) var(--medium-purple);
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-left-bar
+
+Description:
+Left-bar UI
+
+—————————————————————————————————————————————————————————*/
+
+#ui-left-bar {
+  // @include drop-shadow;
+  @include bar-prefix;
+  @include side-bar-prefix;
+
+  left: 0;
+  width: var(--left-bar-width);
+  border-right: solid var(--bar-border-width) var(--medium-purple);
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-right-bar
+
+Description:
+Right-bar UI
+
+—————————————————————————————————————————————————————————*/
+
+#ui-right-bar {
+  // @include drop-shadow;
+  @include bar-prefix;
+  @include side-bar-prefix;
+
+  right: 0;
+  width: var(--right-bar-width);
+  border-left: solid var(--bar-border-width) var(--medium-purple);
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-middle-bar
+
+Description:
+Middle-bar UI
+
+—————————————————————————————————————————————————————————*/
+
+#ui-middle-bar {
+  @include bar-prefix;
+
+  left: var(--left-bar-width);
+  top: var(--top-bar-height);
+  width: calc(100vw - var(--left-bar-width) - var(--right-bar-width));
+  height: var(--middle-bar-height);
+  border-bottom: solid var(--bar-border-width) var(--medium-purple);
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-bottom-bar
+
+Description:
+Bottom-bar UI
+
+—————————————————————————————————————————————————————————*/
+
+#ui-bottom-bar {
+  @include bar-prefix;
+
+  left: var(--left-bar-width);
+  bottom: 0;
+  width: calc(100vw - var(--left-bar-width) - var(--right-bar-width));
+  height: var(--bottom-bar-height);
+  border-top: solid var(--bar-border-width) var(--medium-purple);
+}
