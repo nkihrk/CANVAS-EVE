@@ -8,6 +8,7 @@ Local variables
 —————————————————————————————————————————————————————————*/
 
 $img-path: '../../../assets/img/system_ui';
+$tab-radius: 8px;
 
 /*———————————————————————————————————————————————————————
 
@@ -117,7 +118,7 @@ Left-bar UI
 
   &:hover {
     background-color: $dark-purple;
-    border-radius: 3px;
+    border-radius: $elem-radius;
   }
 }
 
@@ -195,11 +196,16 @@ Middle-bar UI
   top: $top-bar-height;
   width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
   height: $middle-bar-height;
-  border-bottom: solid $bar-border-width $medium-purple;
+  // border-bottom: solid $bar-border-width $medium-purple;
 
-  li {
-    display: inline-block;
+  ul {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
+  // li {
+  //   display: inline-block;
+  // }
 
   .close-button {
     @include set-icon('after', 20px, 20px, 50%, 50%, '#{$img-path}/close.png');
@@ -209,14 +215,38 @@ Middle-bar UI
       border-radius: 50%;
     }
   }
+
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    height: 2px;
+    background: transparent;
+  }
+  &:hover::-webkit-scrollbar {
+    height: 6px;
+    background: transparent;
+  }
+
+  // Scrollbar track
+  &::-webkit-scrollbar-track {
+    background: $canvas-color;
+    border: none;
+  }
+
+  // Scrollbar itself
+  &::-webkit-scrollbar-thumb {
+    background: $dark-purple;
+    border-radius: 8px;
+  }
 }
 
-.current-canvas {
-  width: 150px;
-  height: calc(100% + #{$bar-border-width});
-  background-color: $canvas-color;
-  border-radius: 0 6px 0 0;
+.tab-prefix {
+  min-width: 150px;
+  height: 100%;
   padding: 0 calc((#{$left-bar-width} - 20px) / 2);
+}
+
+.tab-current {
+  background-color: $canvas-color;
 
   .close-button {
     &:hover {
@@ -225,12 +255,7 @@ Middle-bar UI
   }
 }
 
-.rest-canvas {
-  width: 150px;
-  height: 100%;
-  padding: 0 calc((#{$left-bar-width} - 20px) / 2);
-  // border-right: solid 2px $grey;
-
+.tab-rest {
   .close-button {
     &:hover {
       background-color: $medium-purple;
@@ -238,12 +263,49 @@ Middle-bar UI
   }
 }
 
-.info-canvas {
+.tab-info {
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: space-between;
   .canvas-name {
     line-height: $middle-bar-height;
   }
+}
+
+.tab-curve {
+  position: relative;
+  height: $middle-bar-height;
+  background: $canvas-color;
+
+  &.single {
+    border-radius: 0 6px 0 0;
+  }
+
+  &.double {
+    border-radius: 6px 6px 0 0;
+  }
+}
+
+.tab-curve:before,
+.tab-curve:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 2 * $tab-radius;
+  height: $tab-radius;
+}
+
+.tab-curve:after {
+  right: -2 * $tab-radius;
+  border-radius: 0 0 0 $tab-radius;
+  box-shadow: -$tab-radius 0 0 0 $canvas-color;
+}
+
+.tab-curve:before {
+  left: -2 * $tab-radius;
+  border-radius: 0 0 $tab-radius 0;
+  box-shadow: $tab-radius 0 0 0 $canvas-color;
 }
 
 /*———————————————————————————————————————————————————————

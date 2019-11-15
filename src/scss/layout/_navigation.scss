@@ -16,7 +16,7 @@ Context-menu
   position: absolute;
   font-size: 1.2rem;
   line-height: 35px;
-  border-radius: 3px;
+  border-radius: $elem-radius;
   overflow: hidden;
 
   li {
