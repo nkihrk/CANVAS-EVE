@@ -148,7 +148,8 @@ const ThreeEve = ((W, D, M) => {
       const centerpoint = BB.getCenter();
       const size = BB.getSize();
       let backup = size.y / 2 / M.sin((camera.fov / 2) * (M.PI / 180));
-      if (size.x > size.y) backup = size.x / 2 / M.sin((camera.fov / 2) * (M.PI / 180));
+      if (size.x > size.y)
+        backup = size.x / 2 / M.sin((camera.fov / 2) * (M.PI / 180));
       let camZpos = BB.max.z + backup + camera.near;
       if (bool) camZpos = -camZpos;
 
@@ -158,7 +159,10 @@ const ThreeEve = ((W, D, M) => {
 
       scene.userData.camera = camera;
 
-      const controls = new OrbitControls(scene.userData.camera, scene.userData.element);
+      const controls = new OrbitControls(
+        scene.userData.camera,
+        scene.userData.element
+      );
       controls.target.set(0, size.y / 2, 0);
       controls.enableKeys = false;
       controls.screenSpacePanning = true;
@@ -237,7 +241,8 @@ const ThreeEve = ((W, D, M) => {
         Array.from(files).forEach(file => {
           if (this._isSupported(file.name)) supportedModelFlg = true;
         });
-        if (supportedModelFlg === true) this._read(files, this.scenes, mousePos, progSet);
+        if (supportedModelFlg === true)
+          this._read(files, this.scenes, mousePos, progSet);
       }
     },
 
@@ -264,7 +269,14 @@ const ThreeEve = ((W, D, M) => {
           .split('.')
           .pop()
           .toLowerCase();
-        console.log('blobs', blobs, 'baseURL', baseURL, 'rootFilePath', rootFilePath);
+        console.log(
+          'blobs',
+          blobs,
+          'baseURL',
+          baseURL,
+          'rootFilePath',
+          rootFilePath
+        );
       }
 
       function __initMtl(file) {
@@ -377,7 +389,9 @@ const ThreeEve = ((W, D, M) => {
       const scene = new Scene();
 
       // eslint-disable-next-line prefer-destructuring
-      scene.userData.element = D.getElementById(id).getElementsByClassName('eve-main')[0];
+      scene.userData.element = D.getElementById(id).getElementsByClassName(
+        'eve-main'
+      )[0];
       scene.add(new HemisphereLight(0xaaaaaa, 0x444444));
 
       const light = new DirectionalLight(0xffffff, 0.5);
@@ -420,7 +434,8 @@ const ThreeEve = ((W, D, M) => {
 
       // For colpick-eve.js
       if ($('#toggle-colpick').length > 0) {
-        if (!$('#toggle-colpick').hasClass('active')) $fileId.addClass('grab-pointer');
+        if (!$('#toggle-colpick').hasClass('active'))
+          $fileId.addClass('grab-pointer');
       } else {
         $fileId.addClass('grab-pointer');
       }

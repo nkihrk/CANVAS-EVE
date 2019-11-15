@@ -69,7 +69,10 @@ const YoutubeEve = (() => {
     //
 
     _handleEventMouseUp(e) {
-      if (e.target.closest('.tab-block-youtube') || e.target.closest('.child-search-youtube'))
+      if (
+        e.target.closest('.tab-block-youtube') ||
+        e.target.closest('.child-search-youtube')
+      )
         LibEve.iframePointerReset();
     },
 
@@ -90,7 +93,10 @@ const YoutubeEve = (() => {
           .val()
       );
       // eslint-disable-next-line no-useless-escape
-      const isUrl = input.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/);
+      const isUrl = input.match(
+        // eslint-disable-next-line no-useless-escape
+        /^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/
+      );
       const isYoutube = input.match(/youtube/);
       if (input && isUrl && isYoutube) {
         url = input;
@@ -100,19 +106,26 @@ const YoutubeEve = (() => {
           videoID = url.split('v=')[1];
           videoID = videoID.split('&')[0];
           youtubeID = `${videoID}?rel=0&showinfo=0`;
-          jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+          jsonYt =
+            GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
           isVideo = true;
         } else {
           // Should be a movie or just a list without any options
           if (url.match(/list=/)) {
             listID = url.split('list=')[1];
             youtubeID = `videoseries?list=${listID}`;
-            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataPlaylistItem(listID);
+            jsonYt =
+              GlbEve.YOUTUBE_API_KEY == null
+                ? -1
+                : this._ajaxDataPlaylistItem(listID);
             isVideo = false;
           } else if (url.match(/v=/)) {
             videoID = url.split('v=')[1];
             youtubeID = `${url.split('v=')[1]}?rel=0&showinfo=0`;
-            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+            jsonYt =
+              GlbEve.YOUTUBE_API_KEY == null
+                ? -1
+                : this._ajaxDataVideo(videoID);
             isVideo = true;
           }
         }
@@ -143,9 +156,12 @@ const YoutubeEve = (() => {
     _assertFile(youtubeID, tabName, url) {
       const iframeTag = `<iframe src="https://www.youtube.com/embed/${youtubeID}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
       const childTop =
-        ($('#add-youtube').offset().top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL + 300;
+        ($('#add-youtube').offset().top - $('#zoom').offset().top) *
+          GlbEve.MOUSE_WHEEL_VAL +
+        300;
       const childLeft =
-        ($('#add-youtube').offset().left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL +
+        ($('#add-youtube').offset().left - $('#zoom').offset().left) *
+          GlbEve.MOUSE_WHEEL_VAL +
         $('#add-youtube').outerWidth() / 2 -
         350;
       const childStyle = `${'width: 700px; top:'}${childTop}px; left:${childLeft}px; z-index:${
@@ -198,7 +214,10 @@ const YoutubeEve = (() => {
           .val()
       );
       // eslint-disable-next-line no-useless-escape
-      const isUrl = input.match(/^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/);
+      const isUrl = input.match(
+        // eslint-disable-next-line no-useless-escape
+        /^(https?|ftp)(:\/\/[-_.!~*\'()a-zA-Z0-9;\/?:\@&=+\$,%#]+)$/
+      );
       const isYoutube = input.match(/youtube/);
       if (input && isUrl && isYoutube) {
         url = input;
@@ -208,19 +227,26 @@ const YoutubeEve = (() => {
           videoID = url.split('v=')[1];
           videoID = videoID.split('&')[0];
           youtubeID = `${videoID}?rel=0&showinfo=0`;
-          jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+          jsonYt =
+            GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
           isVideo = true;
         } else {
           // Should be a movie or just a list without any options
           if (url.match(/list=/)) {
             listID = url.split('list=')[1];
             youtubeID = `videoseries?list=${listID}`;
-            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataPlaylistItem(listID);
+            jsonYt =
+              GlbEve.YOUTUBE_API_KEY == null
+                ? -1
+                : this._ajaxDataPlaylistItem(listID);
             isVideo = false;
           } else if (url.match(/v=/)) {
             videoID = url.split('v=')[1];
             youtubeID = `${url.split('v=')[1]}?rel=0&showinfo=0`;
-            jsonYt = GlbEve.YOUTUBE_API_KEY == null ? -1 : this._ajaxDataVideo(videoID);
+            jsonYt =
+              GlbEve.YOUTUBE_API_KEY == null
+                ? -1
+                : this._ajaxDataVideo(videoID);
             isVideo = true;
           }
         }
@@ -236,7 +262,9 @@ const YoutubeEve = (() => {
             } else {
               tabName = `Playlist : Enqueued ${jsonData.pageInfo.totalResults} videos`;
             }
-            $selected.parents('.file-wrap').find('.tab-youtube')[0].innerText = tabName;
+            $selected
+              .parents('.file-wrap')
+              .find('.tab-youtube')[0].innerText = tabName;
           });
         }
 

@@ -1,3 +1,4 @@
+@import '../abstracts/variables';
 @import '../abstracts/mixins';
 
 /*———————————————————————————————————————————————————————
@@ -6,25 +7,15 @@ Common
 
 —————————————————————————————————————————————————————————*/
 
-:root {
-  --bar-border-width: 2px;
-  --touch-bar-width: 2px;
-  --top-bar-height: 30px;
-  --left-bar-width: 45px;
-  --right-bar-width: 16px;
-  --middle-bar-height: 40px;
-  --bottom-bar-height: 30px;
-}
-
-@mixin bar-prefix {
+@mixin bar-prefix($color) {
   pointer-events: auto;
   position: absolute;
-  background-color: var(--light-purple);
+  background-color: $color;
 }
 
-@mixin side-bar-prefix {
-  top: var(--top-bar-height);
-  height: calc(100% - var(--top-bar-height));
+@mixin side-bar-prefix($height) {
+  top: $height;
+  height: calc(100% - #{$height});
 }
 
 /*———————————————————————————————————————————————————————
@@ -37,21 +28,21 @@ Top-bar UI
 —————————————————————————————————————————————————————————*/
 
 #ui-top-bar {
-  @include bar-prefix;
+  @include bar-prefix($light-purple);
 
   width: 100%;
-  height: var(--top-bar-height);
-  border-bottom: solid var(--bar-border-width) var(--medium-purple);
+  height: $top-bar-height;
+  border-bottom: solid $bar-border-width $medium-purple;
 
   display: flex;
   li {
     display: inline-block;
     // vertical-align: middle;
-    line-height: var(--top-bar-height);
-    padding: 0 calc((var(--left-bar-width) - 20px) / 4);
+    line-height: $top-bar-height;
+    padding: 0 calc((#{$left-bar-width} - 20px) / 4);
 
     &:hover {
-      background-color: var(--dark-purple);
+      background-color: $dark-purple;
     }
   }
 }
@@ -59,7 +50,7 @@ Top-bar UI
 #home-ui-button {
   @include put-icon(
     'after',
-    var(--left-bar-width),
+    $left-bar-width,
     30px,
     50%,
     50%,
@@ -69,12 +60,12 @@ Top-bar UI
   display: inline-block;
   top: 50%;
   transform: translateY(-50%);
-  // margin: 0 calc((var(--left-bar-width) - 30px) / 2);
+  // margin: 0 calc((#{$left-bar-width} - 30px) / 2);
   // border-right: solid 2px rgba(#ffffff, 0.1);
 
   &:hover {
-    background-color: var(--dark-purple);
-    // border-right: solid 2px var(--dark-purple);
+    background-color: $dark-purple;
+    // border-right: solid 2px $dark-purple;
   }
 }
 
@@ -89,20 +80,20 @@ Left-bar UI
 
 #ui-left-bar {
   // @include drop-shadow;
-  @include bar-prefix;
-  @include side-bar-prefix;
+  @include bar-prefix($light-purple);
+  @include side-bar-prefix($top-bar-height);
 
   left: 0;
-  width: var(--left-bar-width);
-  border-right: solid var(--bar-border-width) var(--medium-purple);
+  width: $left-bar-width;
+  border-right: solid $bar-border-width $medium-purple;
   padding: 0 6px;
 
   hr {
-    background-color: var(--grey);
-    border: 1px solid var(--grey);
+    background-color: $grey;
+    border: 1px solid $grey;
     border-radius: 8px;
-    height: var(--touch-bar-width);
-    margin: calc((var(--middle-bar-height) - 4px) / 2) 0;
+    height: $touch-bar-width;
+    margin: calc((#{$middle-bar-height} - 4px) / 2) 0;
   }
 }
 
@@ -117,41 +108,97 @@ Left-bar UI
   margin: 1px 0;
 
   &:hover {
-    background-color: var(--dark-purple);
+    background-color: $dark-purple;
     border-radius: 3px;
   }
 }
 
 #pen-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/pen.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/pen.png'
+  );
 }
 
 #eraser-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/eraser.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/eraser.png'
+  );
 }
 
 #crop-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/crop.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/crop.png'
+  );
 }
 
 #spuit-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/spuit.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/spuit.png'
+  );
 }
 
 #thumbtack-ui-button {
-  @include put-icon('after', 30px, 30px, 37.6%, 50%, '../../../assets/img/system_ui/thumbtack.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    37.6%,
+    50%,
+    '../../../assets/img/system_ui/thumbtack.png'
+  );
 }
 
 #resize-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/resize.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/resize.png'
+  );
 }
 
 #rotate-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/rotate.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/rotate.png'
+  );
 }
 
 #flip-ui-button {
-  @include put-icon('after', 30px, 30px, 50%, 50%, '../../../assets/img/system_ui/flip.png');
+  @include put-icon(
+    'after',
+    30px,
+    30px,
+    50%,
+    50%,
+    '../../../assets/img/system_ui/flip.png'
+  );
 }
 
 /*———————————————————————————————————————————————————————
@@ -165,12 +212,12 @@ Right-bar UI
 
 #ui-right-bar {
   // @include drop-shadow;
-  @include bar-prefix;
-  @include side-bar-prefix;
+  @include bar-prefix($light-purple);
+  @include side-bar-prefix($top-bar-height);
 
   right: 0;
-  width: var(--right-bar-width);
-  border-left: solid var(--bar-border-width) var(--medium-purple);
+  width: $right-bar-width;
+  border-left: solid $bar-border-width $medium-purple;
 }
 
 /*———————————————————————————————————————————————————————
@@ -183,20 +230,27 @@ Middle-bar UI
 —————————————————————————————————————————————————————————*/
 
 #ui-middle-bar {
-  @include bar-prefix;
+  @include bar-prefix($light-purple);
 
-  left: var(--left-bar-width);
-  top: var(--top-bar-height);
-  width: calc(100vw - var(--left-bar-width) - var(--right-bar-width));
-  height: var(--middle-bar-height);
-  border-bottom: solid var(--bar-border-width) var(--medium-purple);
+  left: $left-bar-width;
+  top: $top-bar-height;
+  width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
+  height: $middle-bar-height;
+  border-bottom: solid $bar-border-width $medium-purple;
 
   li {
     display: inline-block;
   }
 
   .close-button {
-    @include put-icon('after', 20px, 20px, 50%, 50%, '../../../assets/img/system_ui/close.png');
+    @include put-icon(
+      'after',
+      20px,
+      20px,
+      50%,
+      50%,
+      '../../../assets/img/system_ui/close.png'
+    );
 
     margin: auto 0;
     &:hover {
@@ -207,14 +261,14 @@ Middle-bar UI
 
 .current-canvas {
   width: 150px;
-  height: calc(100% + var(--bar-border-width));
-  background-color: var(--canvas-color);
+  height: calc(100% + #{$bar-border-width});
+  background-color: $canvas-color;
   border-radius: 0 6px 0 0;
-  padding: 0 calc((var(--left-bar-width) - 20px) / 2);
+  padding: 0 calc((#{$left-bar-width} - 20px) / 2);
 
   .close-button {
     &:hover {
-      background-color: var(--light-purple);
+      background-color: $light-purple;
     }
   }
 }
@@ -222,12 +276,12 @@ Middle-bar UI
 .rest-canvas {
   width: 150px;
   height: 100%;
-  padding: 0 calc((var(--left-bar-width) - 20px) / 2);
-  // border-right: solid 2px var(--grey);
+  padding: 0 calc((#{$left-bar-width} - 20px) / 2);
+  // border-right: solid 2px $grey;
 
   .close-button {
     &:hover {
-      background-color: var(--medium-purple);
+      background-color: $medium-purple;
     }
   }
 }
@@ -236,7 +290,7 @@ Middle-bar UI
   display: flex;
   justify-content: space-between;
   .canvas-name {
-    line-height: calc(var(--middle-bar-height));
+    line-height: $middle-bar-height;
   }
 }
 
@@ -250,19 +304,19 @@ Bottom-bar UI
 —————————————————————————————————————————————————————————*/
 
 #ui-bottom-bar {
-  @include bar-prefix;
+  @include bar-prefix($light-purple);
 
-  left: var(--left-bar-width);
+  left: $left-bar-width;
   bottom: 0;
-  width: calc(100vw - var(--left-bar-width) - var(--right-bar-width));
-  height: var(--bottom-bar-height);
-  border-top: solid var(--bar-border-width) var(--medium-purple);
+  width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
+  height: $bottom-bar-height;
+  border-top: solid $bar-border-width $medium-purple;
 
-  padding: 0 calc((var(--left-bar-width) - 20px) / 4);
+  padding: 0 calc((#{$left-bar-width} - 20px) / 4);
   font-size: 1rem;
   display: flex;
   justify-content: space-between;
   div {
-    line-height: var(--bottom-bar-height);
+    line-height: $bottom-bar-height;
   }
 }

@@ -75,7 +75,8 @@ const CanvasEve = ((W, D, M) => {
     //
 
     mouseMoveEvent(e) {
-      if (this.flgs.create_selected_area_flg === true) this._updateSelectedArea(e);
+      if (this.flgs.create_selected_area_flg === true)
+        this._updateSelectedArea(e);
     },
 
     //
@@ -85,7 +86,8 @@ const CanvasEve = ((W, D, M) => {
       if ($fileWrap.length === 0) {
         $fileWrap = $(e.target);
       }
-      if ($fileWrap.find('.multi').length !== 1) FlgEve.canvas.select.is_multi_flg = false;
+      if ($fileWrap.find('.multi').length !== 1)
+        FlgEve.canvas.select.is_multi_flg = false;
     },
 
     //
@@ -97,7 +99,8 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _resetFlgs() {
-      if (this.flgs.create_selected_area_flg === true) this.flgs.create_selected_area_flg = false;
+      if (this.flgs.create_selected_area_flg === true)
+        this.flgs.create_selected_area_flg = false;
     },
 
     //
@@ -223,15 +226,39 @@ const CanvasEve = ((W, D, M) => {
 
     _estimateBounding(areaPos, filePos) {
       // console.log('filePos', filePos, 'areaPos', areaPos);
-      const isLeftTopFile = this._isInBounding(areaPos, [filePos.startX, filePos.startY]);
-      const isRightTopFile = this._isInBounding(areaPos, [filePos.endX, filePos.startY]);
-      const isRightBottomFile = this._isInBounding(areaPos, [filePos.endX, filePos.endY]);
-      const isLeftBottomFile = this._isInBounding(areaPos, [filePos.startX, filePos.endY]);
+      const isLeftTopFile = this._isInBounding(areaPos, [
+        filePos.startX,
+        filePos.startY
+      ]);
+      const isRightTopFile = this._isInBounding(areaPos, [
+        filePos.endX,
+        filePos.startY
+      ]);
+      const isRightBottomFile = this._isInBounding(areaPos, [
+        filePos.endX,
+        filePos.endY
+      ]);
+      const isLeftBottomFile = this._isInBounding(areaPos, [
+        filePos.startX,
+        filePos.endY
+      ]);
 
-      const isLeftTopArea = this._isInBounding(filePos, [areaPos.startX, areaPos.startY]);
-      const isRightTopArea = this._isInBounding(filePos, [areaPos.endX, areaPos.startY]);
-      const isRightBottomArea = this._isInBounding(filePos, [areaPos.endX, areaPos.endY]);
-      const isLeftBottomArea = this._isInBounding(filePos, [areaPos.startX, areaPos.endY]);
+      const isLeftTopArea = this._isInBounding(filePos, [
+        areaPos.startX,
+        areaPos.startY
+      ]);
+      const isRightTopArea = this._isInBounding(filePos, [
+        areaPos.endX,
+        areaPos.startY
+      ]);
+      const isRightBottomArea = this._isInBounding(filePos, [
+        areaPos.endX,
+        areaPos.endY
+      ]);
+      const isLeftBottomArea = this._isInBounding(filePos, [
+        areaPos.startX,
+        areaPos.endY
+      ]);
 
       if (
         isLeftTopFile ||
@@ -382,7 +409,8 @@ const CanvasEve = ((W, D, M) => {
       const isDownKey = this.keyMap.ArrowDown;
 
       if (isUpKey) this._alignFiles($fileWraps, minTop, 'verticalAlignTop');
-      if (isDownKey) this._alignFiles($fileWraps, maxBottom, 'verticalAlignBottom');
+      if (isDownKey)
+        this._alignFiles($fileWraps, maxBottom, 'verticalAlignBottom');
 
       this._initKeyMap();
     },
@@ -423,8 +451,10 @@ const CanvasEve = ((W, D, M) => {
       const isLeftKey = this.keyMap.ArrowLeft;
       const isRightKey = this.keyMap.ArrowRight;
 
-      if (isLeftKey) this._alignFiles($fileWraps, minLeft, 'horizontalAlignLeft');
-      if (isRightKey) this._alignFiles($fileWraps, maxRight, 'horizontalAlignRight');
+      if (isLeftKey)
+        this._alignFiles($fileWraps, minLeft, 'horizontalAlignLeft');
+      if (isRightKey)
+        this._alignFiles($fileWraps, maxRight, 'horizontalAlignRight');
 
       this._initKeyMap();
     },
@@ -443,9 +473,13 @@ const CanvasEve = ((W, D, M) => {
           width: $fileWrapOrigin.width(),
           height: $fileWrapOrigin.height(),
           left: $fileWrapOrigin.offset().left,
-          right: $fileWrapOrigin.offset().left + $fileWrapOrigin.width() / GlbEve.MOUSE_WHEEL_VAL,
+          right:
+            $fileWrapOrigin.offset().left +
+            $fileWrapOrigin.width() / GlbEve.MOUSE_WHEEL_VAL,
           top: $fileWrapOrigin.offset().top,
-          bottom: $fileWrapOrigin.offset().top + $fileWrapOrigin.height() / GlbEve.MOUSE_WHEEL_VAL
+          bottom:
+            $fileWrapOrigin.offset().top +
+            $fileWrapOrigin.height() / GlbEve.MOUSE_WHEEL_VAL
         };
         let isInsertedFlg = false;
 
@@ -458,30 +492,43 @@ const CanvasEve = ((W, D, M) => {
               height: $fileWrapTarget.height(),
               left: $fileWrapTarget.offset().left,
               right:
-                $fileWrapTarget.offset().left + $fileWrapTarget.width() / GlbEve.MOUSE_WHEEL_VAL,
+                $fileWrapTarget.offset().left +
+                $fileWrapTarget.width() / GlbEve.MOUSE_WHEEL_VAL,
               top: $fileWrapTarget.offset().top,
               bottom:
-                $fileWrapTarget.offset().top + $fileWrapTarget.height() / GlbEve.MOUSE_WHEEL_VAL
+                $fileWrapTarget.offset().top +
+                $fileWrapTarget.height() / GlbEve.MOUSE_WHEEL_VAL
             };
 
-            if ($fileWrapTarget.find('.multi').length === 1 && origin.id !== target.id) {
+            if (
+              $fileWrapTarget.find('.multi').length === 1 &&
+              origin.id !== target.id
+            ) {
               const isHigher = {
                 alignTop: target.bottom < origin.top + 1,
                 alignBottom: target.top > origin.bottom - 1,
                 alignLeft: target.right < origin.left + 1,
                 alignRight: target.left > origin.right - 1
               };
-              const isLeft = origin.left < target.right && target.right <= origin.right;
-              const isRight = origin.left <= target.left && target.left < origin.right;
-              const isTop = origin.top < target.bottom && target.bottom <= origin.bottom;
-              const isBottom = origin.top <= target.top && target.top < origin.bottom;
+              const isLeft =
+                origin.left < target.right && target.right <= origin.right;
+              const isRight =
+                origin.left <= target.left && target.left < origin.right;
+              const isTop =
+                origin.top < target.bottom && target.bottom <= origin.bottom;
+              const isBottom =
+                origin.top <= target.top && target.top < origin.bottom;
               const isMiddle = {
-                vertical: target.left <= origin.left && origin.right <= target.right,
-                horizontal: target.top <= origin.top && origin.bottom <= target.bottom
+                vertical:
+                  target.left <= origin.left && origin.right <= target.right,
+                horizontal:
+                  target.top <= origin.top && origin.bottom <= target.bottom
               };
               const isCover = {
-                vertical: origin.left <= target.left && target.right <= origin.right,
-                horizontal: origin.top <= target.top && target.bottom <= origin.bottom
+                vertical:
+                  origin.left <= target.left && target.right <= origin.right,
+                horizontal:
+                  origin.top <= target.top && target.bottom <= origin.bottom
               };
 
               if (!isInsertedFlg) {
@@ -491,8 +538,14 @@ const CanvasEve = ((W, D, M) => {
               switch (mode) {
                 case 'verticalAlignTop':
                   if (isHigher.alignTop) {
-                    if (isLeft || isRight || isCover.vertical || isMiddle.vertical) {
-                      targetVal = target.bottom > targetVal ? target.bottom : targetVal;
+                    if (
+                      isLeft ||
+                      isRight ||
+                      isCover.vertical ||
+                      isMiddle.vertical
+                    ) {
+                      targetVal =
+                        target.bottom > targetVal ? target.bottom : targetVal;
                       isInsertedFlg = true;
                     }
                   }
@@ -500,8 +553,14 @@ const CanvasEve = ((W, D, M) => {
 
                 case 'verticalAlignBottom':
                   if (isHigher.alignBottom) {
-                    if (isLeft || isRight || isCover.vertical || isMiddle.vertical) {
-                      targetVal = target.top < targetVal ? target.top : targetVal;
+                    if (
+                      isLeft ||
+                      isRight ||
+                      isCover.vertical ||
+                      isMiddle.vertical
+                    ) {
+                      targetVal =
+                        target.top < targetVal ? target.top : targetVal;
                       isInsertedFlg = true;
                     }
                   }
@@ -509,8 +568,14 @@ const CanvasEve = ((W, D, M) => {
 
                 case 'horizontalAlignLeft':
                   if (isHigher.alignLeft) {
-                    if (isTop || isBottom || isCover.horizontal || isMiddle.horizontal) {
-                      targetVal = target.right > targetVal ? target.right : targetVal;
+                    if (
+                      isTop ||
+                      isBottom ||
+                      isCover.horizontal ||
+                      isMiddle.horizontal
+                    ) {
+                      targetVal =
+                        target.right > targetVal ? target.right : targetVal;
                       isInsertedFlg = true;
                     }
                   }
@@ -518,8 +583,14 @@ const CanvasEve = ((W, D, M) => {
 
                 case 'horizontalAlignRight':
                   if (isHigher.alignRight) {
-                    if (isTop || isBottom || isCover.horizontal || isMiddle.horizontal) {
-                      targetVal = target.left < targetVal ? target.left : targetVal;
+                    if (
+                      isTop ||
+                      isBottom ||
+                      isCover.horizontal ||
+                      isMiddle.horizontal
+                    ) {
+                      targetVal =
+                        target.left < targetVal ? target.left : targetVal;
                       isInsertedFlg = true;
                     }
                   }
@@ -533,7 +604,8 @@ const CanvasEve = ((W, D, M) => {
 
           switch (mode) {
             case 'verticalAlignTop':
-              resultTargetVal = (targetVal - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL;
+              resultTargetVal =
+                (targetVal - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL;
               if ($fileWrapOrigin.find('.multi').length === 1) {
                 $fileWrapOrigin.css({
                   top: `${resultTargetVal}px`
@@ -543,7 +615,8 @@ const CanvasEve = ((W, D, M) => {
 
             case 'verticalAlignBottom':
               resultTargetVal =
-                (targetVal - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL - origin.height;
+                (targetVal - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL -
+                origin.height;
               if ($fileWrapOrigin.find('.multi').length === 1) {
                 $fileWrapOrigin.css({
                   top: `${resultTargetVal}px`
@@ -552,7 +625,8 @@ const CanvasEve = ((W, D, M) => {
               break;
 
             case 'horizontalAlignLeft':
-              resultTargetVal = (targetVal - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL;
+              resultTargetVal =
+                (targetVal - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL;
               if ($fileWrapOrigin.find('.multi').length === 1) {
                 $fileWrapOrigin.css({
                   left: `${resultTargetVal}px`
@@ -562,7 +636,9 @@ const CanvasEve = ((W, D, M) => {
 
             case 'horizontalAlignRight':
               resultTargetVal =
-                (targetVal - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL - origin.width;
+                (targetVal - $('#zoom').offset().left) *
+                  GlbEve.MOUSE_WHEEL_VAL -
+                origin.width;
               if ($fileWrapOrigin.find('.multi').length === 1) {
                 $fileWrapOrigin.css({
                   left: `${resultTargetVal}px`
@@ -723,22 +799,34 @@ const CanvasEve = ((W, D, M) => {
 
               // Resizing boxes
               if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
-                if ($fileWrap.find('.re-left-top').length === 0) $fileWrap.prepend(self.resizeBox);
+                if ($fileWrap.find('.re-left-top').length === 0)
+                  $fileWrap.prepend(self.resizeBox);
               }
               if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
-                if ($fileWrap.find('.ro-left-top').length === 0) $fileWrap.prepend(self.rotateBox); // Rotating circles
+                if ($fileWrap.find('.ro-left-top').length === 0)
+                  $fileWrap.prepend(self.rotateBox); // Rotating circles
               }
 
               if ($fileWrap.find('.thumbtack-icon').length === 0)
-                $fileWrap.find('.thumbtack-wrapper').prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
+                $fileWrap
+                  .find('.thumbtack-wrapper')
+                  .prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
               if ($fileWrap.find('.resize-icon').length === 0)
-                $fileWrap.find('.resize-wrapper').prepend('<div class="resize-icon"></div>'); // Add a resizing icon
+                $fileWrap
+                  .find('.resize-wrapper')
+                  .prepend('<div class="resize-icon"></div>'); // Add a resizing icon
               if ($fileWrap.find('.rotate-icon').length === 0)
-                $fileWrap.find('.rotate-wrapper').prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
+                $fileWrap
+                  .find('.rotate-wrapper')
+                  .prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
               if ($fileWrap.find('.flip-icon').length === 0)
-                $fileWrap.find('.flip-wrapper').prepend('<div class="flip-icon"></div>'); // Add a flipping icon
+                $fileWrap
+                  .find('.flip-wrapper')
+                  .prepend('<div class="flip-icon"></div>'); // Add a flipping icon
               if ($fileWrap.find('.trash-icon').length === 0)
-                $fileWrap.find('.trash-wrapper').prepend('<div class="trash-icon"></div>'); // Add a trash icon
+                $fileWrap
+                  .find('.trash-wrapper')
+                  .prepend('<div class="trash-icon"></div>'); // Add a trash icon
             }
 
             this._updateUiVal();
@@ -771,9 +859,11 @@ const CanvasEve = ((W, D, M) => {
 
             // Initialize f.rotatedCenterPos. These are screen-space coordinates
             f.rotatedCenterPos.left =
-              f.$fileId.offset().left + f.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+              f.$fileId.offset().left +
+              f.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
             f.rotatedCenterPos.top =
-              f.$fileId.offset().top + f.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+              f.$fileId.offset().top +
+              f.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
             // Initialize the initRads for a rotating function
             this.tmp.ro.left_top_initRad = LibEve.calcRadians(
@@ -844,9 +934,11 @@ const CanvasEve = ((W, D, M) => {
               // Initialize m.rotatedCenterPos. These are screen-space coordinates
               m.rotatedCenterPos = {};
               m.rotatedCenterPos.left =
-                m.$fileId.offset().left + m.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+                m.$fileId.offset().left +
+                m.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
               m.rotatedCenterPos.top =
-                m.$fileId.offset().top + m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+                m.$fileId.offset().top +
+                m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
 
               // Set the $fileId to be the highest of all the other unselected elements
               GlbEve.HIGHEST_Z_INDEX += 1;
@@ -910,7 +1002,9 @@ const CanvasEve = ((W, D, M) => {
                 .drawImage(img, 0, 0, f.$fileId.width(), f.$fileId.height());
             };
             f.$fileId.find('.canvas-colpick').attr('width', f.$fileId.width());
-            f.$fileId.find('.canvas-colpick').attr('height', f.$fileId.height());
+            f.$fileId
+              .find('.canvas-colpick')
+              .attr('height', f.$fileId.height());
           }, this.options.UPDATE_CANVAS_SIZE_DELAY);
         }
       }
@@ -1060,9 +1154,11 @@ const CanvasEve = ((W, D, M) => {
         targetPosTop = pClientY - f.fileIdRelPosY;
 
         resLeft =
-          (f.rotatedSize.width - f.fileIdWidth) / 2 + targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
+          (f.rotatedSize.width - f.fileIdWidth) / 2 +
+          targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
         resTop =
-          (f.rotatedSize.height - f.fileIdHeight) / 2 + targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
+          (f.rotatedSize.height - f.fileIdHeight) / 2 +
+          targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
       }
 
       if (
@@ -1085,9 +1181,11 @@ const CanvasEve = ((W, D, M) => {
           }
 
           f.rotatedCenterPos.left =
-            f.$fileId.offset().left + f.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            f.$fileId.offset().left +
+            f.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
           f.rotatedCenterPos.top =
-            f.$fileId.offset().top + f.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+            f.$fileId.offset().top +
+            f.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
         }
       }
     },
@@ -1102,9 +1200,11 @@ const CanvasEve = ((W, D, M) => {
         const targetPosTop = pClientY - m.fileIdRelPosY;
 
         const resLeft =
-          (m.rotatedSize.width - m.fileIdWidth) / 2 + targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
+          (m.rotatedSize.width - m.fileIdWidth) / 2 +
+          targetPosLeft * GlbEve.MOUSE_WHEEL_VAL;
         const resTop =
-          (m.rotatedSize.height - m.fileIdHeight) / 2 + targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
+          (m.rotatedSize.height - m.fileIdHeight) / 2 +
+          targetPosTop * GlbEve.MOUSE_WHEEL_VAL;
 
         if (
           mouseWheelAvailFlg === false &&
@@ -1126,9 +1226,11 @@ const CanvasEve = ((W, D, M) => {
             }
 
             m.rotatedCenterPos.left =
-              m.$fileId.offset().left + m.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
+              m.$fileId.offset().left +
+              m.rotatedSize.width / 2 / GlbEve.MOUSE_WHEEL_VAL;
             m.rotatedCenterPos.top =
-              m.$fileId.offset().top + m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
+              m.$fileId.offset().top +
+              m.rotatedSize.height / 2 / GlbEve.MOUSE_WHEEL_VAL;
           }
         }
       }
@@ -1142,42 +1244,56 @@ const CanvasEve = ((W, D, M) => {
       if (mouseWheelAvailFlg === false && FlgEve.canvas.resize_flg === true) {
         if (FlgEve.canvas.re.left_top_flg === true) {
           f.$fileId.css({
-            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) *
+              GlbEve.MOUSE_WHEEL_VAL +
               (f.fileIdHeight -
-                (f.fileIdWidth - (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL) *
+                (f.fileIdWidth -
+                  (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL) *
                   f.fileIdRatio)}px`,
-            left: `${(f.fileIdPos.left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL +
+            left: `${(f.fileIdPos.left - $('#zoom').offset().left) *
+              GlbEve.MOUSE_WHEEL_VAL +
               (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${f.fileIdWidth - (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+            width: `${f.fileIdWidth -
+              (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
 
         if (FlgEve.canvas.re.right_top_flg === true) {
           f.$fileId.css({
-            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL +
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) *
+              GlbEve.MOUSE_WHEEL_VAL +
               (f.fileIdHeight -
-                (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL * f.fileIdRatio)}px`,
-            left: `${(f.fileIdPos.left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${(e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+                (e.clientX - f.fileIdPos.left) *
+                  GlbEve.MOUSE_WHEEL_VAL *
+                  f.fileIdRatio)}px`,
+            left: `${(f.fileIdPos.left - $('#zoom').offset().left) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${(e.clientX - f.fileIdPos.left) *
+              GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
 
         if (FlgEve.canvas.re.right_bottom_flg === true) {
           f.$fileId.css({
-            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL}px`,
-            left: `${(f.fileIdPos.left - $('#zoom').offset().left) * GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${(e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            left: `${(f.fileIdPos.left - $('#zoom').offset().left) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
+            width: `${(e.clientX - f.fileIdPos.left) *
+              GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
 
         if (FlgEve.canvas.re.left_bottom_flg === true) {
           f.$fileId.css({
-            top: `${(f.fileIdPos.top - $('#zoom').offset().top) * GlbEve.MOUSE_WHEEL_VAL}px`,
+            top: `${(f.fileIdPos.top - $('#zoom').offset().top) *
+              GlbEve.MOUSE_WHEEL_VAL}px`,
             left: `${(f.fileIdPos.left -
               $('#zoom').offset().left +
               (e.clientX - f.fileIdPos.left)) *
               GlbEve.MOUSE_WHEEL_VAL}px`,
-            width: `${f.fileIdWidth - (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
+            width: `${f.fileIdWidth -
+              (e.clientX - f.fileIdPos.left) * GlbEve.MOUSE_WHEEL_VAL}px`
           });
         }
       }
@@ -1189,7 +1305,10 @@ const CanvasEve = ((W, D, M) => {
       const f = this.file;
       const fileCenterPosX = f.rotatedCenterPos.left;
       const fileCenterPosY = f.rotatedCenterPos.top;
-      const rad = LibEve.calcRadians(e.clientX - fileCenterPosX, e.clientY - fileCenterPosY);
+      const rad = LibEve.calcRadians(
+        e.clientX - fileCenterPosX,
+        e.clientY - fileCenterPosY
+      );
 
       if (mouseWheelAvailFlg === false && FlgEve.canvas.rotate_flg === true) {
         if (FlgEve.canvas.ro.left_top_flg === true) {

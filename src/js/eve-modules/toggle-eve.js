@@ -35,7 +35,11 @@ const ToggleEve = (() => {
     //
 
     _toggleEntry(e) {
-      if (this.options.LIST_OF_TOOLS.indexOf(`#${e.target.getAttribute('id')}`) !== -1) {
+      if (
+        this.options.LIST_OF_TOOLS.indexOf(
+          `#${e.target.getAttribute('id')}`
+        ) !== -1
+      ) {
         this._toggleTool($(e.target));
       }
     },

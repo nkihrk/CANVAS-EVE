@@ -560,7 +560,9 @@ const $ = (D => {
       let h;
 
       if (n === 1) {
-        h = parseFloat(getComputedStyle(this[0], null).height.replace('px', ''));
+        h = parseFloat(
+          getComputedStyle(this[0], null).height.replace('px', '')
+        );
       } else {
         // console.log('height', this);
         return null;

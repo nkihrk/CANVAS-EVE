@@ -1,3 +1,4 @@
+@import '../abstracts/variables';
 @import '../abstracts/mixins';
 
 /*———————————————————————————————————————————————————————
@@ -26,8 +27,8 @@ Selected area
 —————————————————————————————————————————————————————————*/
 
 // .selected-dot {
-//   border: dotted 1px var(--half-white);
-//   background-color: var(--transparent-white);
+//   border: dotted 1px $half-white;
+//   background-color: $transparent-white;
 
 //   &.file-wrap {
 //     width: 0;
@@ -36,7 +37,7 @@ Selected area
 // }
 
 #selected-area {
-  @include selected-area(var(--half-white), false);
+  @include selected-area($half-white, false);
 }
 
 /*———————————————————————————————————————————————————————
@@ -73,7 +74,7 @@ Webgl
   z-index: -999;
   width: 600px;
   height: 600px;
-  background-color: #32303f;
+  background-color: $canvas-color;
 }
 
 /*———————————————————————————————————————————————————————
@@ -81,7 +82,7 @@ Webgl
 #canvas-eve-wrapper / #canvas-eve-ui
 
 Description:
-The UI for CANVAS EVE
+The entire tool box for CANVAS EVE
 
 —————————————————————————————————————————————————————————*/
 
@@ -93,7 +94,7 @@ The UI for CANVAS EVE
   top: 0;
   width: 100vw;
   height: 100%;
-  color: var(--grey);
+  color: $grey;
   font-size: 1rem;
 }
 
@@ -104,7 +105,7 @@ The UI for CANVAS EVE
 —————————————————————————————————————————————————————————*/
 
 #progress-bar {
-  background-color: #c1125b;
+  background-color: $shocking-pink;
   top: 0;
   left: 0;
   /* width: 100%; */

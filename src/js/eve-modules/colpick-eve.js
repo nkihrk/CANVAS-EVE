@@ -119,7 +119,8 @@ const ColpickEve = (() => {
       }
 
       if (e.target.closest('#reset-res')) {
-        if ($('#toggle-colpick').hasClass('active') && e.button !== 1) this._initColpick();
+        if ($('#toggle-colpick').hasClass('active') && e.button !== 1)
+          this._initColpick();
       }
     },
 

@@ -1,9 +1,10 @@
+@import '../abstracts/variables';
+
 /*———————————————————————————————————————————————————————
 
 Common
 
 —————————————————————————————————————————————————————————*/
-
 /* Spuit cursor */
 .spuit-pointer {
   cursor: url('../../../assets/img/spuit.png') 0 21, pointer;
@@ -30,7 +31,7 @@ Common
 
   &:focus {
     outline: 0;
-    /* border-color: #c1125b; */
+    /* border-color: $shocking-pink; */
   }
 }
 
@@ -67,7 +68,7 @@ Common
   height: 30px;
   margin: 0 15px;
   border-radius: 6px;
-  border: solid 1px #c1125b;
+  border: solid 1px $shocking-pink;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
@@ -88,7 +89,7 @@ Common
   }
 
   &.active {
-    background-color: #c1125b;
+    background-color: $shocking-pink;
     opacity: 1;
 
     &::before {
@@ -136,7 +137,7 @@ Common
   position: relative;
   width: 35%;
   height: 34px;
-  /* background-color: #c1125b; */
+  /* background-color: $shocking-pink; */
   background-color: rgba(193, 18, 91, 0.9);
   /* background-color: rgba(178, 31, 36, 1); */
   border-radius: 0 6px 6px 0;

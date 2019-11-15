@@ -135,7 +135,10 @@ const LibEve = (() => {
         // eslint-disable-next-line prefer-destructuring
         b = hsl[2];
       } else {
-        const q = hsl[2] < 0.5 ? hsl[2] * (1 + hsl[1]) : hsl[2] + hsl[1] - hsl[2] * hsl[1];
+        const q =
+          hsl[2] < 0.5
+            ? hsl[2] * (1 + hsl[1])
+            : hsl[2] + hsl[1] - hsl[2] * hsl[1];
         const p = 2 * hsl[2] - q;
         r = __hue2rgb(p, q, hsl[0] + 1 / 3);
         g = __hue2rgb(p, q, hsl[0]);
@@ -248,7 +251,9 @@ const LibEve = (() => {
         angle = 0;
       }
 
-      return angle < 0 ? ((angle + 360) / 180) * Math.PI : (angle / 180) * Math.PI;
+      return angle < 0
+        ? ((angle + 360) / 180) * Math.PI
+        : (angle / 180) * Math.PI;
     },
 
     /**
@@ -259,7 +264,8 @@ const LibEve = (() => {
      * @returns {number} The angle between x-axis and a given coordinate. The value will be in between 0 and 2PI
      */
     calcRadians(x, y) {
-      const rad = (Math.atan2(y, x) / Math.PI) * 180 + (Math.atan2(y, x) > 0 ? 0 : 360);
+      const rad =
+        (Math.atan2(y, x) / Math.PI) * 180 + (Math.atan2(y, x) > 0 ? 0 : 360);
 
       return (rad / 180) * Math.PI;
     },

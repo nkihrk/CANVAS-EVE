@@ -207,7 +207,9 @@ const FileEve = ((W, D, M) => {
         };
         reader.onprogress = e => {
           if (e.lengthComputable) {
-            const percentLoaded = M.round((e.loaded / e.total) * progSet.eachProg);
+            const percentLoaded = M.round(
+              (e.loaded / e.total) * progSet.eachProg
+            );
             if (percentLoaded < progSet.eachProg) {
               const progWidth = percentLoaded + progSet.totalProg;
               progSet.progress.style.width = `${progWidth}%`;
@@ -320,13 +322,15 @@ const FileEve = ((W, D, M) => {
 
       $fileId.css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
-        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - (600 * imgRatio) / 2}px`,
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL -
+          (600 * imgRatio) / 2}px`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 
       // For colpick-eve.js
       if ($('#toggle-colpick').length > 0) {
-        if (!$('#toggle-colpick').hasClass('active')) $fileId.addClass('grab-pointer');
+        if (!$('#toggle-colpick').hasClass('active'))
+          $fileId.addClass('grab-pointer');
       } else {
         $fileId.addClass('grab-pointer');
       }

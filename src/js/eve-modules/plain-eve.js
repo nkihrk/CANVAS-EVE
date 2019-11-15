@@ -74,7 +74,8 @@ const PlainEve = (() => {
       const { $plain } = this;
       this.param.relPos.left = e.clientX - $plain.offset().left;
       this.param.relPos.top = e.clientY - $plain.offset().top;
-      if (e.button === this.options.BUTTON_FOR_MIDDLE) this.flgs.mousewheel_avail_flg = true;
+      if (e.button === this.options.BUTTON_FOR_MIDDLE)
+        this.flgs.mousewheel_avail_flg = true;
     },
 
     //

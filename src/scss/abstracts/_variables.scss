@@ -1,21 +1,48 @@
 /*———————————————————————————————————————————————————————
 
-Global variables
+String variables
 
 Used:
-- components/_canvas-eve.scss
-- layout/_navigation.scss
+- layout/_sidebar.scss
 
 —————————————————————————————————————————————————————————*/
 
 :root {
-  --bar-width: 17px;
-  --half-white: rgba(255, 255, 255, 0.5);
-  --transparent-white: rgba(255, 255, 255, 0.05);
-  --canvas-color: #32303f;
-  --grey: #939399;
-  --dark-grey: #3c3c48;
-  --light-purple: #454456;
-  --medium-purple: #2e2e3a;
-  --dark-purple: #272734;
+  --bar-border-width: 2px;
+  --touch-bar-width: 2px;
+  --top-bar-height: 30px;
+  --left-bar-width: 45px;
+  --right-bar-width: 16px;
+  --middle-bar-height: 40px;
+  --bottom-bar-height: 30px;
 }
+
+$bar-border-width: 2px;
+$touch-bar-width: 2px;
+$top-bar-height: 30px;
+$left-bar-width: 45px;
+$right-bar-width: 16px;
+$middle-bar-height: 40px;
+$bottom-bar-height: 30px;
+
+/*———————————————————————————————————————————————————————
+
+Color variables
+
+Used:
+- components/_canvas-eve.scss
+- components/_colpick-eve.scss
+- layout/_navigation.scss
+- layout/_sidebar.scss
+
+—————————————————————————————————————————————————————————*/
+
+$canvas-color: #32303f;
+$half-white: rgba(#ffffff, 0.5);
+$transparent-white: rgba(#ffffff, 0.05);
+$grey: #939399;
+$dark-grey: #3c3c48;
+$light-purple: #454456;
+$medium-purple: #2e2e3a;
+$dark-purple: #272734;
+$shocking-pink: #c1125b;

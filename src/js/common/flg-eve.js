@@ -103,10 +103,14 @@ const FlgEve = (() => {
         LibEve.iframePointerNone();
         this.canvas.resize_flg = true;
 
-        if (e.target.closest('.re-left-top')) this.canvas.re.left_top_flg = true;
-        if (e.target.closest('.re-right-top')) this.canvas.re.right_top_flg = true;
-        if (e.target.closest('.re-right-bottom')) this.canvas.re.right_bottom_flg = true;
-        if (e.target.closest('.re-left-bottom')) this.canvas.re.left_bottom_flg = true;
+        if (e.target.closest('.re-left-top'))
+          this.canvas.re.left_top_flg = true;
+        if (e.target.closest('.re-right-top'))
+          this.canvas.re.right_top_flg = true;
+        if (e.target.closest('.re-right-bottom'))
+          this.canvas.re.right_bottom_flg = true;
+        if (e.target.closest('.re-left-bottom'))
+          this.canvas.re.left_bottom_flg = true;
       }
 
       if (
@@ -118,10 +122,14 @@ const FlgEve = (() => {
         LibEve.iframePointerNone();
         this.canvas.rotate_flg = true;
 
-        if (e.target.closest('.ro-left-top')) this.canvas.ro.left_top_flg = true;
-        if (e.target.closest('.ro-right-top')) this.canvas.ro.right_top_flg = true;
-        if (e.target.closest('.ro-right-bottom')) this.canvas.ro.right_bottom_flg = true;
-        if (e.target.closest('.ro-left-bottom')) this.canvas.ro.left_bottom_flg = true;
+        if (e.target.closest('.ro-left-top'))
+          this.canvas.ro.left_top_flg = true;
+        if (e.target.closest('.ro-right-top'))
+          this.canvas.ro.right_top_flg = true;
+        if (e.target.closest('.ro-right-bottom'))
+          this.canvas.ro.right_bottom_flg = true;
+        if (e.target.closest('.ro-left-bottom'))
+          this.canvas.ro.left_bottom_flg = true;
       }
 
       if (
@@ -139,7 +147,8 @@ const FlgEve = (() => {
       LibEve.iframePointerReset();
 
       // A flag for colpick`s bar circle. colpick-eve.js
-      if (this.colpick.move_circle_flg === true) this.colpick.move_circle_flg = false;
+      if (this.colpick.move_circle_flg === true)
+        this.colpick.move_circle_flg = false;
 
       // A flag for drag event
       if (this.canvas.drag_flg === true) this.canvas.drag_flg = false;
@@ -149,17 +158,25 @@ const FlgEve = (() => {
 
       // Flags for resizing
       if (this.canvas.resize_flg === true) this.canvas.resize_flg = false;
-      if (this.canvas.re.left_top_flg === true) this.canvas.re.left_top_flg = false;
-      if (this.canvas.re.right_top_flg === true) this.canvas.re.right_top_flg = false;
-      if (this.canvas.re.right_bottom_flg === true) this.canvas.re.right_bottom_flg = false;
-      if (this.canvas.re.left_bottom_flg === true) this.canvas.re.left_bottom_flg = false;
+      if (this.canvas.re.left_top_flg === true)
+        this.canvas.re.left_top_flg = false;
+      if (this.canvas.re.right_top_flg === true)
+        this.canvas.re.right_top_flg = false;
+      if (this.canvas.re.right_bottom_flg === true)
+        this.canvas.re.right_bottom_flg = false;
+      if (this.canvas.re.left_bottom_flg === true)
+        this.canvas.re.left_bottom_flg = false;
 
       // A flag for rotating
       if (this.canvas.rotate_flg === true) this.canvas.rotate_flg = false;
-      if (this.canvas.ro.left_top_flg === true) this.canvas.ro.left_top_flg = false;
-      if (this.canvas.ro.right_top_flg === true) this.canvas.ro.right_top_flg = false;
-      if (this.canvas.ro.right_bottom_flg === true) this.canvas.ro.right_bottom_flg = false;
-      if (this.canvas.ro.left_bottom_flg === true) this.canvas.ro.left_bottom_flg = false;
+      if (this.canvas.ro.left_top_flg === true)
+        this.canvas.ro.left_top_flg = false;
+      if (this.canvas.ro.right_top_flg === true)
+        this.canvas.ro.right_top_flg = false;
+      if (this.canvas.ro.right_bottom_flg === true)
+        this.canvas.ro.right_bottom_flg = false;
+      if (this.canvas.ro.left_bottom_flg === true)
+        this.canvas.ro.left_bottom_flg = false;
     }
   };
 

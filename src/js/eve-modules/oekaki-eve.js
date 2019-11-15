@@ -237,7 +237,8 @@ const OekakiEve = ((W, D, M) => {
         if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
       }
 
-      if (e.target.closest('#color-wheel-circle')) this.flgs.oekaki.move_wheelcircle_flg = true;
+      if (e.target.closest('#color-wheel-circle'))
+        this.flgs.oekaki.move_wheelcircle_flg = true;
 
       if (e.target.closest('#color-triangle-circle'))
         this.flgs.oekaki.move_trianglecircle_flg = true;
@@ -255,7 +256,10 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _handleEventMouseDown(e) {
-      if (e.target.closest('#color-oekaki') && e.button === this.options.BUTTON_FOR_RIGHT) {
+      if (
+        e.target.closest('#color-oekaki') &&
+        e.button === this.options.BUTTON_FOR_RIGHT
+      ) {
         this._colorWheelArea(e);
         this._colorTriangleArea(e);
       }
@@ -272,15 +276,20 @@ const OekakiEve = ((W, D, M) => {
       this.param.centerPos.y = centerY;
 
       if (e.buttons === this.options.BUTTON_FOR_RIGHT) {
-        if (this.flgs.oekaki.move_wheelcircle_flg === true) this._updateWheelCircle(e);
-        if (this.flgs.oekaki.move_trianglecircle_flg === true) this._updateTriangleCircle(e);
+        if (this.flgs.oekaki.move_wheelcircle_flg === true)
+          this._updateWheelCircle(e);
+        if (this.flgs.oekaki.move_trianglecircle_flg === true)
+          this._updateTriangleCircle(e);
       }
     },
 
     //
 
     _drawPointerEvents(e) {
-      if (FlgEve.oekaki.tools.brush_flg === true || FlgEve.oekaki.tools.eraser_flg === true) {
+      if (
+        FlgEve.oekaki.tools.brush_flg === true ||
+        FlgEve.oekaki.tools.eraser_flg === true
+      ) {
         const $canvas = this.$cOekaki;
         this._drawCanvasPointer($canvas, e);
       }
@@ -289,8 +298,14 @@ const OekakiEve = ((W, D, M) => {
     //
 
     _drawEvents(e) {
-      if (FlgEve.oekaki.tools.brush_flg === true || FlgEve.oekaki.tools.eraser_flg === true) {
-        if (e.target.closest('.oekaki-canvas') || e.target.closest('.selected')) {
+      if (
+        FlgEve.oekaki.tools.brush_flg === true ||
+        FlgEve.oekaki.tools.eraser_flg === true
+      ) {
+        if (
+          e.target.closest('.oekaki-canvas') ||
+          e.target.closest('.selected')
+        ) {
           const $canvas = $(e.target)
             .parents('.file-wrap')
             .find('canvas');
@@ -306,7 +321,9 @@ const OekakiEve = ((W, D, M) => {
     drawWheel() {
       const resolution = 1;
       const outerRadius = 100;
-      const innerRadius = outerRadius - (this.colorWheel.thickness / this.colorWheel.radius) * 100;
+      const innerRadius =
+        outerRadius -
+        (this.colorWheel.thickness / this.colorWheel.radius) * 100;
       const root = D.getElementById('color-wheel');
 
       this._createWheelCircle();
@@ -335,7 +352,13 @@ const OekakiEve = ((W, D, M) => {
 
         path.setAttribute(
           'd',
-          this._describeArc(radius, radius, radius, i / resolution, (i + 2) / resolution)
+          this._describeArc(
+            radius,
+            radius,
+            radius,
+            i / resolution,
+            (i + 2) / resolution
+          )
         );
         path.setAttribute('fill', `hsl(${i / resolution}, 100%, 50%)`);
 
@@ -390,13 +413,17 @@ const OekakiEve = ((W, D, M) => {
     _createWheelCircle() {
       const wheelCircle = D.createElement('div');
       const r = this.colorWheel.innerRadius + this.colorWheel.thickness / 2;
-      const left = r * M.cos(this.options.THETA + (3 / 2) * M.PI) + this.param.size / 2;
-      const top = r * M.sin(this.options.THETA + (3 / 2) * M.PI) + this.param.size / 2;
+      const left =
+        r * M.cos(this.options.THETA + (3 / 2) * M.PI) + this.param.size / 2;
+      const top =
+        r * M.sin(this.options.THETA + (3 / 2) * M.PI) + this.param.size / 2;
 
       wheelCircle.id = 'color-wheel-circle';
       wheelCircle.style.left = `${left}px`;
       wheelCircle.style.top = `${top}px`;
-      wheelCircle.style.backgroundColor = `hsla(${M.round(this.options.HUE)}, 100%, 50%, 1)`;
+      wheelCircle.style.backgroundColor = `hsla(${M.round(
+        this.options.HUE
+      )}, 100%, 50%, 1)`;
 
       this.wheelCircle = wheelCircle;
       this.param.container.appendChild(wheelCircle);
@@ -450,9 +477,16 @@ const OekakiEve = ((W, D, M) => {
 
     _calculateTheta(e) {
       const rad =
-        (M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / M.PI) *
+        (M.atan2(
+          e.clientY - this.param.centerPos.y,
+          e.clientX - this.param.centerPos.x
+        ) /
+          M.PI) *
           180 +
-        (M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) > 0
+        (M.atan2(
+          e.clientY - this.param.centerPos.y,
+          e.clientX - this.param.centerPos.x
+        ) > 0
           ? 0
           : 360);
 
@@ -463,10 +497,18 @@ const OekakiEve = ((W, D, M) => {
 
     _calculateHue(e) {
       const deg =
-        (M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / M.PI) *
+        (M.atan2(
+          e.clientY - this.param.centerPos.y,
+          e.clientX - this.param.centerPos.x
+        ) /
+          M.PI) *
           180 +
         90 +
-        ((M.atan2(e.clientY - this.param.centerPos.y, e.clientX - this.param.centerPos.x) / M.PI) *
+        ((M.atan2(
+          e.clientY - this.param.centerPos.y,
+          e.clientX - this.param.centerPos.x
+        ) /
+          M.PI) *
           180 +
           90 >
         0
@@ -511,7 +553,12 @@ const OekakiEve = ((W, D, M) => {
         this.param.size
       );
 
-      const grad0 = ctx.createLinearGradient(this.colorTriangle.radius, 0, leftTopX, 0);
+      const grad0 = ctx.createLinearGradient(
+        this.colorTriangle.radius,
+        0,
+        leftTopX,
+        0
+      );
       const hsla = `hsla(${M.round(this.param.color.hue)}, 100%, 50%, `;
       grad0.addColorStop(0, `${hsla}1)`);
       grad0.addColorStop(1, `${hsla}0)`);
@@ -608,8 +655,14 @@ const OekakiEve = ((W, D, M) => {
       const maxX = this.colorTriangle.radius;
       let minY = (mouseX - maxX) / M.sqrt(3);
       let maxY = (-mouseX + maxX) / M.sqrt(3);
-      minY = mouseX <= minX ? -M.sin((M.PI * 2) / 3) * this.colorTriangle.radius : minY;
-      maxY = mouseX <= minX ? M.sin((M.PI * 2) / 3) * this.colorTriangle.radius : maxY;
+      minY =
+        mouseX <= minX
+          ? -M.sin((M.PI * 2) / 3) * this.colorTriangle.radius
+          : minY;
+      maxY =
+        mouseX <= minX
+          ? M.sin((M.PI * 2) / 3) * this.colorTriangle.radius
+          : maxY;
 
       const pointer = this.triangleCircle;
       const $container = $(this.param.container);
@@ -678,7 +731,8 @@ const OekakiEve = ((W, D, M) => {
       const y = this.colorTriangle.circlePos.y - this.param.size / 2;
       const leftTopX = M.cos((M.PI * 2) / 3) * this.colorTriangle.radius;
       const leftTopY = M.sin((M.PI * 2) / 3) * this.colorTriangle.radius;
-      const a = -M.tan(M.PI / 6) * x - y - leftTopY + M.tan(M.PI / 6) * leftTopX;
+      const a =
+        -M.tan(M.PI / 6) * x - y - leftTopY + M.tan(M.PI / 6) * leftTopX;
       const k = M.abs(a) * M.sin(M.PI / 3);
       const l = (this.colorTriangle.radius * 3) / 2;
 
@@ -689,7 +743,9 @@ const OekakiEve = ((W, D, M) => {
       const co = [];
       let tmp;
       for (let i = 0; i < 3; i++) {
-        tmp = (s[i] * (l - k)) / l + (b[i] * (l - (this.colorTriangle.radius - x))) / l;
+        tmp =
+          (s[i] * (l - k)) / l +
+          (b[i] * (l - (this.colorTriangle.radius - x))) / l;
         tmp = M.abs(M.round(tmp));
         co.push(tmp);
       }
@@ -714,19 +770,21 @@ const OekakiEve = ((W, D, M) => {
       };
       const pos = {
         x: M.floor(
-          ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
+          ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) /
+            this.options.CANVAS_RATIO
         ),
         y: M.floor(
-          ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
+          ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) /
+            this.options.CANVAS_RATIO
         )
       };
 
       let pressure = this.options.BRUSH_SIZE;
       // const rotate = e.twist;
 
-      const brushColor = `rgba(${this.param.color.rgb[0]},${this.param.color.rgb[1]},${
-        this.param.color.rgb[2]
-      },1.0)`;
+      const brushColor = `rgba(${this.param.color.rgb[0]},${
+        this.param.color.rgb[1]
+      },${this.param.color.rgb[2]},1.0)`;
       // const colorBackground = this.options.CANVAS_COLOR;
       const colorBackground = this.options.RESET_CANVAS_COLOR;
 
@@ -795,9 +853,15 @@ const OekakiEve = ((W, D, M) => {
             } else if (pressure > 0) {
               ctx.beginPath();
               ctx.lineCap = 'round';
-              ctx.moveTo(this.oekakiParam.lastBrushPos.x, this.oekakiParam.lastBrushPos.y);
+              ctx.moveTo(
+                this.oekakiParam.lastBrushPos.x,
+                this.oekakiParam.lastBrushPos.y
+              );
 
-              const midPoint = this._midPointBetween(this.oekakiParam.lastBrushPos, pos);
+              const midPoint = this._midPointBetween(
+                this.oekakiParam.lastBrushPos,
+                pos
+              );
               ctx.quadraticCurveTo(
                 this.oekakiParam.lastBrushPos.x,
                 this.oekakiParam.lastBrushPos.y,
@@ -837,8 +901,12 @@ const OekakiEve = ((W, D, M) => {
       };
 
       const pos = {
-        x: ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO,
-        y: ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) / this.options.CANVAS_RATIO
+        x:
+          ((screenPos.x - canvasRect.left) * GlbEve.MOUSE_WHEEL_VAL) /
+          this.options.CANVAS_RATIO,
+        y:
+          ((screenPos.y - canvasRect.top) * GlbEve.MOUSE_WHEEL_VAL) /
+          this.options.CANVAS_RATIO
       };
 
       if (pos.x === undefined || pos.y === undefined) {
@@ -870,9 +938,15 @@ const OekakiEve = ((W, D, M) => {
 
             ctx.beginPath();
             ctx.lineCap = 'round';
-            ctx.moveTo(this.oekakiParam.lastBrushPos.x, this.oekakiParam.lastBrushPos.y);
+            ctx.moveTo(
+              this.oekakiParam.lastBrushPos.x,
+              this.oekakiParam.lastBrushPos.y
+            );
 
-            const { midPoint } = this._midPointBetween(this.oekakiParam.lastBrushPos, pos);
+            const { midPoint } = this._midPointBetween(
+              this.oekakiParam.lastBrushPos,
+              pos
+            );
             ctx.quadraticCurveTo(
               this.oekakiParam.lastBrushPos.x,
               this.oekakiParam.lastBrushPos.y,

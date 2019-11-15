@@ -1,3 +1,4 @@
+@import '../abstracts/variables';
 @import '../abstracts/mixins';
 
 /*———————————————————————————————————————————————————————
@@ -9,8 +10,8 @@ Context-menu
 .ctxmenu-template {
   @include drop-shadow;
 
-  color: var(--grey);
-  background-color: var(--dark-purple);
+  color: $grey;
+  background-color: $dark-purple;
   cursor: context-menu;
   position: absolute;
   font-size: 1.2rem;
@@ -26,7 +27,7 @@ Context-menu
   }
 
   li:hover {
-    background-color: var(--dark-grey);
+    background-color: $dark-grey;
   }
 }
 
@@ -36,13 +37,13 @@ Context-menu
   width: 260px;
 
   #ctx-new {
-    border-top: solid 1px var(--dark-grey);
+    border-top: solid 1px $dark-grey;
   }
 
   #ctx-new,
   #ctx-redo,
   #ctx-save {
-    border-bottom: solid 1px var(--dark-grey);
+    border-bottom: solid 1px $dark-grey;
   }
 }
 
@@ -52,10 +53,10 @@ Context-menu
   width: 260px;
 
   #ctx-sub-color {
-    border-top: solid 1px var(--dark-grey);
+    border-top: solid 1px $dark-grey;
   }
 
   #ctx-sub-color {
-    border-bottom: solid 1px var(--dark-grey);
+    border-bottom: solid 1px $dark-grey;
   }
 }
