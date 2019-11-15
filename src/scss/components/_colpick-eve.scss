@@ -2,15 +2,24 @@
 
 /*———————————————————————————————————————————————————————
 
+Local variables
+
+—————————————————————————————————————————————————————————*/
+
+$img-path: '../../../assets/img';
+
+/*———————————————————————————————————————————————————————
+
 Common
 
 —————————————————————————————————————————————————————————*/
+
 /* Spuit cursor */
 .spuit-pointer {
-  cursor: url('../../../assets/img/spuit.png') 0 21, pointer;
+  cursor: url('#{$img-path}/spuit.png') 0 21, pointer;
 
   &:active {
-    cursor: url('../../../assets/img/spuited.png') 0 21, pointer;
+    cursor: url('#{$img-path}/spuited.png') 0 21, pointer;
   }
 }
 
@@ -77,7 +86,7 @@ Common
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-image: url('../../../assets/img/red_spuit.png');
+    background-image: url('#{$img-path}/red_spuit.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -93,7 +102,7 @@ Common
     opacity: 1;
 
     &::before {
-      background-image: url('../../../assets/img/dark_spuit.png');
+      background-image: url('#{$img-path}/dark_spuit.png');
     }
   }
 }
@@ -153,7 +162,7 @@ Common
     display: inline-block;
     width: 16px;
     height: 16px;
-    background-image: url('../../../assets/img/copy.png');
+    background-image: url('#{$img-path}/copy.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;

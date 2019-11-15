@@ -3,7 +3,15 @@
 
 /*———————————————————————————————————————————————————————
 
-Common
+Local variables
+
+—————————————————————————————————————————————————————————*/
+
+$img-path: '../../../assets/img/system_ui';
+
+/*———————————————————————————————————————————————————————
+
+Local mixins
 
 —————————————————————————————————————————————————————————*/
 
@@ -48,13 +56,13 @@ Top-bar UI
 }
 
 #home-ui-button {
-  @include put-icon(
+  @include set-icon(
     'after',
     $left-bar-width,
     30px,
     50%,
     50%,
-    '../../../assets/img/system_ui/home.png'
+    '#{$img-path}/home.png'
   );
 
   display: inline-block;
@@ -114,91 +122,42 @@ Left-bar UI
 }
 
 #pen-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/pen.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/pen.png');
 }
 
 #eraser-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/eraser.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/eraser.png');
 }
 
 #crop-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/crop.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/crop.png');
 }
 
 #spuit-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/spuit.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/spuit.png');
 }
 
 #thumbtack-ui-button {
-  @include put-icon(
+  @include set-icon(
     'after',
     30px,
     30px,
     37.6%,
     50%,
-    '../../../assets/img/system_ui/thumbtack.png'
+    '#{$img-path}/thumbtack.png'
   );
 }
 
 #resize-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/resize.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/resize.png');
 }
 
 #rotate-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/rotate.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/rotate.png');
 }
 
 #flip-ui-button {
-  @include put-icon(
-    'after',
-    30px,
-    30px,
-    50%,
-    50%,
-    '../../../assets/img/system_ui/flip.png'
-  );
+  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/flip.png');
 }
 
 /*———————————————————————————————————————————————————————
@@ -243,14 +202,7 @@ Middle-bar UI
   }
 
   .close-button {
-    @include put-icon(
-      'after',
-      20px,
-      20px,
-      50%,
-      50%,
-      '../../../assets/img/system_ui/close.png'
-    );
+    @include set-icon('after', 20px, 20px, 50%, 50%, '#{$img-path}/close.png');
 
     margin: auto 0;
     &:hover {

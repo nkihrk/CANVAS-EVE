@@ -103,9 +103,27 @@ Used:
         transparent 3px,
         transparent 8px
       ),
-      linear-gradient(to right, $dot-color, $dot-color 3px, transparent 3px, transparent 8px),
-      linear-gradient(to bottom, $dot-color, $dot-color 3px, transparent 3px, transparent 8px),
-      linear-gradient(to bottom, $dot-color, $dot-color 3px, transparent 3px, transparent 8px);
+      linear-gradient(
+        to right,
+        $dot-color,
+        $dot-color 3px,
+        transparent 3px,
+        transparent 8px
+      ),
+      linear-gradient(
+        to bottom,
+        $dot-color,
+        $dot-color 3px,
+        transparent 3px,
+        transparent 8px
+      ),
+      linear-gradient(
+        to bottom,
+        $dot-color,
+        $dot-color 3px,
+        transparent 3px,
+        transparent 8px
+      );
     background-size: 8px 1px, 8px 1px, 1px 8px, 1px 8px;
     background-position: left top, left bottom, left top, right top;
     background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
@@ -148,42 +166,35 @@ Used:
 
 —————————————————————————————————————————————————————————*/
 
-@mixin put-icon($where, $cWidth, $cHeight, $iWidth, $iHeight, $src) {
+@mixin _icon($iWidth, $iHeight, $src) {
+  content: '';
+  display: inline-block;
+  width: $iWidth;
+  height: $iHeight;
+  background-image: url($src);
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+@mixin set-icon($where, $cWidth, $cHeight, $iWidth, $iHeight, $src) {
   position: relative;
   width: $cWidth;
   height: $cHeight;
 
   @if $where == 'after' {
     &::after {
-      content: '';
-      display: inline-block;
-      width: $iWidth;
-      height: $iHeight;
-      background-image: url($src);
-      background-size: contain;
-      background-repeat: no-repeat;
-      vertical-align: middle;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
+      @include _icon($iWidth, $iHeight, $src);
     }
   }
 
   @if $where == 'before' {
     &::before {
-      content: '';
-      display: inline-block;
-      width: $iWidth;
-      height: $iHeight;
-      background-image: url($src);
-      background-size: contain;
-      background-repeat: no-repeat;
-      vertical-align: middle;
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
+      @include _icon($iWidth, $iHeight, $src);
     }
   }
 }
