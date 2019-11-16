@@ -225,7 +225,7 @@
           </div>
         </div>
         <div id="ui-bar-right">
-          <div class="ui-tab-open">
+          <div class="ui-bar-open">
             <div class="ui-button-open"></div>
           </div>
         </div>
@@ -276,12 +276,18 @@
             <div>2019 © NkiHrk</div>
           </div>
         </div>
+        <div id="zslider">
+          <div id="zslider-track">
+            <div id="zslider-thumb"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Canvas for oekaki-eve -->
       <div id="c-oekaki-wrapper" style="z-index: -2;">
         <div id="c-oekaki-plain">
           <div id="c-oekaki-zoom">
+            <div id="grid-bg"></div>
             <canvas id="c-oekaki"></canvas>
           </div>
         </div>
@@ -291,12 +297,10 @@
       <canvas id="c-three" style="z-index: -1;"></canvas>
 
       <!-- Color Picker. colpick-eve.js -->
-      <div id="colpick" style="z-index: 2;">
-        <!-- Color board -->
+      <!-- <div id="colpick" style="z-index: 2;">
         <div id="board-colpick" class="grab-pointer file-wrap">
           <div class="only-draggable no-zooming">
             <div class="clearfix">
-              <!-- Colpick button -->
               <div id="toggle-colpick"></div>
 
               <div id="code-colpick">
@@ -309,7 +313,6 @@
                 />
                 <div id="copy-colpick"></div>
               </div>
-              <!-- #code-colpick -->
             </div>
 
             <div id="color-colpick"></div>
@@ -321,7 +324,6 @@
                   <div class="colbar-colpick"></div>
                   <div id="red-cir-colpick" class="bartop-colpick"></div>
                 </div>
-                <!-- <div class="num-colpick bold agency-fb">50</div> -->
                 <input
                   id="input-r-colpick"
                   class="num-colpick input-prefix bold agency-fb"
@@ -333,7 +335,6 @@
                   <div class="colbar-colpick"></div>
                   <div id="green-cir-colpick" class="bartop-colpick"></div>
                 </div>
-                <!-- <div class="num-colpick bold agency-fb">48</div> -->
                 <input
                   id="input-g-colpick"
                   class="num-colpick input-prefix bold agency-fb"
@@ -345,23 +346,18 @@
                   <div class="colbar-colpick"></div>
                   <div id="blue-cir-colpick" class="bartop-colpick"></div>
                 </div>
-                <!-- <div class="num-colpick bold agency-fb">63</div> -->
                 <input
                   id="input-b-colpick"
                   class="num-colpick input-prefix bold agency-fb"
                 />
               </div>
             </div>
-            <!-- #rgb-colpick -->
           </div>
         </div>
-        <!-- #board-colpick -->
-      </div>
-      <!-- #colpick -->
+      </div> -->
 
       <!-- A board for Oekaki -->
       <div id="oekaki" style="z-index: 2;">
-        <!-- Color board -->
         <div id="board-oekaki" class="grab-pointer file-wrap">
           <div class="only-draggable no-zooming">
             <div id="color-oekaki">
@@ -369,7 +365,6 @@
             </div>
           </div>
         </div>
-        <!-- Tool board -->
         <div id="tool-board-oekaki" class="grab-pointer file-wrap">
           <div class="only-draggable no-zooming">
             <div id="tool-oekaki">
@@ -378,9 +373,7 @@
             </div>
           </div>
         </div>
-        <!-- #board-oekaki -->
       </div>
-      <!-- #oekaki -->
 
       <!-- Heads up: z-index: 1; is reserved by the later-created #selected-area -->
 
@@ -391,7 +384,7 @@
             <!-- For inserting elements only -->
             <div id="add-files">
               <!-- youtube. youtube-eve.js -->
-              <div
+              <!-- <div
                 id="add-youtube"
                 class="grab-pointer file-wrap"
                 style="z-index: 0;"
@@ -425,8 +418,7 @@
                     ></div>
                   </div>
                 </div>
-              </div>
-              <!-- #add-youtube -->
+              </div> -->
             </div>
             <!-- #add-files -->
           </div>

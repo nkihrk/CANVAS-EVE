@@ -60,27 +60,27 @@ Top-bar UI
       background-color: $dark-purple;
     }
   }
-}
 
-#ui-button-home {
-  @include set-icon(
-    'after',
-    $left-bar-width,
-    30px,
-    50%,
-    50%,
-    '#{$img-path}/home.png'
-  );
+  #ui-button-home {
+    @include set-icon(
+      'after',
+      $left-bar-width,
+      30px,
+      50%,
+      50%,
+      '#{$img-path}/home.png'
+    );
 
-  display: inline-block;
-  top: 50%;
-  transform: translateY(-50%);
-  // margin: 0 calc((#{$left-bar-width} - 30px) / 2);
-  // border-right: solid 2px rgba(#ffffff, 0.1);
+    display: inline-block;
+    top: 50%;
+    transform: translateY(-50%);
+    // margin: 0 calc((#{$left-bar-width} - 30px) / 2);
+    // border-right: solid 2px rgba(#ffffff, 0.1);
 
-  &:hover {
-    background-color: $dark-purple;
-    // border-right: solid 2px $dark-purple;
+    &:hover {
+      background-color: $dark-purple;
+      // border-right: solid 2px $dark-purple;
+    }
   }
 }
 
@@ -115,61 +115,61 @@ Left-bar UI
     height: $touch-bar-width;
     margin: calc((#{$middle-bar-height} - 4px) / 2) 0;
   }
-}
 
-#ui-button-pen,
-#ui-button-eraser,
-#ui-button-crop,
-#ui-button-spuit,
-#ui-button-thumbtack,
-#ui-button-resize,
-#ui-button-rotate,
-#ui-button-flip {
-  margin: 1px 0;
+  #ui-button-pen,
+  #ui-button-eraser,
+  #ui-button-crop,
+  #ui-button-spuit,
+  #ui-button-thumbtack,
+  #ui-button-resize,
+  #ui-button-rotate,
+  #ui-button-flip {
+    margin: 1px 0;
 
-  &:hover {
-    background-color: $dark-purple;
-    border-radius: $elem-radius;
+    &:hover {
+      background-color: $dark-purple;
+      border-radius: $elem-radius;
+    }
   }
-}
 
-#ui-button-pen {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/pen.png');
-}
+  #ui-button-pen {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/pen.png');
+  }
 
-#ui-button-eraser {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/eraser.png');
-}
+  #ui-button-eraser {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/eraser.png');
+  }
 
-#ui-button-crop {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/crop.png');
-}
+  #ui-button-crop {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/crop.png');
+  }
 
-#ui-button-spuit {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/spuit.png');
-}
+  #ui-button-spuit {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/spuit.png');
+  }
 
-#ui-button-thumbtack {
-  @include set-icon(
-    'after',
-    30px,
-    30px,
-    37.6%,
-    50%,
-    '#{$img-path}/thumbtack.png'
-  );
-}
+  #ui-button-thumbtack {
+    @include set-icon(
+      'after',
+      30px,
+      30px,
+      37.6%,
+      50%,
+      '#{$img-path}/thumbtack.png'
+    );
+  }
 
-#ui-button-resize {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/resize.png');
-}
+  #ui-button-resize {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/resize.png');
+  }
 
-#ui-button-rotate {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/rotate.png');
-}
+  #ui-button-rotate {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/rotate.png');
+  }
 
-#ui-button-flip {
-  @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/flip.png');
+  #ui-button-flip {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/flip.png');
+  }
 }
 
 /*———————————————————————————————————————————————————————
@@ -189,7 +189,7 @@ Right-bar UI
   right: 0;
 }
 
-.ui-tab-open {
+.ui-bar-open {
   width: $closed-bar-width;
   height: 100%;
   border-left: solid $bar-border-width $medium-purple;
@@ -235,7 +235,7 @@ Middle-bar UI
 .ui-bar-tab {
   width: 100%;
   height: $middle-bar-height;
-  // border-bottom: solid $bar-border-width $medium-purple;
+  border-bottom: solid $bar-border-width $canvas-color;
 
   ul {
     display: inline-flex;
@@ -273,75 +273,75 @@ Middle-bar UI
     background: $dark-purple;
     border-radius: 8px;
   }
-}
 
-.tab-prefix {
-  min-width: 150px;
-  height: 100%;
-  padding: 0 calc((#{$left-bar-width} - 20px) / 2);
-}
+  .tab-prefix {
+    min-width: 200px;
+    height: 100%;
+    padding: 0 calc((#{$left-bar-width} - 20px) / 2);
 
-.tab-current {
-  background-color: $canvas-color;
-
-  .close-button {
-    &:hover {
-      background-color: $light-purple;
+    .tab-info {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      .canvas-name {
+        line-height: $middle-bar-height;
+      }
     }
   }
-}
 
-.tab-rest {
-  .close-button {
-    &:hover {
-      background-color: $medium-purple;
+  .tab-current {
+    background-color: $canvas-color;
+
+    .close-button {
+      &:hover {
+        background-color: $light-purple;
+      }
     }
   }
-}
 
-.tab-info {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  .canvas-name {
-    line-height: $middle-bar-height;
-  }
-}
-
-.tab-curve {
-  position: relative;
-  height: $middle-bar-height;
-  background: $canvas-color;
-
-  &.single {
-    border-radius: 0 6px 0 0;
+  .tab-rest {
+    .close-button {
+      &:hover {
+        background-color: $medium-purple;
+      }
+    }
   }
 
-  &.double {
-    border-radius: 6px 6px 0 0;
+  .tab-curve {
+    position: relative;
+    height: $middle-bar-height;
+    background: $canvas-color;
+
+    &.single {
+      border-radius: 0 6px 0 0;
+    }
+
+    &.double {
+      border-radius: 6px 6px 0 0;
+    }
   }
-}
 
-.tab-curve:before,
-.tab-curve:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  width: 2 * $tab-radius;
-  height: $tab-radius;
-}
+  .tab-curve:before,
+  .tab-curve:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 2 * $tab-radius;
+    height: $tab-radius;
+  }
 
-.tab-curve:after {
-  right: -2 * $tab-radius;
-  border-radius: 0 0 0 $tab-radius;
-  box-shadow: -$tab-radius 0 0 0 $canvas-color;
-}
+  .tab-curve:after {
+    right: -2 * $tab-radius;
+    border-radius: 0 0 0 $tab-radius;
+    box-shadow: -$tab-radius 0 0 0 $canvas-color;
+  }
 
-.tab-curve:before {
-  left: -2 * $tab-radius;
-  border-radius: 0 0 $tab-radius 0;
-  box-shadow: $tab-radius 0 0 0 $canvas-color;
+  .tab-curve:before {
+    left: -2 * $tab-radius;
+    border-radius: 0 0 $tab-radius 0;
+    box-shadow: $tab-radius 0 0 0 $canvas-color;
+  }
 }
 
 /*———————————————————————————————————————————————————————
@@ -359,21 +359,21 @@ Bottom-bar UI
   left: $left-bar-width;
   bottom: 0;
   width: calc(100vw - #{$left-bar-width} - #{$closed-bar-width});
-}
 
-#progress-bar {
-  position: absolute;
-  background-color: $shocking-pink;
-  top: -3px;
-  left: 0;
-  width: 0%;
-  height: 3px;
-  opacity: 0;
-  transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
+  #progress-bar {
+    position: absolute;
+    background-color: $shocking-pink;
+    top: -3px;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    opacity: 0;
+    transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
 
-  /* When starting loading a file */
-  &.loading {
-    opacity: 1;
+    /* When starting loading a file */
+    &.loading {
+      opacity: 1;
+    }
   }
 }
 

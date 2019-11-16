@@ -1,3 +1,4 @@
+@import '../abstracts/variables';
 @import '../abstracts/mixins';
 
 /*———————————————————————————————————————————————————————
@@ -26,14 +27,45 @@ Oekaki Canvas
 
 #c-oekaki {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
-  // width: 1000px;
-  // height: 1000px;
   touch-action: none;
-  // background: #4a4858;
   transform-origin: center;
   transform: translate(calc(-50% + 50vw), calc(-50% + 50vh));
+}
+
+#grid-bg {
+  position: absolute;
+  z-index: 0;
+  width: 10000px;
+  height: 10000px;
+  top: 0;
+  left: 0;
+  touch-action: none;
+  transform-origin: center;
+  transform: translate(calc(-50% + 50vw), calc(-50% + 50vh));
+  background: linear-gradient(-90deg, rgba($grey, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba($grey, 0.05) 1px, transparent 1px),
+    linear-gradient(-90deg, rgba($grey, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba($grey, 0.04) 1px, transparent 1px),
+    linear-gradient(
+      transparent 3px,
+      $canvas-color 3px,
+      $canvas-color 78px,
+      transparent 78px
+    ),
+    linear-gradient(-90deg, $grey 1px, transparent 1px),
+    linear-gradient(
+      -90deg,
+      transparent 3px,
+      $canvas-color 3px,
+      $canvas-color 78px,
+      transparent 78px
+    ),
+    linear-gradient($grey 1px, transparent 1px), $canvas-color;
+  background-size: 4px 4px, 4px 4px, 80px 80px, 80px 80px, 80px 80px, 80px 80px,
+    80px 80px, 80px 80px;
 }
 
 /*———————————————————————————————————————————————————————

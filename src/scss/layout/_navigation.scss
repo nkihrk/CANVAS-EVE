@@ -60,3 +60,38 @@ Context-menu
     border-bottom: solid 1px $dark-grey;
   }
 }
+
+/*———————————————————————————————————————————————————————
+
+Zooming slider
+
+—————————————————————————————————————————————————————————*/
+
+#zslider {
+  pointer-events: auto;
+  position: absolute;
+  left: $left-bar-width + $left-bar-width;
+  top: calc((100% - #{$top-bar-height + $middle-bar-height}) / 2);
+  width: 0;
+  height: 30%;
+
+  #zslider-track {
+    position: relative;
+    transform: translateX(-50%) translateY(-50%);
+    width: 100%;
+    height: 100%;
+    background-color: $grey;
+    border: solid 1px $grey;
+
+    &::after {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100px;
+      background-color: $grey;
+      border-radius: 50%;
+    }
+  }
+}

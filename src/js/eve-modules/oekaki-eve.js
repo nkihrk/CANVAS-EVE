@@ -196,9 +196,6 @@ const OekakiEve = ((W, D, M) => {
 
     mouseWheelEvent(e) {
       this.Zoom.mouseWheelEvent(e);
-      if (!LibEve.isFirefox()) {
-        this._magicFix(e); // This is totally a magic function. I have no idea for the issue. This function somehow fixes it miraculously.
-      }
     },
 
     //
@@ -785,8 +782,6 @@ const OekakiEve = ((W, D, M) => {
       const brushColor = `rgba(${this.param.color.rgb[0]},${
         this.param.color.rgb[1]
       },${this.param.color.rgb[2]},1.0)`;
-      // const colorBackground = this.options.CANVAS_COLOR;
-      const colorBackground = this.options.RESET_CANVAS_COLOR;
 
       if (e.pointerType) {
         switch (e.pointerType) {
@@ -826,8 +821,10 @@ const OekakiEve = ((W, D, M) => {
           FlgEve.oekaki.tools.eraser_flg === true ||
           e.buttons === this.oekakiParam.EPenButton.eraser
         ) {
-          ctx.strokeStyle = colorBackground;
           ctx.lineWidth = this.options.ERASER_SIZE;
+          ctx.globalCompositeOperation = 'destination-out';
+        } else {
+          ctx.globalCompositeOperation = 'source-over';
         }
 
         switch (e.type) {
@@ -845,12 +842,7 @@ const OekakiEve = ((W, D, M) => {
               return;
             }
 
-            if (e.buttons === this.oekakiParam.EPenButton.eraser) {
-              const eraserSize = this.options.ERASER_SIZE;
-              ctx.fillStyle = colorBackground;
-              ctx.fillRect(pos.x, pos.y, eraserSize, eraserSize);
-              ctx.fill();
-            } else if (pressure > 0) {
+            if (pressure > 0) {
               ctx.beginPath();
               ctx.lineCap = 'round';
               ctx.moveTo(
@@ -973,36 +965,6 @@ const OekakiEve = ((W, D, M) => {
       const height = this.options.CANVAS_RESOLUTION;
       ctx.canvas.width = width;
       ctx.canvas.height = height;
-    },
-
-    //
-
-    _magicFix(e) {
-      const { left } = this.$cOekakiPlain.offset();
-      const { top } = this.$cOekakiPlain.offset();
-      const delta = e.deltaY;
-
-      if (GlbEve.MOUSE_WHEEL_VAL > 1 && GlbEve.MOUSE_WHEEL_VAL < 10.9) {
-        if (delta > 0) {
-          this.$cOekakiPlain.css({
-            left: `${left - 0.5}px`,
-            top: `${top - 0.5}px`
-          });
-          this.$plain.css({
-            left: `${left - 0.5}px`,
-            top: `${top - 0.5}px`
-          });
-        } else {
-          this.$cOekakiPlain.css({
-            left: `${left + 0.5}px`,
-            top: `${top + 0.5}px`
-          });
-          this.$plain.css({
-            left: `${left + 0.5}px`,
-            top: `${top + 0.5}px`
-          });
-        }
-      }
     },
 
     //

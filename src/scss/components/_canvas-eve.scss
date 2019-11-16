@@ -76,8 +76,8 @@ Webgl
 .hide-scissor {
   position: absolute;
   z-index: -999;
-  width: 600px;
-  height: 600px;
+  width: $initFileSize;
+  height: $initFileSize;
   background-color: $canvas-color;
 }
 
@@ -157,7 +157,7 @@ The entire tool box for CANVAS EVE
   pointer-events: auto;
   position: absolute;
   z-index: 1;
-  width: 600px;
+  width: $initFileSize;
   /* min-width: 192px; */
   // border: solid 1px rgba(255, 0, 0, 0);
   transform-origin: center;
