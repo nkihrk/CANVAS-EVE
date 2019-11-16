@@ -121,7 +121,7 @@
   </head>
 
   <body>
-    <div id="loader-bg" style="position: fixed; z-index: 1;">
+    <div id="loader-bg" style="z-index: 1;">
       <div id="loading">
         <div class="spin-wrapper">
           <div class="spinner"></div>
@@ -130,7 +130,7 @@
     </div>
 
     <!-- To prevent scrolling -->
-    <div id="canvas-eve-wrapper" style="position: fixed; z-index: 0;">
+    <div id="canvas-eve-wrapper" style="z-index: 0;">
       <!-- A Right-click context sub-menu -->
       <div
         id="ctx-submenu"
@@ -266,7 +266,7 @@
         </div>
         <div id="ui-bottom-bar">
           <!-- add-eve.js -->
-          <div id="progress-bar" style="position: absolute; z-index: 4;"></div>
+          <div id="progress-bar"></div>
           <div class="ui-footer-bar">
             <div>ZOOM: 100%</div>
             <div>2019 © NkiHrk</div>
@@ -275,25 +275,21 @@
       </div>
 
       <!-- Canvas for oekaki-eve -->
-      <div id="c-oekaki-wrapper" style="position: fixed; z-index: -2;">
-        <div id="c-oekaki-plain" style="position: relative;">
+      <div id="c-oekaki-wrapper" style="z-index: -2;">
+        <div id="c-oekaki-plain">
           <div id="c-oekaki-zoom">
-            <canvas id="c-oekaki" style="position: absolute;"></canvas>
+            <canvas id="c-oekaki"></canvas>
           </div>
         </div>
       </div>
 
       <!-- Canvas for three-eve -->
-      <canvas id="c-three" style="position: absolute; z-index: -1;"></canvas>
+      <canvas id="c-three" style="z-index: -1;"></canvas>
 
       <!-- Color Picker. colpick-eve.js -->
-      <div id="colpick" style="position: relative; z-index: 2;">
+      <div id="colpick" style="z-index: 2;">
         <!-- Color board -->
-        <div
-          id="board-colpick"
-          class="grab-pointer file-wrap"
-          style="position: absolute;"
-        >
+        <div id="board-colpick" class="grab-pointer file-wrap">
           <div class="only-draggable no-zooming">
             <div class="clearfix">
               <!-- Colpick button -->
@@ -359,26 +355,18 @@
       </div>
       <!-- #colpick -->
 
-      <!-- Color Picker -->
-      <div id="oekaki" style="position: relative; z-index: 2;">
+      <!-- A board for Oekaki -->
+      <div id="oekaki" style="z-index: 2;">
         <!-- Color board -->
-        <div
-          id="board-oekaki"
-          class="grab-pointer file-wrap"
-          style="position: absolute;"
-        >
+        <div id="board-oekaki" class="grab-pointer file-wrap">
           <div class="only-draggable no-zooming">
-            <div id="color-oekaki" style="position: relative;">
+            <div id="color-oekaki">
               <svg viewbox="0 0 200 200" version="1.1" id="color-wheel"></svg>
             </div>
           </div>
         </div>
         <!-- Tool board -->
-        <div
-          id="tool-board-oekaki"
-          class="grab-pointer file-wrap"
-          style="position: absolute;"
-        >
+        <div id="tool-board-oekaki" class="grab-pointer file-wrap">
           <div class="only-draggable no-zooming">
             <div id="tool-oekaki">
               <div id="brush-oekaki"></div>
@@ -390,11 +378,11 @@
       </div>
       <!-- #oekaki -->
 
-      <!-- Head up: z-index: 1; is reserved by the later-created #selected-area -->
+      <!-- Heads up: z-index: 1; is reserved by the later-created #selected-area -->
 
       <!-- canvas-eve.js -->
-      <div id="canvas-eve" style="position: fixed; z-index: 0;">
-        <div id="plain" style="position: relative; z-index: 2;">
+      <div id="canvas-eve" style="z-index: 0;">
+        <div id="plain" style="z-index: 2;">
           <div id="zoom">
             <!-- For inserting elements only -->
             <div id="add-files">
@@ -405,7 +393,7 @@
                 style="z-index: 0;"
               >
                 <div class="only-draggable" style="width: 100%;">
-                  <div class="title-youtube" style="position: relative;">
+                  <div class="title-youtube">
                     <h1>
                       <span
                         class="youtube-icon sep-right bold agency-fb"
@@ -418,20 +406,18 @@
                       >
                     </h1>
                   </div>
-                  <div class="search-youtube" style="position: relative;">
-                    <div class="search-box-wrapper" style="position: relative;">
+                  <div class="search-youtube">
+                    <div class="search-box-wrapper">
                       <input
                         class="ellipsis search-box-youtube"
                         placeholder="Paste a URL of any YouTube videos here."
                         type="text"
                         spellcheck="false"
-                        style="position: relative;"
                       />
                       <div class="backspace-icon"></div>
                     </div>
                     <div
                       class="hover-shadow-single search-button-youtube"
-                      style="position: relative;"
                     ></div>
                   </div>
                 </div>

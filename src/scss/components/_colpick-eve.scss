@@ -46,12 +46,23 @@ Common
 
 /*———————————————————————————————————————————————————————
 
+#colpick
+
+—————————————————————————————————————————————————————————*/
+
+#colpick {
+  position: relative;
+}
+
+/*———————————————————————————————————————————————————————
+
 #board-colpick
 
 —————————————————————————————————————————————————————————*/
 
 /* Color board */
 #board-colpick {
+  position: absolute;
   /* Overwrite the HIGHEST_Z_INDEX */
   z-index: 0 !important;
   width: 330px;

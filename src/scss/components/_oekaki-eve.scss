@@ -25,6 +25,7 @@ Oekaki Canvas
 —————————————————————————————————————————————————————————*/
 
 #c-oekaki {
+  position: absolute;
   top: 0;
   left: 0;
   // width: 1000px;
@@ -41,10 +42,9 @@ Oekaki Canvas
 
 —————————————————————————————————————————————————————————*/
 
-// #oekaki {
-//   width: 0 !important;
-//   height: 0 !important;
-// }
+#oekaki {
+  position: relative;
+}
 
 /*———————————————————————————————————————————————————————
 
@@ -54,6 +54,7 @@ Oekaki Canvas
 
 //  Color board
 #board-oekaki {
+  position: absolute;
   //  Overwrite the HIGHEST_Z_INDEX
   z-index: 0 !important;
   width: 330px;
@@ -76,6 +77,7 @@ Oekaki Canvas
 
 //  Color board
 #tool-board-oekaki {
+  position: absolute;
   //  Overwrite the HIGHEST_Z_INDEX
   z-index: 0 !important;
   width: 330px;

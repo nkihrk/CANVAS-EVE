@@ -177,17 +177,17 @@ const YoutubeEve = (() => {
         `<div class="trash-wrapper"></div>` +
         `</div>` +
         `<div class="eve-main is-flipped" style="width: 100%;">` +
-        `<div class="tab-block-youtube" style="position: relative;">` +
+        `<div class="tab-block-youtube">` +
         `<div class="fix-top-border">` +
         `<div class="ellipsis tab-youtube bold agency-fb">${tabName}</div>` +
         `</div>` +
         `</div>` +
-        `<div class="child-search-youtube" style="position: relative;">` +
-        `<div class="child-search-box-wrapper" style="position: relative;">` +
-        `<input value="${url}" class="ellipsis child-search-box-youtube" placeholder="Paste a URL of any YouTube videos here." type="text" spellcheck="false" style="position: relative;">` +
+        `<div class="child-search-youtube">` +
+        `<div class="child-search-box-wrapper">` +
+        `<input value="${url}" class="ellipsis child-search-box-youtube" placeholder="Paste a URL of any YouTube videos here." type="text" spellcheck="false">` +
         `<div class="backspace-icon"></div>` +
         `</div>` +
-        `<div class="hover-shadow-single child-search-button-youtube" style="position: relative;"></div>` +
+        `<div class="hover-shadow-single child-search-button-youtube"></div>` +
         `</div>` +
         `<div class="content-youtube">${iframeTag}</div>` +
         `</div>` +

@@ -191,14 +191,16 @@ Middle-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-// #ui-middle-bar { }
-
-.ui-tab-bar {
+#ui-middle-bar {
   @include bar-prefix($light-purple);
 
   left: $left-bar-width;
   top: $top-bar-height;
   width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
+}
+
+.ui-tab-bar {
+  width: 100%;
   height: $middle-bar-height;
   // border-bottom: solid $bar-border-width $medium-purple;
 
@@ -207,9 +209,6 @@ Middle-bar UI
     flex-direction: row;
     flex-wrap: nowrap;
   }
-  // li {
-  //   display: inline-block;
-  // }
 
   .close-button {
     @include set-icon('after', 20px, 20px, 50%, 50%, '#{$img-path}/close.png');
@@ -330,6 +329,7 @@ Bottom-bar UI
 }
 
 #progress-bar {
+  position: absolute;
   background-color: $shocking-pink;
   top: -3px;
   left: 0;

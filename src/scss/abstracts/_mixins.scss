@@ -9,6 +9,7 @@ Used:
 —————————————————————————————————————————————————————————*/
 
 @mixin coord-wrapper {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -17,6 +18,7 @@ Used:
 }
 
 @mixin plain {
+  position: relative;
   width: 0 !important;
   height: 0 !important;
   scroll-behavior: auto;
@@ -24,9 +26,9 @@ Used:
 }
 
 @mixin zoom {
+  position: relative;
   width: 0 !important;
   height: 0 !important;
-  position: relative;
   /* background: rgba(255, 0, 0, 0.2);
     width: 600px;
     height: 600px; */
