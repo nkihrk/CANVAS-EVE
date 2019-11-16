@@ -104,22 +104,6 @@ The entire tool box for CANVAS EVE
 
 —————————————————————————————————————————————————————————*/
 
-#progress-bar {
-  background-color: $shocking-pink;
-  top: 0;
-  left: 0;
-  /* width: 100%; */
-  width: 0%;
-  height: 3px;
-  opacity: 0;
-  transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
-
-  /* When starting loading a file */
-  &.loading {
-    opacity: 1;
-  }
-}
-
 #canvas-eve,
 #canvas-eve-wrapper {
   @include coord-wrapper;

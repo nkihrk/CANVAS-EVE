@@ -208,65 +208,71 @@
           </ul>
         </div>
         <div id="ui-left-bar">
-          <hr />
-          <ul>
-            <li><div id="pen-ui-button"></div></li>
-            <li><div id="eraser-ui-button"></div></li>
-            <li><div id="crop-ui-button"></div></li>
-            <li><div id="spuit-ui-button"></div></li>
-            <li><div id="thumbtack-ui-button"></div></li>
-            <li><div id="resize-ui-button"></div></li>
-            <li><div id="rotate-ui-button"></div></li>
-            <li><div id="flip-ui-button"></div></li>
-          </ul>
+          <div class="ui-tool-bar">
+            <hr />
+            <ul>
+              <li><div id="pen-ui-button"></div></li>
+              <li><div id="eraser-ui-button"></div></li>
+              <li><div id="crop-ui-button"></div></li>
+              <li><div id="spuit-ui-button"></div></li>
+              <li><div id="thumbtack-ui-button"></div></li>
+              <li><div id="resize-ui-button"></div></li>
+              <li><div id="rotate-ui-button"></div></li>
+              <li><div id="flip-ui-button"></div></li>
+            </ul>
+          </div>
         </div>
-        <div id="ui-right-bar"></div>
+        <div id="ui-right-bar">
+          <div class="open-button"></div>
+        </div>
         <div id="ui-middle-bar">
-          <ul>
-            <li id="new-canvas" class="tab-prefix tab-current tab-curve single">
-              <div class="tab-info">
-                <div class="canvas-name">new_canvas*</div>
-                <div class="close-button"></div>
-              </div>
-            </li>
-            <li id="new-canvas-2" class="tab-prefix tab-rest">
-              <div class="tab-info">
-                <div class="canvas-name">new_canvas_2*</div>
-                <div class="close-button"></div>
-              </div>
-            </li>
-            <li id="new-canvas-3" class="tab-prefix tab-rest">
-              <div class="tab-info">
-                <div class="canvas-name">new_canvas_3*</div>
-                <div class="close-button"></div>
-              </div>
-            </li>
-            <li id="new-canvas-4" class="tab-prefix tab-rest">
-              <div class="tab-info">
-                <div class="canvas-name">new_canvas_4*</div>
-                <div class="close-button"></div>
-              </div>
-            </li>
-            <li id="new-canvas-5" class="tab-prefix tab-rest">
-              <div class="tab-info">
-                <div class="canvas-name">new_canvas_5*</div>
-                <div class="close-button"></div>
-              </div>
-            </li>
-          </ul>
+          <div class="ui-tab-bar">
+            <ul>
+              <li
+                id="new-canvas"
+                class="tab-prefix tab-current tab-curve single"
+              >
+                <div class="tab-info">
+                  <div class="canvas-name">new_canvas*</div>
+                  <div class="close-button"></div>
+                </div>
+              </li>
+              <li id="new-canvas-2" class="tab-prefix tab-rest">
+                <div class="tab-info">
+                  <div class="canvas-name">new_canvas_2*</div>
+                  <div class="close-button"></div>
+                </div>
+              </li>
+              <li id="new-canvas-3" class="tab-prefix tab-rest">
+                <div class="tab-info">
+                  <div class="canvas-name">new_canvas_3*</div>
+                  <div class="close-button"></div>
+                </div>
+              </li>
+              <li id="new-canvas-4" class="tab-prefix tab-rest">
+                <div class="tab-info">
+                  <div class="canvas-name">new_canvas_4*</div>
+                  <div class="close-button"></div>
+                </div>
+              </li>
+              <li id="new-canvas-5" class="tab-prefix tab-rest">
+                <div class="tab-info">
+                  <div class="canvas-name">new_canvas_5*</div>
+                  <div class="close-button"></div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
         <div id="ui-bottom-bar">
-          <div>ZOOM: 100%</div>
-          <div>2019 © NkiHrk</div>
+          <!-- add-eve.js -->
+          <div id="progress-bar" style="position: absolute; z-index: 4;"></div>
+          <div class="ui-footer-bar">
+            <div>ZOOM: 100%</div>
+            <div>2019 © NkiHrk</div>
+          </div>
         </div>
       </div>
-
-      <!-- add-eve.js -->
-      <div id="progress-bar" style="position: absolute; z-index: 4;"></div>
-
-      <!-- <div id="footer" class="bold agency-fb" style="position: absolute; z-index: 3;">
-        2019 © NkiHrk
-      </div> -->
 
       <!-- Canvas for oekaki-eve -->
       <div id="c-oekaki-wrapper" style="position: fixed; z-index: -2;">

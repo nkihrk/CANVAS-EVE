@@ -87,7 +87,9 @@ Left-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-left-bar {
+// #ui-left-bar { }
+
+.ui-tool-bar {
   // @include drop-shadow;
   @include bar-prefix($light-purple);
   @include side-bar-prefix($top-bar-height);
@@ -189,7 +191,9 @@ Middle-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-middle-bar {
+// #ui-middle-bar { }
+
+.ui-tab-bar {
   @include bar-prefix($light-purple);
 
   left: $left-bar-width;
@@ -323,6 +327,25 @@ Bottom-bar UI
   left: $left-bar-width;
   bottom: 0;
   width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
+}
+
+#progress-bar {
+  background-color: $shocking-pink;
+  top: -3px;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  opacity: 0;
+  transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
+
+  /* When starting loading a file */
+  &.loading {
+    opacity: 1;
+  }
+}
+
+.ui-footer-bar {
+  width: 100%;
   height: $bottom-bar-height;
   border-top: solid $bar-border-width $medium-purple;
 
