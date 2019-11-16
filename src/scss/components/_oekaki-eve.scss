@@ -3,6 +3,14 @@
 
 /*———————————————————————————————————————————————————————
 
+Local variables
+
+—————————————————————————————————————————————————————————*/
+
+$img-path: '../../../assets/img';
+
+/*———————————————————————————————————————————————————————
+
 Coordinate systems for Oekaki renderer
 
 —————————————————————————————————————————————————————————*/
@@ -45,27 +53,9 @@ Oekaki Canvas
   touch-action: none;
   transform-origin: center;
   transform: translate(calc(-50% + 50vw), calc(-50% + 50vh));
-  background: linear-gradient(-90deg, rgba($grey, 0.05) 1px, transparent 1px),
-    linear-gradient(rgba($grey, 0.05) 1px, transparent 1px),
-    linear-gradient(-90deg, rgba($grey, 0.04) 1px, transparent 1px),
-    linear-gradient(rgba($grey, 0.04) 1px, transparent 1px),
-    linear-gradient(
-      transparent 3px,
-      $canvas-color 3px,
-      $canvas-color 78px,
-      transparent 78px
-    ),
-    linear-gradient(-90deg, $grey 1px, transparent 1px),
-    linear-gradient(
-      -90deg,
-      transparent 3px,
-      $canvas-color 3px,
-      $canvas-color 78px,
-      transparent 78px
-    ),
-    linear-gradient($grey 1px, transparent 1px), $canvas-color;
-  background-size: 4px 4px, 4px 4px, 80px 80px, 80px 80px, 80px 80px, 80px 80px,
-    80px 80px, 80px 80px;
+  background-color: #32303f;
+  background-image: url('#{$img-path}/system_ui/grid.svg');
+  background-size: 100px 100px;
 }
 
 /*———————————————————————————————————————————————————————
@@ -155,7 +145,7 @@ Oekaki Canvas
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-image: url('../../../assets/img/red_newcanvas.png');
+    background-image: url('#{$img-path}/red_newcanvas.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -171,7 +161,7 @@ Oekaki Canvas
     opacity: 1;
 
     &::before {
-      background-image: url('../../../assets/img/dark_newcanvas.png');
+      background-image: url('#{$img-path}/dark_newcanvas.png');
     }
   }
 }
@@ -197,7 +187,7 @@ Oekaki Canvas
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-image: url('../../../assets/img/red_brush.png');
+    background-image: url('#{$img-path}/red_brush.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -213,7 +203,7 @@ Oekaki Canvas
     opacity: 1;
 
     &::before {
-      background-image: url('../../../assets/img/dark_brush.png');
+      background-image: url('#{$img-path}/dark_brush.png');
     }
   }
 }
@@ -240,7 +230,7 @@ Oekaki Canvas
     display: inline-block;
     width: 18px;
     height: 15px;
-    background-image: url('../../../assets/img/red_eraser.png');
+    background-image: url('#{$img-path}/red_eraser.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -256,7 +246,7 @@ Oekaki Canvas
     opacity: 1;
 
     &::before {
-      background-image: url('../../../assets/img/dark_eraser.png');
+      background-image: url('#{$img-path}/dark_eraser.png');
     }
   }
 }
@@ -282,7 +272,7 @@ Oekaki Canvas
     display: inline-block;
     width: 15px;
     height: 15px;
-    background-image: url('../../../assets/img/red_spuit.png');
+    background-image: url('#{$img-path}/red_spuit.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -298,7 +288,7 @@ Oekaki Canvas
     opacity: 1;
 
     &::before {
-      background-image: url('../../../assets/img/dark_spuit.png');
+      background-image: url('#{$img-path}/dark_spuit.png');
     }
   }
 }
@@ -324,7 +314,7 @@ Oekaki Canvas
     display: inline-block;
     width: 18px;
     height: 15px;
-    background-image: url('../../../assets/img/red_filldrip.png');
+    background-image: url('#{$img-path}/red_filldrip.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -340,7 +330,7 @@ Oekaki Canvas
     opacity: 1;
 
     &::before {
-      background-image: url('../../../assets/img/dark_filldrip.png');
+      background-image: url('#{$img-path}/dark_filldrip.png');
     }
   }
 }
