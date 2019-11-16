@@ -97,14 +97,14 @@ const OekakiEve = ((W, D, M) => {
     this.drawPointerEvents = [
       'pointerdown',
       'pointerup',
-      'pointercancel',
+      // 'pointercancel',
       'pointermove',
-      'pointerover',
-      'pointerout',
-      'pointerenter',
-      'pointerleave',
-      'gotpointercapture',
-      'lostpointercapture'
+      'pointerover'
+      // 'pointerout',
+      // 'pointerenter',
+      // 'pointerleave',
+      // 'gotpointercapture',
+      // 'lostpointercapture'
     ];
     this.drawEvents = [
       'MSPointerDown',
@@ -196,6 +196,9 @@ const OekakiEve = ((W, D, M) => {
 
     mouseWheelEvent(e) {
       this.Zoom.mouseWheelEvent(e);
+      if (!LibEve.isFirefox()) {
+        this._magicFix(e); // This is totally a magic function. I have no idea for the issue. This function somehow fixes it miraculously.
+      }
     },
 
     //
@@ -212,15 +215,15 @@ const OekakiEve = ((W, D, M) => {
           );
         }
       } else {
-        for (let i = 0; i < this.drawEvents.length; i++) {
-          D.addEventListener(
-            this.drawEvents[i],
-            () => {
-              // this._drawEvents(e);
-            },
-            false
-          );
-        }
+        // for (let i = 0; i < this.drawEvents.length; i++) {
+        //   D.addEventListener(
+        //     this.drawEvents[i],
+        //     () => {
+        //       // this._drawEvents(e);
+        //     },
+        //     false
+        //   );
+        // }
       }
     },
 
@@ -965,6 +968,36 @@ const OekakiEve = ((W, D, M) => {
       const height = this.options.CANVAS_RESOLUTION;
       ctx.canvas.width = width;
       ctx.canvas.height = height;
+    },
+
+    //
+
+    _magicFix(e) {
+      const { left } = this.$cOekakiPlain.offset();
+      const { top } = this.$cOekakiPlain.offset();
+      const delta = e.deltaY;
+
+      if (GlbEve.MOUSE_WHEEL_VAL > 1 && GlbEve.MOUSE_WHEEL_VAL < 10.9) {
+        if (delta > 0) {
+          this.$cOekakiPlain.css({
+            left: `${left - 0.5}px`,
+            top: `${top - 0.5}px`
+          });
+          this.$plain.css({
+            left: `${left - 0.5}px`,
+            top: `${top - 0.5}px`
+          });
+        } else {
+          this.$cOekakiPlain.css({
+            left: `${left + 0.5}px`,
+            top: `${top + 0.5}px`
+          });
+          this.$plain.css({
+            left: `${left + 0.5}px`,
+            top: `${top + 0.5}px`
+          });
+        }
+      }
     },
 
     //
