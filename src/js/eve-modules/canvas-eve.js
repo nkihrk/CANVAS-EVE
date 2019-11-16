@@ -110,7 +110,6 @@ const CanvasEve = ((W, D, M) => {
       const startY = e.clientY;
       const selectedArea = D.createElement('div');
       selectedArea.id = 'selected-area';
-      selectedArea.classList.add('file-wrap');
       selectedArea.style.left = `${startX}px`;
       selectedArea.style.top = `${startY}px`;
       selectedArea.style.zIndex = 1;

@@ -38,6 +38,9 @@ Selected area
 
 #selected-area {
   @include selected-area($half-white, false);
+
+  pointer-events: auto;
+  position: absolute;
 }
 
 /*———————————————————————————————————————————————————————
