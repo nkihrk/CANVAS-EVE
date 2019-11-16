@@ -133,24 +133,24 @@
     <div id="canvas-eve-wrapper" style="z-index: 0;">
       <!-- A Right-click context sub-menu -->
       <div
-        id="ctx-submenu"
+        id="ctxmenu-sub"
         class="ctxmenu-template bold agency-fb"
         style="z-index: 7;"
       >
         <ul>
-          <li id="ctx-sub-text">
+          <li id="ctxmenu-sub-text">
             <div>Text</div>
             <div>+</div>
           </li>
-          <li id="ctx-sub-color">
+          <li id="ctxmenu-sub-color">
             <div>Color Picker</div>
             <div>+</div>
           </li>
-          <li id="ctx-sub-youtube">
+          <li id="ctxmenu-sub-youtube">
             <div>YouTube</div>
             <div>+</div>
           </li>
-          <li id="ctx-sub-browser">
+          <li id="ctxmenu-sub-browser">
             <div>Browser</div>
             <div>+</div>
           </li>
@@ -158,50 +158,50 @@
       </div>
       <!-- A Right-click context menu -->
       <div
-        id="ctx-menu"
+        id="ctxmenu"
         class="ctxmenu-template bold agency-fb"
         style="z-index: 6;"
       >
         <ul>
-          <li id="ctx-help"><div>Help</div></li>
-          <li id="ctx-about"><div>About</div></li>
-          <li id="ctx-settings"><div>Settings</div></li>
-          <li id="ctx-new">
+          <li id="ctxmenu-help"><div>Help</div></li>
+          <li id="ctxmenu-about"><div>About</div></li>
+          <li id="ctxmenu-settings"><div>Settings</div></li>
+          <li id="ctxmenu-new">
             <div>New</div>
             <div>&gt;</div>
           </li>
-          <li id="ctx-undo">
+          <li id="ctxmenu-undo">
             <div>Undo</div>
             <div>Ctrl + Z</div>
           </li>
-          <li id="ctx-redo">
+          <li id="ctxmenu-redo">
             <div>Redo</div>
             <div>Ctrl + Shift + Z</div>
           </li>
-          <li id="ctx-cut">
+          <li id="ctxmenu-cut">
             <div>Cut</div>
             <div>Ctrl + X</div>
           </li>
-          <li id="ctx-copy">
+          <li id="ctxmenu-copy">
             <div>Copy</div>
             <div>Ctrl + C</div>
           </li>
-          <li id="ctx-paste">
+          <li id="ctxmenu-paste">
             <div>Paste</div>
             <div>Ctrl + V</div>
           </li>
-          <li id="ctx-save">
+          <li id="ctxmenu-save">
             <div>Save</div>
             <div>Ctrl + S</div>
           </li>
-          <li id="ctx-close"><div>Close</div></li>
+          <li id="ctxmenu-close"><div>Close</div></li>
         </ul>
       </div>
 
       <div id="canvas-eve-ui" class="bold agency-fb" style="z-index: 5;">
-        <div id="ui-top-bar">
-          <div class="ui-menu-bar">
-            <div id="home-ui-button"></div>
+        <div id="ui-bar-top">
+          <div class="ui-bar-menu">
+            <div id="ui-button-home"></div>
             <ul>
               <li>File(F)</li>
               <li>Edit(E)</li>
@@ -209,26 +209,28 @@
             </ul>
           </div>
         </div>
-        <div id="ui-left-bar">
-          <div class="ui-tool-bar">
+        <div id="ui-bar-left">
+          <div class="ui-bar-tool">
             <hr />
             <ul>
-              <li><div id="pen-ui-button"></div></li>
-              <li><div id="eraser-ui-button"></div></li>
-              <li><div id="crop-ui-button"></div></li>
-              <li><div id="spuit-ui-button"></div></li>
-              <li><div id="thumbtack-ui-button"></div></li>
-              <li><div id="resize-ui-button"></div></li>
-              <li><div id="rotate-ui-button"></div></li>
-              <li><div id="flip-ui-button"></div></li>
+              <li><div id="ui-button-pen"></div></li>
+              <li><div id="ui-button-eraser"></div></li>
+              <li><div id="ui-button-crop"></div></li>
+              <li><div id="ui-button-spuit"></div></li>
+              <li><div id="ui-button-thumbtack"></div></li>
+              <li><div id="ui-button-resize"></div></li>
+              <li><div id="ui-button-rotate"></div></li>
+              <li><div id="ui-button-flip"></div></li>
             </ul>
           </div>
         </div>
-        <div id="ui-right-bar">
-          <div class="open-tab"></div>
+        <div id="ui-bar-right">
+          <div class="ui-tab-open">
+            <div class="ui-button-open"></div>
+          </div>
         </div>
-        <div id="ui-middle-bar">
-          <div class="ui-tab-bar">
+        <div id="ui-bar-middle">
+          <div class="ui-bar-tab">
             <ul>
               <li
                 id="new-canvas"
@@ -266,10 +268,10 @@
             </ul>
           </div>
         </div>
-        <div id="ui-bottom-bar">
+        <div id="ui-bar-bottom">
           <!-- add-eve.js -->
           <div id="progress-bar"></div>
-          <div class="ui-footer-bar">
+          <div class="ui-bar-footer">
             <div>ZOOM: 100%</div>
             <div>2019 © NkiHrk</div>
           </div>

@@ -29,14 +29,14 @@ Local mixins
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-top-bar
+#canvas-eve-ui / #ui-bar-top
 
 Description:
 Top-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-top-bar {
+#ui-bar-top {
   @include bar-prefix($light-purple);
 
   left: 0;
@@ -44,7 +44,7 @@ Top-bar UI
   width: 100vw;
 }
 
-.ui-menu-bar {
+.ui-bar-menu {
   width: 100%;
   height: $top-bar-height;
   border-bottom: solid $bar-border-width $medium-purple;
@@ -62,7 +62,7 @@ Top-bar UI
   }
 }
 
-#home-ui-button {
+#ui-button-home {
   @include set-icon(
     'after',
     $left-bar-width,
@@ -86,14 +86,14 @@ Top-bar UI
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-left-bar
+#canvas-eve-ui / #ui-bar-left
 
 Description:
 Left-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-left-bar {
+#ui-bar-left {
   // @include drop-shadow;
   @include bar-prefix($light-purple);
   @include side-bar-prefix($top-bar-height);
@@ -101,7 +101,7 @@ Left-bar UI
   left: 0;
 }
 
-.ui-tool-bar {
+.ui-bar-tool {
   overflow: auto; // Check the following for the reason: https://stackoverflow.com/questions/27829250/child-margin-doesnt-affect-parent-height
   width: $left-bar-width;
   height: 100%;
@@ -117,14 +117,14 @@ Left-bar UI
   }
 }
 
-#pen-ui-button,
-#eraser-ui-button,
-#crop-ui-button,
-#spuit-ui-button,
-#thumbtack-ui-button,
-#resize-ui-button,
-#rotate-ui-button,
-#flip-ui-button {
+#ui-button-pen,
+#ui-button-eraser,
+#ui-button-crop,
+#ui-button-spuit,
+#ui-button-thumbtack,
+#ui-button-resize,
+#ui-button-rotate,
+#ui-button-flip {
   margin: 1px 0;
 
   &:hover {
@@ -133,23 +133,23 @@ Left-bar UI
   }
 }
 
-#pen-ui-button {
+#ui-button-pen {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/pen.png');
 }
 
-#eraser-ui-button {
+#ui-button-eraser {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/eraser.png');
 }
 
-#crop-ui-button {
+#ui-button-crop {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/crop.png');
 }
 
-#spuit-ui-button {
+#ui-button-spuit {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/spuit.png');
 }
 
-#thumbtack-ui-button {
+#ui-button-thumbtack {
   @include set-icon(
     'after',
     30px,
@@ -160,28 +160,28 @@ Left-bar UI
   );
 }
 
-#resize-ui-button {
+#ui-button-resize {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/resize.png');
 }
 
-#rotate-ui-button {
+#ui-button-rotate {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/rotate.png');
 }
 
-#flip-ui-button {
+#ui-button-flip {
   @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/flip.png');
 }
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-right-bar
+#canvas-eve-ui / #ui-bar-right
 
 Description:
 Right-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-right-bar {
+#ui-bar-right {
   // @include drop-shadow;
   @include bar-prefix($light-purple);
   @include side-bar-prefix($top-bar-height);
@@ -189,30 +189,50 @@ Right-bar UI
   right: 0;
 }
 
-.open-tab {
-  width: $right-bar-width;
+.ui-tab-open {
+  width: $closed-bar-width;
   height: 100%;
   border-left: solid $bar-border-width $medium-purple;
+
+  .ui-button-open {
+    @include set-icon(
+      'after',
+      $closed-bar-width,
+      $closed-bar-width,
+      70%,
+      56.35%,
+      // 70 * 0.805
+        '#{$img-path}/open-tab.png'
+    );
+  }
+
+  &:hover {
+    background-color: $semi-light-purple;
+
+    .ui-button-open {
+      filter: brightness(0.9);
+    }
+  }
 }
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-middle-bar
+#canvas-eve-ui / #ui-bar-middle
 
 Description:
 Middle-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-middle-bar {
+#ui-bar-middle {
   @include bar-prefix($light-purple);
 
   left: $left-bar-width;
   top: $top-bar-height;
-  width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
+  width: calc(100vw - #{$left-bar-width} - #{$closed-bar-width});
 }
 
-.ui-tab-bar {
+.ui-bar-tab {
   width: 100%;
   height: $middle-bar-height;
   // border-bottom: solid $bar-border-width $medium-purple;
@@ -234,7 +254,7 @@ Middle-bar UI
 
   overflow-y: hidden;
   &::-webkit-scrollbar {
-    height: 2px;
+    height: 3px;
     background: transparent;
   }
   &:hover::-webkit-scrollbar {
@@ -326,19 +346,19 @@ Middle-bar UI
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-bottom-bar
+#canvas-eve-ui / #ui-bar-bottom
 
 Description:
 Bottom-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-bottom-bar {
+#ui-bar-bottom {
   @include bar-prefix($light-purple);
 
   left: $left-bar-width;
   bottom: 0;
-  width: calc(100vw - #{$left-bar-width} - #{$right-bar-width});
+  width: calc(100vw - #{$left-bar-width} - #{$closed-bar-width});
 }
 
 #progress-bar {
@@ -357,7 +377,7 @@ Bottom-bar UI
   }
 }
 
-.ui-footer-bar {
+.ui-bar-footer {
   width: 100%;
   height: $bottom-bar-height;
   border-top: solid $bar-border-width $medium-purple;

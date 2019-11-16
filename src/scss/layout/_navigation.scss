@@ -31,32 +31,32 @@ Context-menu
   }
 }
 
-#ctx-menu {
+#ctxmenu {
   left: 50%;
   top: 40%;
   width: 260px;
 
-  #ctx-new {
+  #ctxmenu-new {
     border-top: solid 1px $dark-grey;
   }
 
-  #ctx-new,
-  #ctx-redo,
-  #ctx-save {
+  #ctxmenu-new,
+  #ctxmenu-redo,
+  #ctxmenu-save {
     border-bottom: solid 1px $dark-grey;
   }
 }
 
-#ctx-submenu {
+#ctxmenu-sub {
   left: 63.5%;
   top: 51%;
   width: 260px;
 
-  #ctx-sub-color {
+  #ctxmenu-sub-color {
     border-top: solid 1px $dark-grey;
   }
 
-  #ctx-sub-color {
+  #ctxmenu-sub-color {
     border-bottom: solid 1px $dark-grey;
   }
 }
