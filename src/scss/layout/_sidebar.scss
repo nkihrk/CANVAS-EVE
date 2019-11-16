@@ -39,6 +39,12 @@ Top-bar UI
 #ui-top-bar {
   @include bar-prefix($light-purple);
 
+  left: 0;
+  top: 0;
+  width: 100vw;
+}
+
+.ui-menu-bar {
   width: 100%;
   height: $top-bar-height;
   border-bottom: solid $bar-border-width $medium-purple;
@@ -87,15 +93,18 @@ Left-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-// #ui-left-bar { }
-
-.ui-tool-bar {
+#ui-left-bar {
   // @include drop-shadow;
   @include bar-prefix($light-purple);
   @include side-bar-prefix($top-bar-height);
 
   left: 0;
+}
+
+.ui-tool-bar {
+  overflow: auto; // Check the following for the reason: https://stackoverflow.com/questions/27829250/child-margin-doesnt-affect-parent-height
   width: $left-bar-width;
+  height: 100%;
   border-right: solid $bar-border-width $medium-purple;
   padding: 0 6px;
 
@@ -178,7 +187,11 @@ Right-bar UI
   @include side-bar-prefix($top-bar-height);
 
   right: 0;
+}
+
+.open-tab {
   width: $right-bar-width;
+  height: 100%;
   border-left: solid $bar-border-width $medium-purple;
 }
 

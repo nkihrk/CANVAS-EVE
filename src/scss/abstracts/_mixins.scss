@@ -154,7 +154,9 @@ Used:
 
 —————————————————————————————————————————————————————————*/
 @mixin drop-shadow {
-  filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.3));
+  // -webkit-filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.3));
+  // filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.3));
+  box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 /*———————————————————————————————————————————————————————
