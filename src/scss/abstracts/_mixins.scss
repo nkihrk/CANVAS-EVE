@@ -190,15 +190,25 @@ Used:
   width: $cWidth;
   height: $cHeight;
 
-  @if $where == 'after' {
-    &::after {
-      @include _icon($iWidth, $iHeight, $src);
-    }
+  &::#{$where} {
+    @include _icon($iWidth, $iHeight, $src);
   }
+}
 
-  @if $where == 'before' {
-    &::before {
-      @include _icon($iWidth, $iHeight, $src);
-    }
-  }
+/*———————————————————————————————————————————————————————
+
+Disable text selection highlighting
+
+Used:
+- layout/_navigation.scss
+- layout/_sidebar.scss
+
+—————————————————————————————————————————————————————————*/
+@mixin disable-selection {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
 }

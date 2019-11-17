@@ -131,71 +131,73 @@
 
     <!-- To prevent scrolling -->
     <div id="canvas-eve-wrapper" style="z-index: 0;">
-      <!-- A Right-click context sub-menu -->
-      <div
-        id="ctxmenu-sub"
-        class="ctxmenu-template bold agency-fb"
-        style="z-index: 7;"
-      >
-        <ul>
-          <li id="ctxmenu-sub-text">
-            <div>Text</div>
-            <div>+</div>
-          </li>
-          <li id="ctxmenu-sub-color">
-            <div>Color Picker</div>
-            <div>+</div>
-          </li>
-          <li id="ctxmenu-sub-youtube">
-            <div>YouTube</div>
-            <div>+</div>
-          </li>
-          <li id="ctxmenu-sub-browser">
-            <div>Browser</div>
-            <div>+</div>
-          </li>
-        </ul>
-      </div>
-      <!-- A Right-click context menu -->
-      <div
-        id="ctxmenu"
-        class="ctxmenu-template bold agency-fb"
-        style="z-index: 6;"
-      >
-        <ul>
-          <li id="ctxmenu-help"><div>Help</div></li>
-          <li id="ctxmenu-about"><div>About</div></li>
-          <li id="ctxmenu-settings"><div>Settings</div></li>
-          <li id="ctxmenu-new">
-            <div>New</div>
-            <div>&gt;</div>
-          </li>
-          <li id="ctxmenu-undo">
-            <div>Undo</div>
-            <div>Ctrl + Z</div>
-          </li>
-          <li id="ctxmenu-redo">
-            <div>Redo</div>
-            <div>Ctrl + Shift + Z</div>
-          </li>
-          <li id="ctxmenu-cut">
-            <div>Cut</div>
-            <div>Ctrl + X</div>
-          </li>
-          <li id="ctxmenu-copy">
-            <div>Copy</div>
-            <div>Ctrl + C</div>
-          </li>
-          <li id="ctxmenu-paste">
-            <div>Paste</div>
-            <div>Ctrl + V</div>
-          </li>
-          <li id="ctxmenu-save">
-            <div>Save</div>
-            <div>Ctrl + S</div>
-          </li>
-          <li id="ctxmenu-close"><div>Close</div></li>
-        </ul>
+      <div id="ctxmenu-wrapper" style="z-index: 6;">
+        <!-- A Right-click context menu -->
+        <div
+          id="ctxmenu"
+          class="ctxmenu-template bold agency-fb"
+          style="z-index: 0;"
+        >
+          <ul>
+            <li id="ctxmenu-help"><div>Help</div></li>
+            <li id="ctxmenu-about"><div>About</div></li>
+            <li id="ctxmenu-settings"><div>Settings</div></li>
+            <li id="ctxmenu-new">
+              <div>New</div>
+              <div>&gt;</div>
+            </li>
+            <li id="ctxmenu-undo">
+              <div>Undo</div>
+              <div>Ctrl + Z</div>
+            </li>
+            <li id="ctxmenu-redo">
+              <div>Redo</div>
+              <div>Ctrl + Shift + Z</div>
+            </li>
+            <li id="ctxmenu-cut">
+              <div>Cut</div>
+              <div>Ctrl + X</div>
+            </li>
+            <li id="ctxmenu-copy">
+              <div>Copy</div>
+              <div>Ctrl + C</div>
+            </li>
+            <li id="ctxmenu-paste">
+              <div>Paste</div>
+              <div>Ctrl + V</div>
+            </li>
+            <li id="ctxmenu-save">
+              <div>Save</div>
+              <div>Ctrl + S</div>
+            </li>
+            <li id="ctxmenu-close"><div>Close</div></li>
+          </ul>
+        </div>
+        <!-- A Right-click context sub-menu -->
+        <div
+          id="ctxmenu-sub"
+          class="ctxmenu-template bold agency-fb"
+          style="z-index: 1;"
+        >
+          <ul>
+            <li id="ctxmenu-sub-text">
+              <div>Text</div>
+              <div>+</div>
+            </li>
+            <li id="ctxmenu-sub-color">
+              <div>Color Picker</div>
+              <div>+</div>
+            </li>
+            <li id="ctxmenu-sub-youtube">
+              <div>YouTube</div>
+              <div>+</div>
+            </li>
+            <li id="ctxmenu-sub-browser">
+              <div>Browser</div>
+              <div>+</div>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div id="canvas-eve-ui" class="bold agency-fb" style="z-index: 5;">
@@ -225,8 +227,8 @@
           </div>
         </div>
         <div id="ui-bar-right">
-          <div class="ui-bar-open">
-            <div class="ui-button-open"></div>
+          <div class="ui-bar-closed">
+            <div class="ui-button-closed"></div>
           </div>
         </div>
         <div id="ui-bar-middle">

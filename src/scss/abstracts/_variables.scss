@@ -4,22 +4,28 @@ String variables
 
 Used:
 - components/_canvas-eve.scss
+- layout/_navigation.scss
 - layout/_sidebar.scss
 
 —————————————————————————————————————————————————————————*/
 
+// Used:
+// - components/_canvas-eve.scss
 $initFileSize: 300px;
+// Used:
+// - layout/_navigation.scss
+$transition: 0.1s ease-in-out;
 
 $bar-border-width: 2px;
-$touch-bar-width: 2px;
+$touch-line-width: 2px;
 
 $elem-radius: 3px;
 
-$top-bar-height: 30px;
-$left-bar-width: 45px;
-$closed-bar-width: 16px;
-$middle-bar-height: 40px;
-$bottom-bar-height: 30px;
+$bar-menu-height: 30px;
+$bar-tool-width: 45px;
+$bar-closed-width: 16px;
+$bar-tab-height: 40px;
+$bar-footer-height: 30px;
 
 /*———————————————————————————————————————————————————————
 

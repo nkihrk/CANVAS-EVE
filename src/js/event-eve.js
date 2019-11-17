@@ -25,6 +25,7 @@ import ZoomEve from './eve-modules/zoom-eve';
 import PlainEve from './eve-modules/plain-eve';
 import CanvasEve from './eve-modules/canvas-eve';
 import ToggleEve from './eve-modules/toggle-eve';
+import CtxmenuEve from './eve-modules/ctxmenu-eve';
 import CommonEve from './common/common-eve';
 
 const EventEve = ((W, D) => {
@@ -40,6 +41,7 @@ const EventEve = ((W, D) => {
     this.Plain = new PlainEve(D.getElementById('plain'));
     this.Canvas = new CanvasEve();
     this.Toggle = new ToggleEve();
+    this.Ctxmenu = new CtxmenuEve();
     this.Common = new CommonEve();
   }
 
@@ -84,6 +86,7 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
+          this.Ctxmenu.mouseDownEvent(e);
           this.Toggle.mouseDownEvent(e);
           this.Plain.mouseDownEvent(e);
           this.File.mouseDownEvent(e);
@@ -107,6 +110,7 @@ const EventEve = ((W, D) => {
           this.Colpick.mouseUpEvent();
           this.Youtube.mouseUpEvent(e);
           this.Canvas.mouseUpEvent();
+          this.Ctxmenu.mouseUpEvent(e);
         },
         false
       );

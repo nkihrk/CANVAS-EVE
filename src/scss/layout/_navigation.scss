@@ -3,21 +3,20 @@
 
 /*———————————————————————————————————————————————————————
 
-Context-menu
+Common
 
 —————————————————————————————————————————————————————————*/
 
 .ctxmenu-template {
   @include drop-shadow;
+  @include disable-selection;
 
   color: $grey;
   background-color: $dark-purple;
-  cursor: context-menu;
-  position: absolute;
   font-size: 1.2rem;
   line-height: 35px;
-  border-radius: $elem-radius;
   overflow: hidden;
+  padding: 3px;
 
   li {
     display: flex;
@@ -29,12 +28,36 @@ Context-menu
   li:hover {
     background-color: $dark-grey;
   }
+
+  li:first-of-type:hover {
+    border-radius: $elem-radius $elem-radius 0 0;
+  }
+
+  li:last-of-type:hover {
+    border-radius: 0 0 $elem-radius $elem-radius;
+  }
+}
+
+/*———————————————————————————————————————————————————————
+
+Context-menu
+
+—————————————————————————————————————————————————————————*/
+
+#ctxmenu-wrapper {
+  pointer-events: none;
+  cursor: context-menu;
+  transition: opacity $transition;
+  position: absolute;
+  // left: 50%;
+  // top: 40%;
+  width: 260px;
+  opacity: 0;
 }
 
 #ctxmenu {
-  left: 50%;
-  top: 40%;
-  width: 260px;
+  width: 100%;
+  border-radius: $elem-radius;
 
   #ctxmenu-new {
     border-top: solid 1px $dark-grey;
@@ -48,9 +71,13 @@ Context-menu
 }
 
 #ctxmenu-sub {
-  left: 63.5%;
-  top: 51%;
-  width: 260px;
+  pointer-events: none;
+  position: absolute;
+  left: 96%;
+  top: 28%;
+  width: 100%;
+  opacity: 0;
+  border-radius: $elem-radius;
 
   #ctxmenu-sub-color {
     border-top: solid 1px $dark-grey;
@@ -70,7 +97,7 @@ Zooming slider
 #zslider {
   pointer-events: auto;
   position: absolute;
-  left: $left-bar-width * 2;
+  left: $bar-tool-width * 2;
   top: 50%;
   width: 0;
   height: 30%;
