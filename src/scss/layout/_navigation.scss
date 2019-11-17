@@ -11,11 +11,13 @@ Common
   @include drop-shadow;
   @include disable-selection;
 
+  cursor: context-menu;
   color: $grey;
   background-color: $dark-purple;
   font-size: 1.2rem;
   line-height: 35px;
   overflow: hidden;
+  transition: opacity $transition;
   padding: 3px;
 
   li {
@@ -36,6 +38,13 @@ Common
   li:last-of-type:hover {
     border-radius: 0 0 $elem-radius $elem-radius;
   }
+
+  pointer-events: none;
+  opacity: 0;
+  &.active {
+    pointer-events: auto;
+    opacity: 1;
+  }
 }
 
 /*———————————————————————————————————————————————————————
@@ -46,13 +55,8 @@ Context-menu
 
 #ctxmenu-wrapper {
   pointer-events: none;
-  cursor: context-menu;
-  transition: opacity $transition;
   position: absolute;
-  // left: 50%;
-  // top: 40%;
   width: 260px;
-  opacity: 0;
 }
 
 #ctxmenu {
@@ -61,6 +65,10 @@ Context-menu
 
   #ctxmenu-new {
     border-top: solid 1px $dark-grey;
+
+    &.active {
+      background-color: $dark-grey;
+    }
   }
 
   #ctxmenu-new,
@@ -71,12 +79,10 @@ Context-menu
 }
 
 #ctxmenu-sub {
-  pointer-events: none;
   position: absolute;
   left: 96%;
   top: 28%;
   width: 100%;
-  opacity: 0;
   border-radius: $elem-radius;
 
   #ctxmenu-sub-color {
