@@ -977,7 +977,7 @@ const OekakiEve = ((W, D, M) => {
       const { top } = this.$cOekakiPlain.offset();
       const delta = e.deltaY;
 
-      if (GlbEve.MOUSE_WHEEL_VAL > 1 && GlbEve.MOUSE_WHEEL_VAL < 10.9) {
+      if (GlbEve.MOUSE_WHEEL_VAL > 0.092 && GlbEve.MOUSE_WHEEL_VAL < 11) {
         if (delta > 0) {
           this.$cOekakiPlain.css({
             left: `${left - 0.5}px`,

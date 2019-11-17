@@ -70,28 +70,46 @@ Zooming slider
 #zslider {
   pointer-events: auto;
   position: absolute;
-  left: $left-bar-width + $left-bar-width;
-  top: calc((100% - #{$top-bar-height + $middle-bar-height}) / 2);
+  left: $left-bar-width * 2;
+  top: 50%;
   width: 0;
   height: 30%;
+  transform: translateX(-50%) translateY(-50%);
 
   #zslider-track {
     position: relative;
-    transform: translateX(-50%) translateY(-50%);
     width: 100%;
     height: 100%;
     background-color: $grey;
     border: solid 1px $grey;
 
+    &::before,
     &::after {
-      display: block;
       position: absolute;
-      top: 0;
+      content: '●';
+      font-size: 0.6rem;
       left: 0;
-      width: 100px;
-      height: 100px;
-      background-color: $grey;
-      border-radius: 50%;
+      transform: translateX(-50%) translateY(-50%);
     }
+
+    &::before {
+      top: 0;
+    }
+
+    &::after {
+      top: 100%;
+    }
+  }
+
+  #zslider-thumb {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 25px;
+    height: 25px;
+    transform: translateX(-50%) translateY(-50%);
+    background-color: $canvas-color;
+    border: solid 3px $grey;
+    border-radius: 50%;
   }
 }

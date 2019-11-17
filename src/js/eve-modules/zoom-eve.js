@@ -157,6 +157,8 @@ const ZoomEve = (W => {
       this.xLast = this.xScreen;
       this.yLast = this.yScreen;
 
+      // console.log(this.i);
+
       GlbEve.MOUSE_WHEEL_VAL = 1 / this.i;
       this.$zoom.css({
         transform: `scale(${this.i}) translate(${this.xNew}px, ${this.yNew}px)`,
