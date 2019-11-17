@@ -18,10 +18,6 @@ const CtxmenuEve = (D => {
 
     this.timeoutShow = null; // lazy load
     this.timeoutHide = null; // lazy load
-
-    this.flgs = {
-      is_ctxmenu_sub_flg: false
-    };
   }
 
   const modules = {};
