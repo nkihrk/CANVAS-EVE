@@ -96,6 +96,35 @@ Context-menu
 
 /*———————————————————————————————————————————————————————
 
+Main menu
+
+—————————————————————————————————————————————————————————*/
+
+#menu-wrapper {
+  pointer-events: none;
+  position: absolute;
+  width: 260px;
+}
+
+#canvas-eve-ui {
+  #menu-file,
+  #menu-edit,
+  #menu-window {
+    &.active {
+      background-color: $dark-purple;
+    }
+  }
+}
+
+#menu-file-list,
+#menu-edit-list,
+#menu-window-list {
+  width: 100%;
+  border-radius: 0 $elem-radius $elem-radius $elem-radius;
+}
+
+/*———————————————————————————————————————————————————————
+
 Zooming slider
 
 —————————————————————————————————————————————————————————*/

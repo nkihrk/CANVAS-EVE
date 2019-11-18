@@ -131,13 +131,9 @@
 
     <!-- To prevent scrolling -->
     <div id="canvas-eve-wrapper" style="z-index: 0;">
-      <div id="ctxmenu-wrapper" style="z-index: 6;">
+      <div id="ctxmenu-wrapper" style="z-index: 5;">
         <!-- A Right-click context menu -->
-        <div
-          id="ctxmenu"
-          class="ctxmenu-template bold agency-fb"
-          style="z-index: 0;"
-        >
+        <div id="ctxmenu" class="ctxmenu-template bold agency-fb">
           <ul>
             <li id="ctxmenu-help"><div>Help</div></li>
             <li id="ctxmenu-about"><div>About</div></li>
@@ -200,19 +196,85 @@
         </div>
       </div>
 
-      <div id="canvas-eve-ui" class="bold agency-fb" style="z-index: 5;">
+      <div id="menu-wrapper" style="z-index: 4;">
+        <div id="menu">
+          <div id="menu-file-list" class="ctxmenu-template bold agency-fb">
+            <ul>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+            </ul>
+          </div>
+          <div id="menu-edit-list" class="ctxmenu-template bold agency-fb">
+            <ul>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+            </ul>
+          </div>
+          <div id="menu-window-list" class="ctxmenu-template bold agency-fb">
+            <ul>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+              <li>
+                <div>Text</div>
+                <div>+</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div id="menu-sub" style="z-index: 1;"></div>
+      </div>
+
+      <div id="canvas-eve-ui" class="bold agency-fb" style="z-index: 3;">
         <div id="ui-bar-top">
-          <div class="ui-bar-menu">
+          <div id="ui-bar-menu">
             <div id="ui-button-home"></div>
             <ul>
-              <li>File(F)</li>
-              <li>Edit(E)</li>
-              <li>Window(W)</li>
+              <li id="menu-file">File(F)</li>
+              <li id="menu-edit">Edit(E)</li>
+              <li id="menu-window">Window(W)</li>
             </ul>
           </div>
         </div>
         <div id="ui-bar-left">
-          <div class="ui-bar-tool">
+          <div id="ui-bar-tool">
             <hr />
             <ul>
               <li><div id="ui-button-pen"></div></li>
@@ -232,7 +294,7 @@
           </div>
         </div>
         <div id="ui-bar-middle">
-          <div class="ui-bar-tab">
+          <div id="ui-bar-tab">
             <ul>
               <li
                 id="new-canvas"
@@ -273,7 +335,7 @@
         <div id="ui-bar-bottom">
           <!-- add-eve.js -->
           <div id="progress-bar"></div>
-          <div class="ui-bar-footer">
+          <div id="ui-bar-footer">
             <div>ZOOM: 100%</div>
             <div>2019 © NkiHrk</div>
           </div>

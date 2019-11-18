@@ -116,6 +116,7 @@ const CtxmenuEve = (D => {
     _initCtxmenuSub() {
       const { $ctxmenuNew } = this;
       const { $ctxmenuSub } = this;
+
       $ctxmenuNew.removeClass('active');
       $ctxmenuSub.removeClass('active');
     },
@@ -138,6 +139,7 @@ const CtxmenuEve = (D => {
     _showCtxmenuSub() {
       const { $ctxmenuNew } = this;
       const { $ctxmenuSub } = this;
+
       $ctxmenuNew.addClass('active');
       $ctxmenuSub.addClass('active');
     }

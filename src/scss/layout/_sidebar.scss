@@ -45,7 +45,7 @@ Top-bar UI
   width: 100vw;
 }
 
-.ui-bar-menu {
+#ui-bar-menu {
   width: 100%;
   height: $bar-menu-height;
   border-bottom: solid $bar-border-width $medium-purple;
@@ -102,7 +102,7 @@ Left-bar UI
   left: 0;
 }
 
-.ui-bar-tool {
+#ui-bar-tool {
   overflow: auto; // Check the following for the reason: https://stackoverflow.com/questions/27829250/child-margin-doesnt-affect-parent-height
   width: $bar-tool-width;
   height: 100%;
@@ -234,7 +234,7 @@ Middle-bar UI
   width: calc(100vw - #{$bar-tool-width} - #{$bar-closed-width});
 }
 
-.ui-bar-tab {
+#ui-bar-tab {
   width: 100%;
   height: $bar-tab-height;
   border-bottom: solid $bar-border-width $canvas-color;
@@ -379,7 +379,7 @@ Bottom-bar UI
   }
 }
 
-.ui-bar-footer {
+#ui-bar-footer {
   width: 100%;
   height: $bar-footer-height;
   border-top: solid $bar-border-width $medium-purple;

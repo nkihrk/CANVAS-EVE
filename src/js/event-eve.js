@@ -12,6 +12,8 @@
  * - plain-eve
  * - canvas-eve
  * - toggle-eve
+ * - ctxmenu-eve
+ * - menu-eve
  * - common-eve
  *
  */
@@ -26,6 +28,7 @@ import PlainEve from './eve-modules/plain-eve';
 import CanvasEve from './eve-modules/canvas-eve';
 import ToggleEve from './eve-modules/toggle-eve';
 import CtxmenuEve from './eve-modules/ctxmenu-eve';
+import MenuEve from './eve-modules/menu-eve';
 import CommonEve from './common/common-eve';
 
 const EventEve = ((W, D) => {
@@ -42,6 +45,7 @@ const EventEve = ((W, D) => {
     this.Canvas = new CanvasEve();
     this.Toggle = new ToggleEve();
     this.Ctxmenu = new CtxmenuEve();
+    this.Menu = new MenuEve();
     this.Common = new CommonEve();
   }
 
@@ -87,6 +91,7 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mousedown',
         e => {
+          this.Menu.mouseDownEvent(e);
           this.Ctxmenu.mouseDownEvent(e);
           this.Toggle.mouseDownEvent(e);
           this.Plain.mouseDownEvent(e);
