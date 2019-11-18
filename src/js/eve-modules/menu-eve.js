@@ -22,6 +22,8 @@ const MenuEve = (() => {
 
     this.timeoutShow = null; // lazy load
     this.timeoutHide = null; // lazy load
+
+    this.__toggleActive = {}; // A specified variable for _toggleActive method. Just for initialization
   }
 
   const modules = {};
@@ -34,6 +36,14 @@ const MenuEve = (() => {
       BUTTON_FOR_RIGHT: 2,
       MOUSE_OVER_DELAY: 300,
       TRANSITION_TIME: 100
+    },
+
+    //
+
+    load() {
+      this._setPos();
+      this.mouseEnterEvent();
+      this.mouseLeaveEvent();
     },
 
     //
@@ -53,11 +63,53 @@ const MenuEve = (() => {
 
     //
 
+    _setPos() {
+      const { $uiBarMenu } = this;
+      const { $menuFile } = this;
+      const { $menuEdit } = this;
+      const { $menuWindow } = this;
+      const { $menuFileList } = this;
+      const { $menuEditList } = this;
+      const { $menuWindowList } = this;
+      const top = $uiBarMenu.height();
+
+      $menuFileList.css({
+        left: `${$menuFile.offset().left}px`,
+        top: `${top}px`
+      });
+
+      $menuEditList.css({
+        left: `${$menuEdit.offset().left}px`,
+        top: `${top}px`
+      });
+
+      $menuWindowList.css({
+        left: `${$menuWindow.offset().left}px`,
+        top: `${top}px`
+      });
+    },
+
+    //
+
+    mouseEnterEvent() {},
+
+    //
+
+    mouseLeaveEvent() {},
+
+    //
+
     _initMenu() {
+      const { $menuFile } = this;
+      const { $menuEdit } = this;
+      const { $menuWindow } = this;
       const { $menuFileList } = this;
       const { $menuEditList } = this;
       const { $menuWindowList } = this;
 
+      $menuFile.removeClass('active');
+      $menuEdit.removeClass('active');
+      $menuWindow.removeClass('active');
       $menuFileList.removeClass('active');
       $menuEditList.removeClass('active');
       $menuWindowList.removeClass('active');
@@ -66,35 +118,38 @@ const MenuEve = (() => {
     //
 
     _showMenu(e) {
-      const { $uiBarMenu } = this;
-      const { $menuWrapper } = this;
       const { $menuFile } = this;
       const { $menuEdit } = this;
       const { $menuWindow } = this;
       const { $menuFileList } = this;
       const { $menuEditList } = this;
       const { $menuWindowList } = this;
-      const top = $uiBarMenu.height();
-      let left;
 
       if (e.target.closest('#menu-file')) {
-        left = $menuFile.offset().left;
-        $menuFile.addClass('active');
-        $menuFileList.addClass('active');
+        this._toggleActive([$menuFile, $menuFileList]);
       } else if (e.target.closest('#menu-edit')) {
-        left = $menuEdit.offset().left;
-        $menuEdit.addClass('active');
-        $menuEditList.addClass('active');
+        this._toggleActive([$menuEdit, $menuEditList]);
       } else if (e.target.closest('#menu-window')) {
-        left = $menuWindow.offset().left;
-        $menuWindow.addClass('active');
-        $menuWindowList.addClass('active');
+        this._toggleActive([$menuWindow, $menuWindowList]);
       }
+    },
 
-      $menuWrapper.css({
-        left: `${left}px`,
-        top: `${top}px`
-      });
+    //
+
+    _toggleActive($container) {
+      for (let i = 0; i < 2; i++) {
+        $container[i].toggleClass('active');
+
+        if (
+          this.__toggleActive[i] !== undefined &&
+          this.__toggleActive[i][0] !== $container[i][0] &&
+          this.__toggleActive[i].hasClass('active')
+        ) {
+          this.__toggleActive[i].removeClass('active');
+        }
+        if ($container[i].hasClass('active'))
+          this.__toggleActive[i] = $container[i];
+      }
     }
   });
 

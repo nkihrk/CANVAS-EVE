@@ -8,7 +8,6 @@ Common
 —————————————————————————————————————————————————————————*/
 
 .ctxmenu-template {
-  @include drop-shadow;
   @include disable-selection;
 
   cursor: context-menu;
@@ -60,6 +59,8 @@ Context-menu
 }
 
 #ctxmenu {
+  @include drop-shadow;
+
   width: 100%;
   border-radius: $elem-radius;
 
@@ -79,6 +80,8 @@ Context-menu
 }
 
 #ctxmenu-sub {
+  @include drop-shadow;
+
   position: absolute;
   left: 96%;
   top: 28%;
@@ -102,8 +105,11 @@ Main menu
 
 #menu-wrapper {
   pointer-events: none;
-  position: absolute;
-  width: 260px;
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 #canvas-eve-ui {
@@ -119,8 +125,41 @@ Main menu
 #menu-file-list,
 #menu-edit-list,
 #menu-window-list {
-  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 260px;
   border-radius: 0 $elem-radius $elem-radius $elem-radius;
+}
+
+#menu-file-list {
+  #menu-file-new,
+  #menu-file-load,
+  #menu-file-export {
+    &.active {
+      background-color: $dark-grey;
+    }
+  }
+
+  #menu-file-export {
+    border-top: solid 1px $dark-grey;
+    border-bottom: solid 1px $dark-grey;
+
+    &.active {
+      background-color: $dark-grey;
+    }
+  }
+}
+
+#menu-edit-list {
+  #menu-edit-search {
+    border-top: solid 1px $dark-grey;
+  }
+
+  #menu-edit-redo,
+  #menu-edit-search {
+    border-bottom: solid 1px $dark-grey;
+  }
 }
 
 /*———————————————————————————————————————————————————————

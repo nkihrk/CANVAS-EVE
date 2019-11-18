@@ -148,7 +148,7 @@
             </li>
             <li id="ctxmenu-redo">
               <div>Redo</div>
-              <div>Ctrl + Shift + Z</div>
+              <div>Shift + Ctrl + Z</div>
             </li>
             <li id="ctxmenu-cut">
               <div>Cut</div>
@@ -166,7 +166,10 @@
               <div>Save</div>
               <div>Ctrl + S</div>
             </li>
-            <li id="ctxmenu-close"><div>Close</div></li>
+            <li id="ctxmenu-close">
+              <div>Close</div>
+              <div>Ctrl + W</div>
+            </li>
           </ul>
         </div>
         <!-- A Right-click context sub-menu -->
@@ -197,69 +200,81 @@
       </div>
 
       <div id="menu-wrapper" style="z-index: 4;">
-        <div id="menu">
-          <div id="menu-file-list" class="ctxmenu-template bold agency-fb">
-            <ul>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-            </ul>
-          </div>
-          <div id="menu-edit-list" class="ctxmenu-template bold agency-fb">
-            <ul>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-            </ul>
-          </div>
-          <div id="menu-window-list" class="ctxmenu-template bold agency-fb">
-            <ul>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-              <li>
-                <div>Text</div>
-                <div>+</div>
-              </li>
-            </ul>
-          </div>
+        <div id="menu-file-list" class="ctxmenu-template bold agency-fb">
+          <ul>
+            <li id="menu-file-new">
+              <div>New</div>
+              <div>&gt;</div>
+            </li>
+            <li id="menu-file-open">
+              <div>Open Canvas</div>
+              <div>Ctrl + O</div>
+            </li>
+            <li id="menu-file-load">
+              <div>Load Recent</div>
+              <div>&gt;</div>
+            </li>
+            <li id="menu-file-export">
+              <div>Export</div>
+              <div>&gt;</div>
+            </li>
+            <li id="menu-file-quit">
+              <div>Quit</div>
+              <div>Ctrl + Q</div>
+            </li>
+          </ul>
         </div>
-        <div id="menu-sub" style="z-index: 1;"></div>
+        <div id="menu-edit-list" class="ctxmenu-template bold agency-fb">
+          <ul>
+            <li id="menu-edit-undo">
+              <div>Undo</div>
+              <div>Ctrl + Z</div>
+            </li>
+            <li id="menu-edit-redo">
+              <div>Redo</div>
+              <div>Shift + Ctrl + Z</div>
+            </li>
+            <li id="menu-edit-cut">
+              <div>Cut</div>
+              <div>Ctrl + X</div>
+            </li>
+            <li id="menu-edit-copy">
+              <div>Copy</div>
+              <div>Ctrl + C</div>
+            </li>
+            <li id="menu-edit-paste">
+              <div>Paste</div>
+              <div>Ctrl + V</div>
+            </li>
+            <li id="menu-edit-search">
+              <div>Search</div>
+              <div>Ctrl + F</div>
+            </li>
+            <li id="menu-edit-settings">
+              <div>Settings</div>
+            </li>
+          </ul>
+        </div>
+        <div id="menu-window-list" class="ctxmenu-template bold agency-fb">
+          <ul>
+            <li>
+              <div>Text</div>
+              <div>+</div>
+            </li>
+            <li>
+              <div>Text</div>
+              <div>+</div>
+            </li>
+            <li>
+              <div>Text</div>
+              <div>+</div>
+            </li>
+            <li>
+              <div>Text</div>
+              <div>+</div>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <div id="canvas-eve-ui" class="bold agency-fb" style="z-index: 3;">

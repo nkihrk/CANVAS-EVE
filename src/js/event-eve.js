@@ -77,6 +77,7 @@ const EventEve = ((W, D) => {
 
     initEvent() {
       this.Common.load();
+      this.Menu.load();
       this.Ctxmenu.load();
       this.Plain.load();
       this.Zoom.load();

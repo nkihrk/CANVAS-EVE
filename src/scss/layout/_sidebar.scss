@@ -109,11 +109,33 @@ Left-bar UI
   border-right: solid $bar-border-width $medium-purple;
   padding: 0 6px;
 
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: 3px;
+    background: transparent;
+  }
+  &:hover::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+  }
+
+  // Scrollbar track
+  &::-webkit-scrollbar-track {
+    background: $canvas-color;
+    border: none;
+  }
+
+  // Scrollbar itself
+  &::-webkit-scrollbar-thumb {
+    background: $dark-purple;
+    border-radius: 8px;
+  }
+
   hr {
     background-color: $grey;
     border: 1px solid $grey;
     border-radius: 8px;
-    height: $touch-line-width;
+    height: $touch-line-height;
     margin: calc((#{$bar-tab-height} - 4px) / 2) 0;
   }
 
