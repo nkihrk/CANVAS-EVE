@@ -67,7 +67,7 @@ const EventEve = ((W, D) => {
       this.mouseWheelEvent();
       this.contextMenuEvent();
       this.changeEvent();
-      this.touchMoveEvent();
+      // this.touchMoveEvent();
       this.dragOverEvent();
       this.dropEvent();
       this.pasteEvent();

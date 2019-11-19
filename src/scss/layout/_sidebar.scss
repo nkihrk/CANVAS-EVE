@@ -34,6 +34,7 @@ Local mixins
   }
 
   overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     height: $scrollbar-minSize;
     background: transparent;
@@ -58,6 +59,7 @@ Local mixins
 
 @mixin scrollbar-prefix-vertical {
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     width: $scrollbar-minSize;
     background: transparent;
@@ -77,6 +79,63 @@ Local mixins
   &::-webkit-scrollbar-thumb {
     background: $dark-purple;
     border-radius: 8px;
+  }
+}
+
+@mixin tab-prefix($tab-width) {
+  .tab-prefix {
+    width: $tab-width;
+    height: 100%;
+    padding: 0 calc((#{$bar-tool-width} - 20px) / 2);
+
+    .tab-info {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      .tab-name {
+        line-height: $bar-tab-height;
+      }
+    }
+  }
+
+  .tab-current {
+    background-color: $canvas-color;
+  }
+
+  .tab-curve {
+    position: relative;
+    height: $bar-tab-height;
+    background: $canvas-color;
+
+    &.single {
+      border-radius: 0 6px 0 0;
+    }
+
+    &.double {
+      border-radius: 6px 6px 0 0;
+    }
+  }
+
+  .tab-curve:before,
+  .tab-curve:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 2 * $tab-radius;
+    height: $tab-radius;
+  }
+
+  .tab-curve:after {
+    right: -2 * $tab-radius;
+    border-radius: 0 0 0 $tab-radius;
+    box-shadow: -$tab-radius 0 0 0 $canvas-color;
+  }
+
+  .tab-curve:before {
+    left: -2 * $tab-radius;
+    border-radius: 0 0 $tab-radius 0;
+    box-shadow: $tab-radius 0 0 0 $canvas-color;
   }
 }
 
@@ -204,10 +263,14 @@ Left-bar UI
   #ui-button-rotate,
   #ui-button-flip {
     margin: 1px 0;
+    border-radius: $elem-radius;
 
     &:hover {
       background-color: $medium-purple;
-      border-radius: $elem-radius;
+    }
+
+    &.active {
+      background-color: $dark-purple;
     }
   }
 
@@ -268,20 +331,25 @@ Right-bar UI
 .ui-bar-closed {
   @include bar-prefix($light-purple);
 
-  width: $bar-closed-width;
+  width: $bar-closed-width + 4px;
   height: 100%;
   border-left: solid $bar-border-width $medium-purple;
+  padding: 4px;
 
   .ui-button-closed {
     @include set-icon(
       'after',
-      $bar-closed-width,
-      $bar-closed-width,
-      70%,
-      56.35%,
-      // 70 * 0.805
-        '#{$img-path}/open-tab.png'
+      11.2px,
+      9.016px,
+      11.2px,
+      // 70%
+        9.016px,
+      // 56.35% = 70 * 0.805
+        '#{$img-path}/closed.png'
     );
+
+    width: 11.2px;
+    height: 9.016px;
   }
 
   &:hover {
@@ -289,6 +357,59 @@ Right-bar UI
 
     .ui-button-closed {
       filter: brightness(0.9);
+    }
+  }
+}
+
+.ui-bar-opened {
+  @include bar-prefix($light-purple);
+  @include tab-prefix(100px);
+
+  box-sizing: content-box; // To exclude padding, which makes the width same as its width
+  position: relative;
+  width: 300px;
+  height: 100%;
+  border-left: solid $bar-border-width $medium-purple;
+  padding: 4px;
+
+  .ui-button-opened {
+    @include set-icon(
+      'after',
+      11.2px + 8px,
+      9.016px,
+      11.2px,
+      9.016px,
+      '#{$img-path}/opened.png'
+    );
+
+    position: absolute;
+    right: 0;
+    width: 11.2px + 8px;
+    height: 9.016px;
+  }
+
+  .ui-window-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+
+    .ui-window:not(:last-child) {
+      margin-bottom: 4px;
+    }
+
+    .ui-window-tab {
+      @include scrollbar-prefix-horizontal(true);
+
+      li {
+        border-radius: $elem-radius $elem-radius 0 0;
+      }
+    }
+
+    .ui-window-content {
+      width: 100%;
+      background-color: $canvas-color;
+      border-radius: 0 $elem-radius $elem-radius $elem-radius;
     }
   }
 }
@@ -322,6 +443,7 @@ Middle-top-bar UI
 #ui-bar-tab {
   @include bar-prefix($light-purple);
   @include disable-selection;
+  @include tab-prefix(200px);
   @include scrollbar-prefix-horizontal(true);
 
   height: $bar-tab-height;
@@ -336,25 +458,7 @@ Middle-top-bar UI
     }
   }
 
-  .tab-prefix {
-    min-width: 200px;
-    height: 100%;
-    padding: 0 calc((#{$bar-tool-width} - 20px) / 2);
-
-    .tab-info {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      .canvas-name {
-        line-height: $bar-tab-height;
-      }
-    }
-  }
-
   .tab-current {
-    background-color: $canvas-color;
-
     .close-button {
       &:hover {
         background-color: $light-purple;
@@ -368,41 +472,6 @@ Middle-top-bar UI
         background-color: $medium-purple;
       }
     }
-  }
-
-  .tab-curve {
-    position: relative;
-    height: $bar-tab-height;
-    background: $canvas-color;
-
-    &.single {
-      border-radius: 0 6px 0 0;
-    }
-
-    &.double {
-      border-radius: 6px 6px 0 0;
-    }
-  }
-
-  .tab-curve:before,
-  .tab-curve:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 2 * $tab-radius;
-    height: $tab-radius;
-  }
-
-  .tab-curve:after {
-    right: -2 * $tab-radius;
-    border-radius: 0 0 0 $tab-radius;
-    box-shadow: -$tab-radius 0 0 0 $canvas-color;
-  }
-
-  .tab-curve:before {
-    left: -2 * $tab-radius;
-    border-radius: 0 0 $tab-radius 0;
-    box-shadow: $tab-radius 0 0 0 $canvas-color;
   }
 }
 

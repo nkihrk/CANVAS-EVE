@@ -58,7 +58,6 @@ const SidebarEve = (W => {
       const { $uiBarLeft } = this;
       const { $uiBarRight } = this;
       const w = W.innerWidth - $uiBarLeft.width() - $uiBarRight.width();
-      console.log($uiBarRight.width());
 
       if (this._checkWidthDiff !== undefined && this._checkWidthDiff !== w) {
         $uiBarBottom.css('width', `${w}px`);

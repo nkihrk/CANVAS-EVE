@@ -21,7 +21,16 @@ const ToggleEve = (() => {
 
     options: {
       BUTTON_FOR_LEFT: 0,
-      LIST_OF_TOOLS: ['#toggle-colpick', '#brush-oekaki', '#eraser-oekaki']
+      LIST_OF_TOOLS: [
+        '#ui-button-pen',
+        '#ui-button-eraser',
+        '#ui-button-crop',
+        '#ui-button-spuit',
+        '#ui-button-thumbtack',
+        '#ui-button-resize',
+        '#ui-button-rotate',
+        '#ui-button-flip'
+      ]
     },
 
     //
@@ -88,7 +97,7 @@ const ToggleEve = (() => {
     _colpick($container) {
       const btnName = $container.attr('id');
 
-      if ($container.hasClass('active') && btnName === 'toggle-colpick') {
+      if ($container.hasClass('active') && btnName === 'ui-button-spuit') {
         $('#canvas-eve .file-wrap').removeClass('grab-pointer');
         $('#canvas-eve').addClass('spuit-pointer');
       } else {
@@ -97,7 +106,7 @@ const ToggleEve = (() => {
       }
 
       switch (btnName) {
-        case 'toggle-colpick':
+        case 'ui-button-spuit':
           if ($container.hasClass('active')) {
             FlgEve.colpick.tools.is_active_flg = true;
           } else {
@@ -115,7 +124,7 @@ const ToggleEve = (() => {
     _oekaki($container) {
       const btnName = $container.attr('id');
 
-      if ($container.hasClass('active') && btnName === 'brush-oekaki') {
+      if ($container.hasClass('active') && btnName === 'ui-button-pen') {
         FlgEve.oekaki.tools.brush_flg = true;
         FlgEve.oekaki.tools.is_active_flg = true;
       } else {
@@ -123,7 +132,7 @@ const ToggleEve = (() => {
         FlgEve.oekaki.tools.is_active_flg = false;
       }
 
-      if ($container.hasClass('active') && btnName === 'eraser-oekaki') {
+      if ($container.hasClass('active') && btnName === 'ui-button-eraser') {
         FlgEve.oekaki.tools.eraser_flg = true;
         FlgEve.oekaki.tools.is_active_flg = true;
       } else {
@@ -132,8 +141,8 @@ const ToggleEve = (() => {
       }
 
       switch (btnName) {
-        case 'brush-oekaki':
-        case 'eraser-oekaki':
+        case 'ui-button-pen':
+        case 'ui-button-eraser':
           if ($container.hasClass('active')) {
             FlgEve.oekaki.tools.is_active_flg = true;
           } else {

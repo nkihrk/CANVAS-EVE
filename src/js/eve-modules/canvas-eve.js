@@ -1168,8 +1168,6 @@ const CanvasEve = ((W, D, M) => {
       ) {
         if (FlgEve.canvas.drag_flg === true) {
           if (
-            FlgEve.oekaki.move_wheelcircle_flg === false &&
-            FlgEve.oekaki.move_trianglecircle_flg === false &&
             FlgEve.colpick.active_spuit_flg === false &&
             FlgEve.colpick.move_circle_flg === false
           ) {
@@ -1213,8 +1211,6 @@ const CanvasEve = ((W, D, M) => {
         ) {
           if (FlgEve.canvas.drag_flg === true) {
             if (
-              FlgEve.oekaki.move_wheelcircle_flg === false &&
-              FlgEve.oekaki.move_trianglecircle_flg === false &&
               FlgEve.colpick.active_spuit_flg === false &&
               FlgEve.colpick.move_circle_flg === false
             ) {

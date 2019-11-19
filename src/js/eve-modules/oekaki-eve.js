@@ -157,8 +157,8 @@ const OekakiEve = ((W, D, M) => {
       CANVAS_COLOR: '#f0e0d6',
       RESET_CANVAS_COLOR: '#32303f',
       CREATE_CANVAS_DELAY: 200, // Currently not in use
-      BUTTON_FOR_LEFT: 0,
-      BUTTON_FOR_MIDDLE: 1,
+      BUTTON_FOR_LEFT: 1,
+      BUTTON_FOR_MIDDLE: 4,
       BUTTON_FOR_RIGHT: 2
     },
 
@@ -258,7 +258,7 @@ const OekakiEve = ((W, D, M) => {
     _handleEventMouseDown(e) {
       if (
         e.target.closest('#color-oekaki') &&
-        e.button === this.options.BUTTON_FOR_RIGHT
+        e.buttons === this.options.BUTTON_FOR_LEFT
       ) {
         this._colorWheelArea(e);
         this._colorTriangleArea(e);
@@ -275,9 +275,10 @@ const OekakiEve = ((W, D, M) => {
       this.param.centerPos.x = centerX;
       this.param.centerPos.y = centerY;
 
-      if (e.buttons === this.options.BUTTON_FOR_RIGHT) {
+      if (e.buttons === this.options.BUTTON_FOR_LEFT) {
         if (this.flgs.oekaki.move_wheelcircle_flg === true)
           this._updateWheelCircle(e);
+
         if (this.flgs.oekaki.move_trianglecircle_flg === true)
           this._updateTriangleCircle(e);
       }
@@ -832,7 +833,11 @@ const OekakiEve = ((W, D, M) => {
 
         switch (e.type) {
           case 'pointerdown':
-            this.oekakiParam.isDrawing = true;
+            if (e.target.closest('#reset-res')) {
+              this.oekakiParam.isDrawing = true;
+            } else {
+              this.oekakiParam.isDrawing = false;
+            }
             this.oekakiParam.lastBrushPos = pos;
             break;
 

@@ -315,31 +315,31 @@
                     class="tab-prefix tab-current tab-curve single"
                   >
                     <div class="tab-info">
-                      <div class="canvas-name">new_canvas*</div>
+                      <div class="tab-name">new_canvas*</div>
                       <div class="close-button"></div>
                     </div>
                   </li>
                   <li id="new-canvas-2" class="tab-prefix tab-rest">
                     <div class="tab-info">
-                      <div class="canvas-name">new_canvas_2*</div>
+                      <div class="tab-name">new_canvas_2*</div>
                       <div class="close-button"></div>
                     </div>
                   </li>
                   <li id="new-canvas-3" class="tab-prefix tab-rest">
                     <div class="tab-info">
-                      <div class="canvas-name">new_canvas_3*</div>
+                      <div class="tab-name">new_canvas_3*</div>
                       <div class="close-button"></div>
                     </div>
                   </li>
                   <li id="new-canvas-4" class="tab-prefix tab-rest">
                     <div class="tab-info">
-                      <div class="canvas-name">new_canvas_4*</div>
+                      <div class="tab-name">new_canvas_4*</div>
                       <div class="close-button"></div>
                     </div>
                   </li>
                   <li id="new-canvas-5" class="tab-prefix tab-rest">
                     <div class="tab-info">
-                      <div class="canvas-name">new_canvas_5*</div>
+                      <div class="tab-name">new_canvas_5*</div>
                       <div class="close-button"></div>
                     </div>
                   </li>
@@ -358,6 +358,36 @@
           </div>
 
           <div id="ui-bar-right">
+            <div class="ui-bar-opened">
+              <div class="ui-button-opened"></div>
+              <div class="ui-window-wrapper">
+                <!--  -->
+                <div id="ui-window-colorpalette" class="ui-window">
+                  <div class="ui-window-tab">
+                    <ul>
+                      <!--  -->
+                      <li class="tab-prefix tab-current">
+                        <div class="tab-info">
+                          <div class="tab-name">Color Palette</div>
+                          <div class="ui-window-icon"></div>
+                        </div>
+                      </li>
+                      <!--  -->
+                    </ul>
+                  </div>
+                  <div class="ui-window-content">
+                    <div id="color-oekaki">
+                      <svg
+                        viewbox="0 0 200 200"
+                        version="1.1"
+                        id="color-wheel"
+                      ></svg>
+                    </div>
+                  </div>
+                </div>
+                <!--  -->
+              </div>
+            </div>
             <div class="ui-bar-closed">
               <div class="ui-button-closed"></div>
             </div>
@@ -367,11 +397,11 @@
           </div>
         </div>
 
-        <div id="zslider">
+        <!-- <div id="zslider">
           <div id="zslider-track">
             <div id="zslider-thumb"></div>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- Canvas for oekaki-eve -->
@@ -446,25 +476,6 @@
           </div>
         </div>
       </div> -->
-
-      <!-- A board for Oekaki -->
-      <div id="oekaki" style="z-index: 2;">
-        <div id="board-oekaki" class="grab-pointer file-wrap">
-          <div class="only-draggable no-zooming">
-            <div id="color-oekaki">
-              <svg viewbox="0 0 200 200" version="1.1" id="color-wheel"></svg>
-            </div>
-          </div>
-        </div>
-        <div id="tool-board-oekaki" class="grab-pointer file-wrap">
-          <div class="only-draggable no-zooming">
-            <div id="tool-oekaki">
-              <div id="brush-oekaki"></div>
-              <div id="eraser-oekaki"></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- Heads up: z-index: 1; is reserved by the later-created #selected-area -->
 
