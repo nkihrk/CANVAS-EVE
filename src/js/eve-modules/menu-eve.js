@@ -35,7 +35,8 @@ const MenuEve = (() => {
       BUTTON_FOR_LEFT: 0,
       BUTTON_FOR_RIGHT: 2,
       MOUSE_OVER_DELAY: 300,
-      TRANSITION_TIME: 100
+      TRANSITION_TIME: 100,
+      BAR_BORDER_WIDTH: 2
     },
 
     //
@@ -71,7 +72,7 @@ const MenuEve = (() => {
       const { $menuFileList } = this;
       const { $menuEditList } = this;
       const { $menuWindowList } = this;
-      const top = $uiBarMenu.height();
+      const top = $uiBarMenu.height() - this.options.BAR_BORDER_WIDTH;
 
       $menuFileList.css({
         left: `${$menuFile.offset().left}px`,

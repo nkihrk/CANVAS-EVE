@@ -10,6 +10,9 @@ Local variables
 $img-path: '../../../assets/img/system_ui';
 $tab-radius: 8px;
 
+$scrollbar-minSize: 3px;
+$scrollbar-maxSize: 6px;
+
 /*———————————————————————————————————————————————————————
 
 Local mixins
@@ -18,104 +21,25 @@ Local mixins
 
 @mixin bar-prefix($color) {
   pointer-events: auto;
-  position: absolute;
   background-color: $color;
 }
 
-@mixin side-bar-prefix($height) {
-  top: $height;
-  height: calc(100% - #{$height});
-}
-
-/*———————————————————————————————————————————————————————
-
-#canvas-eve-ui / #ui-bar-top
-
-Description:
-Top-bar UI
-
-—————————————————————————————————————————————————————————*/
-
-#ui-bar-top {
-  @include bar-prefix($light-purple);
-  @include disable-selection;
-
-  left: 0;
-  top: 0;
-  width: 100vw;
-}
-
-#ui-bar-menu {
-  width: 100%;
-  height: $bar-menu-height;
-  border-bottom: solid $bar-border-width $medium-purple;
-
-  display: flex;
-  li {
-    display: inline-block;
-    // vertical-align: middle;
-    line-height: $bar-menu-height;
-    padding: 0 calc((#{$bar-tool-width} - 20px) / 4);
-
-    &:hover {
-      background-color: $dark-purple;
+@mixin scrollbar-prefix-horizontal($need-ul) {
+  @if $need-ul == true {
+    ul {
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
     }
   }
 
-  #ui-button-home {
-    @include set-icon(
-      'after',
-      $bar-tool-width,
-      30px,
-      50%,
-      50%,
-      '#{$img-path}/home.png'
-    );
-
-    display: inline-block;
-    top: 50%;
-    transform: translateY(-50%);
-    // margin: 0 calc((#{$bar-tool-width} - 30px) / 2);
-    // border-right: solid 2px rgba(#ffffff, 0.1);
-
-    &:hover {
-      background-color: $dark-purple;
-      // border-right: solid 2px $dark-purple;
-    }
-  }
-}
-
-/*———————————————————————————————————————————————————————
-
-#canvas-eve-ui / #ui-bar-left
-
-Description:
-Left-bar UI
-
-—————————————————————————————————————————————————————————*/
-
-#ui-bar-left {
-  // @include drop-shadow;
-  @include bar-prefix($light-purple);
-  @include side-bar-prefix($bar-menu-height);
-
-  left: 0;
-}
-
-#ui-bar-tool {
-  overflow: auto; // Check the following for the reason: https://stackoverflow.com/questions/27829250/child-margin-doesnt-affect-parent-height
-  width: $bar-tool-width;
-  height: 100%;
-  border-right: solid $bar-border-width $medium-purple;
-  padding: 0 6px;
-
-  overflow-x: hidden;
+  overflow-y: hidden;
   &::-webkit-scrollbar {
-    width: 3px;
+    height: $scrollbar-minSize;
     background: transparent;
   }
   &:hover::-webkit-scrollbar {
-    width: 6px;
+    height: $scrollbar-maxSize;
     background: transparent;
   }
 
@@ -130,6 +54,138 @@ Left-bar UI
     background: $dark-purple;
     border-radius: 8px;
   }
+}
+
+@mixin scrollbar-prefix-vertical {
+  overflow-x: hidden;
+  &::-webkit-scrollbar {
+    width: $scrollbar-minSize;
+    background: transparent;
+  }
+  &:hover::-webkit-scrollbar {
+    width: $scrollbar-maxSize;
+    background: transparent;
+  }
+
+  // Scrollbar track
+  &::-webkit-scrollbar-track {
+    background: $canvas-color;
+    border: none;
+  }
+
+  // Scrollbar itself
+  &::-webkit-scrollbar-thumb {
+    background: $dark-purple;
+    border-radius: 8px;
+  }
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui
+
+Description:
+UI wrapper
+
+—————————————————————————————————————————————————————————*/
+
+#canvas-eve-ui {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-top
+
+Description:
+Top content wrapper
+
+—————————————————————————————————————————————————————————*/
+
+#ui-top {
+  width: 100%;
+}
+
+#ui-bar-menu {
+  @include bar-prefix($light-purple);
+  @include disable-selection;
+  @include scrollbar-prefix-horizontal(true);
+
+  width: 100%;
+  height: $bar-menu-height;
+  border-bottom: solid $bar-border-width $medium-purple;
+
+  display: flex;
+  li {
+    display: inline-block;
+    line-height: $bar-menu-height;
+    padding: 0 calc((#{$bar-tool-width} - 20px) / 4);
+
+    &:hover {
+      background-color: $medium-purple;
+    }
+  }
+
+  #ui-button-home {
+    @include set-icon(
+      'after',
+      $bar-tool-width,
+      30px,
+      $bar-tool-width / 2,
+      15px,
+      '#{$img-path}/home.png'
+    );
+
+    display: inline-block;
+
+    &:hover {
+      background-color: $medium-purple;
+      // border-right: solid 2px $dark-purple;
+    }
+  }
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-bottom
+
+Description:
+Bottom content wrapper
+
+—————————————————————————————————————————————————————————*/
+
+#ui-bottom {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: calc(100vh - #{$bar-menu-height});
+}
+
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-bottom / #ui-bar-left
+
+Description:
+Left-bar UI
+
+—————————————————————————————————————————————————————————*/
+
+#ui-bar-left {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+#ui-bar-tool {
+  @include bar-prefix($light-purple);
+  @include scrollbar-prefix-vertical;
+
+  overflow: auto; // Check the following for the reason: https://stackoverflow.com/questions/27829250/child-margin-doesnt-affect-parent-height
+  width: $bar-tool-width;
+  height: 100%;
+  border-right: solid $bar-border-width $medium-purple;
+  padding: 0 6px;
 
   hr {
     background-color: $grey;
@@ -150,7 +206,7 @@ Left-bar UI
     margin: 1px 0;
 
     &:hover {
-      background-color: $dark-purple;
+      background-color: $medium-purple;
       border-radius: $elem-radius;
     }
   }
@@ -197,7 +253,7 @@ Left-bar UI
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-bar-right
+#canvas-eve-ui / #ui-bottom / #ui-bar-right
 
 Description:
 Right-bar UI
@@ -205,14 +261,13 @@ Right-bar UI
 —————————————————————————————————————————————————————————*/
 
 #ui-bar-right {
-  // @include drop-shadow;
-  @include bar-prefix($light-purple);
-  @include side-bar-prefix($bar-menu-height);
-
-  right: 0;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .ui-bar-closed {
+  @include bar-prefix($light-purple);
+
   width: $bar-closed-width;
   height: 100%;
   border-left: solid $bar-border-width $medium-purple;
@@ -240,7 +295,7 @@ Right-bar UI
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-bar-middle
+#canvas-eve-ui / #ui-bottom / #ui-bar-middle
 
 Description:
 Middle-bar UI
@@ -248,24 +303,29 @@ Middle-bar UI
 —————————————————————————————————————————————————————————*/
 
 #ui-bar-middle {
-  @include bar-prefix($light-purple);
-  @include disable-selection;
-
-  left: $bar-tool-width;
-  top: $bar-menu-height;
-  width: calc(100vw - #{$bar-tool-width} - #{$bar-closed-width});
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
 }
 
+/*———————————————————————————————————————————————————————
+
+#canvas-eve-ui / #ui-bottom / #ui-bar-middle / #ui-bar-middle-top
+
+Description:
+Middle-top-bar UI
+
+—————————————————————————————————————————————————————————*/
+
 #ui-bar-tab {
-  width: 100%;
+  @include bar-prefix($light-purple);
+  @include disable-selection;
+  @include scrollbar-prefix-horizontal(true);
+
   height: $bar-tab-height;
   border-bottom: solid $bar-border-width $canvas-color;
-
-  ul {
-    display: inline-flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-  }
 
   .close-button {
     @include set-icon('after', 20px, 20px, 50%, 50%, '#{$img-path}/close.png');
@@ -274,28 +334,6 @@ Middle-bar UI
     &:hover {
       border-radius: 50%;
     }
-  }
-
-  overflow-y: hidden;
-  &::-webkit-scrollbar {
-    height: 3px;
-    background: transparent;
-  }
-  &:hover::-webkit-scrollbar {
-    height: 6px;
-    background: transparent;
-  }
-
-  // Scrollbar track
-  &::-webkit-scrollbar-track {
-    background: $canvas-color;
-    border: none;
-  }
-
-  // Scrollbar itself
-  &::-webkit-scrollbar-thumb {
-    background: $dark-purple;
-    border-radius: 8px;
   }
 
   .tab-prefix {
@@ -370,47 +408,48 @@ Middle-bar UI
 
 /*———————————————————————————————————————————————————————
 
-#canvas-eve-ui / #ui-bar-bottom
+#canvas-eve-ui / #ui-bottom / #ui-bar-middle / #ui-bar-middle-bottom
 
 Description:
-Bottom-bar UI
+Middle-bottom-bar UI
 
 —————————————————————————————————————————————————————————*/
 
-#ui-bar-bottom {
-  @include bar-prefix($light-purple);
+// #ui-bar-middle-bottom {}
 
-  left: $bar-tool-width;
-  bottom: 0;
-  width: calc(100vw - #{$bar-tool-width} - #{$bar-closed-width});
+#progress-bar {
+  position: absolute;
+  background-color: $shocking-pink;
+  top: -3px;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  opacity: 0;
+  transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
 
-  #progress-bar {
-    position: absolute;
-    background-color: $shocking-pink;
-    top: -3px;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    opacity: 0;
-    transition: width 0.3s ease-in-out, opacity 0.1s ease-out;
-
-    /* When starting loading a file */
-    &.loading {
-      opacity: 1;
-    }
+  /* When starting loading a file */
+  &.loading {
+    opacity: 1;
   }
 }
 
 #ui-bar-footer {
+  @include bar-prefix($light-purple);
+  @include disable-selection;
+  @include scrollbar-prefix-horizontal(false);
+
   width: 100%;
   height: $bar-footer-height;
   border-top: solid $bar-border-width $medium-purple;
 
   padding: 0 calc((#{$bar-tool-width} - 20px) / 4);
   font-size: 1rem;
-  display: flex;
+  display: inline-flex;
   justify-content: space-between;
-  div {
+  span {
+    // white-space: nowrap;
+    display: inline-block;
     line-height: $bar-footer-height;
+    vertical-align: middle;
   }
 }

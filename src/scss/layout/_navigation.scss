@@ -8,6 +8,7 @@ Common
 —————————————————————————————————————————————————————————*/
 
 .ctxmenu-template {
+  @include drop-shadow;
   @include disable-selection;
 
   cursor: context-menu;
@@ -59,7 +60,7 @@ Context-menu
 }
 
 #ctxmenu {
-  @include drop-shadow;
+  // @include drop-shadow;
 
   width: 100%;
   border-radius: $elem-radius;
@@ -80,7 +81,7 @@ Context-menu
 }
 
 #ctxmenu-sub {
-  @include drop-shadow;
+  // @include drop-shadow;
 
   position: absolute;
   left: 96%;

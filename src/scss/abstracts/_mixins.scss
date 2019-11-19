@@ -173,8 +173,8 @@ Used:
 @mixin _icon($iWidth, $iHeight, $src) {
   content: '';
   display: inline-block;
-  width: $iWidth;
-  height: $iHeight;
+  min-width: $iWidth;
+  min-height: $iHeight;
   background-image: url($src);
   background-size: contain;
   background-repeat: no-repeat;
@@ -187,8 +187,8 @@ Used:
 
 @mixin set-icon($where, $cWidth, $cHeight, $iWidth, $iHeight, $src) {
   position: relative;
-  width: $cWidth;
-  height: $cHeight;
+  min-width: $cWidth;
+  min-height: $cHeight;
 
   &::#{$where} {
     @include _icon($iWidth, $iHeight, $src);

@@ -29,6 +29,7 @@ import CanvasEve from './eve-modules/canvas-eve';
 import ToggleEve from './eve-modules/toggle-eve';
 import CtxmenuEve from './eve-modules/ctxmenu-eve';
 import MenuEve from './eve-modules/menu-eve';
+import SidebarEve from './eve-modules/sidebar-eve';
 import CommonEve from './common/common-eve';
 
 const EventEve = ((W, D) => {
@@ -46,6 +47,7 @@ const EventEve = ((W, D) => {
     this.Toggle = new ToggleEve();
     this.Ctxmenu = new CtxmenuEve();
     this.Menu = new MenuEve();
+    this.Sidebar = new SidebarEve();
     this.Common = new CommonEve();
   }
 
@@ -77,6 +79,7 @@ const EventEve = ((W, D) => {
 
     initEvent() {
       this.Common.load();
+      this.Sidebar.load();
       this.Menu.load();
       this.Ctxmenu.load();
       this.Plain.load();
