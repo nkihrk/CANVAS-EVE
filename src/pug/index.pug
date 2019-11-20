@@ -1,0 +1,16 @@
+extends layout
+block content
+  // Loading animation
+  include includes/loading.pug
+
+  div#canvas-eve-wrapper
+    // Context-menu
+    include includes/ctxmenu.pug
+    // UI
+    include includes/canvas-eve-ui.pug
+    // Canvas for Drawing
+    include includes/c-oekaki.pug
+    // Canvas for ThreeJS
+    include includes/c-three.pug
+    // 2D engine
+    include includes/canvas-eve.pug

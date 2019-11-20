@@ -8,5 +8,6 @@ module.exports = merge(config, {
     contentBase: './build',
     index: 'index.html',
     hot: true
-  }
+  },
+  plugins: [webpack.HotModuleReplacementPlugin()]
 });

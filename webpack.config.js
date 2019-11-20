@@ -24,6 +24,10 @@ module.exports = {
         use: ['html-loader']
       },
       {
+        test: /\.pug$/i,
+        use: ['html-loader?attrs=false', 'pug-html-loader?pretty&exports=false']
+      },
+      {
         test: /\.s[ac]ss$/i,
         use: [
           {
@@ -62,7 +66,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './assets/template.html',
+      // template: './assets/template.html',
+      template: './src/pug/index.pug',
       minify: {
         collapseWhitespace: true,
         removeComments: true,

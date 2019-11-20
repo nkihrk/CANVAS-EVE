@@ -172,6 +172,7 @@ Top content wrapper
   @include disable-selection;
   @include scrollbar-prefix-horizontal(true);
 
+  position: relative; // To ensure the appropriate positions of its submenu-lists
   width: 100%;
   height: $bar-menu-height;
   border-bottom: solid $bar-border-width $medium-purple;
@@ -410,6 +411,12 @@ Right-bar UI
       width: 100%;
       background-color: $canvas-color;
       border-radius: 0 $elem-radius $elem-radius $elem-radius;
+      overflow: hidden;
+
+      .ui-window-content-adjust {
+        width: 90%;
+        margin: 15px;
+      }
     }
   }
 }

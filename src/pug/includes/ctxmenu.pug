@@ -1,0 +1,59 @@
+div#ctxmenu-wrapper(style="z-index: 5;")
+  <!-- A Right-click context menu -->
+  div#ctxmenu(class="ctxmenu-template bold agency-fb")
+    ul
+      li#ctxmenu-help
+        div Help
+      li#ctxmenu-about
+        div About
+      li#ctxmenu-settings
+        div Settings
+      li#ctxmenu-new
+        div New
+        div &gt;
+      li#ctxmenu-undo
+        div Undo
+        div Ctrl + Z
+      li#ctxmenu-redo
+        div Redo
+        div Shift + Ctrl + Z
+      li#ctxmenu-cut
+        div Cut
+        div Ctrl + X
+
+      li#ctxmenu-copy
+        div Copy
+        div Ctrl + C
+
+      li#ctxmenu-paste
+        div Paste
+        div Ctrl + V
+
+      li#ctxmenu-save
+        div Save
+        div Ctrl + S
+
+      li#ctxmenu-close
+        div Close
+        div Ctrl + W
+
+  <!-- A Right-click context sub-menu -->
+  div#ctxmenu-sub(
+    class="ctxmenu-template bold agency-fb"
+    style="z-index: 1;")
+    ul
+      li#ctxmenu-sub-text
+        div Text
+        div +
+
+      li#ctxmenu-sub-color
+        div Color Picker
+        div +
+
+      li#ctxmenu-sub-youtube
+        div YouTube
+        div +
+
+      li#ctxmenu-sub-browser
+        div Browser
+        div +
