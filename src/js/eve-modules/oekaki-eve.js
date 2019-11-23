@@ -154,8 +154,7 @@ const OekakiEve = ((W, D, M) => {
       CANVAS_SIZE: 10000,
       CANVAS_RESOLUTION: 5000,
       CANVAS_RATIO: 2, // CANVAS_SIZE / CANVAS_RESOLUTION
-      CANVAS_COLOR: '#f0e0d6',
-      RESET_CANVAS_COLOR: '#32303f',
+      CANVAS_COLOR: '#32303f',
       CREATE_CANVAS_DELAY: 200, // Currently not in use
       BUTTON_FOR_LEFT: 1,
       BUTTON_FOR_MIDDLE: 4,
@@ -233,6 +232,7 @@ const OekakiEve = ((W, D, M) => {
       if (e.target.closest('#color-oekaki')) {
         const isWheelArea = this._isWheelArea(e);
         const isTriangleArea = this._isTriangleArea(e);
+
         if (isWheelArea) this.flgs.oekaki.move_wheelcircle_flg = true;
         if (isTriangleArea) this.flgs.oekaki.move_trianglecircle_flg = true;
       }
@@ -340,7 +340,7 @@ const OekakiEve = ((W, D, M) => {
       circle.setAttribute('cx', outerRadius);
       circle.setAttribute('cy', outerRadius);
       circle.setAttribute('r', innerRadius);
-      circle.setAttribute('fill', '#262533');
+      circle.setAttribute('fill', this.options.CANVAS_COLOR);
 
       target.appendChild(circle);
     },

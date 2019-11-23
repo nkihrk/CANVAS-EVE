@@ -9,26 +9,16 @@
 
 import $ from '../common/jquery-eve';
 
-const SidebarEve = (W => {
-  function Sidebar() {
-    this.$uiBarTop = $('#ui-bar-top');
-    this.$uiBarBottom = $('#ui-bar-bottom');
-    this.$uiBarMiddle = $('#ui-bar-middle');
-    this.$uiBarLeft = $('#ui-bar-left');
-    this.$uiBarRight = $('#ui-bar-right');
-  }
+const SidebarEve = (() => {
+  function Sidebar() {}
 
   const modules = {};
 
   Sidebar.prototype = Object.assign(modules, {
     constructor: Sidebar,
 
-    options: {},
-
-    //
-
-    load() {
-      this._checkResize();
+    options: {
+      BUTTON_FOR_LEFT: 0
     },
 
     //
@@ -37,58 +27,30 @@ const SidebarEve = (W => {
 
     //
 
-    mouseUpEvent() {},
+    mouseUpEvent(e) {
+      const { target } = e;
+      const $uiButtonState = $(target.closest('.ui-bar-toolset'));
+      const $uiButtonBarstate = $(target.closest('.ui-button-barstate'));
+      const isActive = $uiButtonState.hasClass('active');
 
-    //
-
-    mouseMoveEvent() {},
-
-    //
-
-    _checkResize() {
-      this._calcMiddleArea();
-      // requestAnimationFrame(this._checkResize());
-    },
-
-    //
-
-    _calcMiddleArea() {
-      const { $uiBarBottom } = this;
-      const { $uiBarMiddle } = this;
-      const { $uiBarLeft } = this;
-      const { $uiBarRight } = this;
-      const w = W.innerWidth - $uiBarLeft.width() - $uiBarRight.width();
-
-      if (this._checkWidthDiff !== undefined && this._checkWidthDiff !== w) {
-        $uiBarBottom.css('width', `${w}px`);
-        $uiBarMiddle.css('width', `${w}px`);
-
-        this._checkWidthDiff = w;
+      if (e.button === this.options.BUTTON_FOR_LEFT) {
+        if (isActive && $uiButtonBarstate.length === 1) {
+          this._toggleState($uiButtonState);
+        }
+        if (!isActive) {
+          this._toggleState($uiButtonState);
+        }
       }
     },
 
     //
 
-    _uiBarTop() {},
-
-    //
-
-    _uiBarBottom() {},
-
-    //
-
-    _uiBarMiddle() {},
-
-    //
-
-    _uiBarLeft() {},
-
-    //
-
-    _uiBarRight() {}
+    _toggleState($container) {
+      $container.toggleClass('active');
+    }
   });
 
   return Sidebar;
-})(window);
+})();
 
 export default SidebarEve;

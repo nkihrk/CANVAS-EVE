@@ -94,6 +94,8 @@ Local mixins
       flex-wrap: nowrap;
       justify-content: space-between;
       .tab-name {
+        @include ellipsis;
+
         line-height: $bar-tab-height;
       }
     }
@@ -332,93 +334,111 @@ Right-bar UI
   flex-wrap: nowrap;
 }
 
-.ui-bar-closed {
+.ui-bar-toolset {
   @include bar-prefix($light-purple);
 
-  width: $bar-closed-width + 4px;
+  box-sizing: content-box; // To exclude padding, which makes the width same as its width
+  position: relative;
+  width: 11px + 4px;
   height: 100%;
   border-left: solid $bar-border-width $medium-purple;
   padding: 4px;
+  // transition: width $transition;
 
-  .ui-button-closed {
+  // Bar-closed state
+
+  .ui-button-barstate {
+    @include disable-selection;
     @include set-icon(
       'after',
-      11.2px,
-      9.016px,
-      11.2px,
+      11px,
+      9px,
+      11px,
       // 70%
-        9.016px,
+        9px,
       // 56.35% = 70 * 0.805
         '#{$img-path}/closed.png'
     );
-
-    width: 11.2px;
-    height: 9.016px;
   }
+
+  .ui-window-wrapper {
+    display: none;
+  }
+
+  // Bar-opened state
 
   &:hover {
     background-color: $semi-light-purple;
 
-    .ui-button-closed {
+    .ui-button-barstate {
       filter: brightness(0.9);
     }
   }
-}
 
-.ui-bar-opened {
-  @include bar-prefix($light-purple);
-  @include tab-prefix(100px);
+  &.active {
+    @include tab-prefix(100px);
 
-  box-sizing: content-box; // To exclude padding, which makes the width same as its width
-  position: relative;
-  width: 300px;
-  height: 100%;
-  border-left: solid $bar-border-width $medium-purple;
-  padding: 4px;
+    min-width: 100px;
+    width: 300px;
 
-  .ui-button-opened {
-    @include set-icon(
-      'after',
-      11.2px + 8px,
-      9.016px,
-      11.2px,
-      9.016px,
-      '#{$img-path}/opened.png'
-    );
+    &:hover {
+      background-color: $light-purple;
 
-    position: absolute;
-    right: 0;
-    width: 11.2px + 8px;
-    height: 9.016px;
-  }
-
-  .ui-window-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-
-    .ui-window:not(:last-child) {
-      margin-bottom: 4px;
-    }
-
-    .ui-window-tab {
-      @include scrollbar-prefix-horizontal(true);
-
-      li {
-        border-radius: $elem-radius $elem-radius 0 0;
+      .ui-button-barstate {
+        filter: brightness(1);
       }
     }
 
-    .ui-window-content {
-      width: 100%;
-      background-color: $canvas-color;
-      border-radius: 0 $elem-radius $elem-radius $elem-radius;
-      overflow: hidden;
+    .ui-button-barstate:hover {
+      filter: brightness(0.9);
+    }
 
-      .ui-window-content-adjust {
-        width: 90%;
-        margin: 15px;
+    .ui-button-barstate {
+      @include set-icon(
+        'after',
+        11px,
+        9px,
+        11px,
+        // 70%
+          9px,
+        // 56.35% = 70 * 0.805
+          '#{$img-path}/opened.png'
+      );
+
+      position: absolute;
+      right: 0;
+      margin: 0 4px;
+    }
+
+    .ui-window-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+
+      .ui-window:not(:last-child) {
+        margin-bottom: 4px;
+      }
+
+      .ui-window-tab {
+        @include disable-selection;
+        @include scrollbar-prefix-horizontal(true);
+
+        li {
+          border-radius: $elem-radius $elem-radius 0 0;
+        }
+      }
+
+      .ui-window-content {
+        width: 100%;
+        background-color: $canvas-color;
+        border-radius: 0 $elem-radius $elem-radius $elem-radius;
+        overflow: hidden;
+
+        .ui-window-content-adjust {
+          width: 90%;
+          margin: 5%;
+        }
       }
     }
   }

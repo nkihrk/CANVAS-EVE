@@ -79,7 +79,6 @@ const EventEve = ((W, D) => {
 
     initEvent() {
       this.Common.load();
-      this.Sidebar.load();
       this.Menu.load();
       this.Ctxmenu.load();
       this.Plain.load();
@@ -121,6 +120,7 @@ const EventEve = ((W, D) => {
           this.Youtube.mouseUpEvent(e);
           this.Canvas.mouseUpEvent();
           this.Ctxmenu.mouseUpEvent(e);
+          this.Sidebar.mouseUpEvent(e);
         },
         false
       );

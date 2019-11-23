@@ -79,18 +79,17 @@ div#canvas-eve-ui(class="bold agency-fb" style="z-index: 3;")
 
 
     div#ui-bar-right
-      div.ui-bar-opened
-        div.ui-button-opened
+      div.ui-bar-toolset.active
+        div.ui-button-barstate
         div.ui-window-wrapper
 
 
           div#ui-window-colorpalette(class="ui-window")
             div.ui-window-tab
               ul
-                li(class="tab-prefix tab-current")
+                li(class="tab-prefix tab-current tab-curve single")
                   div.tab-info
                     div.tab-name Color Palette
-                    div.ui-window-icon
 
             div.ui-window-content
               div.ui-window-content-adjust
@@ -98,12 +97,40 @@ div#canvas-eve-ui(class="bold agency-fb" style="z-index: 3;")
                   svg#color-wheel(viewbox="0 0 200 200" version="1.1")
 
 
-      // Closed bar
-      div.ui-bar-closed
-        div.ui-button-closed
 
-      div.ui-bar-closed
-        div.ui-button-closed
+      div.ui-bar-toolset
+        div.ui-button-barstate
+        div.ui-window-wrapper
+
+
+          div#ui-window-colorpalette(class="ui-window")
+            div.ui-window-tab
+              ul
+                li(class="tab-prefix tab-current tab-curve single")
+                  div.tab-info
+                    div.tab-name
+
+            div.ui-window-content
+              div.ui-window-content-adjust
+                div(style="width: 100%; height: 150px")
+      
+      
+
+      div.ui-bar-toolset
+        div.ui-button-barstate
+        div.ui-window-wrapper
+
+
+          div#ui-window-colorpalette(class="ui-window")
+            div.ui-window-tab
+              ul
+                li(class="tab-prefix tab-current tab-curve single")
+                  div.tab-info
+                    div.tab-name
+
+            div.ui-window-content
+              div.ui-window-content-adjust
+                div(style="width: 100%; height: 150px")
 
 
 

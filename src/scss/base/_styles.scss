@@ -278,7 +278,7 @@ Use .ellipsis to show '...'
 
 —————————————————————————————————————————————————————————*/
 
-span.ellipsis {
+.ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -290,6 +290,6 @@ Prevent line breaks
 
 —————————————————————————————————————————————————————————*/
 
-span.nobreak {
+.nobreak {
   white-space: nowrap;
 }
