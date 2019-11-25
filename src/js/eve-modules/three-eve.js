@@ -187,7 +187,9 @@ const ThreeEve = ((W, D, M) => {
   Reader.prototype = {
     constructor: Reader,
 
-    options: {},
+    options: {
+      DEFAULT_FILE_WIDTH: 300
+    },
 
     dragOverEvent(e) {
       this._handleDragEvent(e);
@@ -419,16 +421,20 @@ const ThreeEve = ((W, D, M) => {
       $('#add-files').append(hideScissor);
       hideScissor.classList.add('hide-scissor');
       $(hideScissor).css({
-        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
-        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`
+        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL -
+          this.options.DEFAULT_FILE_WIDTH / 2}px`,
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL -
+          this.options.DEFAULT_FILE_WIDTH / 2}px`
       });
 
       const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);
 
       $fileId.css({
-        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
-        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
+        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL -
+          this.options.DEFAULT_FILE_WIDTH / 2}px`,
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL -
+          this.options.DEFAULT_FILE_WIDTH / 2}px`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 

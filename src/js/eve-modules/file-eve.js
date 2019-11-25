@@ -29,7 +29,8 @@ const FileEve = ((W, D, M) => {
     constructor: File,
 
     options: {
-      SHOW_FILE_DELAY: 0
+      SHOW_FILE_DELAY: 0,
+      DEFAULT_FILE_WIDTH: 300
     },
 
     //
@@ -104,6 +105,8 @@ const FileEve = ((W, D, M) => {
         left: x - $('#zoom').offset().left,
         top: y - $('#zoom').offset().top
       };
+
+      console.log(mousePos, x, y);
 
       const { files } = e.dataTransfer;
       // console.log('files', files);
@@ -321,9 +324,10 @@ const FileEve = ((W, D, M) => {
         .drawImage(img, 0, 0, 598, 598 * imgRatio);
 
       $fileId.css({
-        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL - 600 / 2}px`,
+        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL -
+          this.options.DEFAULT_FILE_WIDTH / 2}px`,
         top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL -
-          (600 * imgRatio) / 2}px`,
+          (this.options.DEFAULT_FILE_WIDTH * imgRatio) / 2}px`,
         'z-index': GlbEve.HIGHEST_Z_INDEX
       });
 

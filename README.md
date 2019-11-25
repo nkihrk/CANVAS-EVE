@@ -1,5 +1,3 @@
-<br>
-
 # <p align="middle"><font color="#c1125b">C</font>ANVAS EVE</p>
 
 <p align="middle">CANVAS EVE is a daily-use canvas which will be helpful in various ways :
