@@ -85,13 +85,12 @@ div#ui-bottom
 
               li(class="tab-prefix tab-rest")
                 div.tab-info
-                  div.tab-name Color Picker
+                  div.tab-name hogehogehoge
                   div.close-button
 
           div.ui-window-content
             div.ui-window-content-adjust
-              div#color-oekaki
-                svg#color-wheel(viewbox="0 0 200 200" version="1.1")
+              include ./oekaki.ui.pug
 
 
         div#ui-window-colorpalette2(class="ui-window")
@@ -100,7 +99,7 @@ div#ui-bottom
 
               li(class="tab-prefix tab-current tab-curve double")
                 div.tab-info
-                  div.tab-name hoge
+                  div.tab-name Color Picker
                   div.close-button
 
               li(class="tab-prefix tab-rest")
@@ -115,7 +114,7 @@ div#ui-bottom
 
           div.ui-window-content
             div.ui-window-content-adjust
-              div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+              include ./colpick.ui.pug
 
 
 
@@ -195,3 +194,5 @@ div#ui-bottom
 
 
 
+// Context-menu
+include ./ctxmenu.ui.pug

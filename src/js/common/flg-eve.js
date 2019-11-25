@@ -55,6 +55,11 @@ const FlgEve = (() => {
         eraser_flg: false
       }
     };
+    this.ui = {
+      toolbar: {
+        is_active_flg: false
+      }
+    };
   }
 
   Flg.prototype = {

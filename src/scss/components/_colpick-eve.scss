@@ -26,7 +26,7 @@ Common
 /* Prefix for input */
 .input-prefix {
   display: block;
-  line-height: 34px;
+  line-height: 35px;
   border: none;
   color: rgba(255, 255, 255, 0.5);
 
@@ -52,84 +52,7 @@ Common
 
 #colpick {
   position: relative;
-}
-
-/*———————————————————————————————————————————————————————
-
-#board-colpick
-
-—————————————————————————————————————————————————————————*/
-
-/* Color board */
-#board-colpick {
-  position: absolute;
-  /* Overwrite the HIGHEST_Z_INDEX */
-  z-index: 0 !important;
-  width: 330px;
-  top: 130px;
-  left: 90px;
-  border-radius: 6px;
-  padding-top: 15px;
-  /* background-color: #2f2d3b; */
-  background-color: rgba(38, 37, 51, 0.5);
-}
-
-/*———————————————————————————————————————————————————————
-
-#toggle-colpick
-
-—————————————————————————————————————————————————————————*/
-
-/* Wrapper for a toggling button of colpick */
-#toggle-colpick {
-  position: relative;
-  float: left;
-  width: 60px;
-  height: 30px;
-  margin: 0 15px;
-  border-radius: 6px;
-  border: solid 1px $shocking-pink;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background-image: url('#{$img-path}/red_spuit.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    transition: all 0.3s ease-in-out;
-  }
-
-  &.active {
-    background-color: $shocking-pink;
-    opacity: 1;
-
-    &::before {
-      background-image: url('#{$img-path}/dark_spuit.png');
-    }
-  }
-}
-
-/*———————————————————————————————————————————————————————
-
-#code-colpick / Parent of #input-colpick and #copy-colpick
-
-—————————————————————————————————————————————————————————*/
-
-/* Wrapper for color code */
-#code-colpick {
-  float: right;
-  display: flex;
-  width: 150px;
-  margin: 0 15px;
+  width: 100%;
 }
 
 /*———————————————————————————————————————————————————————
@@ -139,50 +62,12 @@ Common
 —————————————————————————————————————————————————————————*/
 
 #input-colpick {
-  width: 65%;
+  float: right;
   font-size: 1.2rem;
-  padding-left: 10px;
-  border-radius: 6px 0 0 6px;
+  width: 90px;
+  padding: 0 10px;
+  border-radius: 0 $elem-radius 0 $elem-radius;
   background-color: rgba(38, 37, 51, 0.5);
-}
-
-/*———————————————————————————————————————————————————————
-
-#copy-colpick < #code-colpick
-
-—————————————————————————————————————————————————————————*/
-
-/* Copy button */
-#copy-colpick {
-  position: relative;
-  width: 35%;
-  height: 34px;
-  /* background-color: $shocking-pink; */
-  background-color: rgba(193, 18, 91, 0.9);
-  /* background-color: rgba(178, 31, 36, 1); */
-  border-radius: 0 6px 6px 0;
-  cursor: pointer;
-  transition: all 0.1s ease-in-out;
-
-  &:active {
-    background-color: rgba(160, 20, 75, 0.9);
-  }
-
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    background-image: url('#{$img-path}/copy.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    opacity: 0.8;
-  }
 }
 
 /*———————————————————————————————————————————————————————
@@ -193,12 +78,10 @@ Common
 
 /* Show color */
 #color-colpick {
-  width: 300px;
-  height: 300px;
-  margin: 15px;
-  border-radius: 6px;
-  /* background-color: #b21f24; */
-  background-color: rgba(50, 48, 63, 1);
+  width: 100%;
+  height: 0;
+  padding-top: 100%;
+  border-radius: $elem-radius;
 }
 
 /*———————————————————————————————————————————————————————
@@ -209,15 +92,10 @@ Common
 
 /* Set RGB */
 #rgb-colpick {
-  border-radius: 0 0 6px 6px;
-  /* background-color: #2e2d3b; */
-  /* background-color: #262533; */
-  background-color: rgba(38, 37, 51, 0.8);
-  padding: 20px 0;
+  margin-top: 10px;
 
-  /* Prefix for space of each child-element in the #rgb-colpick */
-  & > div:not(:last-of-type) {
-    margin-bottom: 10px;
+  & > div {
+    margin-top: 10px;
   }
 }
 
@@ -227,7 +105,6 @@ Common
   display: flex;
   justify-content: space-between;
   font-size: 1.5rem;
-  margin: 0 20px;
 }
 
 #r-colpick,

@@ -54,11 +54,7 @@ const CanvasEve = ((W, D, M) => {
       if (e.button === this.options.BUTTON_FOR_LEFT) {
         this._handleMultiMode(e);
 
-        if (
-          FlgEve.colpick.tools.is_active_flg === false &&
-          FlgEve.oekaki.tools.is_active_flg === false &&
-          e.target.closest('#reset-res')
-        ) {
+        if (e.target.closest('#reset-res')) {
           this._setFlgs();
           this._createSelectedArea(e);
         }
@@ -86,7 +82,11 @@ const CanvasEve = ((W, D, M) => {
       if ($fileWrap.length === 0) {
         $fileWrap = $(e.target);
       }
-      if ($fileWrap.find('.multi').length !== 1)
+
+      if (
+        $fileWrap.find('.multi').length !== 1 &&
+        $fileWrap.parents('#canvas-eve-ui').length !== 1
+      )
         FlgEve.canvas.select.is_multi_flg = false;
     },
 
@@ -723,10 +723,16 @@ const CanvasEve = ((W, D, M) => {
     //
 
     mouseDownEvent(e) {
-      if (e.button === this.options.BUTTON_FOR_LEFT) {
+      if (
+        e.button === this.options.BUTTON_FOR_LEFT &&
+        FlgEve.ui.toolbar.is_active_flg === false
+      ) {
         FlgEve.setFlgs(e);
         this.MultiSelect.mouseDownEvent(e);
-        if (FlgEve.canvas.select.is_multi_flg === true) {
+        if (
+          FlgEve.canvas.select.is_multi_flg === true &&
+          !e.target.closest('#canvas-eve-ui')
+        ) {
           this._initMulti(e);
         } else {
           this._initSingle(e);
@@ -742,9 +748,11 @@ const CanvasEve = ((W, D, M) => {
     //
 
     mouseUpEvent() {
-      FlgEve.resetFlgs();
-      this.MultiSelect.mouseUpEvent();
-      this._update();
+      if (FlgEve.ui.toolbar.is_active_flg === false) {
+        this._update(); // Execute it before resetting all flgs
+        this.MultiSelect.mouseUpEvent();
+        FlgEve.resetFlgs();
+      }
     },
 
     //
@@ -982,6 +990,7 @@ const CanvasEve = ((W, D, M) => {
 
     _update() {
       const f = this.file;
+
       // Refrash the rendering result of each canvas when changing its size.
       // This canvas is for color picking.colpick-eve.js
       if (f.$fileId !== null && f.$fileId.find('.canvas-colpick').length > 0) {
@@ -1124,7 +1133,10 @@ const CanvasEve = ((W, D, M) => {
         mouseWheelAvailFlg = true;
       }
 
-      if (FlgEve.canvas.select.is_multi_flg === true) {
+      if (
+        FlgEve.canvas.select.is_multi_flg === true &&
+        !e.target.closest('#canvas-eve-ui')
+      ) {
         this._draggedMulti(e, pClientX, pClientY, mouseWheelAvailFlg);
       } else {
         this._draggedSingle(e, pClientX, pClientY, mouseWheelAvailFlg);

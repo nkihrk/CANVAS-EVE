@@ -70,6 +70,8 @@ const ToggleEve = (() => {
 
       this._colpick($container);
       this._oekaki($container);
+
+      FlgEve.ui.toolbar.is_active_flg = !!$('#ui-bar-tool li.active').length; // To know whether tools in the toolbar are active or not
     },
 
     //
@@ -78,12 +80,12 @@ const ToggleEve = (() => {
       const btnName = $container.attr('id');
 
       switch (btnName) {
-        case 'toggle-colpick':
+        case 'ui-button-spuit':
           FlgEve.colpick.tools.is_active_flg = false;
           break;
 
-        case 'brush-oekaki':
-        case 'eraser-oekaki':
+        case 'ui-button-pen':
+        case 'ui-button-eraser':
           FlgEve.oekaki.tools.is_active_flg = false;
           break;
 

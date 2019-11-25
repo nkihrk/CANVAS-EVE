@@ -23,6 +23,12 @@ const SidebarEve = (() => {
 
     //
 
+    load() {
+      // this._initToolSets();
+    },
+
+    //
+
     mouseDownEvent() {},
 
     //
@@ -41,6 +47,12 @@ const SidebarEve = (() => {
           this._toggleState($uiButtonState);
         }
       }
+    },
+
+    //
+
+    _initToolSets() {
+      $('.ui-bar-toolset').removeClass('active');
     },
 
     //

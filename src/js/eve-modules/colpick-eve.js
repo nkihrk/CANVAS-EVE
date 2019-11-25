@@ -6,12 +6,14 @@
  * - jquery-eve
  * - glb-eve
  * - lib-eve
+ * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
 import LibEve from '../common/lib-eve';
+import FlgEve from '../common/flg-eve';
 
 const ColpickEve = (() => {
   function Colpick() {
@@ -29,7 +31,7 @@ const ColpickEve = (() => {
 
     options: {
       BUTTON_FOR_LEFT: 0,
-      HEX: '#32303f'
+      HEX: '#000000'
     },
 
     load() {
@@ -98,9 +100,9 @@ const ColpickEve = (() => {
     //
 
     _handleEventMouseDown(e) {
-      if (e.target.closest('#copy-colpick')) this._copyHex();
+      // if (e.target.closest('#copy-colpick')) this._copyHex();
       if (
-        $('#toggle-colpick').hasClass('active') &&
+        FlgEve.colpick.tools.is_active_flg &&
         $(e.target)
           .parents('.file-wrap')
           .find('canvas').length > 0 &&
@@ -119,7 +121,7 @@ const ColpickEve = (() => {
       }
 
       if (e.target.closest('#reset-res')) {
-        if ($('#toggle-colpick').hasClass('active') && e.button !== 1)
+        if (FlgEve.colpick.tools.is_active_flg && e.button !== 1)
           this._initColpick();
       }
     },
@@ -163,7 +165,7 @@ const ColpickEve = (() => {
     _toggleColpick() {
       $('#toggle-colpick').toggleClass('active');
 
-      if ($('#toggle-colpick').hasClass('active')) {
+      if (FlgEve.colpick.tools.is_active_flg) {
         $('#canvas-eve .file-wrap').removeClass('grab-pointer');
         $('#canvas-eve').addClass('spuit-pointer');
       } else {

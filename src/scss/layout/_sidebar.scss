@@ -460,7 +460,7 @@ Right-bar UI
 
       .ui-window {
         min-height: $bar-tab-height + $scrollbar-maxSize;
-        border-radius: 0 0 $elem-radius;
+        border-radius: 0 0 $elem-radius $elem-radius;
         overflow: hidden;
         margin-bottom: 4px;
 
@@ -486,11 +486,11 @@ Right-bar UI
         width: 100%;
         height: calc(100% - #{$bar-tab-height});
         background-color: $canvas-color;
-        border-radius: 0 0 $tab-radius $tab-radius;
 
         .ui-window-content-adjust {
           @include scrollbar-prefix-vertical;
 
+          pointer-events: auto;
           width: 100%;
           height: 100%;
           padding: 5%;

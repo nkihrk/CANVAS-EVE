@@ -106,7 +106,7 @@ const FileEve = ((W, D, M) => {
         top: y - $('#zoom').offset().top
       };
 
-      console.log(mousePos, x, y);
+      // console.log(mousePos, x, y);
 
       const { files } = e.dataTransfer;
       // console.log('files', files);
@@ -316,12 +316,15 @@ const FileEve = ((W, D, M) => {
       const fileId = `#${GlbEve.NEWFILE_ID}`;
       const $fileId = $(fileId);
 
-      $fileId.find('.canvas-colpick').attr('width', 598);
-      $fileId.find('.canvas-colpick').attr('height', 598 * imgRatio);
+      const canvasDefaultSize = this.options.DEFAULT_FILE_WIDTH - 2;
+      $fileId.find('.canvas-colpick').attr('width', canvasDefaultSize);
+      $fileId
+        .find('.canvas-colpick')
+        .attr('height', canvasDefaultSize * imgRatio);
       $fileId
         .find('.canvas-colpick')[0]
         .getContext('2d')
-        .drawImage(img, 0, 0, 598, 598 * imgRatio);
+        .drawImage(img, 0, 0, canvasDefaultSize, canvasDefaultSize * imgRatio);
 
       $fileId.css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL -

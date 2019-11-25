@@ -84,6 +84,7 @@ const EventEve = ((W, D) => {
       this.Plain.load();
       this.Zoom.load();
       this.Oekaki.load();
+      this.Sidebar.load();
       this.Three.load();
       this.Colpick.load();
     },

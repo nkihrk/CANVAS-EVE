@@ -152,6 +152,7 @@ The entire tool box for CANVAS EVE
 
 /* A wrapper for a pasted image */
 .file-wrap {
+  @include disable-selection;
   @include drop-shadow;
 
   pointer-events: auto;
@@ -174,7 +175,7 @@ The entire tool box for CANVAS EVE
     top: 0;
     left: 0;
     /* left: 700px; */
-    display: none;
+    // display: none;
   }
 }
 
