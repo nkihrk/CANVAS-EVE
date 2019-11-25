@@ -1,198 +1,197 @@
-div#canvas-eve-ui(class="bold agency-fb" style="z-index: 3;")
-  div#ui-top
-    include ./menu.pug
+div#ui-top
+  include ./menu.pug
 
-    div#ui-bar-menu
-      div#ui-button-home
+  div#ui-bar-menu
+    div#ui-button-home
+    ul
+      li#menu-file File(F)
+      li#menu-edit Edit(E)
+      li#menu-window Window(W)
+
+
+
+div#ui-bottom
+  div#ui-bar-left
+    div#ui-bar-tool
+      hr
       ul
-        li#menu-file File(F)
-        li#menu-edit Edit(E)
-        li#menu-window Window(W)
+        li#ui-button-pen
+        li#ui-button-eraser
+        li#ui-button-crop
+        li#ui-button-spuit
+        li#ui-button-thumbtack
+        li#ui-button-resize
+        li#ui-button-rotate
+        li#ui-button-flip
 
 
 
-  div#ui-bottom
-    div#ui-bar-left
-      div#ui-bar-tool
-        hr
+  div#ui-bar-middle
+    div#ui-bar-middle-top
+      div#ui-bar-tab
         ul
-          li#ui-button-pen
-          li#ui-button-eraser
-          li#ui-button-crop
-          li#ui-button-spuit
-          li#ui-button-thumbtack
-          li#ui-button-resize
-          li#ui-button-rotate
-          li#ui-button-flip
+
+          li#new-canvas(class="tab-prefix tab-current tab-curve double")
+            div.tab-info
+              div.tab-name new_canvas*
+              div.close-button
+
+          li#new-canvas-2(class="tab-prefix tab-rest")
+            div.tab-info
+              div.tab-name new_canvas_2*
+              div.close-button
+
+          li#new-canvas-3(class="tab-prefix tab-rest")
+            div.tab-info
+              div.tab-name new_canvas_3*
+              div.close-button
+
+          li#new-canvas-4(class="tab-prefix tab-rest")
+            div.tab-info
+              div.tab-name new_canvas_4*
+              div.close-button
+
+          li#new-canvas-5(class="tab-prefix tab-rest")
+            div.tab-info
+              div.tab-name new_canvas_5*
+              div.close-button
 
 
 
-    div#ui-bar-middle
-      div#ui-bar-middle-top
-        div#ui-bar-tab
-          ul
-
-            li#new-canvas(class="tab-prefix tab-current tab-curve double")
-              div.tab-info
-                div.tab-name new_canvas*
-                div.close-button
-
-            li#new-canvas-2(class="tab-prefix tab-rest")
-              div.tab-info
-                div.tab-name new_canvas_2*
-                div.close-button
-
-            li#new-canvas-3(class="tab-prefix tab-rest")
-              div.tab-info
-                div.tab-name new_canvas_3*
-                div.close-button
-
-            li#new-canvas-4(class="tab-prefix tab-rest")
-              div.tab-info
-                div.tab-name new_canvas_4*
-                div.close-button
-
-            li#new-canvas-5(class="tab-prefix tab-rest")
-              div.tab-info
-                div.tab-name new_canvas_5*
-                div.close-button
-
-
-
-      div#ui-bar-middle-bottom
-        // Progress bar
-        div#progress-bar
-        div#ui-bar-footer 
-          span.ellipsis ZOOM: 100%
-          span.ellipsis 2019 © NkiHrk
+    div#ui-bar-middle-bottom
+      // Progress bar
+      div#progress-bar
+      div#ui-bar-footer 
+        span.ellipsis ZOOM: 100%
+        span.ellipsis 2019 © NkiHrk
 
 
 
 
-    div#ui-bar-right
-      div.ui-bar-toolset.active
-        div.ui-button-barstate
-        div.ui-window-wrapper
+  div#ui-bar-right
+    div.ui-bar-toolset.active
+      div.ui-button-barstate
+      div.ui-window-wrapper
 
 
-          div#ui-window-colorpalette(class="ui-window")
-            div.ui-window-tab
-              ul
+        div#ui-window-colorpalette(class="ui-window")
+          div.ui-window-tab
+            ul
 
-                li(class="tab-prefix tab-current tab-curve double")
-                  div.tab-info
-                    div.tab-name Color Palette
-                    div.close-button
+              li(class="tab-prefix tab-current tab-curve double")
+                div.tab-info
+                  div.tab-name Color Palette
+                  div.close-button
 
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name Color Picker
-                    div.close-button
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name Color Picker
+                  div.close-button
 
-            div.ui-window-content
-              div.ui-window-content-adjust
-                div#color-oekaki
-                  svg#color-wheel(viewbox="0 0 200 200" version="1.1")
-
-
-          div#ui-window-colorpalette2(class="ui-window")
-            div.ui-window-tab
-              ul
-
-                li(class="tab-prefix tab-current tab-curve double")
-                  div.tab-info
-                    div.tab-name hoge
-                    div.close-button
-
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name hogehoge
-                    div.close-button
-
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name hoge
-                    div.close-button
-
-            div.ui-window-content
-              div.ui-window-content-adjust
-                div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          div.ui-window-content
+            div.ui-window-content-adjust
+              div#color-oekaki
+                svg#color-wheel(viewbox="0 0 200 200" version="1.1")
 
 
+        div#ui-window-colorpalette2(class="ui-window")
+          div.ui-window-tab
+            ul
 
-      div.ui-bar-toolset
-        div.ui-button-barstate
-        div.ui-window-wrapper
+              li(class="tab-prefix tab-current tab-curve double")
+                div.tab-info
+                  div.tab-name hoge
+                  div.close-button
 
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name hogehoge
+                  div.close-button
 
-          div#ui-window-colorpalette(class="ui-window")
-            div.ui-window-tab
-              ul
-                li(class="tab-prefix tab-current tab-curve double")
-                  div.tab-info
-                    div.tab-name hogehogehoge
-                    div.close-button
-            div.ui-window-content
-              div.ui-window-content-adjust
-                div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name hoge
+                  div.close-button
 
-
-          div#ui-window-colorpalette(class="ui-window")
-            div.ui-window-tab
-              ul
-                li(class="tab-prefix tab-current tab-curve double")
-                  div.tab-info
-                    div.tab-name hogehoge
-                    div.close-button
-            div.ui-window-content
-              div.ui-window-content-adjust
-                div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-
-          div#ui-window-colorpalette(class="ui-window")
-            div.ui-window-tab
-              ul
-                li(class="tab-prefix tab-current tab-curve double")
-                  div.tab-info
-                    div.tab-name hoge
-                    div.close-button
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name hogehoge
-                    div.close-button
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name hogehoge
-                    div.close-button
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name hogehoge
-                    div.close-button
-                li(class="tab-prefix tab-rest")
-                  div.tab-info
-                    div.tab-name hogehoge
-                    div.close-button
-            div.ui-window-content
-              div.ui-window-content-adjust
-                  div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          div.ui-window-content
+            div.ui-window-content-adjust
+              div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 
 
-      div.ui-bar-toolset
-        div.ui-button-barstate
-        div.ui-window-wrapper
+    div.ui-bar-toolset
+      div.ui-button-barstate
+      div.ui-window-wrapper
 
 
-          div#ui-window-colorpalette(class="ui-window")
-            div.ui-window-tab
-              ul
-                li(class="tab-prefix tab-current tab-curve double")
-                  div.tab-info
-                    div.tab-name hogehogehogehoge
-                    div.close-button
-            div.ui-window-content
-              div.ui-window-content-adjust
-                div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        div#ui-window-colorpalette(class="ui-window")
+          div.ui-window-tab
+            ul
+              li(class="tab-prefix tab-current tab-curve double")
+                div.tab-info
+                  div.tab-name hogehogehoge
+                  div.close-button
+          div.ui-window-content
+            div.ui-window-content-adjust
+              div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+        div#ui-window-colorpalette(class="ui-window")
+          div.ui-window-tab
+            ul
+              li(class="tab-prefix tab-current tab-curve double")
+                div.tab-info
+                  div.tab-name hogehoge
+                  div.close-button
+          div.ui-window-content
+            div.ui-window-content-adjust
+              div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+        div#ui-window-colorpalette(class="ui-window")
+          div.ui-window-tab
+            ul
+              li(class="tab-prefix tab-current tab-curve double")
+                div.tab-info
+                  div.tab-name hoge
+                  div.close-button
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name hogehoge
+                  div.close-button
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name hogehoge
+                  div.close-button
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name hogehoge
+                  div.close-button
+              li(class="tab-prefix tab-rest")
+                div.tab-info
+                  div.tab-name hogehoge
+                  div.close-button
+          div.ui-window-content
+            div.ui-window-content-adjust
+              div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+
+    div.ui-bar-toolset
+      div.ui-button-barstate
+      div.ui-window-wrapper
+
+
+        div#ui-window-colorpalette(class="ui-window")
+          div.ui-window-tab
+            ul
+              li(class="tab-prefix tab-current tab-curve double")
+                div.tab-info
+                  div.tab-name hogehogehogehoge
+                  div.close-button
+          div.ui-window-content
+            div.ui-window-content-adjust
+              div(style="word-wrap:break-word;") aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
 
 

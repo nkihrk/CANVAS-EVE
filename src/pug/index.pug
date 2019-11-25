@@ -1,16 +1,26 @@
 extends layout
 block content
-  // Loading animation
-  include includes/loading.pug
-
-  div#canvas-eve-wrapper
-    // Context-menu
-    include includes/ctxmenu.pug
-    // UI
-    include includes/canvas-eve-ui.pug
+  div#canvas-eve-wrapper(style="z-index: 0;")
     // Canvas for Drawing
-    include includes/c-oekaki.pug
+    div#c-oekaki-wrapper(style="z-index: -2;")
+      include includes/c-oekaki.pug
+    
     // Canvas for ThreeJS
-    include includes/c-three.pug
+    canvas#c-three(style="z-index: -1;")
+    
     // 2D engine
-    include includes/canvas-eve.pug
+    div#canvas-eve(style="z-index: 0;")
+      include includes/canvas-eve.pug
+
+    // UI
+    div#canvas-eve-ui(class="bold agency-fb" style="z-index: 3;")
+      include includes/canvas-eve-ui.pug
+    
+    // Context-menu
+    div#ctxmenu-wrapper(style="z-index: 5;")
+      include includes/ctxmenu.pug
+  
+
+  // Loading animation
+  #loader-bg(style="z-index: 1;")
+    include includes/loading.pug
