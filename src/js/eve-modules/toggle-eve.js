@@ -105,6 +105,12 @@ const ToggleEve = (() => {
     _plain($container) {
       const btnName = $container.attr('id');
 
+      if ($container.hasClass('active') && btnName === 'ui-button-hand') {
+        $('#canvas-eve').addClass('active-grab-mousewheel');
+      } else {
+        $('#canvas-eve').removeClass('active-grab-mousewheel');
+      }
+
       switch (btnName) {
         case 'ui-button-hand':
           if ($container.hasClass('active')) {

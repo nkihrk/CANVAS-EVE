@@ -85,9 +85,10 @@ const CanvasEve = ((W, D, M) => {
 
       if (
         $fileWrap.find('.multi').length !== 1 &&
-        $fileWrap.parents('#canvas-eve-ui').length !== 1
-      )
+        FlgEve.ui.is_ui_flg === false
+      ) {
         FlgEve.canvas.select.is_multi_flg = false;
+      }
     },
 
     //

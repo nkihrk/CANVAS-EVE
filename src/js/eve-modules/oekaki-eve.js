@@ -195,7 +195,7 @@ const OekakiEve = ((W, D, M) => {
 
     mouseWheelEvent(e) {
       this.Zoom.mouseWheelEvent(e);
-      if (!LibEve.isFirefox()) {
+      if (!LibEve.isFirefox() && FlgEve.ui.is_ui_flg === false) {
         this._magicFix(e); // This is totally a magic function. I have no idea for the issue. This function somehow fixes it miraculously.
       }
     },

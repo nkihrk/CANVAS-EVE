@@ -5,11 +5,13 @@
  * Dependencies
  * - jquery-eve
  * - glb-eve
+ * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
+import FlgEve from '../common/flg-eve';
 
 const ZoomEve = (W => {
   function Zoom(element) {
@@ -42,7 +44,9 @@ const ZoomEve = (W => {
     //
 
     mouseWheelEvent(e) {
-      this._setZoom(e);
+      if (FlgEve.ui.is_ui_flg === false) {
+        this._setZoom(e);
+      }
     },
 
     //

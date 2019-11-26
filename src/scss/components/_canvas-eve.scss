@@ -114,7 +114,12 @@ The entire tool box for CANVAS EVE
 }
 
 /* Change a mouse pointer to a grabbing */
-#canvas-eve.active-mousewheel:active {
+#canvas-eve.active-grab-mousewheel {
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+#canvas-eve.active-grabbing-mousewheel:active {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
   cursor: grabbing;

@@ -62,6 +62,7 @@ const FlgEve = (() => {
       }
     };
     this.ui = {
+      is_ui_flg: false,
       toolbar: {
         is_active_flg: false
       }

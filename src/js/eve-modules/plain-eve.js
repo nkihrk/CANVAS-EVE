@@ -75,12 +75,16 @@ const PlainEve = (() => {
 
     _setFlgs(e) {
       const { $plain } = this;
+      const isToolActive =
+        e.button === this.options.BUTTON_FOR_LEFT &&
+        FlgEve.plain.tools.is_active_flg === true;
+
       this.param.relPos.left = e.clientX - $plain.offset().left;
       this.param.relPos.top = e.clientY - $plain.offset().top;
+
       if (
-        (FlgEve.plain.tools.is_active_flg === true &&
-          e.button === this.options.BUTTON_FOR_LEFT) ||
-        e.button === this.options.BUTTON_FOR_MIDDLE
+        FlgEve.ui.is_ui_flg === false &&
+        (isToolActive || e.button === this.options.BUTTON_FOR_MIDDLE)
       ) {
         FlgEve.plain.active_mousewheel_flg = true;
       }
@@ -92,7 +96,7 @@ const PlainEve = (() => {
       if (FlgEve.plain.active_mousewheel_flg === true) {
         LibEve.iframePointerReset();
         FlgEve.plain.active_mousewheel_flg = false;
-        $('#canvas-eve').removeClass('active-mousewheel');
+        $('#canvas-eve').removeClass('active-grabbing-mousewheel');
       }
     },
 
@@ -108,7 +112,7 @@ const PlainEve = (() => {
           left: `${e.clientX - this.param.relPos.left}px`,
           top: `${e.clientY - this.param.relPos.top}px`
         });
-        $canvasEve.addClass('active-mousewheel');
+        $canvasEve.addClass('active-grabbing-mousewheel');
       }
     }
   });

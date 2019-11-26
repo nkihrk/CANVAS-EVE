@@ -4,12 +4,14 @@
  *
  * Dependencies
  * - jquery-eve
+ * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
+import FlgEve from '../common/flg-eve';
 
-const SidebarEve = (() => {
+const SidebarEve = (D => {
   function Sidebar() {}
 
   const modules = {};
@@ -24,7 +26,8 @@ const SidebarEve = (() => {
     //
 
     load() {
-      // this._initToolSets();
+      this.mouseEnterEvent();
+      this.mouseLeaveEvent();
     },
 
     //
@@ -51,6 +54,26 @@ const SidebarEve = (() => {
 
     //
 
+    mouseEnterEvent() {
+      const canvasEveUi = D.getElementById('canvas-eve-ui');
+
+      canvasEveUi.onmouseenter = () => {
+        FlgEve.ui.is_ui_flg = true;
+      };
+    },
+
+    //
+
+    mouseLeaveEvent() {
+      const canvasEveUi = D.getElementById('canvas-eve-ui');
+
+      canvasEveUi.onmouseleave = () => {
+        FlgEve.ui.is_ui_flg = false;
+      };
+    },
+
+    //
+
     _initToolSets() {
       $('.ui-bar-toolset').removeClass('active');
     },
@@ -63,6 +86,6 @@ const SidebarEve = (() => {
   });
 
   return Sidebar;
-})();
+})(document);
 
 export default SidebarEve;
