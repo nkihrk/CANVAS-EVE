@@ -1,7 +1,7 @@
 extends layout
 block content
   div#canvas-eve-wrapper(style="z-index: 0;")
-    // Canvas for Drawing
+    // Canvas for drawing
     div#c-oekaki-wrapper(style="z-index: -2;")
       include includes/c-oekaki.pug
     
@@ -11,6 +11,11 @@ block content
     // 2D engine
     div#canvas-eve(style="z-index: 0;")
       include includes/canvas-eve.pug
+
+    //- Heads up: z-index: 1; is reserved by the later-created #selected-area
+
+    // Canvas for drawing cursor
+    canvas(id="cursor-oekaki" style="z-index: 2;")
 
     // UI
     div#canvas-eve-ui(class="bold agency-fb" style="z-index: 3;")

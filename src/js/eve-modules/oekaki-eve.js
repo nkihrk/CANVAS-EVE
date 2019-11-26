@@ -42,6 +42,8 @@ const OekakiEve = ((W, D, M) => {
     this.$cOekakiPlain = $('#c-oekaki-plain');
     this.$plain = $('#plain');
 
+    this.$cursorOekaki = $('#cursor-oekaki');
+
     this.param = {
       container: container,
       size: size,
@@ -97,46 +99,14 @@ const OekakiEve = ((W, D, M) => {
     this.drawPointerEvents = [
       'pointerdown',
       'pointerup',
-      // 'pointercancel',
+      'pointercancel',
       'pointermove',
-      'pointerover'
-      // 'pointerout',
-      // 'pointerenter',
-      // 'pointerleave',
-      // 'gotpointercapture',
-      // 'lostpointercapture'
-    ];
-    this.drawEvents = [
-      'MSPointerDown',
-      'MSPointerUp',
-      'MSPointerCancel',
-      'MSPointerMove',
-      'MSPointerOver',
-      'MSPointerOut',
-      'MSPointerEnter',
-      'MSPointerLeave',
-      'MSGotPointerCapture',
-      'MSLostPointerCapture',
-      'touchstart',
-      'touchmove',
-      'touchend',
-      'touchenter',
-      'touchleave',
-      'touchcancel',
-      'mouseover',
-      'mousemove',
-      'mouseout',
-      'mouseenter',
-      'mouseleave',
-      'mousedown',
-      'mouseup',
-      'focus',
-      'blur',
-      'click',
-      'webkitmouseforcewillbegin',
-      'webkitmouseforcedown',
-      'webkitmouseforceup',
-      'webkitmouseforcechanged'
+      'pointerover',
+      'pointerout',
+      'pointerenter',
+      'pointerleave',
+      'gotpointercapture',
+      'lostpointercapture'
     ];
   }
 
@@ -155,6 +125,7 @@ const OekakiEve = ((W, D, M) => {
       CANVAS_RESOLUTION: 5000,
       CANVAS_RATIO: 2, // CANVAS_SIZE / CANVAS_RESOLUTION
       CANVAS_COLOR: '#32303f',
+      CURSOR_COLOR: '#939399',
       CREATE_CANVAS_DELAY: 200, // Currently not in use
       BUTTON_FOR_LEFT: 1,
       BUTTON_FOR_MIDDLE: 4,
@@ -189,6 +160,7 @@ const OekakiEve = ((W, D, M) => {
     mouseMoveEvent(e) {
       this.Plain.mouseMoveEvent(e);
       this._handleEventMouseMove(e);
+      this._drawCursor(e);
     },
 
     //
@@ -198,6 +170,7 @@ const OekakiEve = ((W, D, M) => {
       if (!LibEve.isFirefox() && FlgEve.ui.is_ui_flg === false) {
         this._magicFix(e); // This is totally a magic function. I have no idea for the issue. This function somehow fixes it miraculously.
       }
+      this._drawCursor(e);
     },
 
     //
@@ -213,16 +186,6 @@ const OekakiEve = ((W, D, M) => {
             false
           );
         }
-      } else {
-        // for (let i = 0; i < this.drawEvents.length; i++) {
-        //   D.addEventListener(
-        //     this.drawEvents[i],
-        //     () => {
-        //       // this._drawEvents(e);
-        //     },
-        //     false
-        //   );
-        // }
       }
     },
 
@@ -1012,6 +975,52 @@ const OekakiEve = ((W, D, M) => {
         x: p1.x + (p2.x - p1.x) / 2,
         y: p1.y + (p2.y - p1.y) / 2
       };
+    },
+
+    //
+
+    _drawCursor(e) {
+      const { $cursorOekaki } = this;
+      const ctx = $cursorOekaki[0].getContext('2d');
+      const canvasRect = $cursorOekaki[0].getBoundingClientRect();
+      const screenPos = {
+        x: e.clientX,
+        y: e.clientY
+      };
+      const pos = {
+        x: screenPos.x - canvasRect.left,
+        y: screenPos.y - canvasRect.top
+      };
+
+      ctx.canvas.width = W.innerWidth;
+      ctx.canvas.height = W.innerHeight;
+      ctx.clearRect(0, 0, W.innerWidth, W.innerHeight);
+
+      if (
+        FlgEve.oekaki.tools.is_active_flg === true &&
+        e.buttons !== this.options.BUTTON_FOR_MIDDLE
+      ) {
+        ctx.beginPath();
+        if (FlgEve.oekaki.tools.brush_flg === true) {
+          ctx.arc(
+            pos.x,
+            pos.y,
+            this.options.BRUSH_SIZE / GlbEve.MOUSE_WHEEL_VAL,
+            0,
+            2 * M.PI
+          );
+        } else if (FlgEve.oekaki.tools.eraser_flg === true) {
+          ctx.arc(
+            pos.x,
+            pos.y,
+            this.options.ERASER_SIZE / GlbEve.MOUSE_WHEEL_VAL,
+            0,
+            2 * M.PI
+          );
+        }
+        ctx.strokeStyle = this.options.CURSOR_COLOR;
+        ctx.stroke();
+      }
     }
   });
 

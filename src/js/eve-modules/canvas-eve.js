@@ -718,7 +718,9 @@ const CanvasEve = ((W, D, M) => {
     options: {
       BUTTON_FOR_LEFT: 0,
       BUTTON_FOR_MIDDLE: 1,
-      UPDATE_CANVAS_SIZE_DELAY: 150
+      UPDATE_CANVAS_SIZE_DELAY: 150,
+      BRUSH_SIZE: 8,
+      ERASER_SIZE: 30
     },
 
     //

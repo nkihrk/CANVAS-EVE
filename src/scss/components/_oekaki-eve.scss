@@ -11,6 +11,42 @@ $img-path: '../../../assets/img';
 
 /*———————————————————————————————————————————————————————
 
+Common
+
+—————————————————————————————————————————————————————————*/
+
+/* Pen/Eraser cursor */
+.cursor-pen {
+  // cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="8" height="8"><circle cx="4" cy="4" r="3" stroke="black" stroke-width="1" fill="rgba(0, 0, 0, 0)"/></svg>')
+  //     5 5,
+  //   auto;
+  cursor: none;
+}
+.cursor-eraser {
+  // cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="30" height="30"><circle cx="15" cy="15" r="14" stroke="black" stroke-width="1" fill="rgba(0, 0, 0, 0)"/></svg>')
+  //     15 15,
+  //   auto;
+  cursor: none;
+}
+
+/*———————————————————————————————————————————————————————
+
+Canvas for cursor
+
+—————————————————————————————————————————————————————————*/
+
+#cursor-oekaki {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  pointer-events: none;
+}
+
+/*———————————————————————————————————————————————————————
+
 Coordinate systems for Oekaki renderer
 
 —————————————————————————————————————————————————————————*/

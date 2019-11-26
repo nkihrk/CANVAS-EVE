@@ -25,12 +25,12 @@ const ToggleEve = (() => {
         '#ui-button-hand',
         '#ui-button-pen',
         '#ui-button-eraser',
-        '#ui-button-crop',
-        '#ui-button-spuit',
-        '#ui-button-thumbtack',
-        '#ui-button-resize',
-        '#ui-button-rotate',
-        '#ui-button-flip'
+        '#ui-button-spuit'
+        // '#ui-button-crop',
+        // '#ui-button-thumbtack',
+        // '#ui-button-resize',
+        // '#ui-button-rotate',
+        // '#ui-button-flip'
       ]
     },
 
@@ -158,14 +158,18 @@ const ToggleEve = (() => {
       const btnName = $container.attr('id');
 
       if ($container.hasClass('active') && btnName === 'ui-button-pen') {
+        $('#canvas-eve').addClass('cursor-pen');
         FlgEve.oekaki.tools.brush_flg = true;
       } else {
+        $('#canvas-eve').removeClass('cursor-pen');
         FlgEve.oekaki.tools.brush_flg = false;
       }
 
       if ($container.hasClass('active') && btnName === 'ui-button-eraser') {
+        $('#canvas-eve').addClass('cursor-eraser');
         FlgEve.oekaki.tools.eraser_flg = true;
       } else {
+        $('#canvas-eve').removeClass('cursor-eraser');
         FlgEve.oekaki.tools.eraser_flg = false;
       }
 
