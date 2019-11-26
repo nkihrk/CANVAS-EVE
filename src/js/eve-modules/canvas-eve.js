@@ -1128,21 +1128,27 @@ const CanvasEve = ((W, D, M) => {
     _handleEventMouseMove(e) {
       const pClientX = e.clientX - $('#zoom').offset().left;
       const pClientY = e.clientY - $('#zoom').offset().top;
-      let mouseWheelAvailFlg = false;
-      if (e.button === this.options.BUTTON_FOR_MIDDLE) {
-        mouseWheelAvailFlg = true;
-      }
 
       if (
         FlgEve.canvas.select.is_multi_flg === true &&
         !e.target.closest('#canvas-eve-ui')
       ) {
-        this._draggedMulti(e, pClientX, pClientY, mouseWheelAvailFlg);
+        this._draggedMulti(
+          e,
+          pClientX,
+          pClientY,
+          FlgEve.plain.active_mousewheel_flg
+        );
       } else {
-        this._draggedSingle(e, pClientX, pClientY, mouseWheelAvailFlg);
+        this._draggedSingle(
+          e,
+          pClientX,
+          pClientY,
+          FlgEve.plain.active_mousewheel_flg
+        );
       }
-      this._rotate(e, mouseWheelAvailFlg);
-      this._resize(e, mouseWheelAvailFlg);
+      this._rotate(e, FlgEve.plain.active_mousewheel_flg);
+      this._resize(e, FlgEve.plain.active_mousewheel_flg);
     },
 
     //

@@ -22,6 +22,7 @@ const ToggleEve = (() => {
     options: {
       BUTTON_FOR_LEFT: 0,
       LIST_OF_TOOLS: [
+        '#ui-button-hand',
         '#ui-button-pen',
         '#ui-button-eraser',
         '#ui-button-crop',
@@ -68,6 +69,7 @@ const ToggleEve = (() => {
       }
       if ($container.hasClass('active')) this.__$toggleButton = $container;
 
+      this._plain($container);
       this._colpick($container);
       this._oekaki($container);
 
@@ -80,6 +82,10 @@ const ToggleEve = (() => {
       const btnName = $container.attr('id');
 
       switch (btnName) {
+        case 'ui-button-hand':
+          FlgEve.plain.tools.is_active_flg = false;
+          break;
+
         case 'ui-button-spuit':
           FlgEve.colpick.tools.is_active_flg = false;
           break;
@@ -87,6 +93,25 @@ const ToggleEve = (() => {
         case 'ui-button-pen':
         case 'ui-button-eraser':
           FlgEve.oekaki.tools.is_active_flg = false;
+          break;
+
+        default:
+          break;
+      }
+    },
+
+    //
+
+    _plain($container) {
+      const btnName = $container.attr('id');
+
+      switch (btnName) {
+        case 'ui-button-hand':
+          if ($container.hasClass('active')) {
+            FlgEve.plain.tools.is_active_flg = true;
+          } else {
+            FlgEve.plain.tools.is_active_flg = false;
+          }
           break;
 
         default:
@@ -128,18 +153,14 @@ const ToggleEve = (() => {
 
       if ($container.hasClass('active') && btnName === 'ui-button-pen') {
         FlgEve.oekaki.tools.brush_flg = true;
-        FlgEve.oekaki.tools.is_active_flg = true;
       } else {
         FlgEve.oekaki.tools.brush_flg = false;
-        FlgEve.oekaki.tools.is_active_flg = false;
       }
 
       if ($container.hasClass('active') && btnName === 'ui-button-eraser') {
         FlgEve.oekaki.tools.eraser_flg = true;
-        FlgEve.oekaki.tools.is_active_flg = true;
       } else {
         FlgEve.oekaki.tools.eraser_flg = false;
-        FlgEve.oekaki.tools.is_active_flg = false;
       }
 
       switch (btnName) {

@@ -6,12 +6,14 @@
  * - jquery-eve
  * - lib-eve
  * - glb-eve
+ * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
 import LibEve from '../common/lib-eve';
 import GlbEve from '../common/glb-eve';
+import FlgEve from '../common/flg-eve';
 
 const PlainEve = (() => {
   function Plain(element) {
@@ -41,6 +43,7 @@ const PlainEve = (() => {
     constructor: Plain,
 
     options: {
+      BUTTON_FOR_LEFT: 0,
       BUTTON_FOR_MIDDLE: 1
     },
 
@@ -74,16 +77,21 @@ const PlainEve = (() => {
       const { $plain } = this;
       this.param.relPos.left = e.clientX - $plain.offset().left;
       this.param.relPos.top = e.clientY - $plain.offset().top;
-      if (e.button === this.options.BUTTON_FOR_MIDDLE)
-        this.flgs.mousewheel_avail_flg = true;
+      if (
+        (FlgEve.plain.tools.is_active_flg === true &&
+          e.button === this.options.BUTTON_FOR_LEFT) ||
+        e.button === this.options.BUTTON_FOR_MIDDLE
+      ) {
+        FlgEve.plain.active_mousewheel_flg = true;
+      }
     },
 
     //
 
     _resetFlgs() {
-      if (this.flgs.mousewheel_avail_flg === true) {
+      if (FlgEve.plain.active_mousewheel_flg === true) {
         LibEve.iframePointerReset();
-        this.flgs.mousewheel_avail_flg = false;
+        FlgEve.plain.active_mousewheel_flg = false;
         $('#canvas-eve').removeClass('active-mousewheel');
       }
     },
@@ -94,7 +102,7 @@ const PlainEve = (() => {
       const { $plain } = this;
       const { $canvasEve } = this;
 
-      if (this.flgs.mousewheel_avail_flg === true) {
+      if (FlgEve.plain.active_mousewheel_flg === true) {
         LibEve.iframePointerNone();
         $plain.css({
           left: `${e.clientX - this.param.relPos.left}px`,

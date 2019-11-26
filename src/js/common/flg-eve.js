@@ -39,6 +39,12 @@ const FlgEve = (() => {
         left_bottom_flg: false
       }
     };
+    this.plain = {
+      active_mousewheel_flg: false,
+      tools: {
+        is_active_flg: false
+      }
+    };
     this.colpick = {
       active_spuit_flg: false,
       move_circle_flg: false,

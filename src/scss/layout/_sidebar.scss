@@ -299,6 +299,7 @@ Left-bar UI
     margin: calc((#{$bar-tab-height} - 4px) / 2) 0;
   }
 
+  #ui-button-hand,
   #ui-button-pen,
   #ui-button-eraser,
   #ui-button-crop,
@@ -317,6 +318,10 @@ Left-bar UI
     &.active {
       background-color: $dark-purple;
     }
+  }
+
+  #ui-button-hand {
+    @include set-icon('after', 30px, 30px, 50%, 50%, '#{$img-path}/hand.png');
   }
 
   #ui-button-pen {
