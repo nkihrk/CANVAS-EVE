@@ -1,13 +1,13 @@
 # <p align="middle"><font color="#c1125b">C</font>ANVAS EVE</p>
 
-<p align="middle">CANVAS EVE is a daily-use canvas which will be helpful in various ways :
-<br>references, memos, image previews, etc.
+<p align="middle">CANVAS EVE is a daily-use canvas which will be helpful in various ways ;
+<br>Use it as references, memos, image-preview, etc.
 <br><a href="https://nkihrk.github.io/CANVAS-EVE/"><b>DEMO</b></a>
 </p>
 
 ![CANVAS EVE](assets/img/readme/chrome_2019-11-24_20-13-10.png)
 
-> Heads Up : This project is currently under development. It won`t be stable for now.
+> Heads up : This project is currently under development. It won`t be stable for now.
 
 <br>
 
@@ -51,28 +51,74 @@ $ npm run start_linux // For linux user
 
 # 📝 Future Release Notes
 
-Last updated : November 11, 2019
+Last updated : November 27, 2019
 
 - Make the app cross-browser and cross-platform. Will be launched as both a web service and native apps.
 - Switching tool-tabs with a click
 - Moving tools to other sidebars
-- Link Pinterest with the app to get images from user`s boards
+- In-app browser
+- Split view
+- Multiple canvas creating and its management system
+- GLSL node editor
+- Text editor
+- Music player
+- Stopwatch and timer
+- OCR
 
 <br>
 
 # 💪 Currently Working On...
 
-Last updated : November 11, 2019
+Last updated : November 27, 2019
 
-- Photoshop-like UI. This will be finished in the near future.
-- Invoke YouTube window from right-click context menu
-- Make tools on the left-sidebar work properly
+- Photoshop-like UI. This will be finished in the near future
+- Link Pinterest with the app to get images from user`s boards
+- High-performance tuning for the engine
+- Loading PDF
 
 <br>
 
 # ⚙️ How To Use
 
-Currently working on it.
+🏷️ `Pen and eraser`
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;12-19-08-135.gif)
+
+🏷️ `Playing Youtube videos` including playlists.
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-22-03-281.gif)
+
+🏷️ `Color picker`. Only image formats are suppported for now.
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-34-00-379.gif)
+
+🏷️ `Loading PSD`. Will implement layer extracting feature in the future.
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-37-51-047.gif)
+
+🏷️ `Auto-aligment` for multiple files on the canvas. Press `Ctrl + Arrow key` to wake up the auto-aligment.
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-40-36-827.gif)
+
+🏷️ Loading `FBX`. Currently TGA texture format is not supported.
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-42-26-007.gif)
+
+🏷️ Loading `GLTF`. Currently Binary glTF is not supported. Draco compressed glTF in the same.
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-44-43-687.gif)
+
+🏷️ Loading `pmx/pmd(MMD)`. Will implement a loader for VMD motion files
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-45-15-661.gif)
+
+🏷️ Loading `OBJ(and MTL)`
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-47-42-462.gif)
+
+🏷️ Loading `VRM`
+
+![CANVAS EVE](assets/img/readme/bandicam&#32;2019-11-27&#32;21-48-12-560.gif)
 
 <br>
 
