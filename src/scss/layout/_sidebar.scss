@@ -10,8 +10,7 @@ Local variables
 $img-path: '../../../assets/img/system_ui';
 $tab-radius: 6px;
 
-$scrollbar-maxSize: 3px;
-$scrollbar-maxSize: 6px;
+$scrollbar-size: 6px;
 
 /*———————————————————————————————————————————————————————
 
@@ -22,64 +21,6 @@ Local mixins
 @mixin bar-prefix($color) {
   pointer-events: auto;
   background-color: $color;
-}
-
-@mixin scrollbar-prefix-horizontal($need-ul) {
-  @if $need-ul == true {
-    ul {
-      display: inline-flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-    }
-  }
-
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    height: $scrollbar-maxSize;
-    background: transparent;
-  }
-  // &:hover::-webkit-scrollbar {
-  //   height: $scrollbar-maxSize;
-  //   background: transparent;
-  // }
-
-  // Scrollbar track
-  &::-webkit-scrollbar-track {
-    background: $canvas-color;
-    border: none;
-  }
-
-  // Scrollbar itself
-  &::-webkit-scrollbar-thumb {
-    background: $dark-purple;
-    border-radius: 8px;
-  }
-}
-
-@mixin scrollbar-prefix-vertical {
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    width: $scrollbar-maxSize;
-    background: transparent;
-  }
-  // &:hover::-webkit-scrollbar {
-  //   width: $scrollbar-maxSize;
-  //   background: transparent;
-  // }
-
-  // Scrollbar track
-  &::-webkit-scrollbar-track {
-    background: $canvas-color;
-    border: none;
-  }
-
-  // Scrollbar itself
-  &::-webkit-scrollbar-thumb {
-    background: $dark-purple;
-    border-radius: 8px;
-  }
 }
 
 @mixin tab-prefix($tab-width) {
@@ -464,7 +405,7 @@ Right-bar UI
       height: 100%;
 
       .ui-window {
-        min-height: $bar-tab-height + $scrollbar-maxSize;
+        min-height: $bar-tab-height + $scrollbar-size;
         border-radius: 0 0 $elem-radius $elem-radius;
         overflow: hidden;
         margin-bottom: 4px;

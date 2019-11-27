@@ -17,6 +17,11 @@ const FlgEve = (() => {
       only_draggable_flg: false,
       no_zooming_flg: false
     };
+    this.ctxmenu = {
+      sub: {
+        is_youtube_flg: false
+      }
+    };
     this.canvas = {
       multi_select_flg: false,
       select: {

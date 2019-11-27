@@ -1,4 +1,121 @@
+@import '../abstracts/variables';
 @import '../abstracts/mixins';
+
+/*———————————————————————————————————————————————————————
+
+Local variables
+
+—————————————————————————————————————————————————————————*/
+
+$img-path: '../../../assets/img/system_ui';
+
+$tab-radius: 6px;
+$search-area-height: 80px;
+
+/*———————————————————————————————————————————————————————
+
+Local mixins
+
+—————————————————————————————————————————————————————————*/
+
+@mixin tab-prefix($tab-width) {
+  .tab-prefix {
+    @if $tab-width != false {
+      width: $tab-width;
+    }
+    height: 100%;
+    padding: 0 calc((#{$bar-tool-width} - 20px) / 2);
+
+    .tab-info {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      .tab-name {
+        @include ellipsis;
+
+        line-height: $bar-tab-height;
+        margin-right: 15px;
+      }
+    }
+  }
+
+  .close-button {
+    @include set-icon('after', 20px, 20px, 50%, 50%, '#{$img-path}/close.png');
+
+    cursor: pointer;
+    margin: auto 0;
+    &:hover {
+      border-radius: 50%;
+    }
+  }
+
+  .tab-rest {
+    position: relative;
+
+    &::after {
+      content: '';
+      background: rgba($color: $grey, $alpha: 0.5);
+      height: 50%;
+      width: 2px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .close-button {
+      &:hover {
+        background-color: $medium-purple;
+      }
+    }
+  }
+
+  .tab-current {
+    background-color: $canvas-color;
+
+    .close-button {
+      &:hover {
+        background-color: $light-purple;
+      }
+    }
+  }
+
+  .tab-curve {
+    position: relative;
+    height: $bar-tab-height;
+    background: $canvas-color;
+
+    &.single {
+      border-radius: 0 $tab-radius 0 0;
+    }
+
+    &.double {
+      border-radius: $tab-radius $tab-radius 0 0;
+    }
+  }
+
+  .tab-curve:before,
+  .tab-curve:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 2 * $tab-radius;
+    height: $tab-radius;
+  }
+
+  .tab-curve:after {
+    right: -2 * $tab-radius;
+    border-radius: 0 0 0 $tab-radius;
+    box-shadow: -$tab-radius 0 0 0 $canvas-color;
+  }
+
+  .tab-curve:before {
+    left: -2 * $tab-radius;
+    border-radius: 0 0 $tab-radius 0;
+    box-shadow: $tab-radius 0 0 0 $canvas-color;
+  }
+}
 
 /*———————————————————————————————————————————————————————
 
@@ -8,312 +125,150 @@ Common
 /* Limit sizes of .file-wrap */
 .limit-size {
   min-width: 192px;
+  // max-width: 1980px;
 }
 
 /* Add a backspace icon */
 .backspace-icon {
+  @include set-icon(
+    'after',
+    20px,
+    12px,
+    100%,
+    100%,
+    '#{$img-path}/backspace.png'
+  );
+
   position: absolute;
-  width: 24px;
-  height: 15px;
   right: 15px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-
-  &::after {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 15px;
-    background-image: url('../../../assets/img/backspace.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    opacity: 0.5;
-  }
-}
-
-/* Change the color of border when focused */
-.search-box-youtube:focus,
-.child-search-box-youtube:focus {
-  outline: 0;
-  border-color: #e56470;
-}
-
-/* input[type="text"]:focus {
-    outline: 0;
-    border-color: #e56470;
-} */
-
-/* Delete a cross icon */
-/* input[type="text"]::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-} */
-
-/*———————————————————————————————————————————————————————
-
-Parent
-
-—————————————————————————————————————————————————————————*/
-
-#add-youtube {
-  width: 880px;
-  top: 130px;
-  left: calc(50vw - 440px);
-  border-radius: 6px;
-}
-
-/* Prefix for the title of youtube search box */
-.title-youtube {
-  position: relative;
-  width: 75%;
-  margin: 0px auto;
-  margin-bottom: 20px;
-  padding-left: 90px;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.5);
-
-  /* Add a youtube icon */
-  &::before {
-    content: '';
-    display: inline-block;
-    width: 90px;
-    height: 60px;
-    background-image: url('../../../assets/img/youtube.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-/* Add separation to the right side */
-.sep-right {
-  border-right: solid 2px rgba(255, 255, 255, 0.5);
-  padding-right: 25px;
-  margin-right: 25px;
-}
-
-/* Wrapper for the search box and button */
-.search-youtube {
-  position: relative;
-  width: call(100% - 40);
-  display: flex;
-  justify-content: space-between;
-  background-color: #2c2a38;
-  padding: 20px;
-  border-radius: 6px;
-
-  &::before {
-    font-family: agency-fb;
-    font-weight: bold;
-    font-size: 1.2rem;
-    position: absolute;
-    z-index: 1;
-    content: '>';
-    color: rgba(255, 255, 255, 0.5);
-    top: 50%;
-    left: 35px;
-    transform: translateY(-50%);
-  }
-}
-
-/* Prefix for the search box */
-.search-box-wrapper {
-  position: relative;
-  width: 80%;
-}
-
-.search-box-youtube {
-  position: relative;
-  font-family: agency-fb;
-  font-weight: bold;
-  font-size: 1.2rem;
-  display: block;
-  width: 100%;
-  line-height: 50px;
-  background-color: #2e2d3b;
-  border: solid 2px rgba(229, 100, 112, 0.5);
-  border-right: none;
-  border-radius: 6px 0 0 6px;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 0 45px 0 30px;
-
-  /* Prefix for the placeholder */
-  &::placeholder {
-    font-family: agency-fb;
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.3);
-  }
-}
-
-/* Prefix for a search button */
-.search-button-youtube {
-  @include hover-shadow-single;
-
-  position: relative;
-  width: 20%;
-  background-color: #e56470;
-  border-radius: 0 6px 6px 0;
-  padding: 20px 30px 20px 0;
-  overflow: hidden;
-  cursor: pointer;
-
-  /* A plus icon for the search button */
-  &::after {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: url('../../../assets/img/add.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    position: absolute;
-    z-index: 0;
-    left: calc(50% - 10px);
-    top: 50%;
-    transform: translateX(-50%);
-    transform: translateY(-50%);
-  }
 }
 
 /*———————————————————————————————————————————————————————
 
-Children
+Youtube window
 
 —————————————————————————————————————————————————————————*/
 
-/* A wrapper for the tab and its background cover */
-.tab-block-youtube {
+.youtube-util {
   position: relative;
-  width: 100%;
-  background-color: #302d3b;
-  border-radius: 6px 6px 0 0;
-}
 
-/* Just for optical adjustment */
-.fix-top-border {
-  width: 30%;
-  max-width: 500px;
-  border-radius: 6px 6px 0 0;
-  overflow: hidden;
-}
+  .youtube-tab {
+    @include disable-selection;
+    @include tab-prefix(150px);
+    @include scrollbar-prefix-horizontal(true);
+    @include drop-shadow;
 
-/* Prefix for a tab */
-.tab-youtube {
-  width: calc(100% - 30);
-  height: 100%;
-  background-color: #2c2a38;
-  border-top: solid 3px #57afb6;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1rem;
-  padding: 0 15px;
-  line-height: 40px;
-}
-
-/* A wrapper for the child search box and button */
-.child-search-youtube {
-  position: relative;
-  width: calc(100% - 30);
-  display: flex;
-  justify-content: space-between;
-  background-color: #2c2a38;
-  padding: 15px;
-
-  &::before {
-    font-family: agency-fb;
-    font-weight: bold;
-    font-size: 1.2rem;
+    border-bottom: solid $bar-border-width $canvas-color;
+    border-radius: $tab-radius $elem-radius 0 0;
+    background-color: $light-purple;
+    color: $grey;
     position: absolute;
-    z-index: 1;
-    content: '>';
-    color: rgba(255, 255, 255, 0.5);
-    top: 50%;
-    left: 35px;
-    transform: translateY(-50%);
+    z-index: -2;
+    top: -$bar-tab-height - $search-area-height;
+    width: 100%;
   }
-}
 
-/* Prefix for the search box */
-.child-search-box-wrapper {
-  position: relative;
-  width: 80%;
-}
+  /* A wrapper for the child search box and button */
+  .youtube-search {
+    @include drop-shadow;
 
-.child-search-box-youtube {
-  position: relative;
-  font-family: agency-fb;
-  font-weight: bold;
-  font-size: 1.2rem;
-  display: block;
-  width: 100%;
-  line-height: 40px;
-  background-color: #2e2d3b;
-  border: solid 2px rgba(229, 100, 112, 0.5);
-  border-right: none;
-  border-radius: 6px 0 0 6px;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 0 45px 0 30px;
-
-  /* Prefix for the placeholder */
-  &::placeholder {
-    font-family: agency-fb;
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.3);
-  }
-}
-
-/* Prefix for a search button */
-.child-search-button-youtube {
-  @include hover-shadow-single;
-
-  position: relative;
-  width: 20%;
-  /* max-width: 200px; */
-  background-color: #e56470;
-  border-radius: 0 6px 6px 0;
-  padding: 20px 30px 20px 0;
-  overflow: hidden;
-  cursor: pointer;
-
-  /* A plus icon for the search button */
-  &::after {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background-image: url('../../../assets/img/search.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
     position: absolute;
-    z-index: 0;
-    left: calc(50% - 10px);
-    top: 50%;
-    transform: translateX(-50%);
-    transform: translateY(-50%);
+    z-index: -1;
+    top: -#{$search-area-height};
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: $canvas-color;
+    padding: 10px;
+    border-radius: 0 0 $elem-radius $elem-radius;
+
+    &::before {
+      position: absolute;
+      z-index: 1;
+      content: '>';
+      color: $grey;
+      top: 50%;
+      left: 30px;
+      transform: translateY(-50%);
+    }
+
+    /* Prefix for the search box */
+    .search-box-wrapper {
+      position: relative;
+      width: 100%;
+
+      .youtube-search-box {
+        font-weight: bold;
+        position: relative;
+        display: block;
+        width: 100%;
+        line-height: 35px;
+        background-color: $dark-grey;
+        border: solid 2px rgba($semi-pink, 0.5);
+        border-radius: $elem-radius;
+        color: $grey;
+        padding: 0 45px 0 30px;
+
+        /* Prefix for the placeholder */
+        &::placeholder {
+          font-weight: bold;
+          color: rgba($grey, 0.6);
+        }
+
+        /* Change the color of border when focused */
+        &:focus {
+          outline: 0;
+          border-color: $semi-pink;
+        }
+      }
+    }
+
+    /* Prefix for a search button */
+    .youtube-search-button {
+      @include hover-shadow-single;
+
+      position: relative;
+      width: 25%;
+      max-width: 150px;
+      margin-left: 10px;
+      background-color: $semi-pink;
+      border-radius: $elem-radius;
+      overflow: hidden;
+      cursor: pointer;
+
+      &::after {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url('#{$img-path}/search.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        position: absolute;
+        z-index: 0;
+        left: calc(50% - 10px);
+        top: 50%;
+        transform: translateX(-50%);
+        transform: translateY(-50%);
+      }
+    }
   }
 }
 
 /* Prefix for youtube iframe */
-.content-youtube {
+.youtube-content {
+  @include disable-selection;
+
+  background-color: $dark-grey;
   position: relative;
   width: 100%;
   height: 0;
   padding-bottom: 56.25%;
-  background-color: #302d3b;
-  /* Prefix for border-bottom. Without this, 1px solid border will not show up properly */
-  margin-bottom: 1px;
 
   iframe {
     position: absolute;
@@ -321,7 +276,5 @@ Children
     height: 100%;
     top: 0;
     left: 0;
-
-    /* pointer-events: none; */
   }
 }

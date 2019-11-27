@@ -20,8 +20,9 @@ body {
 body {
   font-family: agency-fb, sans-serif;
   font-style: normal;
+  font-weight: bold;
+  color: $grey;
   background-color: $dark-purple;
-  color: white;
   /* For IE. Actually I dont support IE though XD */
   -ms-overflow-style: none;
   /* For Firefox. Doesn`t seem to be working */

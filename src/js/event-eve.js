@@ -116,12 +116,12 @@ const EventEve = ((W, D) => {
       D.addEventListener(
         'mouseup',
         e => {
+          this.Ctxmenu.mouseUpEvent(e);
           this.Plain.mouseUpEvent();
           this.Oekaki.mouseUpEvent();
           this.Colpick.mouseUpEvent();
           this.Youtube.mouseUpEvent(e);
           this.Canvas.mouseUpEvent();
-          this.Ctxmenu.mouseUpEvent(e);
           this.Sidebar.mouseUpEvent(e);
         },
         false

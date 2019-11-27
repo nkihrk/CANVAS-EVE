@@ -4,10 +4,12 @@
  *
  * Dependencies
  * - jQuery-eve
+ * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
+import FlgEve from '../common/flg-eve';
 
 const CtxmenuEve = (D => {
   function Ctxmenu() {
@@ -26,6 +28,7 @@ const CtxmenuEve = (D => {
     constructor: Ctxmenu,
 
     options: {
+      BUTTON_FOR_LEFT: 0,
       BUTTON_FOR_RIGHT: 2,
       MOUSE_OVER_DELAY: 300,
       TRANSITION_TIME: 100
@@ -58,6 +61,11 @@ const CtxmenuEve = (D => {
         this._showCtxmenu(e);
       } else if (e.target.closest('#ctxmenu-new')) {
         this._showCtxmenuSub();
+      }
+
+      if (e.button === this.options.BUTTON_FOR_LEFT) {
+        if (e.target.closest('#ctxmenu-sub-youtube'))
+          FlgEve.ctxmenu.sub.is_youtube_flg = true;
       }
     },
 

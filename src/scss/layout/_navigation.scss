@@ -28,7 +28,7 @@ Common
   }
 
   li:hover {
-    background-color: $dark-grey;
+    background-color: $semi-dark-grey;
   }
 
   li:first-of-type:hover {
@@ -66,17 +66,17 @@ Context-menu
   border-radius: $elem-radius;
 
   #ctxmenu-new {
-    border-top: solid 1px $dark-grey;
+    border-top: solid 1px $semi-dark-grey;
 
     &.active {
-      background-color: $dark-grey;
+      background-color: $semi-dark-grey;
     }
   }
 
   #ctxmenu-new,
   #ctxmenu-redo,
   #ctxmenu-save {
-    border-bottom: solid 1px $dark-grey;
+    border-bottom: solid 1px $semi-dark-grey;
   }
 }
 
@@ -90,11 +90,11 @@ Context-menu
   border-radius: $elem-radius;
 
   #ctxmenu-sub-color {
-    border-top: solid 1px $dark-grey;
+    border-top: solid 1px $semi-dark-grey;
   }
 
   #ctxmenu-sub-color {
-    border-bottom: solid 1px $dark-grey;
+    border-bottom: solid 1px $semi-dark-grey;
   }
 }
 
@@ -138,28 +138,28 @@ Main menu
   #menu-file-load,
   #menu-file-export {
     &.active {
-      background-color: $dark-grey;
+      background-color: $semi-dark-grey;
     }
   }
 
   #menu-file-export {
-    border-top: solid 1px $dark-grey;
-    border-bottom: solid 1px $dark-grey;
+    border-top: solid 1px $semi-dark-grey;
+    border-bottom: solid 1px $semi-dark-grey;
 
     &.active {
-      background-color: $dark-grey;
+      background-color: $semi-dark-grey;
     }
   }
 }
 
 #menu-edit-list {
   #menu-edit-search {
-    border-top: solid 1px $dark-grey;
+    border-top: solid 1px $semi-dark-grey;
   }
 
   #menu-edit-redo,
   #menu-edit-search {
-    border-bottom: solid 1px $dark-grey;
+    border-bottom: solid 1px $semi-dark-grey;
   }
 }
 

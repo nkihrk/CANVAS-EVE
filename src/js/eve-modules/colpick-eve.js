@@ -273,7 +273,7 @@ const ColpickEve = (() => {
       const bBar = (b / 255) * 100;
 
       // Initialize a value
-      $('#input-colpick').val('#32303f');
+      $('#input-colpick').val(this.options.HEX);
 
       // Update a color palette
       $('#color-colpick').css('background-color', HEX);

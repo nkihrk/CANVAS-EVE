@@ -229,3 +229,67 @@ Used:
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/*———————————————————————————————————————————————————————
+
+Scrollbar prefix in horizontal/vertical
+
+Dependecy:
+- abstracts/_variables.scss
+
+Used:
+- layout/_sidebar.scss
+
+—————————————————————————————————————————————————————————*/
+
+$scrollbar-size: 6px;
+
+@mixin scrollbar-prefix-horizontal($need-ul) {
+  @if $need-ul == true {
+    ul {
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+    }
+  }
+
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    height: $scrollbar-size;
+    background: transparent;
+  }
+
+  // Scrollbar track
+  &::-webkit-scrollbar-track {
+    background: $canvas-color;
+    border: none;
+  }
+
+  // Scrollbar itself
+  &::-webkit-scrollbar-thumb {
+    background: $dark-purple;
+    border-radius: 8px;
+  }
+}
+
+@mixin scrollbar-prefix-vertical {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    width: $scrollbar-size;
+    background: transparent;
+  }
+
+  // Scrollbar track
+  &::-webkit-scrollbar-track {
+    background: $canvas-color;
+    border: none;
+  }
+
+  // Scrollbar itself
+  &::-webkit-scrollbar-thumb {
+    background: $dark-purple;
+    border-radius: 8px;
+  }
+}
