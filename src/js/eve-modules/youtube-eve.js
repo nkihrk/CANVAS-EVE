@@ -84,7 +84,7 @@ const YoutubeEve = (W => {
 
     //
 
-    _invokeWindow(e) {
+    _invokeWindow() {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
