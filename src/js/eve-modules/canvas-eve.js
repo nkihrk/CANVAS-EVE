@@ -55,6 +55,7 @@ const CanvasEve = ((W, D, M) => {
         this._handleMultiMode(e);
 
         if (e.target.closest('#reset-res')) {
+          LibEve.iframePointerNone();
           this._setFlgs();
           this._createSelectedArea(e);
         }
@@ -730,6 +731,7 @@ const CanvasEve = ((W, D, M) => {
         e.button === this.options.BUTTON_FOR_LEFT &&
         FlgEve.ui.toolbar.is_active_flg === false
       ) {
+        LibEve.iframePointerNone();
         FlgEve.setFlgs(e);
         this.MultiSelect.mouseDownEvent(e);
         if (
@@ -970,6 +972,8 @@ const CanvasEve = ((W, D, M) => {
     //
 
     _reset() {
+      GlbEve.CURRENT_ID = null;
+
       $('.selected').remove();
 
       $('.thumbtack-icon').remove();

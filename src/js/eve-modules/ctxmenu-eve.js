@@ -4,11 +4,13 @@
  *
  * Dependencies
  * - jQuery-eve
+ * - glb-eve
  * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
+import GlbEve from '../common/glb-eve';
 import FlgEve from '../common/flg-eve';
 
 const CtxmenuEve = (D => {
@@ -53,10 +55,15 @@ const CtxmenuEve = (D => {
     //
 
     mouseUpEvent(e) {
+      const isActiveThreeCtrl = $(`#${GlbEve.CURRENT_ID}`)
+        .find('.thumbtack-wrapper')
+        .hasClass('active');
+
       if (
         e.button === this.options.BUTTON_FOR_RIGHT &&
         !e.target.closest('#canvas-eve-ui') &&
-        !e.target.closest('#ctxmenu-wrapper')
+        !e.target.closest('#ctxmenu-wrapper') &&
+        !isActiveThreeCtrl
       ) {
         this._showCtxmenu(e);
       } else if (e.target.closest('#ctxmenu-new')) {

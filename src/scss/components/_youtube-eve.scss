@@ -68,6 +68,9 @@ Local mixins
       &:hover {
         background-color: $medium-purple;
       }
+      &:active {
+        background-color: $dark-purple;
+      }
     }
   }
 
@@ -76,6 +79,9 @@ Local mixins
 
     .close-button {
       &:hover {
+        background-color: $semi-light-purple;
+      }
+      &:active {
         background-color: $light-purple;
       }
     }

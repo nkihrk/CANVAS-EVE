@@ -86,6 +86,7 @@ const PlainEve = (() => {
         FlgEve.ui.is_ui_flg === false &&
         (isToolActive || e.button === this.options.BUTTON_FOR_MIDDLE)
       ) {
+        LibEve.iframePointerNone();
         FlgEve.plain.active_mousewheel_flg = true;
       }
     },
@@ -94,7 +95,6 @@ const PlainEve = (() => {
 
     _resetFlgs() {
       if (FlgEve.plain.active_mousewheel_flg === true) {
-        LibEve.iframePointerReset();
         FlgEve.plain.active_mousewheel_flg = false;
         $('#canvas-eve').removeClass('active-grabbing-mousewheel');
       }
@@ -107,7 +107,6 @@ const PlainEve = (() => {
       const { $canvasEve } = this;
 
       if (FlgEve.plain.active_mousewheel_flg === true) {
-        LibEve.iframePointerNone();
         $plain.css({
           left: `${e.clientX - this.param.relPos.left}px`,
           top: `${e.clientY - this.param.relPos.top}px`
