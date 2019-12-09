@@ -44,6 +44,7 @@
     "node-sass": "^4.12.0",
     "nodemon": "^1.19.3",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "pdfjs-dist": "^2.2.228",
     "prettier": "1.18.2",
     "prettier-eslint": "^9.0.0",
     "pug-html-loader": "^1.1.5",

@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/node-builtins */
 /**
  *
  * Drag'n'Drop / Paste functionality for CANVAS EVE.
@@ -6,13 +7,22 @@
  * - psd.js
  * - jquery-eve
  * - glb-eve
+ * - store-eve
  *
  */
 
+// ES6 Import statement
 import PSD from 'psd.js/dist/psd.min';
 
 import $ from '../common/jquery-eve';
 import GlbEve from '../common/glb-eve';
+// import StoreEve from '../common/store-eve';
+
+// ES5 Import statement
+const pdfjsLib = require('pdfjs-dist');
+// Setting worker path to worker bundle.
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  '../../../build/js/pdf.worker.bundle.js';
 
 const FileEve = ((W, D, M) => {
   function File() {
@@ -62,6 +72,10 @@ const FileEve = ((W, D, M) => {
     pasteEvent(e) {
       this._paste(e);
     },
+
+    //
+
+    _storeFiles(file) {},
 
     //
 
@@ -184,10 +198,10 @@ const FileEve = ((W, D, M) => {
         return /\.(psd)$/i.test(fileName);
       },
       blobReader(fileName) {
-        return /\.(jpe?g|png|gif|svg|bmp)$/i.test(fileName);
+        return /\.(jpe?g|png|gif|svg|bmp|pdf)$/i.test(fileName);
       },
       checkAll(fileName) {
-        return /\.(jpe?g|png|gif|svg|bmp|psd)$/i.test(fileName);
+        return /\.(jpe?g|png|gif|svg|bmp|psd|pdf)$/i.test(fileName);
       }
     },
 
@@ -195,14 +209,14 @@ const FileEve = ((W, D, M) => {
 
     _fileReader(file, mousePos, progSet) {
       const self = this;
-      this._readFile(file, progSet).then(img => {
-        self._readerPromise(img, mousePos, progSet);
+      this._readFileImg(file, progSet).then(img => {
+        self._readerPromiseImg(img, mousePos, progSet);
       });
     },
 
     //
 
-    _readFile(file, progSet) {
+    _readFileImg(file, progSet) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadstart = () => {
@@ -257,21 +271,122 @@ const FileEve = ((W, D, M) => {
 
     _blobReader(file, mousePos, progSet) {
       const self = this;
-      this._readBlob(file, progSet).then(img => {
-        self._readerPromise(img, mousePos, progSet);
+      const isPdf = /\.(pdf)$/i.test(file.name);
+
+      if (isPdf) {
+        this._readBlobPdf(file, mousePos, progSet);
+      } else {
+        this._readBlobImg(file, progSet).then(img => {
+          self._readerPromiseImg(img, mousePos, progSet);
+        });
+      }
+    },
+
+    //
+
+    _readBlobPdf(file, mousePos, progSet) {
+      const self = this;
+      const pdfPath = URL.createObjectURL(file);
+      const loadingTask = pdfjsLib.getDocument(pdfPath).promise;
+
+      if (progSet.iterate === 0) progSet.progress.classList.add('loading');
+
+      loadingTask.then(pdfDocument => {
+        // Request a first page
+        return pdfDocument.getPage(1).then(pdfPage => {
+          progSet.iterate++;
+
+          if (progSet.iterate < progSet.fileCount) {
+            progSet.totalProg = progSet.eachProg * progSet.iterate;
+            progSet.progress.style.width = `${progSet.totalProg}%`;
+          } else {
+            progSet.progress.style.width = '100%';
+            setTimeout(() => {
+              progSet.progress.classList.remove('loading');
+            }, 1000);
+          }
+
+          const id = self._createBasePdf(mousePos, progSet);
+          const renderTask = self._renderPdf(id, mousePos, pdfPage);
+
+          return renderTask.promise;
+        });
       });
     },
 
     //
 
-    _readBlob(file, progSet) {
+    _createBasePdf(mousePos, progSet) {
+      GlbEve.NEWFILE_ID += 1;
+      GlbEve.HIGHEST_Z_INDEX += 1;
+
+      const canvasWidth = this.options.DEFAULT_FILE_WIDTH;
+      const canvas = `<canvas width="${canvasWidth}"></canvas>`;
+      const funcTags =
+        '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="rotate-wrapper"></div><div class="flip-wrapper"></div><div class="trash-wrapper"></div>';
+      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap transparent update-canvas" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main is-flipped">${canvas}</div></div>`;
+      $('#add-files').append(assertFile);
+
+      const fileId = `#${GlbEve.NEWFILE_ID}`;
+      const $fileId = $(fileId);
+
+      $fileId.css({
+        left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL -
+          this.options.DEFAULT_FILE_WIDTH / 2}px`,
+        'z-index': GlbEve.HIGHEST_Z_INDEX
+      });
+
+      // For colpick-eve.js
+      if ($('#toggle-colpick').length > 0) {
+        if (!$('#toggle-colpick').hasClass('active'))
+          $fileId.addClass('grab-pointer');
+      } else {
+        $fileId.addClass('grab-pointer');
+      }
+
+      if (progSet.iterate === progSet.fileCount) {
+        setTimeout(() => {
+          $('div').removeClass('transparent');
+        }, this.options.SHOW_FILE_DELAY);
+      }
+
+      return GlbEve.NEWFILE_ID;
+    },
+
+    //
+
+    _renderPdf(id, mousePos, pdfPage) {
+      const $fileId = $(`#${id}`);
+      const canvas = $fileId.find('canvas')[0];
+
+      // Display page on the existing canvas with 100% scale.
+      const viewport = pdfPage.getViewport({
+        scale: canvas.width / pdfPage.getViewport(1.0).width
+      });
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext('2d');
+      const renderTask = pdfPage.render({
+        canvasContext: ctx,
+        viewport: viewport
+      });
+
+      // Set top according to viewport
+      $fileId.css({
+        top: `${mousePos.top * GlbEve.MOUSE_WHEEL_VAL - viewport.height / 2}px`
+      });
+
+      return renderTask;
+    },
+
+    //
+
+    _readBlobImg(file, progSet) {
       // eslint-disable-next-line no-unused-vars
       return new Promise((resolve, reject) => {
         if (progSet.iterate === 0) progSet.progress.classList.add('loading');
 
         const img = new Image();
         img.style.cssText = 'width: 100%;';
-        // eslint-disable-next-line node/no-unsupported-features/node-builtins
         img.src = URL.createObjectURL(file);
         img.onload = () => {
           progSet.iterate++;
@@ -293,7 +408,7 @@ const FileEve = ((W, D, M) => {
 
     //
 
-    _readerPromise(img, mousePos, progSet) {
+    _readerPromiseImg(img, mousePos, progSet) {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
@@ -306,7 +421,7 @@ const FileEve = ((W, D, M) => {
       const canvas = '<canvas class="canvas-colpick"></canvas>';
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="rotate-wrapper"></div><div class="flip-wrapper"></div><div class="trash-wrapper"></div>';
-      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap transparent" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main is-flipped">${canvas}</div></div>`;
+      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap transparent update-canvas" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main is-flipped">${canvas}</div></div>`;
       $('#add-files').append(assertFile);
 
       const imgWidth = img.width;

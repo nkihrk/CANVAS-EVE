@@ -1000,29 +1000,33 @@ const CanvasEve = ((W, D, M) => {
 
       // Refrash the rendering result of each canvas when changing its size.
       // This canvas is for color picking.colpick-eve.js
-      if (f.$fileId !== null && f.$fileId.find('.canvas-colpick').length > 0) {
+      if (f.$fileId !== null && f.$fileId.hasClass('update-canvas')) {
         if (
           FlgEve.canvas.re.left_top_flg === true ||
           FlgEve.canvas.re.right_top_flg === true ||
           FlgEve.canvas.re.right_bottom_flg === true ||
           FlgEve.canvas.re.left_bottom_flg === true
         ) {
-          setTimeout(() => {
-            const img = new Image();
-            img.src = f.$fileId.find('img').attr('src');
-            img.onload = () => {
-              f.$fileId
-                .find('.canvas-colpick')[0]
-                .getContext('2d')
-                .drawImage(img, 0, 0, f.$fileId.width(), f.$fileId.height());
-            };
-            f.$fileId.find('.canvas-colpick').attr('width', f.$fileId.width());
-            f.$fileId
-              .find('.canvas-colpick')
-              .attr('height', f.$fileId.height());
-          }, this.options.UPDATE_CANVAS_SIZE_DELAY);
+          this._updateCanvasColpick(f);
         }
       }
+    },
+
+    //
+
+    _updateCanvasColpick(f) {
+      setTimeout(() => {
+        const img = new Image();
+        img.src = f.$fileId.find('img').attr('src');
+        img.onload = () => {
+          f.$fileId
+            .find('.canvas-colpick')[0]
+            .getContext('2d')
+            .drawImage(img, 0, 0, f.$fileId.width(), f.$fileId.height());
+        };
+        f.$fileId.find('.canvas-colpick').attr('width', f.$fileId.width());
+        f.$fileId.find('.canvas-colpick').attr('height', f.$fileId.height());
+      }, this.options.UPDATE_CANVAS_SIZE_DELAY);
     },
 
     //

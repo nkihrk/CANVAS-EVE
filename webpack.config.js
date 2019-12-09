@@ -83,7 +83,8 @@ module.exports = {
     })
   ],
   entry: {
-    'canvas-eve': './src/js/app.js'
+    'canvas-eve': './src/js/app.js',
+    'pdf.worker': 'pdfjs-dist/build/pdf.worker.entry'
   },
   output: {
     filename: './js/[name].min.js',
