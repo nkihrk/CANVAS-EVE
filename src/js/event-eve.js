@@ -99,6 +99,7 @@ const EventEve = ((W, D) => {
           this.Menu.mouseDownEvent(e);
           this.Ctxmenu.mouseDownEvent(e);
           this.Toggle.mouseDownEvent(e);
+          this.Sidebar.mouseDownEvent(e);
           this.Plain.mouseDownEvent(e);
           this.File.mouseDownEvent(e);
           this.Oekaki.mouseDownEvent(e);
