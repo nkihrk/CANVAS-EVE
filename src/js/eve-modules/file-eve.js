@@ -75,7 +75,7 @@ const FileEve = ((W, D, M) => {
 
     //
 
-    _storeFiles(file) {},
+    // _storeFiles(file) {},
 
     //
 

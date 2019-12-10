@@ -25,12 +25,14 @@ Local mixins
 
 @mixin tab-prefix($tab-width) {
   .tab-prefix {
+    position: relative;
     @if $tab-width != false {
       width: $tab-width;
     }
     height: 100%;
     padding: 0 calc((#{$bar-tool-width} - 20px) / 2);
 
+    // Wrapper for tab-name and close-button
     .tab-info {
       display: flex;
       flex-direction: row;
@@ -41,6 +43,87 @@ Local mixins
 
         line-height: $bar-tab-height;
         margin-right: 15px;
+      }
+    }
+
+    //In-active tab
+    &::after {
+      content: '';
+      background: rgba($color: $grey, $alpha: 0.5);
+      height: 50%;
+      width: 2px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    // Prefix for close-button when in-active
+    .close-button {
+      &:hover {
+        background-color: $medium-purple;
+      }
+      &:active {
+        background-color: $dark-purple;
+      }
+    }
+
+    // Active tab
+    &.active {
+      background-color: $canvas-color;
+
+      // Init values for later-use in curve
+      &::after {
+        content: initial;
+        background: initial;
+        height: initial;
+        width: initial;
+        position: initial;
+        right: initial;
+        top: initial;
+        transform: initial;
+      }
+
+      .close-button {
+        &:hover {
+          background-color: $semi-light-purple;
+        }
+        &:active {
+          background-color: $light-purple;
+        }
+      }
+
+      // Same as .tab-curve
+      height: $bar-tab-height;
+      background: $canvas-color;
+      border-radius: $tab-radius $tab-radius 0 0;
+
+      // &.single {
+      //   border-radius: 0 $tab-radius 0 0;
+      // }
+      // &.double {
+      //   border-radius: $tab-radius $tab-radius 0 0;
+      // }
+
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 2 * $tab-radius;
+        height: $tab-radius;
+      }
+
+      &::after {
+        right: -2 * $tab-radius;
+        border-radius: 0 0 0 $tab-radius;
+        box-shadow: -$tab-radius 0 0 0 $canvas-color;
+      }
+
+      &::before {
+        left: -2 * $tab-radius;
+        border-radius: 0 0 $tab-radius 0;
+        box-shadow: $tab-radius 0 0 0 $canvas-color;
       }
     }
   }
@@ -54,6 +137,7 @@ Local mixins
     }
   }
 
+  // tab-rest/tab-current/tab-curve are currently not in use.
   .tab-rest {
     position: relative;
 
@@ -89,41 +173,75 @@ Local mixins
         background-color: $light-purple;
       }
     }
+
+    // Same as .tab-curve
+    position: relative;
+    height: $bar-tab-height;
+    background: $canvas-color;
+    border-radius: $tab-radius $tab-radius 0 0;
+
+    // &.single {
+    //   border-radius: 0 $tab-radius 0 0;
+    // }
+    // &.double {
+    //   border-radius: $tab-radius $tab-radius 0 0;
+    // }
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 2 * $tab-radius;
+      height: $tab-radius;
+    }
+
+    &:after {
+      right: -2 * $tab-radius;
+      border-radius: 0 0 0 $tab-radius;
+      box-shadow: -$tab-radius 0 0 0 $canvas-color;
+    }
+
+    &:before {
+      left: -2 * $tab-radius;
+      border-radius: 0 0 $tab-radius 0;
+      box-shadow: $tab-radius 0 0 0 $canvas-color;
+    }
   }
 
   .tab-curve {
     position: relative;
     height: $bar-tab-height;
     background: $canvas-color;
+    border-radius: $tab-radius $tab-radius 0 0;
 
-    &.single {
-      border-radius: 0 $tab-radius 0 0;
+    // &.single {
+    //   border-radius: 0 $tab-radius 0 0;
+    // }
+    // &.double {
+    //   border-radius: $tab-radius $tab-radius 0 0;
+    // }
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 2 * $tab-radius;
+      height: $tab-radius;
     }
 
-    &.double {
-      border-radius: $tab-radius $tab-radius 0 0;
+    &:after {
+      right: -2 * $tab-radius;
+      border-radius: 0 0 0 $tab-radius;
+      box-shadow: -$tab-radius 0 0 0 $canvas-color;
     }
-  }
 
-  .tab-curve:before,
-  .tab-curve:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 2 * $tab-radius;
-    height: $tab-radius;
-  }
-
-  .tab-curve:after {
-    right: -2 * $tab-radius;
-    border-radius: 0 0 0 $tab-radius;
-    box-shadow: -$tab-radius 0 0 0 $canvas-color;
-  }
-
-  .tab-curve:before {
-    left: -2 * $tab-radius;
-    border-radius: 0 0 $tab-radius 0;
-    box-shadow: $tab-radius 0 0 0 $canvas-color;
+    &:before {
+      left: -2 * $tab-radius;
+      border-radius: 0 0 $tab-radius 0;
+      box-shadow: $tab-radius 0 0 0 $canvas-color;
+    }
   }
 }
 

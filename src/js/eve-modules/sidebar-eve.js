@@ -32,7 +32,9 @@ const SidebarEve = (D => {
 
     //
 
-    mouseDownEvent() {},
+    mouseDownEvent(e) {
+      this._toggleTab(e);
+    },
 
     //
 
