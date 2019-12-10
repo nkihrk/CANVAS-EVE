@@ -128,6 +128,14 @@ The entire tool box for CANVAS EVE
 #add-files {
   width: 0 !important;
   height: 0 !important;
+
+  .add-files-prefix {
+    display: none;
+
+    &.active {
+      display: initial;
+    }
+  }
 }
 
 /* For moving entire expected elements */

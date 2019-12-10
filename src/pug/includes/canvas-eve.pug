@@ -1,10 +1,16 @@
 
 div#plain(style="z-index: 2;")
   div#zoom
-    <!-- For inserting elements only -->
+    // For inserting elements only
     div#add-files
-      include ./youtube.ui.pug
+
+      div#add-files-0(class="add-files-prefix active")
+        include ./youtube.ui.pug
+      div#add-files-1(class="add-files-prefix")
+      div#add-files-2(class="add-files-prefix")
+      div#add-files-3(class="add-files-prefix")
+      div#add-files-4(class="add-files-prefix")
       
 
-<!-- #reset-res will reset files-related functions when clicked -->
+// #reset-res will reset files-related functions when clicked
 div#reset-res

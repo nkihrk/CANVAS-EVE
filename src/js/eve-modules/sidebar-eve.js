@@ -4,11 +4,13 @@
  *
  * Dependencies
  * - jquery-eve
+ * - glb-eve
  * - flg-eve
  *
  */
 
 import $ from '../common/jquery-eve';
+import GlbEve from '../common/glb-eve';
 import FlgEve from '../common/flg-eve';
 
 const SidebarEve = (D => {
@@ -91,29 +93,63 @@ const SidebarEve = (D => {
     _toggleTab(e) {
       if (e.target.closest('.tab-prefix')) {
         const $tab = $(e.target.closest('.tab-prefix'));
-        this._toggleActive($tab);
+        this._toggleActiveTab($tab);
+        this._toggleActiveCanvas();
       }
     },
 
     //
 
-    _toggleActive($container) {
+    _toggleActiveTab($container) {
       const $activeContainer = $container.parents('ul').find('li.active');
       const isActive = !!$activeContainer.length;
 
       $container.toggleClass('active');
 
-      if (isActive) this.__toggleActive = $activeContainer;
+      // Extract number from canvas-tabs, updating a global variable for later-use in file-eve and three-eve
+      if ($container.parents('#ui-bar-tab').length === 1) {
+        const str = $container[0].id;
+        const idMatch = str.match(/(\d+)/);
+        if (idMatch) {
+          [GlbEve.CURRENT_CANVAS_ID] = idMatch;
+        }
+      }
+
+      if (isActive) this.__toggleActiveTab = $activeContainer;
       if (
-        this.__toggleActive !== undefined &&
-        this.__toggleActive[0] !== $container[0] &&
-        this.__toggleActive.hasClass('active')
+        this.__toggleActiveTab !== undefined &&
+        this.__toggleActiveTab[0] !== $container[0] &&
+        this.__toggleActiveTab.hasClass('active')
       ) {
-        this.__toggleActive.removeClass('active');
+        this.__toggleActiveTab.removeClass('active');
       } else {
         $container.toggleClass('active');
       }
-      if ($container.hasClass('active')) this.__toggleActive = $container;
+      if ($container.hasClass('active')) this.__toggleActiveTab = $container;
+
+      // console.log(GlbEve.CURRENT_CANVAS_ID);
+    },
+
+    //
+
+    _toggleActiveCanvas() {
+      const $container = $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`);
+      const $activeContainer = $container.parents('#add-files').find('.active');
+      const isActive = !!$activeContainer.length;
+
+      $container.toggleClass('active');
+
+      if (isActive) this.__toggleActiveCanvas = $activeContainer;
+      if (
+        this.__toggleActiveCanvas !== undefined &&
+        this.__toggleActiveCanvas[0] !== $container[0] &&
+        this.__toggleActiveCanvas.hasClass('active')
+      ) {
+        this.__toggleActiveCanvas.removeClass('active');
+      } else {
+        $container.toggleClass('active');
+      }
+      if ($container.hasClass('active')) this.__toggleActiveCanvas = $container;
     }
   });
 
