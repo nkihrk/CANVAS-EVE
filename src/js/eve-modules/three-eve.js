@@ -412,13 +412,14 @@ const ThreeEve = ((W, D, M) => {
       GlbEve.HIGHEST_Z_INDEX += 1;
       GlbEve.CURRENT_ID = GlbEve.NEWFILE_ID;
 
+      const id = `new-canvas-${GlbEve.CURRENT_CANVAS_ID}_${GlbEve.NEWFILE_ID}`;
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="trash-wrapper"></div>';
-      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="webgl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
-      $('#add-files').append(assertFile);
+      const assertFile = `<div id ="${id}" class="webgl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
+      $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`).append(assertFile);
 
       const hideScissor = D.createElement('div');
-      $('#add-files').append(hideScissor);
+      $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`).append(hideScissor);
       hideScissor.classList.add('hide-scissor');
       $(hideScissor).css({
         left: `${mousePos.left * GlbEve.MOUSE_WHEEL_VAL -
@@ -427,7 +428,7 @@ const ThreeEve = ((W, D, M) => {
           this.options.DEFAULT_FILE_WIDTH / 2}px`
       });
 
-      const fileId = `#${GlbEve.NEWFILE_ID}`;
+      const fileId = `#${id}`;
       const $fileId = $(fileId);
 
       $fileId.css({
@@ -446,7 +447,7 @@ const ThreeEve = ((W, D, M) => {
         $fileId.addClass('grab-pointer');
       }
 
-      return GlbEve.NEWFILE_ID;
+      return id;
     }
   };
 

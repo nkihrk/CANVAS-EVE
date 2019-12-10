@@ -320,14 +320,15 @@ const FileEve = ((W, D, M) => {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
+      const id = `new-canvas-${GlbEve.CURRENT_CANVAS_ID}_${GlbEve.NEWFILE_ID}`;
       const canvasWidth = this.options.DEFAULT_FILE_WIDTH;
       const canvas = `<canvas width="${canvasWidth}"></canvas>`;
       const funcTags =
         '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="rotate-wrapper"></div><div class="flip-wrapper"></div><div class="trash-wrapper"></div>';
-      const assertFile = `<div id ="${GlbEve.NEWFILE_ID}" class="file-wrap transparent update-canvas" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main is-flipped">${canvas}</div></div>`;
-      $('#add-files').append(assertFile);
+      const assertFile = `<div id ="${id}" class="file-wrap transparent update-canvas" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main is-flipped">${canvas}</div></div>`;
+      $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`).append(assertFile);
 
-      const fileId = `#${GlbEve.NEWFILE_ID}`;
+      const fileId = `#${id}`;
       const $fileId = $(fileId);
 
       $fileId.css({
@@ -350,7 +351,7 @@ const FileEve = ((W, D, M) => {
         }, this.options.SHOW_FILE_DELAY);
       }
 
-      return GlbEve.NEWFILE_ID;
+      return id;
     },
 
     //
@@ -412,7 +413,7 @@ const FileEve = ((W, D, M) => {
       GlbEve.NEWFILE_ID += 1;
       GlbEve.HIGHEST_Z_INDEX += 1;
 
-      // Currently not being supported video
+      // Currently not supporting video
       // const videoTag = '<video controls playsinline preload="metadata" style="width: 100%;">' +
       //     '<source src="' + dataUrl + '" type="video/webm">' +
       //     '<source src="' + dataUrl + '" type="video/mp4">' +
