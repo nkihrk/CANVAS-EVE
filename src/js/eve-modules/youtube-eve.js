@@ -128,7 +128,7 @@ const YoutubeEve = (W => {
         ` </div>` +
         `</div>`;
 
-      $('#add-files').append(assertFile);
+      $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`).append(assertFile);
       FlgEve.ctxmenu.sub.is_youtube_flg = false;
     },
 
