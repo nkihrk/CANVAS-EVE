@@ -7,7 +7,7 @@
     "start_win": "nodemon --watch webpack.config.js --watch webpack.dev.js --watch webpack.prod.js --exec webpack-dev-server --devtool inline-source-map --port 8080 --host 0.0.0.0 --config webpack.dev.js'",
     "start_linux": "nodemon --watch webpack.config.js --watch webpack.dev.js --watch webpack.prod.js --exec 'webpack-dev-server --devtool inline-source-map --port 8080 --host 0.0.0.0 --config webpack.dev.js'",
     "build": "webpack --config webpack.prod.js",
-    "deploy": "npm run build && node gh-pages.js",
+    "deploy": "npm run build",
     "clean": "rm -rf node_modules",
     "reinstall": "npm run clean && npm install",
     "kill_win": "taskkill /f /im node.exe",
