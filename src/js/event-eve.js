@@ -30,6 +30,7 @@ import ToggleEve from './eve-modules/toggle-eve';
 import CtxmenuEve from './eve-modules/ctxmenu-eve';
 import MenuEve from './eve-modules/menu-eve';
 import SidebarEve from './eve-modules/sidebar-eve';
+import KeymapEve from './common/keymap-eve';
 import CommonEve from './common/common-eve';
 
 const EventEve = ((W, D) => {
@@ -48,6 +49,7 @@ const EventEve = ((W, D) => {
     this.Ctxmenu = new CtxmenuEve();
     this.Menu = new MenuEve();
     this.Sidebar = new SidebarEve();
+    this.Keymap = new KeymapEve();
     this.Common = new CommonEve();
   }
 
@@ -262,7 +264,11 @@ const EventEve = ((W, D) => {
 
     keyDownEvent() {
       D.addEventListener('keydown', e => {
+        this.Keymap.keyDownEvent(e);
         this.Canvas.keyDownEvent(e);
+
+        // Initialize all key values
+        this.Keymap._initKeyMap();
       });
     },
 
@@ -270,6 +276,7 @@ const EventEve = ((W, D) => {
 
     keyUpEvent() {
       D.addEventListener('keyup', e => {
+        this.Keymap.keyUpEvent(e);
         this.Canvas.keyUpEvent(e);
       });
     }

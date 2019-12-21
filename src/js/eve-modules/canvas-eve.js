@@ -7,6 +7,7 @@
  * - lib-eve
  * - glb-eve
  * - flg-eve
+ * - keymap-eve
  *
  */
 
@@ -74,6 +75,20 @@ const CanvasEve = ((W, D, M) => {
     mouseMoveEvent(e) {
       if (this.flgs.create_selected_area_flg === true)
         this._updateSelectedArea(e);
+    },
+
+    //
+
+    delMultiFiles() {
+      const selected = $('.selected');
+      const n = selected.length;
+
+      if (n > 0) {
+        for (let i = 0; i < n; i++) {
+          const $fileWrap = $(selected[i]).parents('.file-wrap');
+          $fileWrap.remove();
+        }
+      }
     },
 
     //
@@ -329,55 +344,39 @@ const CanvasEve = ((W, D, M) => {
    * Auto-alignment function for CanvasEve.
    *
    */
-  function AutoAlign() {
-    this.keyMap = {};
-  }
+  function AutoAlign() {}
 
   AutoAlign.prototype = {
     constructor: AutoAlign,
 
     options: {
-      THRESHOLD: 10000
+      THRESHOLD: Infinity
     },
 
     //
 
     keyDownEvent(e) {
-      this.keyMap[e.key] = true;
-
-      const isCtrlKey = this.keyMap.Control;
+      const isCtrlKey = FlgEve.keyMap.Control;
       if (isCtrlKey) {
         this._verticalAlignEntry(e);
         this._horizontalAlignEntry(e);
-      } else {
-        this.keyMap = {};
       }
 
-      // console.log(this.keyMap);
+      // console.log(FlgEve.keyMap);
     },
 
     //
 
     // Reset specific keys in the keyMap when keyUp events are called
     keyUpEvent(e) {
-      if (e.key === 'Control') this.keyMap.Control = false;
-    },
-
-    //
-
-    // Initialize all keyMaps values when the key events are finshed executing
-    _initKeyMap() {
-      this.keyMap.ArrowUp = false;
-      this.keyMap.ArrowDown = false;
-      this.keyMap.ArrowLeft = false;
-      this.keyMap.ArrowRight = false;
+      if (e.key === 'Control') FlgEve.keyMap.Control = false;
     },
 
     //
 
     _verticalAlignEntry(e) {
-      const isDownKey = this.keyMap.ArrowDown;
-      const isUpKey = this.keyMap.ArrowUp;
+      const isDownKey = FlgEve.keyMap.ArrowDown;
+      const isUpKey = FlgEve.keyMap.ArrowUp;
 
       if (isDownKey || isUpKey) {
         e.preventDefault();
@@ -406,21 +405,19 @@ const CanvasEve = ((W, D, M) => {
         }
       }
 
-      const isUpKey = this.keyMap.ArrowUp;
-      const isDownKey = this.keyMap.ArrowDown;
+      const isUpKey = FlgEve.keyMap.ArrowUp;
+      const isDownKey = FlgEve.keyMap.ArrowDown;
 
       if (isUpKey) this._alignFiles($fileWraps, minTop, 'verticalAlignTop');
       if (isDownKey)
         this._alignFiles($fileWraps, maxBottom, 'verticalAlignBottom');
-
-      this._initKeyMap();
     },
 
     //
 
     _horizontalAlignEntry(e) {
-      const isLeftKey = this.keyMap.ArrowLeft;
-      const isRightKey = this.keyMap.ArrowRight;
+      const isLeftKey = FlgEve.keyMap.ArrowLeft;
+      const isRightKey = FlgEve.keyMap.ArrowRight;
 
       if (isLeftKey || isRightKey) {
         e.preventDefault();
@@ -449,15 +446,13 @@ const CanvasEve = ((W, D, M) => {
         }
       }
 
-      const isLeftKey = this.keyMap.ArrowLeft;
-      const isRightKey = this.keyMap.ArrowRight;
+      const isLeftKey = FlgEve.keyMap.ArrowLeft;
+      const isRightKey = FlgEve.keyMap.ArrowRight;
 
       if (isLeftKey)
         this._alignFiles($fileWraps, minLeft, 'horizontalAlignLeft');
       if (isRightKey)
         this._alignFiles($fileWraps, maxRight, 'horizontalAlignRight');
-
-      this._initKeyMap();
     },
 
     //
@@ -776,7 +771,13 @@ const CanvasEve = ((W, D, M) => {
     //
 
     keyDownEvent(e) {
+      const isDelKey = FlgEve.keyMap.Delete;
+
       this.AutoAlign.keyDownEvent(e);
+      // Delete all selected files
+      if (isDelKey) {
+        this.MultiSelect.delMultiFiles();
+      }
     },
 
     //

@@ -72,6 +72,7 @@ const FlgEve = (() => {
         is_active_flg: false
       }
     };
+    this.keyMap = {};
   }
 
   Flg.prototype = {
