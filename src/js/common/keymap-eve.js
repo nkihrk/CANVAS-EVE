@@ -23,9 +23,12 @@ const KeymapEve = (() => {
       FlgEve.keyMap[e.key] = true;
 
       const isCtrlKey = FlgEve.keyMap.Control;
+      const isShiftKey = FlgEve.keyMap.Shift;
       const isDelKey = FlgEve.keyMap.Delete;
 
-      if (!(isCtrlKey || isDelKey)) FlgEve.keyMap = {};
+      const isPermitkey = isCtrlKey || isShiftKey || isDelKey;
+
+      if (!isPermitkey) FlgEve.keyMap = {};
 
       // console.log(FlgEve.keyMap);
     },
@@ -35,6 +38,8 @@ const KeymapEve = (() => {
     // Reset specific keys in the keyMap when keyUp events are called
     keyUpEvent(e) {
       if (e.key === 'Control') FlgEve.keyMap.Control = false;
+      if (e.key === 'Shift') FlgEve.keyMap.Shift = false;
+      if (e.key === 'Delete') FlgEve.keyMap.Delete = false;
     },
 
     //

@@ -109,7 +109,8 @@ const SidebarEve = (D => {
       // Extract number from canvas-tabs, updating a global variable for later-use in file-eve and three-eve
       if ($container.parents('#ui-bar-tab').length === 1) {
         const str = $container[0].id;
-        const idMatch = str.match(/(\d+)/);
+        const idMatch = str.match(/(\d+)/g);
+
         if (idMatch) {
           [GlbEve.CURRENT_CANVAS_ID] = idMatch;
         }

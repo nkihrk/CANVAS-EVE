@@ -102,7 +102,6 @@ const YoutubeEve = (W => {
         `   <div class="resize-wrapper"></div>` +
         `   <div class="rotate-wrapper"></div>` +
         `   <div class="flip-wrapper"></div>` +
-        `   <div class="trash-wrapper"></div>` +
         ` </div>` +
         ` <div class="youtube-util">` +
         `   <div class="youtube-tab">` +

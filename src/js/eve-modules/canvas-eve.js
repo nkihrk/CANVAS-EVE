@@ -65,9 +65,15 @@ const CanvasEve = ((W, D, M) => {
 
     //
 
-    mouseUpEvent() {
+    mouseUpEvent(e) {
+      const isShiftkey = FlgEve.keyMap.Shift;
+
       this._resetFlgs();
-      if (this.$selectedArea !== null) this._releaseSelectedArea();
+      if (this.$selectedArea !== null) {
+        this._releaseSelectedArea();
+      } else if (isShiftkey && e.button === this.options.BUTTON_FOR_LEFT) {
+        this._extraSelect(e);
+      }
     },
 
     //
@@ -88,6 +94,26 @@ const CanvasEve = ((W, D, M) => {
           const $fileWrap = $(selected[i]).parents('.file-wrap');
           $fileWrap.remove();
         }
+      }
+    },
+
+    //
+
+    _extraSelect(e) {
+      let $fileWrap = $(e.target).parents('.file-wrap');
+      if ($fileWrap.length === 0) {
+        $fileWrap = $(e.target);
+      }
+
+      const hasSelected = !!$fileWrap.find('.selected').length;
+
+      FlgEve.canvas.select.is_multi_flg = true;
+      if (hasSelected) {
+        $fileWrap.find('.selected').remove();
+      } else {
+        $fileWrap.prepend(
+          `<div class="selected multi" style="border-width: ${GlbEve.MOUSE_WHEEL_VAL}px"></div>`
+        );
       }
     },
 
@@ -228,6 +254,12 @@ const CanvasEve = ((W, D, M) => {
           if (isAvail === true && onlyDraggableFlg === false) {
             availCount++;
             if (availCount === 1) {
+              const str = $fileWrap[0].id;
+              const isMatch = str.match(/(\d+)/g);
+
+              GlbEve.CURRENT_ID = str;
+              [GlbEve.CURRENT_CANVAS_ID] = isMatch;
+
               FlgEve.canvas.select.is_multi_flg = false;
             } else {
               FlgEve.canvas.select.is_multi_flg = true;
@@ -722,35 +754,41 @@ const CanvasEve = ((W, D, M) => {
     //
 
     mouseDownEvent(e) {
-      if (
-        e.button === this.options.BUTTON_FOR_LEFT &&
-        FlgEve.ui.toolbar.is_active_flg === false
-      ) {
-        LibEve.iframePointerNone();
-        FlgEve.setFlgs(e);
-        this.MultiSelect.mouseDownEvent(e);
-        if (
-          FlgEve.canvas.select.is_multi_flg === true &&
-          !e.target.closest('#canvas-eve-ui')
-        ) {
-          this._initMulti(e);
-        } else {
-          this._initSingle(e);
+      const isShiftkey = FlgEve.keyMap.Shift;
+      const isSelected = !!$('.selected').length;
+
+      if (e.button === this.options.BUTTON_FOR_LEFT) {
+        if (FlgEve.ui.toolbar.is_active_flg === false) {
+          LibEve.iframePointerNone();
+          FlgEve.setFlgs(e);
+          this.MultiSelect.mouseDownEvent(e);
+          if (
+            // Shift key based multi-selection or drag based
+            (isShiftkey || FlgEve.canvas.select.is_multi_flg === true) &&
+            !e.target.closest('#canvas-eve-ui')
+          ) {
+            this._initMulti(e);
+          } else {
+            this._initSingle(e);
+          }
+          if ($(e.target)[0].id === 'reset-res') {
+            this._reset();
+            this._initMultiFile();
+          }
         }
-        if ($(e.target)[0].id === 'reset-res') {
-          this._reset();
-          this._initMultiFile();
+
+        if (isSelected) {
+          this._handleEventMouseDown(e);
         }
-        this._handleEventMouseDown(e);
       }
     },
 
     //
 
-    mouseUpEvent() {
+    mouseUpEvent(e) {
       if (FlgEve.ui.toolbar.is_active_flg === false) {
         this._update(); // Execute it before resetting all flgs
-        this.MultiSelect.mouseUpEvent();
+        this.MultiSelect.mouseUpEvent(e);
         FlgEve.resetFlgs();
       }
     },
@@ -810,36 +848,24 @@ const CanvasEve = ((W, D, M) => {
               if ($fileWrap.find('.selected').length === 0)
                 $fileWrap.prepend('<div class="selected"></div>');
 
-              // Resizing boxes
+              if ($fileWrap.find('.thumbtack-wrapper').hasClass('active')) {
+                $('#ui-button-thumbtack').addClass('active');
+              }
               if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
                 if ($fileWrap.find('.re-left-top').length === 0)
                   $fileWrap.prepend(self.resizeBox);
+
+                $('#ui-button-resize').addClass('active');
               }
               if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
                 if ($fileWrap.find('.ro-left-top').length === 0)
                   $fileWrap.prepend(self.rotateBox); // Rotating circles
-              }
 
-              if ($fileWrap.find('.thumbtack-icon').length === 0)
-                $fileWrap
-                  .find('.thumbtack-wrapper')
-                  .prepend('<div class="thumbtack-icon"></div>'); // Add a thumbtack icon
-              if ($fileWrap.find('.resize-icon').length === 0)
-                $fileWrap
-                  .find('.resize-wrapper')
-                  .prepend('<div class="resize-icon"></div>'); // Add a resizing icon
-              if ($fileWrap.find('.rotate-icon').length === 0)
-                $fileWrap
-                  .find('.rotate-wrapper')
-                  .prepend('<div class="rotate-icon"></div>'); // Add a rotating icon
-              if ($fileWrap.find('.flip-icon').length === 0)
-                $fileWrap
-                  .find('.flip-wrapper')
-                  .prepend('<div class="flip-icon"></div>'); // Add a flipping icon
-              if ($fileWrap.find('.trash-icon').length === 0)
-                $fileWrap
-                  .find('.trash-wrapper')
-                  .prepend('<div class="trash-icon"></div>'); // Add a trash icon
+                $('#ui-button-rotate').addClass('active');
+              }
+              if ($fileWrap.find('.flip-wrapper').hasClass('active')) {
+                $('#ui-button-flip').addClass('active');
+              }
             }
 
             this._updateUiVal();
@@ -977,12 +1003,6 @@ const CanvasEve = ((W, D, M) => {
 
       $('.selected').remove();
 
-      $('.thumbtack-icon').remove();
-      $('.resize-icon').remove();
-      $('.rotate-icon').remove();
-      $('.flip-icon').remove();
-      $('.trash-icon').remove();
-
       $('.re-left-top').remove();
       $('.re-right-top').remove();
       $('.re-right-bottom').remove();
@@ -992,6 +1012,11 @@ const CanvasEve = ((W, D, M) => {
       $('.ro-right-top').remove();
       $('.ro-right-bottom').remove();
       $('.ro-left-bottom').remove();
+
+      $('#ui-button-thumbtack').removeClass('active');
+      $('#ui-button-resize').removeClass('active');
+      $('#ui-button-rotate').removeClass('active');
+      $('#ui-button-flip').removeClass('active');
     },
 
     //
@@ -1034,18 +1059,12 @@ const CanvasEve = ((W, D, M) => {
 
     _handleEventMouseDown(e) {
       const self = this;
-      const f = this.file;
+      const $fileWrap = $(`#${GlbEve.CURRENT_ID}`);
 
-      if (e.target.closest('.thumbtack-icon')) {
-        $(e.target)
-          .parents('.thumbtack-wrapper')
-          .toggleClass('active');
+      if (e.target.closest('#ui-button-thumbtack')) {
+        $fileWrap.find('.thumbtack-wrapper').toggleClass('active');
 
-        if (
-          $(e.target)
-            .parents('.thumbtack-wrapper')
-            .hasClass('active')
-        ) {
+        if ($fileWrap.find('.thumbtack-wrapper').hasClass('active')) {
           FlgEve.canvas.thumbtack_flg = true;
           this._updateUiVal();
         } else {
@@ -1053,84 +1072,48 @@ const CanvasEve = ((W, D, M) => {
         }
       }
 
-      if (e.target.closest('.resize-icon')) {
-        $(e.target)
-          .parents('.resize-wrapper')
-          .toggleClass('active');
+      if (e.target.closest('#ui-button-resize')) {
+        $fileWrap.find('.resize-wrapper').toggleClass('active');
 
-        if (
-          $(e.target)
-            .parents('.resize-wrapper')
-            .hasClass('active')
-        ) {
-          if (!f.$fileId.hasClass('ro-left-top')) {
-            f.$fileId.prepend(self.resizeBox);
+        if ($fileWrap.find('.resize-wrapper').hasClass('active')) {
+          if (!$fileWrap.find('.re-left-top').length) {
+            $fileWrap.prepend(self.resizeBox);
             this._updateUiVal();
           }
         } else {
-          f.$fileId.children('.re-left-top').remove();
-          f.$fileId.children('.re-right-top').remove();
-          f.$fileId.children('.re-right-bottom').remove();
-          f.$fileId.children('.re-left-bottom').remove();
+          $fileWrap.children('.re-left-top').remove();
+          $fileWrap.children('.re-right-top').remove();
+          $fileWrap.children('.re-right-bottom').remove();
+          $fileWrap.children('.re-left-bottom').remove();
         }
       }
 
-      if (e.target.closest('.rotate-icon')) {
-        $(e.target)
-          .parents('.rotate-wrapper')
-          .toggleClass('active');
+      if (e.target.closest('#ui-button-rotate')) {
+        $fileWrap.find('.rotate-wrapper').toggleClass('active');
 
-        if (
-          $(e.target)
-            .parents('.rotate-wrapper')
-            .hasClass('active')
-        ) {
-          if (!f.$fileId.hasClass('ro-left-top')) {
-            f.$fileId.removeClass('not-rotated');
-            f.$fileId.prepend(self.rotateBox);
+        if ($fileWrap.find('.rotate-wrapper').hasClass('active')) {
+          if (!$fileWrap.hasClass('ro-left-top')) {
+            $fileWrap.removeClass('not-rotated');
+            $fileWrap.prepend(self.rotateBox);
             this._updateUiVal();
           }
         } else {
-          f.$fileId.addClass('not-rotated');
-          f.$fileId.children('.ro-left-top').remove();
-          f.$fileId.children('.ro-right-top').remove();
-          f.$fileId.children('.ro-right-bottom').remove();
-          f.$fileId.children('.ro-left-bottom').remove();
+          $fileWrap.addClass('not-rotated');
+          $fileWrap.children('.ro-left-top').remove();
+          $fileWrap.children('.ro-right-top').remove();
+          $fileWrap.children('.ro-right-bottom').remove();
+          $fileWrap.children('.ro-left-bottom').remove();
         }
       }
 
-      if (e.target.closest('.flip-icon')) {
-        $(e.target)
-          .parents('.flip-wrapper')
-          .toggleClass('active');
+      if (e.target.closest('#ui-button-flip')) {
+        $fileWrap.find('.flip-wrapper').toggleClass('active');
 
-        if (
-          $(e.target)
-            .parents('.flip-wrapper')
-            .hasClass('active')
-        ) {
-          $(`${f.fileId}`)
-            .find('.is-flipped')
-            .addClass('flipped');
+        if ($fileWrap.find('.flip-wrapper').hasClass('active')) {
+          $fileWrap.find('.is-flipped').addClass('flipped');
           this._updateUiVal();
         } else {
-          $(`${f.fileId}`)
-            .find('.is-flipped')
-            .removeClass('flipped');
-        }
-      }
-
-      if (e.target.closest('.trash-icon')) {
-        $(e.target)
-          .parents('.trash-wrapper')
-          .toggleClass('active');
-
-        if (
-          $(e.target)
-            .parents('.trash-wrapper')
-            .hasClass('active')
-        ) {
-          $(f.fileId).remove();
+          $fileWrap.find('.is-flipped').removeClass('flipped');
         }
       }
     },
@@ -1364,36 +1347,6 @@ const CanvasEve = ((W, D, M) => {
       // A selected area
       $('#canvas-eve .selected').css({
         'border-width': `${GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-
-      // Icons
-      $('.thumbtack-icon').css({
-        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
-        height: `${40 * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-      $('.resize-icon').css({
-        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
-        height: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-      $('.rotate-icon').css({
-        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
-        height: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-      $('.flip-icon').css({
-        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
-        height: `${26 * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-      $('.trash-icon').css({
-        width: `${30 * GlbEve.MOUSE_WHEEL_VAL}px`,
-        height: `${35 * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-
-      // Function wrapper
-      $('.function-wrapper').css({
-        right: `${-70 * GlbEve.MOUSE_WHEEL_VAL}px`
-      });
-      $('.function-wrapper>div:not(:last-of-type)').css({
-        'margin-bottom': `${15 * GlbEve.MOUSE_WHEEL_VAL}px`
       });
 
       // Resize

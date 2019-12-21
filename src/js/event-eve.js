@@ -124,7 +124,7 @@ const EventEve = ((W, D) => {
           this.Oekaki.mouseUpEvent();
           this.Colpick.mouseUpEvent();
           this.Youtube.mouseUpEvent(e);
-          this.Canvas.mouseUpEvent();
+          this.Canvas.mouseUpEvent(e);
           this.Sidebar.mouseUpEvent(e);
         },
         false

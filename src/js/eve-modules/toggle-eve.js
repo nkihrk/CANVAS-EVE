@@ -25,12 +25,19 @@ const ToggleEve = (() => {
         '#ui-button-hand',
         '#ui-button-pen',
         '#ui-button-eraser',
-        '#ui-button-spuit'
-        // '#ui-button-crop',
-        // '#ui-button-thumbtack',
-        // '#ui-button-resize',
-        // '#ui-button-rotate',
-        // '#ui-button-flip'
+        '#ui-button-spuit',
+        '#ui-button-crop',
+        '#ui-button-thumbtack',
+        '#ui-button-resize',
+        '#ui-button-rotate',
+        '#ui-button-flip'
+      ],
+      LIST_OF_NO_RESTRICT: [
+        '#ui-button-crop',
+        '#ui-button-thumbtack',
+        '#ui-button-resize',
+        '#ui-button-rotate',
+        '#ui-button-flip'
       ]
     },
 
@@ -57,12 +64,22 @@ const ToggleEve = (() => {
     //
 
     _toggleTool($container) {
+      const isSelected = !!$('.selected').length;
+
       $container.toggleClass('active');
+      if (
+        this.options.LIST_OF_NO_RESTRICT.indexOf(`#${$container[0].id}`) !==
+          -1 &&
+        !isSelected
+      ) {
+        $container.removeClass('active');
+      }
 
       if (
         this.__$toggleButton !== undefined &&
         this.__$toggleButton[0] !== $container[0] &&
-        this.__$toggleButton.hasClass('active')
+        this.__$toggleButton.hasClass('active') &&
+        this.__$toggleButton.hasClass('restrict')
       ) {
         this.__$toggleButton.removeClass('active');
         this._resetIsActiveFlg(this.__$toggleButton);
@@ -73,7 +90,8 @@ const ToggleEve = (() => {
       this._colpick($container);
       this._oekaki($container);
 
-      FlgEve.ui.toolbar.is_active_flg = !!$('#ui-bar-tool li.active').length; // To know whether tools in the toolbar are active or not
+      FlgEve.ui.toolbar.is_active_flg = !!$('#ui-bar-tool li.restrict.active')
+        .length; // To know whether tools in the toolbar are active or not
     },
 
     //

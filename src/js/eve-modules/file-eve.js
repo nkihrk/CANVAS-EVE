@@ -324,7 +324,7 @@ const FileEve = ((W, D, M) => {
       const canvasWidth = this.options.DEFAULT_FILE_WIDTH;
       const canvas = `<canvas width="${canvasWidth}"></canvas>`;
       const funcTags =
-        '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="rotate-wrapper"></div><div class="flip-wrapper"></div><div class="trash-wrapper"></div>';
+        '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="rotate-wrapper"></div><div class="flip-wrapper"></div>';
       const assertFile = `<div id ="${id}" class="file-wrap transparent update-canvas" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main is-flipped">${canvas}</div></div>`;
       $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`).append(assertFile);
 

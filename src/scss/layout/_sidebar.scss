@@ -351,6 +351,7 @@ Left-bar UI
 
 #ui-bar-tool {
   @include bar-prefix($light-purple);
+  @include disable-selection;
   @include scrollbar-prefix-vertical;
 
   width: $bar-tool-width;

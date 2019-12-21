@@ -414,7 +414,7 @@ const ThreeEve = ((W, D, M) => {
 
       const id = `new-canvas-${GlbEve.CURRENT_CANVAS_ID}_${GlbEve.NEWFILE_ID}`;
       const funcTags =
-        '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div><div class="trash-wrapper"></div>';
+        '<div class="thumbtack-wrapper"></div><div class="resize-wrapper"></div>';
       const assertFile = `<div id ="${id}" class="webgl file-wrap" style="transition: ${GlbEve.IS_TRANSITION};"><div class="function-wrapper">${funcTags}</div><div class="eve-main"></div></div>`;
       $(`#add-files-${GlbEve.CURRENT_CANVAS_ID}`).append(assertFile);
 
