@@ -1,4 +1,5 @@
 model
+out/
 
 config.js
 node_modules

@@ -1,8 +1,9 @@
 {
   "name": "canvas-eve",
+  "productName": "canvas-eve",
   "version": "1.0.0",
-  "description": "",
-  "private": true,
+  "description": "The CANVAS EVE will help you assist in your daily works, especially for those of you who are engaging in creating. Pasting any images, 3D models, text files, PDFs and many other stuffs to the canvas, and use it as references.",
+  "main": "electron.config.js",
   "scripts": {
     "start_win": "nodemon --watch webpack.config.js --watch webpack.dev.js --watch webpack.prod.js --exec webpack-dev-server --devtool inline-source-map --port 8080 --host 0.0.0.0 --config webpack.dev.js'",
     "start_linux": "nodemon --watch webpack.config.js --watch webpack.dev.js --watch webpack.prod.js --exec 'webpack-dev-server --devtool inline-source-map --port 8080 --host 0.0.0.0 --config webpack.dev.js'",
@@ -11,19 +12,59 @@
     "clean": "rm -rf node_modules",
     "reinstall": "npm run clean && npm install",
     "kill_win": "taskkill /f /im node.exe",
-    "kill_linux": "pkill node"
+    "kill_linux": "pkill node",
+    "forge-start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
+  "private": true,
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "nkihrk",
+    "email": "40584391+nkihrk@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "canvas-eve"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
     "@babel/register": "^7.6.2",
+    "@electron-forge/cli": "^6.0.0-beta.47",
+    "@electron-forge/maker-deb": "^6.0.0-beta.47",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.47",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.47",
+    "@electron-forge/maker-zip": "^6.0.0-beta.47",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.2.0",
+    "electron": "^7.1.7",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-node": "^4.0.0",
@@ -60,6 +101,7 @@
   },
   "dependencies": {
     "@pixiv/three-vrm": "^0.2.0",
+    "electron-squirrel-startup": "^1.0.0",
     "psd.js": "^3.3.3-beta.3",
     "three": "^0.109.0"
   }
