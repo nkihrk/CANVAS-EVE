@@ -103,6 +103,6 @@
     "@pixiv/three-vrm": "^0.2.0",
     "electron-squirrel-startup": "^1.0.0",
     "psd.js": "^3.3.3-beta.3",
-    "three": "^0.109.0"
+    "three": "^0.125.0"
   }
 }
